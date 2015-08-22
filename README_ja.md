@@ -56,16 +56,18 @@ WLAN Profile Viewerは無線LANプロファイルを管理するためのWindows
 [2]: https://github.com/runceel/ReactiveProperty
 [3]: https://github.com/emoacht/WpfMonitorAware
 
-##参考: 無線LANプロファイルをOSのGUIから削除する方法
+##参考
+
+###無線LANプロファイルをOSのGUIから削除する方法
 
 無線LANプロファイルを削除するためのGUIがWindows 8.1 Updateから復活しました。このGUIに辿り着くには以下を見てください。
 
-###Windows 8.1 Update
+####Windows 8.1 Update
 
-チャームの"設定" → "PC設定の変更" → "ネットワーク" → "接続" → "Wi-Fi"の"既知のネットワークの管理"
+チャームの"設定" &rarr; "PC設定の変更" &rarr; "ネットワーク" &rarr; "接続" &rarr; "Wi-Fi"の"既知のネットワークの管理"
 
-###Windows 10
+####Windows 10
 
-通知領域から"ネットワーク設定"（またはスタートメニューから"設定"）→ "ネットワークとインターネット" → "Wi-Fi" → "Wi-Fi設定を管理する" → "既知のネットワークの管理"
+通知領域から"ネットワーク設定"（またはスタートメニューから"設定"）&rarr; "ネットワークとインターネット" &rarr; "Wi-Fi" &rarr; "Wi-Fi設定を管理する" &rarr; "既知のネットワークの管理"
 
 注意: 同名のプロファイルが複数ある場合（プロファイル名には無線LANのSSIDが使われるので、同じ無線LANに複数の無線LANアダプターで接続した場合に起こる）、これらは区別されず、まとめて削除されます。

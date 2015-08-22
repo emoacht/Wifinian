@@ -56,16 +56,18 @@ Settings file will be saved in the following folder.<br>
 [2]: https://github.com/runceel/ReactiveProperty
 [3]: https://github.com/emoacht/WpfMonitorAware
 
-##Reference: How to delete wireless LAN profiles from OS's GUI
+##Reference
+
+###How to delete wireless LAN profiles from OS's GUI
 
 The GUI to delete wireless LAN profiles has come back in Windows 8.1 Update. To reach this GUI, see the following.
 
-###Windows 8.1 Update
+####Windows 8.1 Update
 
-"Settings" in Charm Å® "Change PC settings" Å® "Network" Å® "Connections" Å® "Manage known networks" in "Wi-Fi"
+"Settings" in Charm &rarr; "Change PC settings" &rarr; "Network" &rarr; "Connections" &rarr; "Manage known networks" in "Wi-Fi"
 
-###Windows 10
+####Windows 10
 
-"Network settings" from notification area (or "Settings" from Start menu) Å® "Network & Internet" Å® "Wi-Fi" Å® "Manage WiFi Settings" Å® "Manage known networks"
+"Network settings" from notification area (or "Settings" from Start menu) &rarr; "Network & Internet" &rarr; "Wi-Fi" &rarr; "Manage WiFi Settings" &rarr; "Manage known networks"
 
 Note: If multiple profiles of the same name exist (it will happen if you connected to the same wireless LAN using multiple wireless LAN adapters because SSID of wireless LAN is used for a profile name), such profiles will not be differentiated and will be deleted in bulk.
