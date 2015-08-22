@@ -26,7 +26,7 @@ WLAN Profile Viewer is a Windows desktop app to manage wireless LAN profiles. It
 No installation is required.
 
 Settings file will be saved in the following folder.<br>
-[system drive]\Users\[user name]\AppData\WlanProfileViewer\
+[system drive]\Users\\[user name]\AppData\WlanProfileViewer\
 
 ##Remarks
 

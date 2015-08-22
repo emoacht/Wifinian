@@ -8,7 +8,7 @@ namespace ReactivePropertyTest
 {
 	public class MemberViewModel : BindableBase
 	{
-		public string Name { get; private set; }
+		public string Name { get; }
 
 		public bool IsLong
 		{
@@ -17,7 +17,9 @@ namespace ReactivePropertyTest
 		}
 		private bool _isLong;
 
-		public ReactiveProperty<bool> IsSelected { get; set; }
+		public ReactiveProperty<bool> IsSelected { get; }
+
+		#region Test
 
 		public bool IsSelectedValue
 		{
@@ -26,17 +28,24 @@ namespace ReactivePropertyTest
 		}
 		private bool _isSelectedValue;
 
-		public IObservable<bool> IsSelectedCopy { get; set; }
+		public IObservable<bool> IsSelectedCopy { get; }
+
+		#endregion
 
 		public MemberViewModel(string name, bool isSelected = false)
 		{
 			this.Name = name;
 
+			IsSelected = new ReactiveProperty<bool>(isSelected);
+
+			#region Test
+
 			IsSelectedCopy = this.ObserveProperty(x => x.IsSelectedValue);
 			IsSelectedCopy.Subscribe(x => Debug.WriteLine($"IsSelectedCopy {x}"));
 
-			IsSelected = new ReactiveProperty<bool>(isSelected);
 			IsSelected.Subscribe(x => IsSelectedValue = x);
+
+			#endregion
 		}
 	}
 }

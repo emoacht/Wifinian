@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Linq;
 using Reactive.Bindings;
@@ -76,6 +77,16 @@ namespace ReactivePropertyTest
 
 			PopulateMembers();
 
+			Members
+				.ObserveElementProperty(x => x.IsLong)
+				.Where(x => x.Value)
+				.Subscribe(x => ShowName(x.Instance));
+
+			Members
+				.ObserveElementObservableProperty(x => x.IsSelected)
+				.Where(x => x.Value)
+				.Subscribe(x => ShowName(x.Instance));
+
 			// IsAllLong: Original
 			IsAllLong = Members
 				.ObserveElementProperty(x => x.IsLong)
@@ -83,7 +94,7 @@ namespace ReactivePropertyTest
 				.ToReactiveProperty();
 
 			// IsAllLong: Alternative
-			var membersNotLong = Members
+			IFilteredReadOnlyObservableCollection<MemberViewModel> membersNotLong = Members
 				.ToFilteredReadOnlyObservableCollection(x => !x.IsLong);
 
 			IsAllLong = membersNotLong
@@ -98,9 +109,9 @@ namespace ReactivePropertyTest
 				.ToReactiveProperty();
 
 			// IsAnySelected: Alternative 1
-			var membersSelected = new List<MemberViewModel>();
+			List<MemberViewModel> membersSelected = new List<MemberViewModel>();
 
-			var elementPropertyChanged = Members
+			IObservable<bool> elementPropertyChanged = Members
 				.ObserveElementObservableProperty(x => x.IsSelected)
 				.Do(x =>
 				{
@@ -115,8 +126,9 @@ namespace ReactivePropertyTest
 				})
 				.Select(_ => 0 < membersSelected.Count);
 
-			var collectionChanged = Members
+			IObservable<bool> collectionChanged = Members
 				.CollectionChangedAsObservable()
+				.Where(x => x.Action != NotifyCollectionChangedAction.Move)
 				.Do(x =>
 				{
 					switch (x.Action)
@@ -126,26 +138,20 @@ namespace ReactivePropertyTest
 						case NotifyCollectionChangedAction.Replace:
 							if (x.OldItems != null)
 							{
-								foreach (var oldItem in x.OldItems)
+								foreach (var instance in x.OldItems.Cast<MemberViewModel>())
 								{
-									var instance = oldItem as MemberViewModel;
-									if (instance != null)
-									{
-										membersSelected.Remove(instance);
-									}
+									membersSelected.Remove(instance);
 								}
 							}
 							if (x.NewItems != null)
 							{
-								foreach (var newItem in x.NewItems)
+								foreach (var instance in x.NewItems.Cast<MemberViewModel>())
 								{
-									var instance = newItem as MemberViewModel;
-									if ((instance != null) &&
-										instance.IsSelected.Value &&
-										!membersSelected.Contains(instance))
-									{
+									if (membersSelected.Contains(instance))
+										continue;
+
+									if (instance.IsSelected.Value)
 										membersSelected.Add(instance);
-									}
 								}
 							}
 							break;
@@ -178,6 +184,11 @@ namespace ReactivePropertyTest
 			Members.Add(new MemberViewModel("Noshiro") { IsLong = true });
 			Members.Add(new MemberViewModel("Yahagi") { IsLong = true });
 			Members.Add(new MemberViewModel("Sakawa") { IsLong = false });
+		}
+
+		private void ShowName(MemberViewModel member)
+		{
+			Debug.WriteLine($"{member.Name} is changed.");
 		}
 	}
 }

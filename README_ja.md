@@ -26,7 +26,7 @@ WLAN Profile Viewerは無線LANプロファイルを管理するためのWindows
 インストール作業は必要ありません。
 
 設定ファイルは以下のフォルダーに保存されます。<br>
-[システムドライブ]\Users\[ユーザー名]\AppData\Roaming\WlanProfileViewer\
+[システムドライブ]\Users\\[ユーザー名]\AppData\Roaming\WlanProfileViewer\
 
 ##特記事項
 

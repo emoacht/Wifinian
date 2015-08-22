@@ -20,7 +20,6 @@ namespace ReactivePropertyTest
 			var instanceCache = new List<TElement>();
 			var propertySelectorDelegate = propertySelector.Compile();
 
-
 			var elementPropertyChanged = source
 				.ObserveElementObservableProperty(propertySelector)
 				.Do(x =>
