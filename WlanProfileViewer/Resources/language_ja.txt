@@ -1,0 +1,2 @@
+﻿ProjectSite=https://www.google.co.jp/search?q=WlanProfileViewer
+RecordException=予想外の問題が起きたため、このアプリを終了します。例外のログをデスクトップに残しますか?

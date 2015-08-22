@@ -1,0 +1,2 @@
+﻿ProjectSite=https://www.google.com/search?q=WlanProfileViewer
+RecordException=This app will terminate, because unexpected problem happened. Leave exception log on Desktop?

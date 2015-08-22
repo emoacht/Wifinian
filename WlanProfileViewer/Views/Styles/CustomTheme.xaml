@@ -1,0 +1,49 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+	<Color x:Key="App.BackgroundColor">#FF3f3f3f</Color>
+
+	<SolidColorBrush x:Key="App.Background" Color="{StaticResource App.BackgroundColor}"/>
+	<SolidColorBrush x:Key="App.Background.Inactive" Color="White" Opacity="0.3"/>
+
+	<SolidColorBrush x:Key="App.Foreground" Color="White"/>
+	<SolidColorBrush x:Key="App.Foreground.Supplement" Color="Silver"/>
+
+	<Color x:Key="Profile.Normal.BackgroundColor">#FF454545</Color>
+	<Color x:Key="Profile.Normal.Selected.BackgroundColor">Transparent</Color>
+	<Color x:Key="Profile.Available.BackgroundColor">#FF0a4394</Color>
+	<Color x:Key="Profile.Available.Selected.BackgroundColor">Transparent</Color>
+	<Color x:Key="Profile.Connected.BackgroundColor">#FF3079bd</Color>
+	<Color x:Key="Profile.Connected.Selected.BackgroundColor">Transparent</Color>
+	<Color x:Key="Profile.ConfigMode.BackgroundColor">#FF940a5a</Color>
+	<Color x:Key="Profile.ConfigMode.Selected.BackgroundColor">Transparent</Color>
+
+	<SolidColorBrush x:Key="Profile.Normal.Background" Color="{StaticResource Profile.Normal.BackgroundColor}"/>
+	<SolidColorBrush x:Key="Profile.Available.Background" Color="{StaticResource Profile.Available.BackgroundColor}"/>
+	<SolidColorBrush x:Key="Profile.Connected.Background" Color="{StaticResource Profile.Connected.BackgroundColor}"/>
+	<SolidColorBrush x:Key="Profile.ConfigMode.Background" Color="{StaticResource Profile.ConfigMode.BackgroundColor}"/>
+
+	<SolidColorBrush x:Key="Profile.Signal.Foreground" Color="White" Opacity="1.0"/>
+	<SolidColorBrush x:Key="Profile.Signal.Background" Color="White" Opacity="0.25"/>
+
+	<SolidColorBrush x:Key="Button.Normal.Foreground" Color="White" Opacity="0.8"/>
+
+	<SolidColorBrush x:Key="ToggleButton.Normal.Foreground" Color="White" Opacity="0.6"/>
+
+	<Color x:Key="ToggleButton.Checked.ForegroundColor">White</Color>
+
+	<Color x:Key="ScrollBar.Normal.BackgroundColor">#FF454545</Color>
+	<Color x:Key="ScrollBar.MouseOver.BackgroundColor">#FF676767</Color>
+
+	<Color x:Key="ScrollBar.Normal.ThumbColor">#FF565656</Color>
+	<Color x:Key="ScrollBar.MouseOver.ThumbColor">#FF676767</Color>
+	<Color x:Key="ScrollBar.Pressed.ThumbColor">#FF676767</Color>
+
+	<Color x:Key="Slider.Normal.ThumbColor">#FF858585</Color>
+	<Color x:Key="Slider.MouseOver.ThumbColor">#FF9a9a9a</Color>
+	<Color x:Key="Slider.Pressed.ThumbColor">#FF9a9a9a</Color>
+	<Color x:Key="Slider.Disabled.ThumbColor">#FF676767</Color>
+
+	<Color x:Key="Slider.TrackColor">#FF565656</Color>
+
+</ResourceDictionary>
