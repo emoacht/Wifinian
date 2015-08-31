@@ -615,14 +615,16 @@ namespace WlanProfileViewer.Models.Wlan
 		/// Request wireless interfaces to scan available wireless LANs.
 		/// </summary>
 		/// <param name="timeoutDuration">Timeout duration</param>
-		public static async Task ScanAsync(TimeSpan timeoutDuration)
+		/// <returns>Interface GUIDs that the requests succeeded</returns>
+		public static async Task<IEnumerable<Guid>> ScanAsync(TimeSpan timeoutDuration)
 		{
 			using (var client = new WlanClient())
 			{
 				var interfaceInfoList = GetInterfaceInfoList(client.Handle);
-				var interfaceCount = interfaceInfoList.Length;
+				var interfaceGuids = interfaceInfoList.Select(x => x.InterfaceGuid).ToArray();
 
 				var tcs = new TaskCompletionSource<bool>();
+				var handler = new ScanHandler(tcs, interfaceGuids);
 
 				Action<IntPtr, IntPtr> callback = (data, context) =>
 				{
@@ -636,35 +638,73 @@ namespace WlanProfileViewer.Models.Wlan
 					{
 						case (uint)WLAN_NOTIFICATION_ACM.wlan_notification_acm_scan_complete:
 							Debug.WriteLine("Scan succeeded.");
-							CheckScanCount(tcs, ref interfaceCount);
+							handler.SetSuccess(notificationData.InterfaceGuid);
 							break;
 						case (uint)WLAN_NOTIFICATION_ACM.wlan_notification_acm_scan_fail:
 							Debug.WriteLine("Scan failed.");
-							CheckScanCount(tcs, ref interfaceCount);
+							handler.SetFailure(notificationData.InterfaceGuid);
 							break;
 					}
 				};
 
 				RegisterNotification(client.Handle, WLAN_NOTIFICATION_SOURCE_ACM, callback);
 
-				foreach (var interfaceInfo in interfaceInfoList)
+				foreach (var interfaceGuid in interfaceGuids)
 				{
-					var result = Scan(client.Handle, interfaceInfo.InterfaceGuid);
+					var result = Scan(client.Handle, interfaceGuid);
 					if (!result)
-						CheckScanCount(tcs, ref interfaceCount);
+						handler.SetFailure(interfaceGuid);
 				}
 
 				var scanTask = tcs.Task;
 				await Task.WhenAny(scanTask, Task.Delay(timeoutDuration));
+
+				return handler.Results;
 			}
 		}
 
-		private static void CheckScanCount(TaskCompletionSource<bool> tcs, ref int count)
+		private class ScanHandler
 		{
-			Interlocked.Decrement(ref count);
+			private TaskCompletionSource<bool> _tcs;
+			private readonly List<Guid> _targets = new List<Guid>();
+			private readonly List<Guid> _results = new List<Guid>();
 
-			if (count <= 0)
-				Task.Run(() => tcs.SetResult(true));
+			public IEnumerable<Guid> Results { get { return _results.ToArray(); } }
+
+			public ScanHandler(TaskCompletionSource<bool> tcs, IEnumerable<Guid> targets)
+			{
+				this._tcs = tcs;
+				this._targets.AddRange(targets);
+			}
+
+			private readonly object _locker = new object();
+
+			public void SetSuccess(Guid value)
+			{
+				lock (_locker)
+				{
+					_targets.Remove(value);
+					_results.Add(value);
+
+					CheckTargets();
+				}
+			}
+
+			public void SetFailure(Guid value)
+			{
+				lock (_locker)
+				{
+					_targets.Remove(value);
+
+					CheckTargets();
+				}
+			}
+
+			private void CheckTargets()
+			{
+				if ((_targets.Count <= 0) && !_tcs.Task.IsCompleted)
+					Task.Run(() => _tcs.SetResult(true));
+			}
 		}
 
 		#endregion
