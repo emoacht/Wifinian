@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -82,17 +81,6 @@ namespace WlanProfileViewer.Models.Wlan
 			out IntPtr pstrProfileXml,
 			ref uint pdwFlags,
 			out uint pdwGrantedAccess);
-
-		[DllImport("Wlanapi.dll", SetLastError = true)]
-		private static extern uint WlanSetProfile(
-			IntPtr hClientHandle,
-			[MarshalAs(UnmanagedType.LPStruct)] Guid pInterfaceGuid,
-			uint dwFlags,
-			[MarshalAs(UnmanagedType.LPWStr)] string strProfileXml,
-			[MarshalAs(UnmanagedType.LPWStr)] string strAllUserProfileSecurity,
-			[MarshalAs(UnmanagedType.Bool)] bool bOverwrite,
-			IntPtr pReserved,
-			out uint pdwReasonCode);
 
 		[DllImport("Wlanapi.dll", SetLastError = true)]
 		private static extern uint WlanSetProfilePosition(
@@ -521,6 +509,8 @@ namespace WlanProfileViewer.Models.Wlan
 		private const uint ERROR_NOT_FOUND = 1168;
 		private const uint ERROR_NOT_ENOUGH_MEMORY = 8;
 		private const uint ERROR_ACCESS_DENIED = 5;
+		private const uint ERROR_NOT_SUPPORTED = 50;
+		private const uint ERROR_SERVICE_NOT_ACTIVE = 1062;
 		private const uint ERROR_NDIS_DOT11_AUTO_CONFIG_ENABLED = 0x80342000;
 		private const uint ERROR_NDIS_DOT11_MEDIA_IN_USE = 0x80342001;
 		private const uint ERROR_NDIS_DOT11_POWER_STATE_INVALID = 0x80342002;
@@ -540,26 +530,90 @@ namespace WlanProfileViewer.Models.Wlan
 
 		#region Type
 
+		/// <summary>
+		/// BSS type
+		/// </summary>
 		public enum BssType
 		{
+			/// <summary>
+			/// None
+			/// </summary>
 			None = 0,
+
+			/// <summary>
+			/// Infrastructure BSS network
+			/// </summary>
 			Infrastructure,
+
+			/// <summary>
+			/// Independent BSS (IBSS) network (Ad hoc network)
+			/// </summary>
 			Independent,
+
+			/// <summary>
+			/// Any BSS network
+			/// </summary>
 			Any
 		}
 
+		/// <summary>
+		/// Wireless profile information
+		/// </summary>
 		public class ProfilePack
 		{
+			/// <summary>
+			/// Profile name
+			/// </summary>
 			public string Name { get; private set; }
+
+			/// <summary>
+			/// GUID of associated wireless LAN interface
+			/// </summary>
 			public Guid InterfaceGuid { get; private set; }
+
+			/// <summary>
+			/// Description of associated wireless LAN interface
+			/// </summary>
 			public string InterfaceDescription { get; private set; }
+
+			/// <summary>
+			/// SSID of associated wireless LAN
+			/// </summary>
 			public string Ssid { get; private set; }
+
+			/// <summary>
+			/// BSS type of associated wireless LAN
+			/// </summary>
 			public BssType BssType { get; private set; }
+
+			/// <summary>
+			/// Authentication type of associated wireless LAN
+			/// </summary>
 			public string Authentication { get; private set; }
+
+			/// <summary>
+			/// Encryption type of associated wireless LAN
+			/// </summary>
 			public string Encryption { get; private set; }
+
+			/// <summary>
+			/// Position in preference order of associated wireless LAN interface
+			/// </summary>
 			public int Position { get; private set; }
+
+			/// <summary>
+			/// Whether this profile is set to be automatically connected
+			/// </summary>
 			public bool IsAutomatic { get; private set; }
+
+			/// <summary>
+			/// Signal level of associated wireless LAN
+			/// </summary>
 			public int Signal { get; private set; }
+
+			/// <summary>
+			/// Whether this profile is currently connected
+			/// </summary>
 			public bool IsConnected { get; private set; }
 
 			public ProfilePack(
@@ -589,12 +643,34 @@ namespace WlanProfileViewer.Models.Wlan
 			}
 		}
 
+		/// <summary>
+		/// Wireless LAN information
+		/// </summary>
 		public class NetworkPack
 		{
+			/// <summary>
+			/// GUID of associated wireless LAN interface
+			/// </summary>
 			public Guid InterfaceGuid { get; private set; }
+
+			/// <summary>
+			/// SSID
+			/// </summary>
 			public string Ssid { get; private set; }
+
+			/// <summary>
+			/// BSS type
+			/// </summary>
 			public BssType BssType { get; private set; }
+
+			/// <summary>
+			/// Signal level
+			/// </summary>
 			public int Signal { get; private set; }
+
+			/// <summary>
+			/// Name of associated wireless profile
+			/// </summary>
 			public string ProfileName { get; private set; }
 
 			public NetworkPack(Guid interfaceGuid, string ssid, BssType bssType, int signal, string profileName)
@@ -1339,6 +1415,8 @@ namespace WlanProfileViewer.Models.Wlan
 					case ERROR_NOT_FOUND:
 					case ERROR_NOT_ENOUGH_MEMORY:
 					case ERROR_ACCESS_DENIED:
+					case ERROR_NOT_SUPPORTED:
+					case ERROR_SERVICE_NOT_ACTIVE:
 					case ERROR_NDIS_DOT11_AUTO_CONFIG_ENABLED:
 					case ERROR_NDIS_DOT11_MEDIA_IN_USE:
 					case ERROR_NDIS_DOT11_POWER_STATE_INVALID:
