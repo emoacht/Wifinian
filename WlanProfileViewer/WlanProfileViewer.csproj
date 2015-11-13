@@ -41,6 +41,10 @@
     <ApplicationIcon>Resources\ring.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ManagedNativeWifi, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Library\ManagedNativeWifi.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="MonitorAware, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -118,7 +122,6 @@
     <Compile Include="Models\LogService.cs" />
     <Compile Include="Models\ProcessService.cs" />
     <Compile Include="Models\Wlan\IWlanWorker.cs" />
-    <Compile Include="Models\Wlan\NativeWifi.cs" />
     <Compile Include="Models\Wlan\NativeWifiWorker.cs" />
     <Compile Include="Models\Wlan\Netsh.cs" />
     <Compile Include="Models\Wlan\NetshWorker.cs" />
@@ -196,6 +199,8 @@
     <Resource Include="Resources\ring.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Library\ManagedNativeWifi.dll" />
+    <Resource Include="Library\ManagedNativeWifi.xml" />
     <Content Include="Library\MonitorAware.dll" />
     <Resource Include="Resources\language_ja.txt" />
     <Resource Include="Resources\language_en.txt" />

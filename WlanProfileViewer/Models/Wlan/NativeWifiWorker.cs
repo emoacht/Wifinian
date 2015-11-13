@@ -5,29 +5,31 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
+using ManagedNativeWifi;
+
 namespace WlanProfileViewer.Models.Wlan
 {
 	internal class NativeWifiWorker : IWlanWorker
 	{
 		#region Get profiles
 
-		public async Task<IEnumerable<ProfileItem>> GetProfilesAsync(bool isLatest, TimeSpan timeoutDuration)
+		public async Task<IEnumerable<ProfileItem>> GetProfilesAsync(bool isLatest, TimeSpan timeout)
 		{
 			if (isLatest)
-				await NativeWifi.ScanAsync(timeoutDuration).ConfigureAwait(false);
+				await NativeWifi.ScanNetworksAsync(timeout).ConfigureAwait(false);
 
 			var profilePacks = await Task.Run(() => NativeWifi.EnumerateProfiles()).ConfigureAwait(false);
 
 			return profilePacks.Select(x => new ProfileItem(
 				name: x.Name,
-				interfaceGuid: x.InterfaceGuid,
+				interfaceId: x.Interface.Id,
 				interfaceName: null,
-				interfaceDescription: x.InterfaceDescription,
+				interfaceDescription: x.Interface.Description,
 				authentication: ConvertToAuthentication(x.Authentication),
 				encryption: ConvertToEncryption(x.Encryption),
 				position: x.Position,
 				isAutomatic: x.IsAutomatic,
-				signal: x.Signal,
+				signal: x.SignalQuality,
 				isConnected: x.IsConnected));
 		}
 
@@ -72,7 +74,7 @@ namespace WlanProfileViewer.Models.Wlan
 			if (position < 0)
 				throw new ArgumentOutOfRangeException(nameof(position));
 
-			return await Task.Run(() => NativeWifi.SetProfilePosition(profileItem.Name, profileItem.InterfaceGuid, position));
+			return await Task.Run(() => NativeWifi.SetProfilePosition(profileItem.InterfaceId, profileItem.Name, position));
 		}
 
 		#endregion
@@ -84,27 +86,27 @@ namespace WlanProfileViewer.Models.Wlan
 			if (profileItem == null)
 				throw new ArgumentNullException(nameof(profileItem));
 
-			return await Task.Run(() => NativeWifi.DeleteProfile(profileItem.Name, profileItem.InterfaceGuid));
+			return await Task.Run(() => NativeWifi.DeleteProfile(profileItem.InterfaceId, profileItem.Name));
 		}
 
 		#endregion
 
 		#region Connect/Disconnect
 
-		public async Task<bool> ConnectAsync(ProfileItem profileItem, TimeSpan timeoutDuration)
+		public async Task<bool> ConnectNetworkAsync(ProfileItem profileItem, TimeSpan timeout)
 		{
 			if (profileItem == null)
 				throw new ArgumentNullException(nameof(profileItem));
 
-			return await NativeWifi.ConnectAsync(profileItem.Name, profileItem.InterfaceGuid, NativeWifi.BssType.Any, timeoutDuration);
+			return await NativeWifi.ConnectNetworkAsync(profileItem.InterfaceId, profileItem.Name, BssType.Any, timeout);
 		}
 
-		public async Task<bool> DisconnectAsync(ProfileItem profileItem, TimeSpan timeoutDuration)
+		public async Task<bool> DisconnectNetworkAsync(ProfileItem profileItem, TimeSpan timeout)
 		{
 			if (profileItem == null)
 				throw new ArgumentNullException(nameof(profileItem));
 
-			return await NativeWifi.DisconnectAsync(profileItem.InterfaceGuid, timeoutDuration);
+			return await NativeWifi.DisconnectNetworkAsync(profileItem.InterfaceId, timeout);
 		}
 
 		#endregion

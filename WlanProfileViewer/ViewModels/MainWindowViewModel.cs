@@ -182,7 +182,7 @@ namespace WlanProfileViewer.ViewModels
 				.CombineLatestValuesAreAllTrue()
 				.ToReactiveCommand();
 			ConnectCommand
-				.Subscribe(async _ => await Op.ConnectAsync());
+				.Subscribe(async _ => await Op.ConnectNetworkAsync());
 
 			#endregion
 
@@ -195,7 +195,7 @@ namespace WlanProfileViewer.ViewModels
 				.CombineLatestValuesAreAllTrue()
 				.ToReactiveCommand();
 			DisconnectCommand
-				.Subscribe(async _ => await Op.DisconnectAsync());
+				.Subscribe(async _ => await Op.DisconnectNetworkAsync());
 
 			#endregion
 

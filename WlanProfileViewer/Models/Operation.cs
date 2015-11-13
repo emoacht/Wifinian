@@ -154,7 +154,7 @@ namespace WlanProfileViewer.Models
 
 				// Calculate count of positions for each interface.
 				Profiles
-					.GroupBy(x => x.InterfaceGuid)
+					.GroupBy(x => x.InterfaceId)
 					.ToList()
 					.ForEach(profilesGroup =>
 					{
@@ -239,21 +239,21 @@ namespace WlanProfileViewer.Models
 				x => !Profiles.Contains(x));
 		}
 
-		public async Task<bool> ConnectAsync()
+		public async Task<bool> ConnectNetworkAsync()
 		{
 			Debug.WriteLine("Connect start!");
 
 			return await WorkAsync(
-				x => _worker.ConnectAsync(x, _workingTimeoutDuration),
+				x => _worker.ConnectNetworkAsync(x, _workingTimeoutDuration),
 				x => Profiles.Contains(x) && x.IsConnected);
 		}
 
-		public async Task<bool> DisconnectAsync()
+		public async Task<bool> DisconnectNetworkAsync()
 		{
 			Debug.WriteLine("Disconnect start!");
 
 			return await WorkAsync(
-				x => _worker.DisconnectAsync(x, _workingTimeoutDuration),
+				x => _worker.DisconnectNetworkAsync(x, _workingTimeoutDuration),
 				x => Profiles.Contains(x) && !x.IsConnected);
 		}
 
