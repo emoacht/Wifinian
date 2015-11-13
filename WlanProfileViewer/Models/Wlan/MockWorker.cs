@@ -12,7 +12,7 @@ namespace WlanProfileViewer.Models.Wlan
 		private List<ProfileItem> _sourceProfiles;
 		private readonly Random _random = new Random();
 
-		public async Task<IEnumerable<ProfileItem>> GetProfilesAsync(bool isLatest, TimeSpan timeoutDuration)
+		public async Task<IEnumerable<ProfileItem>> GetProfilesAsync(bool isLatest, TimeSpan timeout)
 		{
 			if (_sourceProfiles == null)
 				_sourceProfiles = PopulateProfiles().ToList();
@@ -34,7 +34,7 @@ namespace WlanProfileViewer.Models.Wlan
 			await WaitAsync();
 
 			var targetProfiles = _sourceProfiles
-				.Where(x => x.InterfaceGuid == profileItem.InterfaceGuid)
+				.Where(x => x.InterfaceId == profileItem.InterfaceId)
 				.OrderBy(x => x.Position)
 				.ToList();
 
@@ -64,7 +64,7 @@ namespace WlanProfileViewer.Models.Wlan
 			return _sourceProfiles.Remove(profileItem);
 		}
 
-		public async Task<bool> ConnectAsync(ProfileItem profileItem, TimeSpan timeoutDuration)
+		public async Task<bool> ConnectNetworkAsync(ProfileItem profileItem, TimeSpan timeout)
 		{
 			await WaitAsync();
 
@@ -76,7 +76,7 @@ namespace WlanProfileViewer.Models.Wlan
 			return true;
 		}
 
-		public async Task<bool> DisconnectAsync(ProfileItem profileItem, TimeSpan timeoutDuration)
+		public async Task<bool> DisconnectNetworkAsync(ProfileItem profileItem, TimeSpan timeout)
 		{
 			await WaitAsync();
 
@@ -108,7 +108,7 @@ namespace WlanProfileViewer.Models.Wlan
 			{
 				new ProfileItem(
 					name: "at_STATION_Wi2",
-					interfaceGuid: interfaceGuid0,
+					interfaceId: interfaceGuid0,
 					interfaceName: interfaceName0,
 					interfaceDescription: interfaceDescription0,
 					authentication: AuthenticationMethod.Open,
@@ -120,7 +120,7 @@ namespace WlanProfileViewer.Models.Wlan
 
 				new ProfileItem(
 					name: "MSFTOPEN",
-					interfaceGuid: interfaceGuid0,
+					interfaceId: interfaceGuid0,
 					interfaceName: interfaceName0,
 					interfaceDescription: interfaceDescription0,
 					authentication: AuthenticationMethod.Open,
@@ -132,7 +132,7 @@ namespace WlanProfileViewer.Models.Wlan
 
 				new ProfileItem(
 					name: "flashair_W02",
-					interfaceGuid: interfaceGuid0,
+					interfaceId: interfaceGuid0,
 					interfaceName: interfaceName0,
 					interfaceDescription: interfaceDescription0,
 					authentication: AuthenticationMethod.WPA2_Personal,
@@ -144,7 +144,7 @@ namespace WlanProfileViewer.Models.Wlan
 
 				new ProfileItem(
 					name: "flashair_W03",
-					interfaceGuid: interfaceGuid0,
+					interfaceId: interfaceGuid0,
 					interfaceName: interfaceName0,
 					interfaceDescription: interfaceDescription0,
 					authentication: AuthenticationMethod.WPA2_Personal,
@@ -156,7 +156,7 @@ namespace WlanProfileViewer.Models.Wlan
 
 				new ProfileItem(
 					name: "WIFIGATE-968",
-					interfaceGuid: interfaceGuid0,
+					interfaceId: interfaceGuid0,
 					interfaceName: interfaceName0,
 					interfaceDescription: interfaceDescription0,
 					authentication: AuthenticationMethod.WPA2_Personal,
@@ -168,7 +168,7 @@ namespace WlanProfileViewer.Models.Wlan
 
 				new ProfileItem(
 					name: "at_STATION_Wi2",
-					interfaceGuid: interfaceGuid1,
+					interfaceId: interfaceGuid1,
 					interfaceName: interfaceName1,
 					interfaceDescription: interfaceDescription1,
 					authentication: AuthenticationMethod.Open,
@@ -180,7 +180,7 @@ namespace WlanProfileViewer.Models.Wlan
 
 				new ProfileItem(
 					name: "ねこラン🐾🐾",
-					interfaceGuid: interfaceGuid1,
+					interfaceId: interfaceGuid1,
 					interfaceName: interfaceName1,
 					interfaceDescription: interfaceDescription1,
 					authentication: AuthenticationMethod.WPA_Personal,
@@ -192,7 +192,7 @@ namespace WlanProfileViewer.Models.Wlan
 
 				new ProfileItem(
 					name: "ZZZZZ...",
-					interfaceGuid: interfaceGuid2,
+					interfaceId: interfaceGuid2,
 					interfaceName: interfaceName2,
 					interfaceDescription: interfaceDescription2,
 					authentication: AuthenticationMethod.Open,
