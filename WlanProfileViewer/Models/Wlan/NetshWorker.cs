@@ -10,7 +10,7 @@ namespace WlanProfileViewer.Models.Wlan
 	{
 		#region Get profiles
 
-		public async Task<IEnumerable<ProfileItem>> GetProfilesAsync(bool isLatest, TimeSpan timeoutDuration)
+		public async Task<IEnumerable<ProfileItem>> GetProfilesAsync(bool isLatest, TimeSpan timeout)
 		{
 			var interfacePacks = (await Netsh.GetInterfacesAsync().ConfigureAwait(false))
 				.ToArray(); // ToArray method is necessary.
@@ -28,7 +28,7 @@ namespace WlanProfileViewer.Models.Wlan
 				   where profilePack.InterfaceName.Equals(interfacePack.Name, StringComparison.Ordinal)
 				   select new ProfileItem(
 					   name: profilePack.Name,
-					   interfaceGuid: interfacePack.Guid,
+					   interfaceId: interfacePack.Id,
 					   interfaceName: profilePack.InterfaceName,
 					   interfaceDescription: interfacePack.Description,
 					   authentication: ConvertToAuthentication(profilePack.Authentication),
@@ -87,7 +87,7 @@ namespace WlanProfileViewer.Models.Wlan
 			if (position < 0)
 				throw new ArgumentOutOfRangeException(nameof(position));
 
-			return await Netsh.SetProfilePositionAync(profileItem.Name, profileItem.InterfaceName, position);
+			return await Netsh.SetProfilePositionAync(profileItem.InterfaceName, profileItem.Name, position);
 		}
 
 		#endregion
@@ -99,27 +99,27 @@ namespace WlanProfileViewer.Models.Wlan
 			if (profileItem == null)
 				throw new ArgumentNullException(nameof(profileItem));
 
-			return await Netsh.DeleteProfileAsync(profileItem.Name, profileItem.InterfaceName);
+			return await Netsh.DeleteProfileAsync(profileItem.InterfaceName, profileItem.Name);
 		}
 
 		#endregion
 
 		#region Connect/Disconnect
 
-		public async Task<bool> ConnectAsync(ProfileItem profileItem, TimeSpan timeoutDuration)
+		public async Task<bool> ConnectNetworkAsync(ProfileItem profileItem, TimeSpan timeout)
 		{
 			if (profileItem == null)
 				throw new ArgumentNullException(nameof(profileItem));
 
-			return await Netsh.ConnectAsync(profileItem.Name, profileItem.InterfaceName);
+			return await Netsh.ConnectNetworkAsync(profileItem.InterfaceName, profileItem.Name);
 		}
 
-		public async Task<bool> DisconnectAsync(ProfileItem profileItem, TimeSpan timeoutDuration)
+		public async Task<bool> DisconnectNetworkAsync(ProfileItem profileItem, TimeSpan timeout)
 		{
 			if (profileItem == null)
 				throw new ArgumentNullException(nameof(profileItem));
 
-			return await Netsh.DisconnectAsync(profileItem.InterfaceName);
+			return await Netsh.DisconnectNetworkAsync(profileItem.InterfaceName);
 		}
 
 		#endregion

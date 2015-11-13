@@ -29,9 +29,9 @@ namespace WlanProfileViewer.Models.Wlan
 
 		private class ShortProfilePack
 		{
-			public string Name { get; set; }
-			public string InterfaceName { get; set; }
-			public int Position { get; set; }
+			public string Name { get; }
+			public string InterfaceName { get; }
+			public int Position { get; }
 
 			public ShortProfilePack(string name, string interfaceName, int position)
 			{
@@ -43,20 +43,20 @@ namespace WlanProfileViewer.Models.Wlan
 
 		public class ProfilePack
 		{
-			public string Name { get; private set; }
-			public string InterfaceName { get; private set; }
-			public string Ssid { get; private set; }
-			public NetworkType NetworkType { get; private set; }
-			public string Authentication { get; private set; }
-			public string Encryption { get; private set; }
-			public int Position { get; private set; }
-			public bool IsAutomatic { get; private set; }
+			public string Name { get; }
+			public string InterfaceName { get; }
+			public string Ssid { get; }
+			public NetworkType NetworkType { get; }
+			public string Authentication { get; }
+			public string Encryption { get; }
+			public int Position { get; }
+			public bool IsAutomatic { get; }
 
 			public ProfilePack(
 				string name,
 				string interfaceName,
 				string ssid,
-				NetworkType netwotrkType,
+				NetworkType networkType,
 				string authentication,
 				string encryption,
 				int position,
@@ -65,7 +65,7 @@ namespace WlanProfileViewer.Models.Wlan
 				this.Name = name;
 				this.InterfaceName = interfaceName;
 				this.Ssid = ssid;
-				this.NetworkType = netwotrkType;
+				this.NetworkType = networkType;
 				this.Authentication = authentication;
 				this.Encryption = encryption;
 				this.Position = position;
@@ -75,24 +75,24 @@ namespace WlanProfileViewer.Models.Wlan
 
 		public class InterfacePack
 		{
-			public string Name { get; private set; }
-			public string Description { get; private set; }
-			public Guid Guid { get; private set; }
-			public string PhysicalAddress { get; private set; }
-			public bool IsConnected { get; private set; }
-			public string ProfileName { get; private set; }
+			public string Name { get; }
+			public string Description { get; }
+			public Guid Id { get; }
+			public string PhysicalAddress { get; }
+			public bool IsConnected { get; }
+			public string ProfileName { get; }
 
 			public InterfacePack(
 				string name,
 				string description,
-				Guid guid,
+				Guid id,
 				string physicalAddress,
 				bool isConnected,
 				string profileName)
 			{
 				this.Name = name;
 				this.Description = description;
-				this.Guid = guid;
+				this.Id = id;
 				this.PhysicalAddress = physicalAddress;
 				this.IsConnected = isConnected;
 				this.ProfileName = profileName;
@@ -101,12 +101,12 @@ namespace WlanProfileViewer.Models.Wlan
 
 		public class NetworkPack
 		{
-			public string InterfaceName { get; private set; }
-			public string Ssid { get; private set; }
-			public NetworkType NetworkType { get; private set; }
-			public string Authenticaion { get; private set; }
-			public string Encryption { get; private set; }
-			public int Signal { get; private set; }
+			public string InterfaceName { get; }
+			public string Ssid { get; }
+			public NetworkType NetworkType { get; }
+			public string Authenticaion { get; }
+			public string Encryption { get; }
+			public int Signal { get; }
 
 			public NetworkPack(
 				string interfaceName,
@@ -142,7 +142,7 @@ namespace WlanProfileViewer.Models.Wlan
 		{
 			string name = null;
 			string description = null;
-			Guid guid = Guid.Empty;
+			Guid id = Guid.Empty;
 			string physicalAddress = null;
 			bool? isConnected = null;
 			string profileName = null;
@@ -161,14 +161,14 @@ namespace WlanProfileViewer.Models.Wlan
 						description = FindElement(outputLine, "Description");
 						continue;
 					}
-					if (guid == Guid.Empty)
+					if (id == Guid.Empty)
 					{
 						var buff = FindElement(outputLine, "GUID");
 						if (buff != null)
 						{
 							try
 							{
-								guid = new Guid(buff);
+								id = new Guid(buff);
 							}
 							catch (FormatException)
 							{
@@ -198,11 +198,17 @@ namespace WlanProfileViewer.Models.Wlan
 					throw;
 				}
 
-				yield return new InterfacePack(name, description, guid, physicalAddress, isConnected.Value, profileName);
+				yield return new InterfacePack(
+					name: name,
+					description: description,
+					id: id,
+					physicalAddress: physicalAddress,
+					isConnected: isConnected.Value,
+					profileName: profileName);
 
 				name = null;
 				description = null;
-				guid = Guid.Empty;
+				id = Guid.Empty;
 				physicalAddress = null;
 				isConnected = null;
 				profileName = null;
@@ -293,7 +299,13 @@ namespace WlanProfileViewer.Models.Wlan
 				//	encryption,
 				//	signal.Value);
 
-				yield return new NetworkPack(interfaceName, ssid, networkType, authentication, encryption, signal.Value);
+				yield return new NetworkPack(
+					interfaceName: interfaceName,
+					ssid: ssid,
+					networkType: networkType,
+					authentication: authentication,
+					encryption: encryption,
+					signal: signal.Value);
 
 				ssid = null;
 				networkType = default(NetworkType);
@@ -315,7 +327,7 @@ namespace WlanProfileViewer.Models.Wlan
 
 			var shortProfiles = EnumerateShortProfiles(outputLines);
 
-			return (await Task.WhenAll(shortProfiles.Select(async x => await GetProfileAsync(x.Name, x.InterfaceName, x.Position))))
+			return (await Task.WhenAll(shortProfiles.Select(async x => await GetProfileAsync(x.InterfaceName, x.Name, x.Position))))
 				.Where(x => x != null);
 		}
 
@@ -347,22 +359,22 @@ namespace WlanProfileViewer.Models.Wlan
 			}
 		}
 
-		public static async Task<ProfilePack> GetProfileAsync(string profileName, string interfaceName, int position)
+		public static async Task<ProfilePack> GetProfileAsync(string interfaceName, string profileName, int position)
 		{
-			if (string.IsNullOrWhiteSpace(profileName))
-				return null;
-
 			if (string.IsNullOrWhiteSpace(interfaceName))
-				return null;
+				throw new ArgumentNullException(nameof(interfaceName));
+
+			if (string.IsNullOrWhiteSpace(profileName))
+				throw new ArgumentNullException(nameof(profileName));
 
 			var command = $@"netsh wlan show profile name=""{profileName}"" interface=""{interfaceName}""";
 
 			var outputLines = await ExecuteNetshAsync(command).ConfigureAwait(false);
 
-			return GetProfile(outputLines, profileName, interfaceName, position);
+			return GetProfile(outputLines, interfaceName, profileName, position);
 		}
 
-		private static ProfilePack GetProfile(IEnumerable<string> outputLines, string profileName, string interfaceName, int position)
+		private static ProfilePack GetProfile(IEnumerable<string> outputLines, string interfaceName, string profileName, int position)
 		{
 			bool? isAutomatic = null;
 			string ssid = null;
@@ -420,7 +432,7 @@ namespace WlanProfileViewer.Models.Wlan
 				(encryption == null))
 				return null;
 
-			//Debug.WriteLine("Profile: {0}, Interface: {1}, SSID: {2}, BSS type: {3}, Authentication: {4}, Encryption: {5}, Position: {6}, IsAutomatic: {7}",
+			//Debug.WriteLine("Profile: {0}, Interface: {1}, SSID: {2}, BSS: {3}, Authentication: {4}, Encryption: {5}, Position: {6}, IsAutomatic: {7}",
 			//	profileName,
 			//	interfaceName,
 			//	ssid,
@@ -431,30 +443,30 @@ namespace WlanProfileViewer.Models.Wlan
 			//	isAutomatic.Value);
 
 			return new ProfilePack(
-				profileName,
-				interfaceName,
-				ssid,
-				networkType,
-				authentication,
-				encryption,
-				position,
-				isAutomatic.Value);
+				name: profileName,
+				interfaceName: interfaceName,
+				ssid: ssid,
+				networkType: networkType,
+				authentication: authentication,
+				encryption: encryption,
+				position: position,
+				isAutomatic: isAutomatic.Value);
 		}
 
 		#endregion
 
 		#region Set profile position
 
-		public static async Task<bool> SetProfilePositionAync(string profileName, string interfaceName, int position)
+		public static async Task<bool> SetProfilePositionAync(string interfaceName, string profileName, int position)
 		{
-			if (string.IsNullOrWhiteSpace(profileName))
-				return false;
-
 			if (string.IsNullOrWhiteSpace(interfaceName))
-				return false;
+				throw new ArgumentNullException(nameof(interfaceName));
+
+			if (string.IsNullOrWhiteSpace(profileName))
+				throw new ArgumentNullException(nameof(profileName));
 
 			if (position < 0)
-				return false;
+				throw new ArgumentOutOfRangeException(nameof(position));
 
 			position++; // According to the error message, "Profile preference order starts with 1."
 
@@ -471,10 +483,10 @@ namespace WlanProfileViewer.Models.Wlan
 
 		#region Delete profile
 
-		public static async Task<bool> DeleteProfileAsync(string profileName, string interfaceName)
+		public static async Task<bool> DeleteProfileAsync(string interfaceName, string profileName)
 		{
 			if (string.IsNullOrWhiteSpace(profileName))
-				return false;
+				throw new ArgumentNullException(nameof(profileName));
 
 			var command = $@"netsh wlan delete profile name=""{profileName}""";
 			if (!string.IsNullOrWhiteSpace(interfaceName))
@@ -493,13 +505,13 @@ namespace WlanProfileViewer.Models.Wlan
 
 		#region Connect/Disconnect
 
-		public static async Task<bool> ConnectAsync(string profileName, string interfaceName)
+		public static async Task<bool> ConnectNetworkAsync(string interfaceName, string profileName)
 		{
-			if (string.IsNullOrWhiteSpace(profileName))
-				return false;
-
 			if (string.IsNullOrWhiteSpace(interfaceName))
-				return false;
+				throw new ArgumentNullException(nameof(interfaceName));
+
+			if (string.IsNullOrWhiteSpace(profileName))
+				throw new ArgumentNullException(nameof(profileName));
 
 			var command = $@"netsh wlan connect name=""{profileName}"" interface=""{interfaceName}""";
 
@@ -510,10 +522,10 @@ namespace WlanProfileViewer.Models.Wlan
 			return outputLines.Contains(expected);
 		}
 
-		public static async Task<bool> DisconnectAsync(string interfaceName)
+		public static async Task<bool> DisconnectNetworkAsync(string interfaceName)
 		{
 			if (string.IsNullOrWhiteSpace(interfaceName))
-				return false;
+				throw new ArgumentNullException(nameof(interfaceName));
 
 			var command = $@"netsh wlan disconnect interface=""{interfaceName}""";
 
