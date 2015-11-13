@@ -52,6 +52,9 @@ namespace WlanProfileViewer.Models
 
 		private ReactiveTimer ReloadTimer { get; }
 
+		public Operation() : this(new NativeWifiWorker())
+		{ }
+
 		public Operation(IWlanWorker worker)
 		{
 			this._worker = worker;
