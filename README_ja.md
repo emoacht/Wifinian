@@ -19,7 +19,7 @@ WLAN Profile Viewerは無線LANプロファイルを管理するためのWindows
 
 ##ダウンロード
 
-[ダウンロード](https://github.com/emoacht/WlanProfileViewer/releases/download/1.0.0/WlanProfileViewer100.zip)
+[ダウンロード](https://github.com/emoacht/WlanProfileViewer/releases/download/1.1.0/WlanProfileViewer110.zip)
 
 ##インストール
 
@@ -50,11 +50,13 @@ WLAN Profile Viewerは無線LANプロファイルを管理するためのWindows
 
  - [Reactive Extensions][1]
  - [Reactive Property][2]
- - [WPF Monitor Aware Window][3]
+ - [Managed Native Wifi][3]
+ - [WPF Monitor Aware Window][4]
 
 [1]: https://github.com/Reactive-Extensions/Rx.NET
 [2]: https://github.com/runceel/ReactiveProperty
-[3]: https://github.com/emoacht/WpfMonitorAware
+[3]: https://github.com/emoacht/ManagedNativeWifi
+[4]: https://github.com/emoacht/WpfMonitorAware
 
 ##参考
 
