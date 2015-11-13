@@ -127,7 +127,7 @@ namespace WlanProfileViewer.Models.Wlan
 			if (string.IsNullOrWhiteSpace(name))
 				throw new ArgumentNullException(nameof(name));
 
-			if (interfaceId == default(Guid))
+			if (interfaceId == Guid.Empty)
 				throw new ArgumentException(nameof(interfaceId));
 
 			this.Name = name;

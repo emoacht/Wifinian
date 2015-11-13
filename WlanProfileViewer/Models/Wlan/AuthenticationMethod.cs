@@ -24,25 +24,25 @@ namespace WlanProfileViewer.Models.Wlan
 		/// <summary>
 		/// WPA-Enterprise 802.11 authentication
 		/// </summary>
-		/// <remarks>WPA in profile xml</remarks>
+		/// <remarks>WPA in profile XML</remarks>
 		WPA_Enterprise,
 
 		/// <summary>
 		/// WPA-Personal 802.11 authentication
 		/// </summary>
-		/// <remarks>WPAPSK in profile xml</remarks>
+		/// <remarks>WPAPSK in profile XML</remarks>
 		WPA_Personal,
 
 		/// <summary>
 		/// WPA2-Enterprise 802.11 authentication
 		/// </summary>
-		/// <remarks>WPA2 in profile xml</remarks>
+		/// <remarks>WPA2 in profile XML</remarks>
 		WPA2_Enterprise,
 
 		/// <summary>
 		/// WPA2-Personal 802.11 authentication
 		/// </summary>
-		/// <remarks>WPA2PSK in profile xml</remarks>
+		/// <remarks>WPA2PSK in profile XML</remarks>
 		WPA2_Personal
 	}
 }
