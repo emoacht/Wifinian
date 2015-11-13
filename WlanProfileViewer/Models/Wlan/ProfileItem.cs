@@ -17,9 +17,9 @@ namespace WlanProfileViewer.Models.Wlan
 		public string Name { get; }
 
 		/// <summary>
-		/// Interface GUID
+		/// Interface ID
 		/// </summary>
-		public Guid InterfaceGuid { get; }
+		public Guid InterfaceId { get; }
 
 		/// <summary>
 		/// Interface name (only for Netsh)
@@ -44,7 +44,7 @@ namespace WlanProfileViewer.Models.Wlan
 		/// <summary>
 		/// Profile ID
 		/// </summary>
-		public string Id => _id ?? (_id = Name + InterfaceGuid.ToString());
+		public string Id => _id ?? (_id = Name + InterfaceId.ToString());
 		private string _id;
 
 		/// <summary>
@@ -114,7 +114,7 @@ namespace WlanProfileViewer.Models.Wlan
 
 		public ProfileItem(
 			string name,
-			Guid interfaceGuid,
+			Guid interfaceId,
 			string interfaceName,
 			string interfaceDescription,
 			AuthenticationMethod authentication,
@@ -127,11 +127,11 @@ namespace WlanProfileViewer.Models.Wlan
 			if (string.IsNullOrWhiteSpace(name))
 				throw new ArgumentNullException(nameof(name));
 
-			if (interfaceGuid == default(Guid))
-				throw new ArgumentException(nameof(interfaceGuid));
+			if (interfaceId == Guid.Empty)
+				throw new ArgumentException(nameof(interfaceId));
 
 			this.Name = name;
-			this.InterfaceGuid = interfaceGuid;
+			this.InterfaceId = interfaceId;
 			this.InterfaceName = interfaceName;
 			this.InterfaceDescription = interfaceDescription;
 			this.Authentication = authentication;

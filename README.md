@@ -19,7 +19,7 @@ WLAN Profile Viewer is a Windows desktop app to manage wireless LAN profiles. It
 
 ##Download
 
-[Download](https://github.com/emoacht/WlanProfileViewer/releases/download/1.0.0/WlanProfileViewer100.zip)
+[Download](https://github.com/emoacht/WlanProfileViewer/releases/download/1.1.0/WlanProfileViewer110.zip)
 
 ##Install
 
@@ -50,11 +50,13 @@ Settings file will be saved in the following folder.<br>
 
  - [Reactive Extensions][1]
  - [Reactive Property][2]
- - [WPF Monitor Aware Window][3]
+ - [Managed Native Wifi][3]
+ - [WPF Monitor Aware Window][4]
 
 [1]: https://github.com/Reactive-Extensions/Rx.NET
 [2]: https://github.com/runceel/ReactiveProperty
-[3]: https://github.com/emoacht/WpfMonitorAware
+[3]: https://github.com/emoacht/ManagedNativeWifi
+[4]: https://github.com/emoacht/WpfMonitorAware
 
 ##Reference
 

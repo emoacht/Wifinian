@@ -8,12 +8,12 @@ namespace WlanProfileViewer.Models.Wlan
 {
 	internal interface IWlanWorker
 	{
-		Task<IEnumerable<ProfileItem>> GetProfilesAsync(bool isLatest, TimeSpan timeoutDuration);
+		Task<IEnumerable<ProfileItem>> GetProfilesAsync(bool isLatest, TimeSpan timeout);
 
 		Task<bool> SetProfilePositionAsync(ProfileItem profileItem, int position);
 		Task<bool> DeleteProfileAsync(ProfileItem profileItem);
 
-		Task<bool> ConnectAsync(ProfileItem profileItem, TimeSpan timeoutDuration);
-		Task<bool> DisconnectAsync(ProfileItem profileItem, TimeSpan timeoutDuration);
+		Task<bool> ConnectNetworkAsync(ProfileItem profileItem, TimeSpan timeout);
+		Task<bool> DisconnectNetworkAsync(ProfileItem profileItem, TimeSpan timeout);
 	}
 }
