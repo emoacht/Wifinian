@@ -1,5 +1,9 @@
 ##History
 
+Ver 1.1.1 2015-11-18
+
+ - Added flyout to notification area icon
+
 Ver 1.1.0 2015-11-13
 
  - Switched from internal NativeWifi to ManagedNativeWifi
