@@ -115,6 +115,9 @@
     <Compile Include="Common\BindableDisposableBase.cs" />
     <Compile Include="Helper\ColorExtension.cs" />
     <Compile Include="Helper\HsbColor.cs" />
+    <Compile Include="ViewModels\NotifyWindowViewModel.cs" />
+    <Compile Include="Views\TaskbarAlignment.cs" />
+    <Compile Include="Views\WindowPosition.cs" />
     <Compile Include="Models\LanguageService.cs" />
     <Compile Include="Models\Wlan\AuthenticationMethod.cs" />
     <Compile Include="Models\Wlan\EncryptionType.cs" />
@@ -146,6 +149,9 @@
     <Compile Include="Views\NotifyIconComponent.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Views\NotifyWindow.xaml.cs">
+      <DependentUpon>NotifyWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ThemeService.cs" />
     <Compile Include="Views\Controls\ProfileContentControl.cs" />
     <Compile Include="Views\Controls\SignalProgressBar.cs" />
@@ -155,6 +161,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\NotifyWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Styles\CommonControls.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

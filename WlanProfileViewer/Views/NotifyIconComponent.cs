@@ -12,7 +12,7 @@ namespace WlanProfileViewer.Views
 	public class NotifyIconComponent : Component
 	{
 		private readonly Window _ownerWindow;
-		private readonly IContainer _container;
+		private readonly Container _container;
 		private readonly NotifyIcon _notifyIcon;
 
 		public NotifyIconComponent(Window ownerWindow)
@@ -22,7 +22,13 @@ namespace WlanProfileViewer.Views
 
 			this._ownerWindow = ownerWindow;
 			this._container = new Container();
-			this._notifyIcon = new NotifyIcon(this._container);
+			this._notifyIcon = new NotifyIcon(this._container)
+			{
+				ContextMenuStrip = new ContextMenuStrip()
+			};
+
+			_notifyIcon.MouseClick += OnMouseClick;
+			_notifyIcon.MouseDoubleClick += OnMouseDoubleClick;
 		}
 
 		#region Dispose
@@ -72,6 +78,8 @@ namespace WlanProfileViewer.Views
 		private float _dpi = 0F;
 
 		#endregion
+
+		#region Icon
 
 		private void SetIcon(System.Drawing.Icon icon, float dpi)
 		{
@@ -129,16 +137,36 @@ namespace WlanProfileViewer.Views
 			this.Dpi = dpi;
 
 			_notifyIcon.Visible = true;
-			_notifyIcon.MouseClick += OnMouseClick;
-			_notifyIcon.MouseDoubleClick += OnMouseClick;
 		}
+
+		#endregion
+
+		#region Click
 
 		private void OnMouseClick(object sender, MouseEventArgs e)
 		{
-			ShowWindow();
+			if (e.Button == MouseButtons.Right)
+			{
+				ShowNotifyWindow();
+			}
+			else
+			{
+				ShowOwnerWindow();
+			}
 		}
 
-		private void ShowWindow()
+		private void OnMouseDoubleClick(object sender, MouseEventArgs e)
+		{
+			ShowOwnerWindow();
+		}
+
+		private void ShowNotifyWindow()
+		{
+			var window = new NotifyWindow(_ownerWindow, GetClickedPoint());
+			window.Show();
+		}
+
+		private void ShowOwnerWindow()
 		{
 			if (_ownerWindow.WindowState == WindowState.Minimized)
 			{
@@ -152,5 +180,37 @@ namespace WlanProfileViewer.Views
 				_ownerWindow.WindowState = WindowState.Minimized;
 			}
 		}
+
+		/// <summary>
+		/// Get the point where NotifyIcon is clicked by the position of ContextMenuStrip and NotifyIcon.
+		/// </summary>
+		/// <returns>Cursor location</returns>
+		/// <remarks>MouseEventArgs.Location property of MouseClick event does not contain data.</remarks>
+		private Point GetClickedPoint()
+		{
+			var contextMenuStrip = _notifyIcon.ContextMenuStrip;
+
+			var corners = new Point[]
+			{
+				//new Point(contextMenuStrip.Left, contextMenuStrip.Top),
+				//new Point(contextMenuStrip.Right, contextMenuStrip.Top),
+				new Point(contextMenuStrip.Left, contextMenuStrip.Bottom),
+				new Point(contextMenuStrip.Right, contextMenuStrip.Bottom)
+			};
+
+			var notifyIconRect = WindowPosition.GetNotifyIconRect(_notifyIcon);
+			if (notifyIconRect != Rect.Empty)
+			{
+				foreach (var corner in corners)
+				{
+					if (notifyIconRect.Contains(corner))
+						return corner;
+				}
+			}
+
+			return corners.Last(); // Fallback
+		}
+
+		#endregion
 	}
 }
