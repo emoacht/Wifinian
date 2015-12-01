@@ -15,7 +15,7 @@ WLAN Profile Viewer is a Windows desktop app to manage wireless LAN profiles. It
 ##Requirements
 
  * Windows 7 or newer
- * .NET Framework 4.5.2
+ * .NET Framework 4.6
 
 ##Download
 

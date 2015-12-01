@@ -3,6 +3,7 @@
 Ver 1.1.2 2015-12-2
 
  - Fixed exception when loading settings file
+ - Changed target framework to 4.6
 
 Ver 1.1.1 2015-11-18
 

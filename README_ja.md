@@ -15,7 +15,7 @@ WLAN Profile Viewerは無線LANプロファイルを管理するためのWindows
 ##動作条件
 
  * Windows 7以降
- * .NET Framework 4.5.2
+ * .NET Framework 4.6
 
 ##ダウンロード
 
