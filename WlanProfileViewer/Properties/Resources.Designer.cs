@@ -61,7 +61,8 @@ namespace WlanProfileViewer.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to RecordException=This app will terminate, because unexpected problem happened. Leave exception log on Desktop?.
+        ///   Looks up a localized string similar to ProjectSite=https://github.com/emoacht/WlanProfileViewer/blob/master/README.md
+        ///RecordException=This app will terminate, because unexpected problem happened. Leave exception log on Desktop?.
         /// </summary>
         public static string language_en {
             get {
@@ -70,7 +71,8 @@ namespace WlanProfileViewer.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to RecordException=予想外の問題が起きたため、このアプリを終了します。例外のログをデスクトップに残しますか?.
+        ///   Looks up a localized string similar to ProjectSite=https://github.com/emoacht/WlanProfileViewer/blob/master/README_ja.md
+        ///RecordException=予想外の問題が起きたため、このアプリを終了します。例外のログをデスクトップに残しますか?.
         /// </summary>
         public static string language_ja {
             get {

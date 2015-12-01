@@ -3,7 +3,7 @@
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
 		xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
-		xmlns:r="clr-namespace:Reactive.Bindings.Interactivity;assembly=ReactiveProperty.NET45"
+		xmlns:r="clr-namespace:Reactive.Bindings.Interactivity;assembly=ReactiveProperty.NET46"
 		xmlns:ma="clr-namespace:MonitorAware.Views;assembly=MonitorAware"
 		xmlns:models="clr-namespace:WlanProfileViewer.Models"
 		xmlns:viewModels="clr-namespace:WlanProfileViewer.ViewModels"
