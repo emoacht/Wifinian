@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Xml;
 using System.Xml.Serialization;
 using static System.Math;
 
@@ -49,29 +50,33 @@ namespace WlanProfileViewer.Models
 
 		public static void Load()
 		{
+			IsLoaded = true;
+
+			if (!File.Exists(_settingsFilePath))
+				return;
+
 			try
 			{
-				if (File.Exists(_settingsFilePath))
+				using (var fs = new FileStream(_settingsFilePath, FileMode.Open, FileAccess.Read))
 				{
-					using (var fs = new FileStream(_settingsFilePath, FileMode.Open, FileAccess.Read))
-					{
-						var serializer = new XmlSerializer(typeof(Settings));
-						var loaded = (Settings)serializer.Deserialize(fs);
+					var serializer = new XmlSerializer(typeof(Settings));
+					var loaded = (Settings)serializer.Deserialize(fs);
 
-						typeof(Settings)
-							.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
-							.Where(x => x.CanWrite)
-							.ToList()
-							.ForEach(x => x.SetValue(Current, x.GetValue(loaded)));
-					}
+					typeof(Settings)
+						.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
+						.Where(x => x.CanWrite)
+						.ToList()
+						.ForEach(x => x.SetValue(Current, x.GetValue(loaded)));
 				}
+			}
+			catch (InvalidOperationException ex) when (ex.InnerException is XmlException)
+			{
+				// Ignore broken settings file.
 			}
 			catch (Exception ex)
 			{
 				throw new Exception("Failed to load settings.", ex);
 			}
-
-			IsLoaded = true;
 		}
 
 		public static void Save()

@@ -1,5 +1,9 @@
 ##History
 
+Ver 1.1.2 2015-12-2
+
+ - Fixed exception when loading settings file
+
 Ver 1.1.1 2015-11-18
 
  - Added flyout to notification area icon
