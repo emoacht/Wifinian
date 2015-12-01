@@ -20,7 +20,7 @@ namespace WlanProfileViewer.Models
 
 		public static void RecordException(object sender, Exception exception)
 		{
-			var content = string.Format("[Date: {0} Sender: {1}]", DateTime.Now, sender) + Environment.NewLine
+			var content = $"[Date: {DateTime.Now} Sender: {sender}]" + Environment.NewLine
 				+ exception + Environment.NewLine + Environment.NewLine;
 
 			RecordAppData(_exceptionFileName, content);
