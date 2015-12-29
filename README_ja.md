@@ -38,9 +38,9 @@ WLAN Profile Viewerは無線LANプロファイルを管理するためのWindows
 
  - プロファイルの順番を変更したとき、別のプロファイルの位置が飛ぶことがあります（とくに認証がオープンな場合）。OS自身によるものですが、明確な理由は不明です。
 
-##履歴
+##リリース
 
-[History](History.md)
+[Releases](https://github.com/emoacht/WlanProfileViewer/releases)
 
 ##ライセンス
 

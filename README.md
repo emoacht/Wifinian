@@ -38,9 +38,9 @@ Settings file will be saved in the following folder.<br>
 
  - When the order of a profile is changed, it may happen that the position of another profile will jump (especially if the authentication is open). It is done by OS itself but the clear reason is unknown.
 
-##History
+##Releases
 
-[History](History.md)
+[Releases](https://github.com/emoacht/WlanProfileViewer/releases)
 
 ##License
 
