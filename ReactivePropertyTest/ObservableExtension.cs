@@ -124,7 +124,7 @@ namespace ReactivePropertyTest
 							}
 							if (x.NewItems != null)
 							{
-								// This route is not really necessary because if the return value of 
+								// This route is not really necessary because if the return value of
 								// Func<TProperty, bool> is true, ObserveElementObservableProperty method
 								// will handle it.
 

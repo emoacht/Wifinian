@@ -33,7 +33,7 @@ namespace WlanProfileViewer.Models.Wlan
 
 		/// <summary>
 		/// Authentication method (WPA, WPA2 ...)
-		/// </summary> 
+		/// </summary>
 		public AuthenticationMethod Authentication { get; }
 
 		/// <summary>
