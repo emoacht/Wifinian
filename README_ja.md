@@ -19,7 +19,7 @@ WLAN Profile Viewerは無線LANプロファイルを管理するためのWindows
 
 ##ダウンロード
 
-[ダウンロード](https://github.com/emoacht/WlanProfileViewer/releases/download/1.1.2/WlanProfileViewer112.zip)
+:floppy_disk: [ダウンロード](https://github.com/emoacht/WlanProfileViewer/releases/download/1.1.2/WlanProfileViewer112.zip)
 
 ##インストール
 

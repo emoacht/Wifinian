@@ -19,7 +19,7 @@ WLAN Profile Viewer is a Windows desktop app to manage wireless LAN profiles. It
 
 ##Download
 
-[Download](https://github.com/emoacht/WlanProfileViewer/releases/download/1.1.2/WlanProfileViewer112.zip)
+:floppy_disk: [Download](https://github.com/emoacht/WlanProfileViewer/releases/download/1.1.2/WlanProfileViewer112.zip)
 
 ##Install
 
