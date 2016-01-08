@@ -182,7 +182,7 @@ namespace WlanProfileViewer.Views
 		}
 
 		/// <summary>
-		/// Get the point where NotifyIcon is clicked by the position of ContextMenuStrip and NotifyIcon.
+		/// Gets the point where NotifyIcon is clicked by the position of ContextMenuStrip and NotifyIcon.
 		/// </summary>
 		/// <returns>Cursor location</returns>
 		/// <remarks>MouseEventArgs.Location property of MouseClick event does not contain data.</remarks>

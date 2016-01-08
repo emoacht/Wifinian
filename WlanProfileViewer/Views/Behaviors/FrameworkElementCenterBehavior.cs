@@ -68,7 +68,7 @@ namespace WlanProfileViewer.Views.Behaviors
 		}
 
 		/// <summary>
-		/// Make associated FrameworkElement at the center of target FrameworkElement.
+		/// Makes associated FrameworkElement at the center of target FrameworkElement.
 		/// </summary>
 		private void Center()
 		{

@@ -13,7 +13,7 @@ namespace IconImage
 	public class FrameworkElementImage
 	{
 		/// <summary>
-		/// Save the image of a specified FrameworkElement to file in PNG format.
+		/// Saves the image of a specified FrameworkElement to file in PNG format.
 		/// </summary>
 		/// <param name="source">FrameworkElement</param>
 		/// <param name="filePath">File path</param>

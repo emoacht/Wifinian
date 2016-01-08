@@ -71,7 +71,7 @@ namespace WlanProfileViewer.Models
 		#endregion
 
 		/// <summary>
-		/// Check if a process of this application already exists and if so, activate its window.
+		/// Checks if a process of this application already exists and if so, activate its window.
 		/// </summary>
 		/// <returns>True if exists</returns>
 		/// <remarks>This method should work even if the window is minimized and ShowInTaskbar is false.</remarks>

@@ -10,7 +10,7 @@ using System.Windows.Interop;
 namespace WlanProfileViewer.Models
 {
 	/// <summary>
-	/// Load/Save this application's window size and position.
+	/// Loads/Saves this application's window size and position.
 	/// </summary>
 	/// <remarks>This class must be public because the instance will be handled by XmlSerializer.</remarks>
 	public class WindowPlacement

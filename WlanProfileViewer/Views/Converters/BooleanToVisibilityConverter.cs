@@ -10,7 +10,7 @@ using System.Windows.Data;
 namespace WlanProfileViewer.Views.Converters
 {
 	/// <summary>
-	/// Inverse Boolean if indicated and convert it to Visibility.
+	/// Inverses Boolean if indicated and convert it to Visibility.
 	/// </summary>
 	[ValueConversion(typeof(bool), typeof(Visibility))]
 	public class BooleanToVisibilityConverter : IValueConverter

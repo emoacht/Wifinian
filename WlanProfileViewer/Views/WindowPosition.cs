@@ -194,7 +194,7 @@ namespace WlanProfileViewer.Views
 		#region NotifyIcon
 
 		/// <summary>
-		/// Get the rectangle of a specified NotifyIcon.
+		/// Gets the rectangle of a specified NotifyIcon.
 		/// </summary>
 		/// <param name="notifyIcon">NotifyIcon</param>
 		/// <returns>Rectangle of the NotifyIcon</returns>

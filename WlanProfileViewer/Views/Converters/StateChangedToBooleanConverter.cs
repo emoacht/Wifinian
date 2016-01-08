@@ -10,7 +10,7 @@ using Reactive.Bindings.Interactivity;
 namespace WlanProfileViewer.Views.Converters
 {
 	/// <summary>
-	/// Convert StateChanged event to Boolean for EventToReactiveProperty.
+	/// Converts StateChanged event to Boolean for EventToReactiveProperty.
 	/// </summary>
 	public class StateChangedToBooleanConverter : ReactiveConverter<EventArgs, bool>
 	{
