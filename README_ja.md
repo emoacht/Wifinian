@@ -8,8 +8,7 @@ WLAN Profile Viewerは無線LANプロファイルを管理するためのWindows
  - 無線LANプロファイルの順番（優先度）の変更
  - 無線LANプロファイルの削除
 
-![Screenshot on Windows 10](Images/Screenshot_Win10.png)<br>
-![Screenshot on Windows 8.1](Images/Screenshot_Win81.png)
+![Screenshot on Windows 8.1](Images/Screenshot_Win81.png) ![Screenshot on Windows 10](Images/Screenshot_Win10.png)
 
 ## 動作条件
 

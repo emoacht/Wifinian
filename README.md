@@ -8,8 +8,7 @@ WLAN Profile Viewer is a Windows desktop app to manage wireless LAN profiles. It
  - Change the order (priority) of wireless LAN profiles
  - Delete a wireless LAN profile
 
-![Screenshot on Windows 10](Images/Screenshot_Win10.png)<br>
-![Screenshot on Windows 8.1](Images/Screenshot_Win81.png)
+![Screenshot on Windows 8.1](Images/Screenshot_Win81.png) ![Screenshot on Windows 10](Images/Screenshot_Win10.png)
 
 ## Requirements
 
