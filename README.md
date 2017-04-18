@@ -1,7 +1,6 @@
 [Japanese](README_ja.md)
 
-WLAN Profile Viewer
-===================
+# WLAN Profile Viewer
 
 WLAN Profile Viewer is a Windows desktop app to manage wireless LAN profiles. It can do the following:
  - Show a list of all existing wireless LAN profiles
@@ -12,23 +11,23 @@ WLAN Profile Viewer is a Windows desktop app to manage wireless LAN profiles. It
 ![Screenshot on Windows 10](Images/Screenshot_Win10.png)<br>
 ![Screenshot on Windows 8.1](Images/Screenshot_Win81.png)
 
-##Requirements
+## Requirements
 
  * Windows 7 or newer
  * .NET Framework 4.6
 
-##Download
+## Download
 
 :floppy_disk: [Download](https://github.com/emoacht/WlanProfileViewer/releases/download/1.1.2/WlanProfileViewer112.zip)
 
-##Install
+## Install/Uninstall
 
 No installation is required.
 
 Settings file will be saved in the following folder.<br>
 [system drive]\Users\\[user name]\AppData\WlanProfileViewer\
 
-##Remarks
+## Remarks
 
  - Each profile is associated with a specific wireless LAN adapter and so, if the adapter is removed (in the case of a USB adapter for example), such profile will not be shown.
 
@@ -38,15 +37,15 @@ Settings file will be saved in the following folder.<br>
 
  - When the order of a profile is changed, it may happen that the position of another profile will jump (especially if the authentication is open). It is done by OS itself but the clear reason is unknown.
 
-##Releases
+## Releases
 
 [Releases](https://github.com/emoacht/WlanProfileViewer/releases)
 
-##License
+## License
 
  - MIT License
 
-##Libraries
+## Libraries
 
  - [Reactive Extensions][1]
  - [Reactive Property][2]
@@ -58,17 +57,17 @@ Settings file will be saved in the following folder.<br>
 [3]: https://github.com/emoacht/ManagedNativeWifi
 [4]: https://github.com/emoacht/WpfMonitorAware
 
-##Reference
+## Reference
 
-###How to delete wireless LAN profiles from OS's GUI
+### How to delete wireless LAN profiles from OS's GUI
 
 The GUI to delete wireless LAN profiles has come back in Windows 8.1 Update. To reach this GUI, see the following.
 
-####Windows 8.1 Update
+#### Windows 8.1 Update
 
 [Settings] in Charm &rarr; [Change PC settings] &rarr; [Network] &rarr; [Connections] &rarr; [Manage known networks] in [Wi-Fi]
 
-####Windows 10
+#### Windows 10
 
 [Network settings] from notification area (or [Settings] from Start menu) &rarr; [Network & Internet] &rarr; [Wi-Fi] &rarr; [Manage WiFi Settings] &rarr; [Manage known networks]
 
