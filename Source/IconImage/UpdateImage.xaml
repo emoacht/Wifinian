@@ -1,0 +1,44 @@
+﻿<UserControl x:Class="IconImage.UpdateImage"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+			 xmlns:local="clr-namespace:IconImage"
+			 mc:Ignorable="d" 
+			 d:DesignHeight="160" d:DesignWidth="200">
+	<Grid>
+		<Label Width="120" Height="140"
+			   Margin="-14.372,-5.858,0,0" Padding="0" HorizontalAlignment="Left" VerticalAlignment="Top"
+			   FontFamily="Segoe UI Symbol" FontSize="104.8"
+			   Content="&#xE149;"/>
+
+		<Path x:Name="UpdateForm"
+			  Fill="#FF49B238"
+			  Opacity="0.5">
+			<Path.Data>
+				<CombinedGeometry GeometryCombineMode="Union">
+					<CombinedGeometry.Geometry1>
+						<CombinedGeometry GeometryCombineMode="Exclude">
+							<CombinedGeometry.Geometry1>
+								<CombinedGeometry GeometryCombineMode="Exclude">
+									<CombinedGeometry.Geometry1>
+										<EllipseGeometry RadiusX="50" RadiusY="50" Center="50,70"/>
+									</CombinedGeometry.Geometry1>
+									<CombinedGeometry.Geometry2>
+										<EllipseGeometry RadiusX="35" RadiusY="35" Center="50,70"/>
+									</CombinedGeometry.Geometry2>
+								</CombinedGeometry>
+							</CombinedGeometry.Geometry1>
+							<CombinedGeometry.Geometry2>
+								<RectangleGeometry Rect="51,12.8,50,50"/>
+							</CombinedGeometry.Geometry2>
+						</CombinedGeometry>
+					</CombinedGeometry.Geometry1>
+					<CombinedGeometry.Geometry2>
+						<PathGeometry Figures="M50.0,0.0 L77.3,27.3 L50.0,54.6 z"/>
+					</CombinedGeometry.Geometry2>
+				</CombinedGeometry>
+			</Path.Data>
+		</Path>
+	</Grid>
+</UserControl>

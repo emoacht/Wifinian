@@ -1,0 +1,2 @@
+﻿ProjectSite=https://github.com/emoacht/WlanProfileViewer/blob/master/README.md
+RecordException=This app will terminate, because unexpected problem happened. Leave exception log on Desktop?
