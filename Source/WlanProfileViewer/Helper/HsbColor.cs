@@ -72,11 +72,11 @@ namespace WlanProfileViewer.Helper
 
 		#region Convert
 
-		public static HsbColor FromRgb(float hue, float saturation, float brightness)
-			=> FromArgb(255, hue, saturation, brightness);
+		public static HsbColor FromRgb(float hue, float saturation, float brightness) =>
+			FromArgb(255, hue, saturation, brightness);
 
-		public static HsbColor FromArgb(byte alpha, float hue, float saturation, float brightness)
-			=> new HsbColor { A = alpha, H = hue, S = saturation, B = brightness };
+		public static HsbColor FromArgb(byte alpha, float hue, float saturation, float brightness) =>
+			new HsbColor { A = alpha, H = hue, S = saturation, B = brightness };
 
 		public static HsbColor FromArgb(Color source)
 		{

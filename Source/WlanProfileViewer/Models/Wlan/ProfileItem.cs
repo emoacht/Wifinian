@@ -56,7 +56,7 @@ namespace WlanProfileViewer.Models.Wlan
 			set
 			{
 				var floored = Max(value, 0);
-				SetProperty(ref _position, floored);
+				SetPropertyValue(ref _position, floored);
 			}
 		}
 		private int _position;
@@ -67,7 +67,7 @@ namespace WlanProfileViewer.Models.Wlan
 		public int PositionCount
 		{
 			get { return _positionCount; }
-			set { SetProperty(ref _positionCount, value); }
+			set { SetPropertyValue(ref _positionCount, value); }
 		}
 		private int _positionCount;
 
@@ -77,7 +77,7 @@ namespace WlanProfileViewer.Models.Wlan
 		public bool IsAutomatic
 		{
 			get { return _isAutomatic; }
-			set { SetProperty(ref _isAutomatic, value); }
+			set { SetPropertyValue(ref _isAutomatic, value); }
 		}
 		private bool _isAutomatic;
 
@@ -90,7 +90,7 @@ namespace WlanProfileViewer.Models.Wlan
 			set
 			{
 				var clamped = Max(Min(value, 100), 0);
-				SetProperty(ref _signal, clamped);
+				SetPropertyValue(ref _signal, clamped);
 			}
 		}
 		private int _signal;
@@ -101,7 +101,7 @@ namespace WlanProfileViewer.Models.Wlan
 		public bool IsConnected
 		{
 			get { return _isConnected; }
-			set { SetProperty(ref _isConnected, value); }
+			set { SetPropertyValue(ref _isConnected, value); }
 		}
 		private bool _isConnected;
 

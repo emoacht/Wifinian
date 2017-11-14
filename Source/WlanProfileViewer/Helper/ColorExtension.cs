@@ -10,10 +10,8 @@ namespace WlanProfileViewer.Helper
 {
 	public static class ColorExtension
 	{
-		public static HsbColor ToAhsb(this Color source)
-		{
-			return HsbColor.FromArgb(source);
-		}
+		public static HsbColor ToAhsb(this Color source) =>
+			HsbColor.FromArgb(source);
 
 		public static Color ToBrightened(this Color source, float factor)
 		{

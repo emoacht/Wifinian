@@ -13,7 +13,7 @@ namespace ReactivePropertyTest
 		public bool IsLong
 		{
 			get { return _isLong; }
-			set { SetProperty(ref _isLong, value); }
+			set { SetPropertyValue(ref _isLong, value); }
 		}
 		private bool _isLong;
 
@@ -24,7 +24,7 @@ namespace ReactivePropertyTest
 		public bool IsSelectedValue
 		{
 			get { return _isSelectedValue; }
-			set { SetProperty(ref _isSelectedValue, value); }
+			set { SetPropertyValue(ref _isSelectedValue, value); }
 		}
 		private bool _isSelectedValue;
 

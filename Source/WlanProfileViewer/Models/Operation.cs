@@ -39,14 +39,14 @@ namespace WlanProfileViewer.Models
 		public bool IsAutoReloadEnabled
 		{
 			get { return _isAutoReloadEnabled; }
-			set { SetProperty(ref _isAutoReloadEnabled, value); }
+			set { SetPropertyValue(ref _isAutoReloadEnabled, value); }
 		}
 		private bool _isAutoReloadEnabled;
 
 		public bool IsSuspended
 		{
 			get { return _isSuspended; }
-			set { SetProperty(ref _isSuspended, value); }
+			set { SetPropertyValue(ref _isSuspended, value); }
 		}
 		private bool _isSuspended;
 

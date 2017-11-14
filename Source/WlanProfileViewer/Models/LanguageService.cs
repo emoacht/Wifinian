@@ -10,8 +10,8 @@ namespace WlanProfileViewer.Models
 {
 	internal static class LanguageService
 	{
-		public static string ProjectSite
-			=> Content("ProjectSite") ?? Properties.Resources.ProjectSite;
+		public static string ProjectSite =>
+			Content("ProjectSite") ?? Properties.Resources.ProjectSite;
 
 		public static string Content(string key)
 		{

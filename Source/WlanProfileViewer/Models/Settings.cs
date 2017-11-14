@@ -34,7 +34,7 @@ namespace WlanProfileViewer.Models
 			set
 			{
 				var clamped = Max(Min(value, _intervalMax), _intervalMin);
-				SetProperty(ref _autoReloadInterval, clamped);
+				SetPropertyValue(ref _autoReloadInterval, clamped);
 			}
 		}
 		private int _autoReloadInterval = 8; // Default
