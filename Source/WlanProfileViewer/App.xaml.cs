@@ -27,14 +27,14 @@ namespace WlanProfileViewer
 
 			if (ProcessService.CheckActivateExistingProcess())
 			{
-				Application.Current.Shutdown();
+				Application.Current.Shutdown(1); // This exit code is for unusual shutdown.
 				return;
 			}
 
 			if (!Debugger.IsAttached)
 				this.DispatcherUnhandledException += OnDispatcherUnhandledException;
 
-			Settings.Load();
+			Settings.Current.Initialize();
 
 			this.MainWindow = new MainWindow();
 			this.MainWindow.Show();
@@ -42,9 +42,9 @@ namespace WlanProfileViewer
 
 		protected override void OnExit(ExitEventArgs e)
 		{
-			base.OnExit(e);
+			Settings.Current.Dispose();
 
-			Settings.Save();
+			base.OnExit(e);
 		}
 
 		#region Exception
@@ -59,7 +59,7 @@ namespace WlanProfileViewer
 			LogService.RecordException(sender, e.Exception);
 
 			e.Handled = true;
-			Application.Current.Shutdown();
+			Application.Current.Shutdown(1); // This exit code is for unusual shutdown.
 		}
 
 		#endregion

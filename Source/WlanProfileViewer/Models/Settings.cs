@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Xml;
 using System.Xml.Serialization;
+using Reactive.Bindings.Extensions;
 using static System.Math;
 
 using WlanProfileViewer.Common;
@@ -17,11 +18,9 @@ namespace WlanProfileViewer.Models
 	/// <summary>
 	/// This application's settings
 	/// </summary>
-	public class Settings : BindableBase
+	public class Settings : BindableDisposableBase
 	{
 		public static Settings Current { get; } = new Settings();
-
-		public WindowPlacement.WINDOWPLACEMENT? Placement { get; set; }
 
 		#region Settings
 
@@ -41,90 +40,70 @@ namespace WlanProfileViewer.Models
 
 		#endregion
 
+		public void Initialize()
+		{
+			Load(Current);
+
+			Current.PropertyChangedAsObservable()
+				.Throttle(TimeSpan.FromSeconds(1))
+				.Subscribe(_ => Save(Current))
+				.AddTo(Current.Subscription);
+		}
+
 		#region Load/Save
 
-		public static bool IsLoaded { get; private set; }
-
 		private const string _settingsFileName = "settings.xml";
-		private static readonly string _settingsFilePath = Path.Combine(FolderPathAppData, _settingsFileName);
+		private static readonly string _settingsFilePath = Path.Combine(FolderService.FolderAppDataPath, _settingsFileName);
 
-		public static void Load()
+		private static void Load<T>(T instance) where T : class
 		{
-			IsLoaded = true;
-
-			if (!File.Exists(_settingsFilePath))
+			var fileInfo = new FileInfo(_settingsFilePath);
+			if (!fileInfo.Exists || (fileInfo.Length == 0))
 				return;
 
 			try
 			{
 				using (var fs = new FileStream(_settingsFilePath, FileMode.Open, FileAccess.Read))
 				{
-					var serializer = new XmlSerializer(typeof(Settings));
-					var loaded = (Settings)serializer.Deserialize(fs);
+					var serializer = new XmlSerializer(typeof(T));
+					var loaded = (T)serializer.Deserialize(fs);
 
-					typeof(Settings)
+					typeof(T)
 						.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
 						.Where(x => x.CanWrite)
 						.ToList()
-						.ForEach(x => x.SetValue(Current, x.GetValue(loaded)));
+						.ForEach(x => x.SetValue(instance, x.GetValue(loaded)));
 				}
-			}
-			catch (InvalidOperationException ex) when (ex.InnerException is XmlException)
-			{
-				// Ignore broken settings file.
 			}
 			catch (Exception ex)
 			{
+				try
+				{
+					File.Delete(_settingsFilePath);
+				}
+				catch
+				{ }
+
 				throw new Exception("Failed to load settings.", ex);
 			}
 		}
 
-		public static void Save()
+		private static void Save<T>(T instance) where T : class
 		{
-			if (!IsLoaded)
-				return;
-
 			try
 			{
-				PrepareFolderAppData();
+				FolderService.AssureFolderAppData();
 
 				using (var fs = new FileStream(_settingsFilePath, FileMode.Create, FileAccess.Write))
 				{
-					var serializer = new XmlSerializer(typeof(Settings));
-					serializer.Serialize(fs, Current);
+					var serializer = new XmlSerializer(typeof(T));
+					serializer.Serialize(fs, instance);
 				}
 			}
 			catch (Exception ex)
 			{
 				throw new Exception("Failed to save settings.", ex);
 			}
-		}
-
-		#endregion
-
-		#region Prepare
-
-		private static string FolderPathAppData
-		{
-			get
-			{
-				if (_folderPathAppData == null)
-				{
-					var pathAppData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-					if (string.IsNullOrEmpty(pathAppData)) // This should not happen.
-						throw new DirectoryNotFoundException();
-
-					_folderPathAppData = Path.Combine(pathAppData, Assembly.GetExecutingAssembly().GetName().Name);
-				}
-				return _folderPathAppData;
-			}
-		}
-		private static string _folderPathAppData;
-
-		private static void PrepareFolderAppData()
-		{
-			if (!Directory.Exists(FolderPathAppData))
-				Directory.CreateDirectory(FolderPathAppData);
 		}
 
 		#endregion

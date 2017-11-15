@@ -1,19 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
+using System.Xml;
 
 namespace WlanProfileViewer.Models
 {
 	/// <summary>
-	/// Loads/Saves this application's window size and position.
+	/// This application's window size and position
 	/// </summary>
-	/// <remarks>This class must be public because the instance will be handled by XmlSerializer.</remarks>
-	public class WindowPlacement
+	internal class WindowPlacement
 	{
 		#region Win32
 
@@ -74,14 +77,14 @@ namespace WlanProfileViewer.Models
 
 		#endregion
 
+		#region Load/Save
+
 		public void Load(Window window)
 		{
-			if (Settings.Current.Placement == null)
+			if (!TryLoad(out WINDOWPLACEMENT placement))
 				return;
 
 			var handle = new WindowInteropHelper(window).Handle;
-
-			var placement = (WINDOWPLACEMENT)Settings.Current.Placement;
 
 			placement.length = Marshal.SizeOf(typeof(WINDOWPLACEMENT));
 			placement.flags = 0; // No flag set
@@ -94,10 +97,61 @@ namespace WlanProfileViewer.Models
 		{
 			var handle = new WindowInteropHelper(window).Handle;
 
-			WINDOWPLACEMENT placement;
-			GetWindowPlacement(handle, out placement);
+			GetWindowPlacement(handle, out WINDOWPLACEMENT placement);
 
-			Settings.Current.Placement = placement;
+			Save(placement);
 		}
+
+		private const string _placementFileName = "placement.xml";
+		private static readonly string _placementFilePath = Path.Combine(FolderService.FolderAppDataPath, _placementFileName);
+
+		private static bool TryLoad<T>(out T placement)
+		{
+			var fileInfo = new FileInfo(_placementFilePath);
+			if (!fileInfo.Exists || (fileInfo.Length == 0))
+			{
+				placement = default(T);
+				return false;
+			}
+
+			try
+			{
+				using (var sr = new StreamReader(_placementFilePath, Encoding.UTF8))
+				using (var xr = XmlReader.Create(sr))
+				{
+					var serializer = new DataContractSerializer(typeof(T));
+					placement = (T)serializer.ReadObject(xr);
+					return true;
+				}
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine($"Failed to load window placement.\r\n{ex}");
+				placement = default(T);
+				return false;
+			}
+		}
+
+		private static void Save<T>(T placement)
+		{
+			try
+			{
+				FolderService.AssureFolderAppData();
+
+				using (var sw = new StreamWriter(_placementFilePath, false, Encoding.UTF8)) // BOM will be emitted.
+				using (var xw = XmlWriter.Create(sw, new XmlWriterSettings { Indent = true }))
+				{
+					var serializer = new DataContractSerializer(typeof(T));
+					serializer.WriteObject(xw, placement);
+					xw.Flush();
+				}
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine($"Failed to save window placement.\r\n{ex}");
+			}
+		}
+
+		#endregion
 	}
 }

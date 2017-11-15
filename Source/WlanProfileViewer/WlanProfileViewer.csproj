@@ -98,6 +98,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -109,30 +114,24 @@
     <Compile Include="Common\BindableBase.cs" />
     <Compile Include="Common\BindableDisposableBase.cs" />
     <Compile Include="Helper\ColorExtension.cs" />
-    <Compile Include="Helper\HsbColor.cs" />
-    <Compile Include="ViewModels\NotifyWindowViewModel.cs" />
-    <Compile Include="Views\TaskbarAlignment.cs" />
-    <Compile Include="Views\WindowPosition.cs" />
-    <Compile Include="Models\LanguageService.cs" />
+    <Compile Include="Helper\HsbColor.cs" /> 
     <Compile Include="Models\Wlan\AuthenticationMethod.cs" />
     <Compile Include="Models\Wlan\EncryptionType.cs" />
-    <Compile Include="Models\Wlan\MockWorker.cs" />
-    <Compile Include="Models\LogService.cs" />
-    <Compile Include="Models\ProcessService.cs" />
     <Compile Include="Models\Wlan\IWlanWorker.cs" />
+    <Compile Include="Models\Wlan\MockWorker.cs" />
     <Compile Include="Models\Wlan\NativeWifiWorker.cs" />
     <Compile Include="Models\Wlan\Netsh.cs" />
     <Compile Include="Models\Wlan\NetshWorker.cs" />
-    <Compile Include="Models\Operation.cs" />
     <Compile Include="Models\Wlan\ProfileItem.cs" />
+    <Compile Include="Models\FolderService.cs" />
+    <Compile Include="Models\LanguageService.cs" />
+    <Compile Include="Models\LogService.cs" />
+    <Compile Include="Models\ProcessService.cs" />
+    <Compile Include="Models\Operation.cs" />
     <Compile Include="Models\Settings.cs" />
     <Compile Include="Models\WindowPlacement.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="ViewModels\NotifyWindowViewModel.cs" />
     <Compile Include="ViewModels\ProfileItemViewModel.cs" />
     <Compile Include="Views\Behaviors\FrameworkElementCenterBehavior.cs" />
     <Compile Include="Views\Behaviors\ListBoxSelectedItemBehavior.cs" />
@@ -140,18 +139,20 @@
     <Compile Include="Views\Controls\MovingControl.cs" />
     <Compile Include="Views\Controls\PlainToggleButton.cs" />
     <Compile Include="Views\Controls\MovingButton.cs" />
+    <Compile Include="Views\Controls\ProfileContentControl.cs" />
+    <Compile Include="Views\Controls\SignalProgressBar.cs" />
+    <Compile Include="Views\Converters\VisibilityInverseConverter.cs" />
+    <Compile Include="Views\Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Views\Converters\StateChangedToBooleanConverter.cs" />
+    <Compile Include="Views\TaskbarAlignment.cs" />
+    <Compile Include="Views\ThemeService.cs" />
+    <Compile Include="Views\WindowPosition.cs" />
     <Compile Include="Views\NotifyIconComponent.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Views\NotifyWindow.xaml.cs">
       <DependentUpon>NotifyWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ThemeService.cs" />
-    <Compile Include="Views\Controls\ProfileContentControl.cs" />
-    <Compile Include="Views\Controls\SignalProgressBar.cs" />
-    <Compile Include="Views\Converters\VisibilityInverseConverter.cs" />
-    <Compile Include="Views\Converters\BooleanToVisibilityConverter.cs" />
+    </Compile>    
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
