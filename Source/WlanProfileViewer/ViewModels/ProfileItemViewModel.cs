@@ -13,7 +13,7 @@ using WlanProfileViewer.Models.Wlan;
 
 namespace WlanProfileViewer.ViewModels
 {
-	public class ProfileItemViewModel : BindableDisposableBase
+	public class ProfileItemViewModel : DisposableBase
 	{
 		public string Name { get; }
 		public string InterfaceDescription { get; }

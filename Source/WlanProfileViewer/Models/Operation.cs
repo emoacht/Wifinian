@@ -17,7 +17,7 @@ using WlanProfileViewer.Models.Wlan;
 
 namespace WlanProfileViewer.Models
 {
-	internal class Operation : BindableDisposableBase
+	internal class Operation : DisposableBase
 	{
 		#region Constant
 

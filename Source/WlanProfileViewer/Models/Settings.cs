@@ -18,7 +18,7 @@ namespace WlanProfileViewer.Models
 	/// <summary>
 	/// This application's settings
 	/// </summary>
-	public class Settings : BindableDisposableBase
+	public class Settings : DisposableBase
 	{
 		public static Settings Current { get; } = new Settings();
 

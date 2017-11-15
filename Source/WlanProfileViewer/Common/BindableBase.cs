@@ -12,7 +12,7 @@ namespace WlanProfileViewer.Common
 	{
 		public event PropertyChangedEventHandler PropertyChanged;
 
-		protected bool SetPropertyValue<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
+		protected virtual bool SetPropertyValue<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
 		{
 			if (EqualityComparer<T>.Default.Equals(storage, value))
 				return false;
@@ -22,7 +22,7 @@ namespace WlanProfileViewer.Common
 			return true;
 		}
 
-		protected void RaisePropertyChanged([CallerMemberName] string propertyName = null) =>
+		protected virtual void RaisePropertyChanged([CallerMemberName] string propertyName = null) =>
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 	}
 }

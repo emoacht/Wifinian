@@ -16,7 +16,7 @@ using WlanProfileViewer.Views;
 
 namespace WlanProfileViewer.ViewModels
 {
-	public class NotifyWindowViewModel : BindableDisposableBase
+	public class NotifyWindowViewModel : DisposableBase
 	{
 		private readonly MainWindow _mainWindow;
 

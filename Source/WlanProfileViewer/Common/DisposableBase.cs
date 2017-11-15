@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace WlanProfileViewer.Common
 {
-	public abstract class BindableDisposableBase : BindableBase
+	public abstract class DisposableBase : BindableBase
 	{
 		protected CompositeDisposable Subscription => _subscription.Value;
 		private readonly Lazy<CompositeDisposable> _subscription = new Lazy<CompositeDisposable>(() => new CompositeDisposable());
