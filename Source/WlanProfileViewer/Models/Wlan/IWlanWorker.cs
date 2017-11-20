@@ -10,6 +10,7 @@ namespace WlanProfileViewer.Models.Wlan
 	{
 		Task<IEnumerable<ProfileItem>> GetProfilesAsync(bool isLatest, TimeSpan timeout);
 
+		Task<bool> SetProfileParameterAsync(ProfileItem profileItem);
 		Task<bool> SetProfilePositionAsync(ProfileItem profileItem, int position);
 		Task<bool> DeleteProfileAsync(ProfileItem profileItem);
 

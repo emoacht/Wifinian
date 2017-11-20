@@ -12,8 +12,9 @@ namespace WlanProfileViewer.Models.Wlan
 	/// A wrapper class for Netsh commands
 	/// </summary>
 	/// <remarks>
-	/// For Netsh commands for wireless LAN, see
+	/// Basic Netsh commands for wireless LAN are described in:
 	/// https://technet.microsoft.com/en-us/library/cc755301.aspx
+	/// However, this is some outdated. Check the latest information by Help command.
 	/// </remarks>
 	internal class Netsh
 	{
@@ -49,8 +50,9 @@ namespace WlanProfileViewer.Models.Wlan
 			public NetworkType NetworkType { get; }
 			public string Authentication { get; }
 			public string Encryption { get; }
+			public bool IsAutoConnectionEnabled { get; }
+			public bool IsAutoSwitchEnabled { get; }
 			public int Position { get; }
-			public bool IsAutomatic { get; }
 
 			public ProfilePack(
 				string name,
@@ -59,8 +61,9 @@ namespace WlanProfileViewer.Models.Wlan
 				NetworkType networkType,
 				string authentication,
 				string encryption,
-				int position,
-				bool isAutomatic)
+				bool isAutoConnectionEnabled,
+				bool isAutoSwitchEnabled,
+				int position)
 			{
 				this.Name = name;
 				this.InterfaceName = interfaceName;
@@ -68,8 +71,9 @@ namespace WlanProfileViewer.Models.Wlan
 				this.NetworkType = networkType;
 				this.Authentication = authentication;
 				this.Encryption = encryption;
+				this.IsAutoConnectionEnabled = isAutoConnectionEnabled;
+				this.IsAutoSwitchEnabled = isAutoSwitchEnabled;
 				this.Position = position;
-				this.IsAutomatic = isAutomatic;
 			}
 		}
 
@@ -376,7 +380,8 @@ namespace WlanProfileViewer.Models.Wlan
 
 		private static ProfilePack GetProfile(IEnumerable<string> outputLines, string interfaceName, string profileName, int position)
 		{
-			bool? isAutomatic = null;
+			bool? autoConnection = null;
+			bool? autoSwitch = null;
 			string ssid = null;
 			NetworkType networkType = default(NetworkType);
 			string authentication = null;
@@ -386,11 +391,19 @@ namespace WlanProfileViewer.Models.Wlan
 			{
 				try
 				{
-					if (!isAutomatic.HasValue)
+					if (!autoConnection.HasValue)
 					{
-						var isAutomaticBuff = FindElement(outputLine, "Connection mode");
-						if (isAutomaticBuff != null)
-							isAutomatic = isAutomaticBuff.Equals("Connect automatically", StringComparison.OrdinalIgnoreCase);
+						var autoConnectionBuff = FindElement(outputLine, "Connection mode");
+						if (autoConnectionBuff != null)
+							autoConnection = autoConnectionBuff.Equals("Connect automatically", StringComparison.OrdinalIgnoreCase);
+
+						continue;
+					}
+					if (!autoSwitch.HasValue)
+					{
+						var autoSwitchBuff = FindElement(outputLine, "AutoSwitch");
+						if (autoSwitchBuff != null)
+							autoSwitch = autoSwitchBuff.Equals("Switch to more preferred network if possible", StringComparison.OrdinalIgnoreCase);
 
 						continue;
 					}
@@ -425,22 +438,24 @@ namespace WlanProfileViewer.Models.Wlan
 				}
 			}
 
-			if (!isAutomatic.HasValue ||
+			if (!autoConnection.HasValue ||
+				!autoSwitch.HasValue ||
 				(ssid == null) ||
 				(networkType == default(NetworkType)) ||
 				(authentication == null) ||
 				(encryption == null))
 				return null;
 
-			//Debug.WriteLine("Profile: {0}, Interface: {1}, SSID: {2}, BSS: {3}, Authentication: {4}, Encryption: {5}, Position: {6}, IsAutomatic: {7}",
+			//Debug.WriteLine("Profile: {0}, Interface: {1}, SSID: {2}, BSS: {3}, Authentication: {4}, Encryption: {5}, AutoConnection: {6}, AutoSwitch: {7}, Position: {8}",
 			//	profileName,
 			//	interfaceName,
 			//	ssid,
 			//	networkType,
 			//	authentication,
 			//	encryption,
-			//	position,
-			//	isAutomatic.Value);
+			//	autoConnection.Value,
+			//	autoSwitch.Value,
+			//	position);
 
 			return new ProfilePack(
 				name: profileName,
@@ -449,15 +464,36 @@ namespace WlanProfileViewer.Models.Wlan
 				networkType: networkType,
 				authentication: authentication,
 				encryption: encryption,
-				position: position,
-				isAutomatic: isAutomatic.Value);
+				isAutoConnectionEnabled: autoConnection.Value,
+				isAutoSwitchEnabled: autoSwitch.Value,
+				position: position);
 		}
 
 		#endregion
 
-		#region Set profile position
+		#region Set profile
 
-		public static async Task<bool> SetProfilePositionAync(string interfaceName, string profileName, int position)
+		public static async Task<bool> SetProfileParameterAsync(string interfaceName, string profileName, bool isAutoConnectionEnabled, bool isAutoSwitchEnabled)
+		{
+			if (string.IsNullOrWhiteSpace(interfaceName))
+				throw new ArgumentNullException(nameof(interfaceName));
+
+			if (string.IsNullOrWhiteSpace(profileName))
+				throw new ArgumentNullException(nameof(profileName));
+
+			var connectionMode = isAutoConnectionEnabled ? "auto" : "manual";
+			var autoSwitch = isAutoSwitchEnabled ? "yes" : "no";
+
+			var command = $@"netsh wlan set profileparameter name=""{profileName}"" interface=""{interfaceName}"" ConnectionMode={connectionMode} autoSwitch={autoSwitch}";
+
+			var expected = $@"Profile ""{profileName}"" on interface ""{interfaceName}"" updated successfully.";
+
+			var outputLines = await ExecuteNetshAsync(command).ConfigureAwait(false);
+
+			return outputLines.Contains(expected);
+		}
+
+		public static async Task<bool> SetProfilePositionAsync(string interfaceName, string profileName, int position)
 		{
 			if (string.IsNullOrWhiteSpace(interfaceName))
 				throw new ArgumentNullException(nameof(interfaceName));
@@ -581,7 +617,7 @@ namespace WlanProfileViewer.Models.Wlan
 		{
 			string[] inputLines =
 			{
-				"chcp 437", // Change code page to US (English).
+				"chcp 437", // Change code page to 437 (US English) or 65001 (UTF-8).
 				command,
 				"exit",
 			};

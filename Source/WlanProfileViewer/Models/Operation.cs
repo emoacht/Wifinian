@@ -139,8 +139,9 @@ namespace WlanProfileViewer.Models
 							continue;
 
 						// Copy changeable values.
+						oldProfile.IsAutoConnectionEnabled = newProfile.IsAutoConnectionEnabled;
+						oldProfile.IsAutoSwitchEnabled = newProfile.IsAutoSwitchEnabled;
 						oldProfile.Position = newProfile.Position;
-						oldProfile.IsAutomatic = newProfile.IsAutomatic;
 						oldProfile.Signal = newProfile.Signal;
 						oldProfile.IsConnected = newProfile.IsConnected;
 
@@ -169,7 +170,7 @@ namespace WlanProfileViewer.Models
 
 				Debug.WriteLine(Profiles.Any()
 					? Profiles
-						.Select(x => $"Profile {x.Name} -> Position: {x.Position}, AutoConnection {x.IsAutomatic}, Signal: {x.Signal}, IsConnected {x.IsConnected}")
+						.Select(x => $"Profile {x.Name} -> AutoConnection {x.IsAutoConnectionEnabled}, AutoSwitch {x.IsAutoSwitchEnabled}, Position: {x.Position}, Signal: {x.Signal}, IsConnected {x.IsConnected}")
 						.Aggregate((work, next) => work + Environment.NewLine + next)
 					: "No Profile");
 			}

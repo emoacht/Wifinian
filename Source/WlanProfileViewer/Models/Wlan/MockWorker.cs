@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Math;
 
+using ManagedNativeWifi;
+
 namespace WlanProfileViewer.Models.Wlan
 {
 	internal class MockWorker : IWlanWorker
@@ -27,6 +29,19 @@ namespace WlanProfileViewer.Models.Wlan
 				});
 
 			return _sourceProfiles.ToArray();
+		}
+
+		public async Task<bool> SetProfileParameterAsync(ProfileItem profileItem)
+		{
+			await WaitAsync();
+
+			var targetProfile = _sourceProfiles.FirstOrDefault(x => x.Id == profileItem.Id);
+			if (targetProfile == null)
+				return false;
+
+			targetProfile.IsAutoConnectionEnabled = profileItem.IsAutoConnectionEnabled;
+			targetProfile.IsAutoSwitchEnabled = profileItem.IsAutoSwitchEnabled;
+			return true;
 		}
 
 		public async Task<bool> SetProfilePositionAsync(ProfileItem profileItem, int position)
@@ -113,8 +128,9 @@ namespace WlanProfileViewer.Models.Wlan
 					interfaceDescription: interfaceDescription0,
 					authentication: AuthenticationMethod.Open,
 					encryption: EncryptionType.None,
+					isAutoConnectionEnabled: false,
+					isAutoSwitchEnabled: false,
 					position: 0,
-					isAutomatic: false,
 					signal: 90,
 					isConnected: false),
 
@@ -125,8 +141,9 @@ namespace WlanProfileViewer.Models.Wlan
 					interfaceDescription: interfaceDescription0,
 					authentication: AuthenticationMethod.Open,
 					encryption: EncryptionType.None,
+					isAutoConnectionEnabled: true,
+					isAutoSwitchEnabled: false,
 					position: 1,
-					isAutomatic: true,
 					signal: 0,
 					isConnected: false),
 
@@ -137,8 +154,9 @@ namespace WlanProfileViewer.Models.Wlan
 					interfaceDescription: interfaceDescription0,
 					authentication: AuthenticationMethod.WPA2_Personal,
 					encryption: EncryptionType.AES,
+					isAutoConnectionEnabled: true,
+					isAutoSwitchEnabled: false,
 					position: 2,
-					isAutomatic: false,
 					signal: 0,
 					isConnected: false),
 
@@ -149,8 +167,9 @@ namespace WlanProfileViewer.Models.Wlan
 					interfaceDescription: interfaceDescription0,
 					authentication: AuthenticationMethod.WPA2_Personal,
 					encryption: EncryptionType.AES,
+					isAutoConnectionEnabled: true,
+					isAutoSwitchEnabled: true,
 					position: 3,
-					isAutomatic: false,
 					signal: 90,
 					isConnected: false),
 
@@ -161,8 +180,9 @@ namespace WlanProfileViewer.Models.Wlan
 					interfaceDescription: interfaceDescription0,
 					authentication: AuthenticationMethod.WPA2_Personal,
 					encryption: EncryptionType.AES,
+					isAutoConnectionEnabled: true,
+					isAutoSwitchEnabled: true,
 					position: 4,
-					isAutomatic: false,
 					signal: 0,
 					isConnected: false),
 
@@ -173,8 +193,9 @@ namespace WlanProfileViewer.Models.Wlan
 					interfaceDescription: interfaceDescription1,
 					authentication: AuthenticationMethod.Open,
 					encryption: EncryptionType.None,
+					isAutoConnectionEnabled: false,
+					isAutoSwitchEnabled: false,
 					position: 0,
-					isAutomatic: false,
 					signal: 70,
 					isConnected: false),
 
@@ -185,8 +206,9 @@ namespace WlanProfileViewer.Models.Wlan
 					interfaceDescription: interfaceDescription1,
 					authentication: AuthenticationMethod.WPA_Personal,
 					encryption: EncryptionType.AES,
+					isAutoConnectionEnabled: true,
+					isAutoSwitchEnabled: false,
 					position: 1,
-					isAutomatic: true,
 					signal: 0,
 					isConnected: false),
 
@@ -197,16 +219,17 @@ namespace WlanProfileViewer.Models.Wlan
 					interfaceDescription: interfaceDescription2,
 					authentication: AuthenticationMethod.Open,
 					encryption: EncryptionType.None,
+					isAutoConnectionEnabled: true,
+					isAutoSwitchEnabled: false,
 					position: 0,
-					isAutomatic: false,
 					signal: 0,
 					isConnected: false),
 			};
 		}
 
-		private async Task WaitAsync()
+		private Task WaitAsync()
 		{
-			await Task.Delay(TimeSpan.FromMilliseconds(_random.Next(0, 100)));
+			return Task.Delay(TimeSpan.FromMilliseconds(_random.Next(0, 100)));
 		}
 
 		#endregion

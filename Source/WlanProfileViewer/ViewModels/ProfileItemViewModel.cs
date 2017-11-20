@@ -20,10 +20,11 @@ namespace WlanProfileViewer.ViewModels
 		public string Authentication { get; }
 		public string Encryption { get; }
 
+		public ReactiveProperty<bool> IsAutoConnectionEnabled { get; }
+		public ReactiveProperty<bool> IsAutoSwitchEnabled { get; }
+
 		public ReadOnlyReactiveProperty<int> Position { get; }
 		public ReadOnlyReactiveProperty<int> PositionCount { get; }
-
-		public ReadOnlyReactiveProperty<string> IsAutomatic { get; }
 
 		public ReadOnlyReactiveProperty<int> Signal { get; }
 		public ReadOnlyReactiveProperty<bool> IsAvailable { get; }
@@ -38,6 +39,16 @@ namespace WlanProfileViewer.ViewModels
 			Authentication = profileItem.Authentication.ToString().Replace("_", "-");
 			Encryption = profileItem.Encryption.ToString();
 
+			IsAutoConnectionEnabled = profileItem
+				.ObserveProperty(x => x.IsAutoConnectionEnabled)
+				.ToReactiveProperty()
+				.AddTo(this.Subscription);
+
+			IsAutoSwitchEnabled = profileItem
+				.ObserveProperty(x => x.IsAutoSwitchEnabled)
+				.ToReactiveProperty()
+				.AddTo(this.Subscription);
+
 			Position = profileItem
 				.ObserveProperty(x => x.Position)
 				.ToReadOnlyReactiveProperty()
@@ -45,12 +56,6 @@ namespace WlanProfileViewer.ViewModels
 
 			PositionCount = profileItem
 				.ObserveProperty(x => x.PositionCount)
-				.ToReadOnlyReactiveProperty()
-				.AddTo(this.Subscription);
-
-			IsAutomatic = profileItem
-				.ObserveProperty(x => x.IsAutomatic)
-				.Select(x => x ? "Automatic" : string.Empty)
 				.ToReadOnlyReactiveProperty()
 				.AddTo(this.Subscription);
 

@@ -20,51 +20,28 @@ namespace WlanProfileViewer.Models.Wlan
 
 			var profilePacks = await Task.Run(() => NativeWifi.EnumerateProfiles()).ConfigureAwait(false);
 
-			return profilePacks.Select(x => new ProfileItem(
+			return profilePacks.Select(x => new NativeWifiProfileItem(
 				name: x.Name,
 				interfaceId: x.Interface.Id,
-				interfaceName: null,
 				interfaceDescription: x.Interface.Description,
-				authentication: ConvertToAuthentication(x.Authentication),
-				encryption: ConvertToEncryption(x.Encryption),
+				profileType: x.ProfileType,
+				document: x.Document,
 				position: x.Position,
-				isAutomatic: x.IsAutomatic,
 				signal: x.SignalQuality,
 				isConnected: x.IsConnected));
 		}
 
-		private static AuthenticationMethod ConvertToAuthentication(string authenticationString)
-		{
-			switch (authenticationString)
-			{
-				case "open":
-					return AuthenticationMethod.Open;
-				case "shared":
-					return AuthenticationMethod.Shared;
-				case "WPA":
-					return AuthenticationMethod.WPA_Enterprise;
-				case "WPAPSK":
-					return AuthenticationMethod.WPA_Personal;
-				case "WPA2":
-					return AuthenticationMethod.WPA2_Enterprise;
-				case "WPA2PSK":
-					return AuthenticationMethod.WPA2_Personal;
-				default:
-					return AuthenticationMethod.None;
-			}
-		}
-
-		private static EncryptionType ConvertToEncryption(string encryptionString)
-		{
-			EncryptionType encryption;
-			return Enum.TryParse(encryptionString, true, out encryption)
-				? encryption
-				: EncryptionType.None;
-		}
-
 		#endregion
 
-		#region Set profile position
+		#region Set profile
+
+		public async Task<bool> SetProfileParameterAsync(ProfileItem profileItem)
+		{
+			if (!(profileItem is NativeWifiProfileItem item))
+				throw new ArgumentException(nameof(profileItem));
+
+			return await Task.Run(() => NativeWifi.SetProfile(item.InterfaceId, item.ProfileType, item.Xml, null, true));
+		}
 
 		public async Task<bool> SetProfilePositionAsync(ProfileItem profileItem, int position)
 		{

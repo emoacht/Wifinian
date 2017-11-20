@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using ManagedNativeWifi;
+
 namespace WlanProfileViewer.Models.Wlan
 {
 	internal class NetshWorker : IWlanWorker
@@ -31,15 +33,16 @@ namespace WlanProfileViewer.Models.Wlan
 					   interfaceId: interfacePack.Id,
 					   interfaceName: profilePack.InterfaceName,
 					   interfaceDescription: interfacePack.Description,
-					   authentication: ConvertToAuthentication(profilePack.Authentication),
-					   encryption: ConvertToEncryption(profilePack.Encryption),
+					   authentication: ConvertToAuthenticationMethod(profilePack.Authentication),
+					   encryption: ConvertToEncryptionType(profilePack.Encryption),
+					   isAutoConnectionEnabled: profilePack.IsAutoConnectionEnabled,
+					   isAutoSwitchEnabled: profilePack.IsAutoSwitchEnabled,
 					   position: profilePack.Position,
-					   isAutomatic: profilePack.IsAutomatic,
 					   signal: (networkPack?.Signal ?? 0),
 					   isConnected: (interfacePack.IsConnected && profilePack.Name.Equals(interfacePack.ProfileName, StringComparison.Ordinal)));
 		}
 
-		private static AuthenticationMethod ConvertToAuthentication(string authenticationString)
+		private static AuthenticationMethod ConvertToAuthenticationMethod(string authenticationString)
 		{
 			switch (authenticationString)
 			{
@@ -60,7 +63,7 @@ namespace WlanProfileViewer.Models.Wlan
 			}
 		}
 
-		private static EncryptionType ConvertToEncryption(string encryptionString)
+		private static EncryptionType ConvertToEncryptionType(string encryptionString)
 		{
 			switch (encryptionString)
 			{
@@ -77,7 +80,15 @@ namespace WlanProfileViewer.Models.Wlan
 
 		#endregion
 
-		#region Set profile position
+		#region Set profile
+
+		public async Task<bool> SetProfileParameterAsync(ProfileItem profileItem)
+		{
+			if (profileItem == null)
+				throw new ArgumentNullException(nameof(profileItem));
+
+			return await Netsh.SetProfileParameterAsync(profileItem.InterfaceName, profileItem.Name, profileItem.IsAutoConnectionEnabled, profileItem.IsAutoSwitchEnabled);
+		}
 
 		public async Task<bool> SetProfilePositionAsync(ProfileItem profileItem, int position)
 		{
@@ -87,7 +98,7 @@ namespace WlanProfileViewer.Models.Wlan
 			if (position < 0)
 				throw new ArgumentOutOfRangeException(nameof(position));
 
-			return await Netsh.SetProfilePositionAync(profileItem.InterfaceName, profileItem.Name, position);
+			return await Netsh.SetProfilePositionAsync(profileItem.InterfaceName, profileItem.Name, position);
 		}
 
 		#endregion

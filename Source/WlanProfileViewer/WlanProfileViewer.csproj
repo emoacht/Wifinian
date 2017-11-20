@@ -115,10 +115,9 @@
     <Compile Include="Common\DisposableBase.cs" />
     <Compile Include="Helper\ColorExtension.cs" />
     <Compile Include="Helper\HsbColor.cs" />
-    <Compile Include="Models\Wlan\AuthenticationMethod.cs" />
-    <Compile Include="Models\Wlan\EncryptionType.cs" />
     <Compile Include="Models\Wlan\IWlanWorker.cs" />
     <Compile Include="Models\Wlan\MockWorker.cs" />
+    <Compile Include="Models\Wlan\NativeWifiProfileItem.cs" />
     <Compile Include="Models\Wlan\NativeWifiWorker.cs" />
     <Compile Include="Models\Wlan\Netsh.cs" />
     <Compile Include="Models\Wlan\NetshWorker.cs" />
