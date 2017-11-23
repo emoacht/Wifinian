@@ -14,20 +14,15 @@ namespace WlanProfileViewer.Views.Converters
 	{
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			return ConvertBase(value);
+			if (!(value is Visibility sourceValue))
+				return DependencyProperty.UnsetValue;
+
+			return (sourceValue == Visibility.Visible) ? Visibility.Collapsed : Visibility.Visible;
 		}
 
 		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			return ConvertBase(value);
-		}
-
-		private object ConvertBase(object value)
-		{
-			if (!(value is Visibility))
-				return DependencyProperty.UnsetValue;
-
-			return ((Visibility)value == Visibility.Visible) ? Visibility.Collapsed : Visibility.Visible;
+			return Convert(value, targetType, parameter, culture);
 		}
 	}
 }

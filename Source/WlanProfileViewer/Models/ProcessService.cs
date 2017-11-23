@@ -83,8 +83,8 @@ namespace WlanProfileViewer.Models
 			try
 			{
 				existingProcess = Process.GetProcessesByName(currentProcess.ProcessName)
-					.Where(x => x.MainModule.FileName == Assembly.GetExecutingAssembly().Location)
-					.FirstOrDefault(x => x.Id != currentProcess.Id);
+					.Where(x => x.Id != currentProcess.Id)
+					.FirstOrDefault(x => x.MainModule.FileName == Assembly.GetExecutingAssembly().Location);
 
 				if (existingProcess == null)
 					return false;
@@ -94,8 +94,7 @@ namespace WlanProfileViewer.Models
 				{
 					Func<IntPtr, IntPtr, bool> search = (hWnd, lParam) =>
 					{
-						uint processId;
-						GetWindowThreadProcessId(hWnd, out processId);
+						GetWindowThreadProcessId(hWnd, out uint processId);
 
 						if (processId != existingProcess.Id)
 							return true; // Continue enumeration.
@@ -115,8 +114,8 @@ namespace WlanProfileViewer.Models
 						return false;
 				}
 
-				ShowWindow(windowHandle, SW_RESTORE);
-				return SetForegroundWindow(windowHandle);
+				return ShowWindow(windowHandle, SW_RESTORE)
+					&& SetForegroundWindow(windowHandle);
 			}
 			catch (Exception ex)
 			{
@@ -136,10 +135,10 @@ namespace WlanProfileViewer.Models
 			int textLength = GetWindowTextLength(hWnd);
 			if (0 < textLength)
 			{
-				var sb = new StringBuilder(textLength + 1);
-				GetWindowText(hWnd, sb, sb.Capacity);
+				var buff = new StringBuilder(textLength + 1);
+				GetWindowText(hWnd, buff, buff.Capacity);
 
-				Debug.WriteLine($"Title: {sb}");
+				Debug.WriteLine($"Title: {buff}");
 			}
 		}
 	}

@@ -17,10 +17,8 @@ namespace WlanProfileViewer.Views.Converters
 	{
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			if (!(value is bool))
+			if (!(value is bool sourceValue))
 				return DependencyProperty.UnsetValue;
-
-			var sourceValue = (bool)value;
 
 			if (ShouldBeInversed(parameter))
 				sourceValue = !sourceValue;
@@ -30,10 +28,10 @@ namespace WlanProfileViewer.Views.Converters
 
 		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			if (!(value is Visibility))
+			if (!(value is Visibility sourceValue))
 				return DependencyProperty.UnsetValue;
 
-			var convertedValue = ((Visibility)value == Visibility.Visible);
+			var convertedValue = (sourceValue == Visibility.Visible);
 
 			if (ShouldBeInversed(parameter))
 				convertedValue = !convertedValue;

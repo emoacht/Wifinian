@@ -25,7 +25,7 @@ namespace WlanProfileViewer.Helper
 		/// </summary>
 		public float H
 		{
-			get { return _h; }
+			get => _h;
 			set
 			{
 				if ((value < 0F) || (360F <= value))
@@ -41,7 +41,7 @@ namespace WlanProfileViewer.Helper
 		/// </summary>
 		public float S
 		{
-			get { return _s; }
+			get => _s;
 			set
 			{
 				if ((value < 0F) || (1F < value))
@@ -57,7 +57,7 @@ namespace WlanProfileViewer.Helper
 		/// </summary>
 		public float B
 		{
-			get { return _b; }
+			get => _b;
 			set
 			{
 				if ((value < 0F) || (1F < value))
