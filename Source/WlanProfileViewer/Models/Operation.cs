@@ -19,16 +19,6 @@ namespace WlanProfileViewer.Models
 {
 	internal class Operation : DisposableBase
 	{
-		#region Constant
-
-		private static readonly TimeSpan _loadingTimeoutDuration = TimeSpan.FromSeconds(10);
-
-		private static readonly TimeSpan _workingTimeoutDuration = TimeSpan.FromSeconds(10);
-		private static readonly TimeSpan _workingFirstInterval = TimeSpan.FromSeconds(0.1);
-		private static readonly TimeSpan _workingSecondInterval = TimeSpan.FromSeconds(1);
-
-		#endregion
-
 		public ObservableCollection<ProfileItem> Profiles { get; } = new ObservableCollection<ProfileItem>();
 
 		private readonly IWlanWorker _worker;
@@ -36,21 +26,21 @@ namespace WlanProfileViewer.Models
 		public BooleanNotifier IsLoading { get; }
 		public BooleanNotifier IsWorking { get; }
 
-		public bool IsAutoReloadEnabled
+		public bool IsAutoRescanEnabled
 		{
-			get { return _isAutoReloadEnabled; }
-			set { SetPropertyValue(ref _isAutoReloadEnabled, value); }
+			get => _isAutoRescanEnabled;
+			set => SetPropertyValue(ref _isAutoRescanEnabled, value);
 		}
-		private bool _isAutoReloadEnabled;
+		private bool _isAutoRescanEnabled;
 
 		public bool IsSuspended
 		{
-			get { return _isSuspended; }
-			set { SetPropertyValue(ref _isSuspended, value); }
+			get => _isSuspended;
+			set => SetPropertyValue(ref _isSuspended, value);
 		}
 		private bool _isSuspended;
 
-		private ReactiveTimer ReloadTimer { get; }
+		private ReactiveTimer RescanTimer { get; }
 
 		public Operation() : this(new NativeWifiWorker())
 		{ }
@@ -65,25 +55,25 @@ namespace WlanProfileViewer.Models
 			ShowLoadingTime(); // For debug
 			ShowWorkingTime(); // For debug
 
-			ReloadTimer = new ReactiveTimer(TimeSpan.FromSeconds(Settings.Current.AutoReloadInterval))
+			RescanTimer = new ReactiveTimer(TimeSpan.FromSeconds(Settings.Current.AutoRescanInterval))
 				.AddTo(this.Subscription);
-			ReloadTimer
-				.Subscribe(async _ => await LoadProfilesAsync(true))
+			RescanTimer
+				.Subscribe(async _ => await ScanNetworkAsync())
 				.AddTo(this.Subscription);
 
 			Settings.Current
-				.ObserveProperty(x => x.AutoReloadInterval)
+				.ObserveProperty(x => x.AutoRescanInterval)
 				.Throttle(TimeSpan.FromMilliseconds(100))
-				.Subscribe(x => ReloadTimer.Interval = TimeSpan.FromSeconds(x))
+				.Subscribe(x => RescanTimer.Interval = TimeSpan.FromSeconds(x))
 				.AddTo(this.Subscription);
 
-			this.ObserveProperty(x => x.IsAutoReloadEnabled)
+			this.ObserveProperty(x => x.IsAutoRescanEnabled)
 				.Subscribe(isEnabled =>
 				{
 					if (isEnabled)
-						ReloadTimer.Start();
+						RescanTimer.Start();
 					else
-						ReloadTimer.Stop();
+						RescanTimer.Stop();
 				})
 				.AddTo(this.Subscription);
 
@@ -92,26 +82,73 @@ namespace WlanProfileViewer.Models
 				{
 					if (isSuspended)
 					{
-						ReloadTimer.Stop();
+						RescanTimer.Stop();
 					}
 					else
 					{
-						if (IsAutoReloadEnabled)
-							ReloadTimer.Start();
+						if (IsAutoRescanEnabled)
+							RescanTimer.Start();
 						else
-							await LoadProfilesAsync(false);
+							await ScanNetworkAsync();
 					}
 				})
 				.AddTo(this.Subscription);
 
-			var initialTask = LoadProfilesAsync(false);
+			var networkRefreshed = Observable.FromEventPattern(
+				h => _worker.NetworkRefreshed += h,
+				h => _worker.NetworkRefreshed -= h);
+			var interfaceChanged = Observable.FromEventPattern(
+				h => _worker.InterfaceChanged += h,
+				h => _worker.InterfaceChanged -= h);
+			var connectionChanged = Observable.FromEventPattern(
+				h => _worker.ConnectionChanged += h,
+				h => _worker.ConnectionChanged -= h);
+			var profileChanged = Observable.FromEventPattern(
+				h => _worker.ProfileChanged += h,
+				h => _worker.ProfileChanged -= h);
+			Observable.Merge(networkRefreshed, interfaceChanged, connectionChanged, profileChanged)
+				.Throttle(TimeSpan.FromMilliseconds(100))
+				.Subscribe(async _ => await LoadProfilesAsync())
+				.AddTo(this.Subscription);
+
+			var loadTask = LoadProfilesAsync();
 		}
+
+		#region Dispose
+
+		private bool _disposed = false;
+
+		protected override void Dispose(bool disposing)
+		{
+			if (_disposed)
+				return;
+
+			if (disposing)
+			{
+				_worker?.Dispose();
+			}
+
+			_disposed = true;
+
+			base.Dispose(disposing);
+		}
+
+		#endregion
 
 		#region Load
 
+		private static readonly TimeSpan _scanTimeout = TimeSpan.FromSeconds(5);
+
+		public async Task ScanNetworkAsync()
+		{
+			Debug.WriteLine("Scan start!");
+
+			await _worker.ScanNetworkAsync(_scanTimeout);
+		}
+
 		private readonly object _locker = new object();
 
-		public async Task LoadProfilesAsync(bool isLatest)
+		public async Task LoadProfilesAsync()
 		{
 			lock (_locker)
 			{
@@ -125,48 +162,47 @@ namespace WlanProfileViewer.Models
 
 			try
 			{
-				var oldProfileIndices = Enumerable.Range(0, Profiles.Count).Reverse().ToList(); // Reverse method is to start removing from the tail.
+				var oldProfileIndices = Enumerable.Range(0, Profiles.Count).ToList();
 				var newProfiles = new List<ProfileItem>();
 
-				foreach (var newProfile in await _worker.GetProfilesAsync(isLatest, _loadingTimeoutDuration))
+				foreach (var newProfile in await _worker.GetProfilesAsync())
 				{
 					var isExisting = false;
 
-					for (int index = 0; (index < Profiles.Count) && !isExisting; index++)
+					foreach (int index in oldProfileIndices)
 					{
 						var oldProfile = Profiles[index];
-						if (!oldProfile.Id.Equals(newProfile.Id, StringComparison.Ordinal))
-							continue;
-
-						// Copy changeable values.
-						oldProfile.IsAutoConnectionEnabled = newProfile.IsAutoConnectionEnabled;
-						oldProfile.IsAutoSwitchEnabled = newProfile.IsAutoSwitchEnabled;
-						oldProfile.Position = newProfile.Position;
-						oldProfile.Signal = newProfile.Signal;
-						oldProfile.IsConnected = newProfile.IsConnected;
-
-						oldProfileIndices.Remove(index);
-						isExisting = true;
+						if (string.Equals(oldProfile.Id, newProfile.Id, StringComparison.Ordinal))
+						{
+							isExisting = true;
+							oldProfile.Copy(newProfile);
+							oldProfileIndices.Remove(index);
+							break;
+						}
 					}
 
 					if (!isExisting)
 						newProfiles.Add(newProfile);
 				}
 
-				oldProfileIndices.ForEach(x => Profiles.RemoveAt(x));
-				newProfiles.ForEach(x => Profiles.Add(x));
+				if ((oldProfileIndices.Count > 0) || (newProfiles.Count > 0))
+				{
+					oldProfileIndices.Reverse(); // Reverse indices to start removing from the tail.
+					oldProfileIndices.ForEach(x => Profiles.RemoveAt(x));
+					newProfiles.ForEach(x => Profiles.Add(x));
 
-				// Calculate count of positions for each interface.
-				Profiles
-					.GroupBy(x => x.InterfaceId)
-					.ToList()
-					.ForEach(profilesGroup =>
-					{
-						var count = profilesGroup.Count();
+					// Calculate count of positions for each interface.
+					Profiles
+						.GroupBy(x => x.InterfaceId)
+						.ToList()
+						.ForEach(profilesGroup =>
+						{
+							var count = profilesGroup.Count();
 
-						foreach (var profile in profilesGroup)
-							profile.PositionCount = count;
-					});
+							foreach (var profile in profilesGroup)
+								profile.PositionCount = count;
+						});
+				}
 
 				Debug.WriteLine(Profiles.Any()
 					? Profiles
@@ -196,6 +232,13 @@ namespace WlanProfileViewer.Models
 
 		#region Work
 
+		public async Task<bool> ChangeProfileParameterAsync()
+		{
+			Debug.WriteLine("ChangeParameter start!");
+
+			return await WorkAsync(x => _worker.SetProfileParameterAsync(x));
+		}
+
 		public async Task<bool> MoveUpProfileAsync()
 		{
 			Debug.WriteLine("MoveUp start!");
@@ -209,10 +252,7 @@ namespace WlanProfileViewer.Models
 			if (newPosition < 0)
 				return false;
 
-			return await WorkAsync(
-				x => _worker.SetProfilePositionAsync(x, newPosition),
-				x => Profiles.Contains(x) && (x.Position < oldPosition),
-				targetProfile);
+			return await WorkAsync(targetProfile, x => _worker.SetProfilePositionAsync(x, newPosition));
 		}
 
 		public async Task<bool> MoveDownProfileAsync()
@@ -228,80 +268,46 @@ namespace WlanProfileViewer.Models
 			if (newPosition > targetProfile.PositionCount - 1)
 				return false;
 
-			return await WorkAsync(
-				x => _worker.SetProfilePositionAsync(x, newPosition),
-				x => Profiles.Contains(x) && (x.Position > oldPosition),
-				targetProfile);
+			return await WorkAsync(targetProfile, x => _worker.SetProfilePositionAsync(x, newPosition));
 		}
 
 		public async Task<bool> DeleteProfileAsync()
 		{
 			Debug.WriteLine("Delete start!");
 
-			return await WorkAsync(
-				x => _worker.DeleteProfileAsync(x),
-				x => !Profiles.Contains(x));
+			return await WorkAsync(x => _worker.DeleteProfileAsync(x));
 		}
 
 		public async Task<bool> ConnectNetworkAsync()
 		{
 			Debug.WriteLine("Connect start!");
 
-			return await WorkAsync(
-				x => _worker.ConnectNetworkAsync(x, _workingTimeoutDuration),
-				x => Profiles.Contains(x) && x.IsConnected);
+			return await WorkAsync(x => _worker.ConnectNetworkAsync(x));
 		}
 
 		public async Task<bool> DisconnectNetworkAsync()
 		{
 			Debug.WriteLine("Disconnect start!");
 
-			return await WorkAsync(
-				x => _worker.DisconnectNetworkAsync(x, _workingTimeoutDuration),
-				x => Profiles.Contains(x) && !x.IsConnected);
+			return await WorkAsync(x => _worker.DisconnectNetworkAsync(x));
 		}
 
-		private async Task<bool> WorkAsync(Func<ProfileItem, Task<bool>> perform, Func<ProfileItem, bool> judge, ProfileItem targetProfile = null)
+		private Task<bool> WorkAsync(Func<ProfileItem, Task<bool>> perform)
 		{
-			var targetProfileCopy = targetProfile ?? Profiles.FirstOrDefault(x => x.IsTarget);
-			if (targetProfileCopy == null)
-				return false;
+			var targetProfile = Profiles.FirstOrDefault(x => x.IsTarget);
+			if (targetProfile == null)
+				return Task.FromResult(false);
 
-			IsWorking.TurnOn();
+			return WorkAsync(targetProfile, perform);
+		}
+
+		private async Task<bool> WorkAsync(ProfileItem targetProfile, Func<ProfileItem, Task<bool>> perform)
+		{
 			try
 			{
-				var timeoutTime = DateTime.Now.Add(_workingTimeoutDuration);
+				IsWorking.TurnOn();
 
-				if (!await perform(targetProfileCopy))
-					return false;
-
-				await Task.Delay(_workingFirstInterval);
-
-				using (var cts = new CancellationTokenSource())
-				{
-					while (timeoutTime > DateTime.Now)
-					{
-						try
-						{
-							await Task.WhenAll(
-								Task.Run(async () =>
-								{
-									await LoadProfilesAsync(false);
-
-									if (judge(targetProfileCopy))
-										cts.Cancel();
-								}),
-								Task.Delay(_workingSecondInterval, cts.Token));
-						}
-						catch (TaskCanceledException)
-						{
-						}
-
-						if (cts.IsCancellationRequested)
-							return true;
-					}
-					return false;
-				}
+				return await perform(targetProfile);
 			}
 			finally
 			{

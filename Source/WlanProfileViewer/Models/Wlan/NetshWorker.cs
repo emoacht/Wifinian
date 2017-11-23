@@ -10,9 +10,49 @@ namespace WlanProfileViewer.Models.Wlan
 {
 	internal class NetshWorker : IWlanWorker
 	{
+		#region Dispose
+
+		private bool _disposed = false;
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (_disposed)
+				return;
+
+			_disposed = true;
+		}
+
+		#endregion
+
+		public event EventHandler NetworkRefreshed;
+		public event EventHandler InterfaceChanged;
+		public event EventHandler ConnectionChanged;
+		public event EventHandler ProfileChanged;
+
+		#region Scan networks
+
+		public async Task ScanNetworkAsync(TimeSpan timeout)
+		{
+			await Task.Delay(TimeSpan.FromSeconds(1)); // Dummy
+
+			deferTask = DeferAsync(() =>
+			{
+				NetworkRefreshed?.Invoke(this, EventArgs.Empty);
+				InterfaceChanged?.Invoke(this, EventArgs.Empty);
+			});
+		}
+
+		#endregion
+
 		#region Get profiles
 
-		public async Task<IEnumerable<ProfileItem>> GetProfilesAsync(bool isLatest, TimeSpan timeout)
+		public async Task<IEnumerable<ProfileItem>> GetProfilesAsync()
 		{
 			var interfacePacks = (await Netsh.GetInterfacesAsync().ConfigureAwait(false))
 				.ToArray(); // ToArray method is necessary.
@@ -84,21 +124,27 @@ namespace WlanProfileViewer.Models.Wlan
 
 		public async Task<bool> SetProfileParameterAsync(ProfileItem profileItem)
 		{
-			if (profileItem == null)
-				throw new ArgumentNullException(nameof(profileItem));
+			var item = profileItem ?? throw new ArgumentNullException(nameof(profileItem));
 
-			return await Netsh.SetProfileParameterAsync(profileItem.InterfaceName, profileItem.Name, profileItem.IsAutoConnectionEnabled, profileItem.IsAutoSwitchEnabled);
+			if (!await Netsh.SetProfileParameterAsync(item.InterfaceName, item.Name, item.IsAutoConnectionEnabled, item.IsAutoSwitchEnabled))
+				return false;
+
+			deferTask = DeferAsync(() => ProfileChanged?.Invoke(this, EventArgs.Empty));
+			return true;
 		}
 
 		public async Task<bool> SetProfilePositionAsync(ProfileItem profileItem, int position)
 		{
-			if (profileItem == null)
-				throw new ArgumentNullException(nameof(profileItem));
+			var item = profileItem ?? throw new ArgumentNullException(nameof(profileItem));
 
 			if (position < 0)
 				throw new ArgumentOutOfRangeException(nameof(position));
 
-			return await Netsh.SetProfilePositionAsync(profileItem.InterfaceName, profileItem.Name, position);
+			if (!await Netsh.SetProfilePositionAsync(item.InterfaceName, item.Name, position))
+				return false;
+
+			deferTask = DeferAsync(() => ProfileChanged?.Invoke(this, EventArgs.Empty));
+			return true;
 		}
 
 		#endregion
@@ -107,30 +153,51 @@ namespace WlanProfileViewer.Models.Wlan
 
 		public async Task<bool> DeleteProfileAsync(ProfileItem profileItem)
 		{
-			if (profileItem == null)
-				throw new ArgumentNullException(nameof(profileItem));
+			var item = profileItem ?? throw new ArgumentNullException(nameof(profileItem));
 
-			return await Netsh.DeleteProfileAsync(profileItem.InterfaceName, profileItem.Name);
+			if (!await Netsh.DeleteProfileAsync(item.InterfaceName, item.Name))
+				return false;
+
+			deferTask = DeferAsync(() => ProfileChanged?.Invoke(this, EventArgs.Empty));
+			return true;
 		}
 
 		#endregion
 
 		#region Connect/Disconnect
 
-		public async Task<bool> ConnectNetworkAsync(ProfileItem profileItem, TimeSpan timeout)
+		public async Task<bool> ConnectNetworkAsync(ProfileItem profileItem)
 		{
-			if (profileItem == null)
-				throw new ArgumentNullException(nameof(profileItem));
+			var item = profileItem ?? throw new ArgumentNullException(nameof(profileItem));
 
-			return await Netsh.ConnectNetworkAsync(profileItem.InterfaceName, profileItem.Name);
+			if (!await Netsh.ConnectNetworkAsync(item.InterfaceName, item.Name))
+				return false;
+
+			deferTask = DeferAsync(() => ConnectionChanged?.Invoke(this, EventArgs.Empty));
+			return true;
 		}
 
-		public async Task<bool> DisconnectNetworkAsync(ProfileItem profileItem, TimeSpan timeout)
+		public async Task<bool> DisconnectNetworkAsync(ProfileItem profileItem)
 		{
-			if (profileItem == null)
-				throw new ArgumentNullException(nameof(profileItem));
+			var item = profileItem ?? throw new ArgumentNullException(nameof(profileItem));
 
-			return await Netsh.DisconnectNetworkAsync(profileItem.InterfaceName);
+			if (!await Netsh.DisconnectNetworkAsync(item.InterfaceName))
+				return false;
+
+			deferTask = DeferAsync(() => ConnectionChanged?.Invoke(this, EventArgs.Empty));
+			return true;
+		}
+
+		#endregion
+
+		#region Base
+
+		private Task deferTask;
+
+		private async Task DeferAsync(Action action)
+		{
+			await Task.Delay(TimeSpan.FromMilliseconds(100)).ConfigureAwait(false);
+			action?.Invoke();
 		}
 
 		#endregion

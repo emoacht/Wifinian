@@ -6,15 +6,22 @@ using System.Threading.Tasks;
 
 namespace WlanProfileViewer.Models.Wlan
 {
-	internal interface IWlanWorker
+	internal interface IWlanWorker : IDisposable
 	{
-		Task<IEnumerable<ProfileItem>> GetProfilesAsync(bool isLatest, TimeSpan timeout);
+		event EventHandler NetworkRefreshed;
+		event EventHandler InterfaceChanged;
+		event EventHandler ConnectionChanged;
+		event EventHandler ProfileChanged;
+
+		Task ScanNetworkAsync(TimeSpan timeout);
+
+		Task<IEnumerable<ProfileItem>> GetProfilesAsync();
 
 		Task<bool> SetProfileParameterAsync(ProfileItem profileItem);
 		Task<bool> SetProfilePositionAsync(ProfileItem profileItem, int position);
 		Task<bool> DeleteProfileAsync(ProfileItem profileItem);
 
-		Task<bool> ConnectNetworkAsync(ProfileItem profileItem, TimeSpan timeout);
-		Task<bool> DisconnectNetworkAsync(ProfileItem profileItem, TimeSpan timeout);
+		Task<bool> ConnectNetworkAsync(ProfileItem profileItem);
+		Task<bool> DisconnectNetworkAsync(ProfileItem profileItem);
 	}
 }

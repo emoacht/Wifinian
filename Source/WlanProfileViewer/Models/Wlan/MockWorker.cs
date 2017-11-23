@@ -11,21 +11,57 @@ namespace WlanProfileViewer.Models.Wlan
 {
 	internal class MockWorker : IWlanWorker
 	{
-		private List<ProfileItem> _sourceProfiles;
-		private readonly Random _random = new Random();
+		#region Dispose
 
-		public async Task<IEnumerable<ProfileItem>> GetProfilesAsync(bool isLatest, TimeSpan timeout)
+		private bool _disposed = false;
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (_disposed)
+				return;
+
+			_disposed = true;
+		}
+
+		#endregion
+
+		public event EventHandler NetworkRefreshed;
+		public event EventHandler InterfaceChanged;
+		public event EventHandler ConnectionChanged;
+		public event EventHandler ProfileChanged;
+
+		private List<ProfileItem> _sourceProfiles;
+		private static readonly Lazy<Random> _random = new Lazy<Random>(() => new Random());
+
+		public async Task ScanNetworkAsync(TimeSpan timeout)
+		{
+			await Task.Delay(TimeSpan.FromSeconds(1)); // Dummy
+
+			deferTask = DeferAsync(() =>
+			{
+				NetworkRefreshed?.Invoke(this, EventArgs.Empty);
+				InterfaceChanged?.Invoke(this, EventArgs.Empty);
+			});
+		}
+
+		public async Task<IEnumerable<ProfileItem>> GetProfilesAsync()
 		{
 			if (_sourceProfiles == null)
 				_sourceProfiles = PopulateProfiles().ToList();
 
-			await WaitAsync();
+			await WaitAsync(); // Dummy
 
 			_sourceProfiles
 				.ForEach(x =>
 				{
 					if (x.Signal > 0)
-						x.Signal = Max(Min(x.Signal + _random.Next(-10, 10), 100), 50);
+						x.Signal = Max(Min(x.Signal + _random.Value.Next(-10, 10), 100), 50);
 				});
 
 			return _sourceProfiles.ToArray();
@@ -33,7 +69,7 @@ namespace WlanProfileViewer.Models.Wlan
 
 		public async Task<bool> SetProfileParameterAsync(ProfileItem profileItem)
 		{
-			await WaitAsync();
+			await WaitAsync(); // Dummy
 
 			var targetProfile = _sourceProfiles.FirstOrDefault(x => x.Id == profileItem.Id);
 			if (targetProfile == null)
@@ -41,12 +77,14 @@ namespace WlanProfileViewer.Models.Wlan
 
 			targetProfile.IsAutoConnectionEnabled = profileItem.IsAutoConnectionEnabled;
 			targetProfile.IsAutoSwitchEnabled = profileItem.IsAutoSwitchEnabled;
+
+			deferTask = DeferAsync(() => ProfileChanged?.Invoke(this, EventArgs.Empty));
 			return true;
 		}
 
 		public async Task<bool> SetProfilePositionAsync(ProfileItem profileItem, int position)
 		{
-			await WaitAsync();
+			await WaitAsync(); // Dummy
 
 			var targetProfiles = _sourceProfiles
 				.Where(x => x.InterfaceId == profileItem.InterfaceId)
@@ -69,43 +107,52 @@ namespace WlanProfileViewer.Models.Wlan
 			int index = 0;
 			targetProfiles.ForEach(x => x.Position = index++);
 
+			deferTask = DeferAsync(() => ProfileChanged?.Invoke(this, EventArgs.Empty));
 			return true;
 		}
 
 		public async Task<bool> DeleteProfileAsync(ProfileItem profileItem)
 		{
-			await WaitAsync();
+			await WaitAsync(); // Dummy
 
-			return _sourceProfiles.Remove(profileItem);
+			if (!_sourceProfiles.Remove(profileItem))
+				return false;
+
+			deferTask = DeferAsync(() => ProfileChanged?.Invoke(this, EventArgs.Empty));
+			return true;
 		}
 
-		public async Task<bool> ConnectNetworkAsync(ProfileItem profileItem, TimeSpan timeout)
+		public async Task<bool> ConnectNetworkAsync(ProfileItem profileItem)
 		{
-			await WaitAsync();
+			await WaitAsync(); // Dummy
 
 			var targetProfile = _sourceProfiles.FirstOrDefault(x => x.Id == profileItem.Id);
 			if (targetProfile == null)
 				return false;
 
 			targetProfile.IsConnected = true;
+
+			deferTask = DeferAsync(() => ConnectionChanged?.Invoke(this, EventArgs.Empty));
 			return true;
 		}
 
-		public async Task<bool> DisconnectNetworkAsync(ProfileItem profileItem, TimeSpan timeout)
+		public async Task<bool> DisconnectNetworkAsync(ProfileItem profileItem)
 		{
-			await WaitAsync();
+			await WaitAsync(); // Dummy
 
 			var targetProfile = _sourceProfiles.FirstOrDefault(x => x.Id == profileItem.Id);
 			if (targetProfile == null)
 				return false;
 
 			targetProfile.IsConnected = false;
+
+			deferTask = DeferAsync(() => ConnectionChanged?.Invoke(this, EventArgs.Empty));
 			return true;
 		}
 
 		#region Base
 
-		private IEnumerable<ProfileItem> PopulateProfiles()
+		private ProfileItem[] PopulateProfiles()
 		{
 			var interfaceGuid0 = Guid.NewGuid();
 			var interfaceGuid1 = Guid.NewGuid();
@@ -213,7 +260,7 @@ namespace WlanProfileViewer.Models.Wlan
 					isConnected: false),
 
 				new ProfileItem(
-					name: "ZZZZZ...",
+					name: "La La Lan...",
 					interfaceId: interfaceGuid2,
 					interfaceName: interfaceName2,
 					interfaceDescription: interfaceDescription2,
@@ -227,9 +274,14 @@ namespace WlanProfileViewer.Models.Wlan
 			};
 		}
 
-		private Task WaitAsync()
+		private Task WaitAsync() => Task.Delay(TimeSpan.FromMilliseconds(_random.Value.Next(0, 100)));
+
+		private Task deferTask;
+
+		private async Task DeferAsync(Action action)
 		{
-			return Task.Delay(TimeSpan.FromMilliseconds(_random.Next(0, 100)));
+			await Task.Delay(TimeSpan.FromMilliseconds(100)).ConfigureAwait(false);
+			action?.Invoke();
 		}
 
 		#endregion

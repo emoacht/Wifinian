@@ -39,14 +39,14 @@ namespace WlanProfileViewer.ViewModels
 		}
 		private ListCollectionView _profilesView;
 
-		public ReactiveProperty<bool> IsAutoReloadEnabled { get; }
+		public ReactiveProperty<bool> IsAutoRescanEnabled { get; }
 		public ReactiveProperty<bool> IsSuspended { get; }
 		public ReactiveProperty<bool> IsConfigMode { get; }
 
 		public ReadOnlyReactiveProperty<bool> IsLoading { get; }
 		public ReadOnlyReactiveProperty<bool> IsNotWorking { get; }
 
-		public ReactiveCommand ReloadCommand { get; }
+		public ReactiveCommand RescanCommand { get; }
 
 		public ReactiveCommand MoveUpCommand { get; }
 		public ReactiveCommand MoveDownCommand { get; }
@@ -63,24 +63,24 @@ namespace WlanProfileViewer.ViewModels
 
 			this.Profiles = Op.Profiles.ToReadOnlyReactiveCollection(x => new ProfileItemViewModel(x));
 
-			#region AutoReloadEnabled/Suspended/ConfigMode
+			#region AutoRescanEnabled/Suspended/ConfigMode
 
-			IsAutoReloadEnabled = Op
-				.ToReactivePropertyAsSynchronized(x => x.IsAutoReloadEnabled);
+			IsAutoRescanEnabled = Op
+				.ToReactivePropertyAsSynchronized(x => x.IsAutoRescanEnabled);
 
 			IsSuspended = Op
 				.ToReactivePropertyAsSynchronized(x => x.IsSuspended);
 
 			IsConfigMode = new ReactiveProperty<bool>();
 
-			IsAutoReloadEnabled
+			IsAutoRescanEnabled
 				.Merge(IsSuspended)
 				.Where(x => x)
 				.Subscribe(_ => IsConfigMode.Value = false);
 
 			IsConfigMode
 				.Where(x => x)
-				.Subscribe(_ => IsAutoReloadEnabled.Value = false);
+				.Subscribe(_ => IsAutoRescanEnabled.Value = false);
 
 			#endregion
 
@@ -95,11 +95,11 @@ namespace WlanProfileViewer.ViewModels
 				.ObserveOnUIDispatcher()
 				.ToReadOnlyReactiveProperty();
 
-			ReloadCommand = IsLoading
+			RescanCommand = IsLoading
 				.Select(x => !x)
 				.ToReactiveCommand();
-			ReloadCommand
-				.Subscribe(async _ => await Op.LoadProfilesAsync(true));
+			RescanCommand
+				.Subscribe(async _ => await Op.ScanNetworkAsync());
 
 			Profiles
 				.ObserveElementObservableProperty(x => x.Position)

@@ -27,16 +27,16 @@ namespace WlanProfileViewer.Models
 		private const int _intervalMin = 4;
 		private const int _intervalMax = 16;
 
-		public int AutoReloadInterval
+		public int AutoRescanInterval
 		{
-			get { return _autoReloadInterval; }
+			get => _autoRescanInterval;
 			set
 			{
 				var clamped = Max(Min(value, _intervalMax), _intervalMin);
-				SetPropertyValue(ref _autoReloadInterval, clamped);
+				SetPropertyValue(ref _autoRescanInterval, clamped);
 			}
 		}
-		private int _autoReloadInterval = 8; // Default
+		private int _autoRescanInterval = 8; // Default
 
 		#endregion
 

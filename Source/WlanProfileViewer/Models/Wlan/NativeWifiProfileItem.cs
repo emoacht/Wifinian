@@ -12,7 +12,7 @@ namespace WlanProfileViewer.Models.Wlan
 	{
 		public ProfileType ProfileType { get; }
 
-		private readonly ProfileDocument _document;
+		private ProfileDocument _document;
 
 		public override AuthenticationMethod Authentication => _document.Authentication;
 		public override EncryptionType Encryption => _document.Encryption;
@@ -22,7 +22,8 @@ namespace WlanProfileViewer.Models.Wlan
 			get => _document.IsAutoConnectionEnabled;
 			set
 			{
-				if (_document == null)
+				if ((_document == null) || /* The base class's constructor may access before _document is filled. */
+					(_document.IsAutoConnectionEnabled == value))
 					return;
 
 				_document.IsAutoConnectionEnabled = value;
@@ -35,7 +36,8 @@ namespace WlanProfileViewer.Models.Wlan
 			get => _document.IsAutoSwitchEnabled;
 			set
 			{
-				if (_document == null)
+				if ((_document == null) || /* The base class's constructor may access before _document is filled. */
+					(_document.IsAutoSwitchEnabled == value))
 					return;
 
 				_document.IsAutoSwitchEnabled = value;
@@ -68,13 +70,20 @@ namespace WlanProfileViewer.Models.Wlan
 				signal: signal,
 				isConnected: isConnected)
 		{
-			if (document == null)
-				throw new ArgumentNullException(nameof(document));
-
 			this.ProfileType = profileType;
-			this._document = document;
+			this._document = document ?? throw new ArgumentNullException(nameof(document));
 		}
 
 		#endregion
+
+		public override void Copy(ProfileItem other)
+		{
+			base.Copy(other);
+
+			if (other is NativeWifiProfileItem item)
+			{
+				this._document = item._document;
+			}
+		}
 	}
 }

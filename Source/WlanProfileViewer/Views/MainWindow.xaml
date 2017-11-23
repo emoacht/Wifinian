@@ -54,22 +54,22 @@
 						<ColumnDefinition Width="34"/>
 					</Grid.ColumnDefinitions>
 
-					<!-- Reload -->
+					<!-- Rescan -->
 					<controls:MovingButton
 						Grid.Column="0"
-						x:Name="ReloadButton"
+						x:Name="RescanButton"
 						Width="30" Height="30"
 						Style="{StaticResource RollingStyle}"
 						IsRunning="{Binding IsLoading.Value}"
-						Command="{Binding ReloadCommand}"/>
+						Command="{Binding RescanCommand}"/>
 
-					<!-- Auto Reload -->
+					<!-- Auto Rescan -->
 					<controls:PlainToggleButton
 						Grid.Column="1"
 						Height="24"
 						Style="{StaticResource NormalToggleButtonStyle}"
-						Content="Auto Reload"
-						IsChecked="{Binding IsAutoReloadEnabled.Value, Mode=TwoWay}"/>
+						Content="Auto Rescan"
+						IsChecked="{Binding IsAutoRescanEnabled.Value, Mode=TwoWay}"/>
 
 					<!-- Config Mode -->
 					<controls:PlainToggleButton
@@ -107,18 +107,18 @@
 						</Button>
 
 						<StackPanel DockPanel.Dock="Left">
-							<!-- Auto Reload Interval -->
+							<!-- Auto Rescan Interval -->
 							<StackPanel Height="24"
 										Orientation="Horizontal">
 								<Label VerticalAlignment="Center"
 									   Foreground="{StaticResource App.Foreground}"
-									   Content="Auto Reload Interval"/>
-								<Slider x:Name="AutoReloadIntervalSlider"
+									   Content="Auto Rescan Interval"/>
+								<Slider x:Name="AutoRescanIntervalSlider"
 										Style="{StaticResource NormalSliderStyle}"
 										Width="90" Height="18"
 										Margin="2,0,8,0" VerticalAlignment="Center"
 										Minimum="4" Maximum="16" TickFrequency="1" IsSnapToTickEnabled="True"
-										Value="{Binding Source={x:Static models:Settings.Current}, Path=AutoReloadInterval, Mode=TwoWay}"/>
+										Value="{Binding Source={x:Static models:Settings.Current}, Path=AutoRescanInterval, Mode=TwoWay}"/>
 								<Border Width="30" Height="20"
 										VerticalAlignment="Center"
 										BorderBrush="{StaticResource App.Foreground.Supplement}"
@@ -127,7 +127,7 @@
 									<TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
 											   Foreground="{StaticResource App.Foreground}"
 											   FontWeight="SemiBold"
-											   Text="{Binding ElementName=AutoReloadIntervalSlider, Path=Value, Mode=OneWay}"/>
+											   Text="{Binding ElementName=AutoRescanIntervalSlider, Path=Value, Mode=OneWay}"/>
 								</Border>
 							</StackPanel>
 						</StackPanel>
@@ -402,7 +402,7 @@
 		<!--<controls:MovingControl Style="{StaticResource BubbleStyle}"
 								IsEnabled="{Binding IsLoading.Value}">
 			<i:Interaction.Behaviors>
-				<behaviors:FrameworkElementCenterBehavior Target="{Binding ElementName=ReloadButton}"/>
+				<behaviors:FrameworkElementCenterBehavior Target="{Binding ElementName=RescanButton}"/>
 			</i:Interaction.Behaviors>
 		</controls:MovingControl>-->
 	</Grid>

@@ -61,7 +61,7 @@ namespace WlanProfileViewer.ViewModels
 				.ToReadOnlyReactiveProperty()
 				.AddTo(this.Subscription);
 
-			mainWindowViewModel.ReloadCommand.Execute();
+			mainWindowViewModel.RescanCommand.Execute();
 		}
 	}
 }

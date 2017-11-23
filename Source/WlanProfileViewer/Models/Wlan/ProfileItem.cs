@@ -156,5 +156,18 @@ namespace WlanProfileViewer.Models.Wlan
 		}
 
 		#endregion
+
+		/// <summary>
+		/// Copies changeable values from other instance.
+		/// </summary>
+		/// <param name="other">Other instance</param>
+		public virtual void Copy(ProfileItem other)
+		{
+			this.IsAutoConnectionEnabled = other.IsAutoConnectionEnabled;
+			this.IsAutoSwitchEnabled = other.IsAutoSwitchEnabled;
+			this.Position = other.Position;
+			this.Signal = other.Signal;
+			this.IsConnected = other.IsConnected;
+		}
 	}
 }
