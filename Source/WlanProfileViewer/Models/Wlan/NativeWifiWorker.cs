@@ -132,9 +132,10 @@ namespace WlanProfileViewer.Models.Wlan
 
 		public Task<bool> ConnectNetworkAsync(ProfileItem profileItem)
 		{
-			var item = profileItem ?? throw new ArgumentNullException(nameof(profileItem));
+			if (!(profileItem is NativeWifiProfileItem item))
+				throw new ArgumentException(nameof(profileItem));
 
-			return Task.Run(() => _player.ConnectNetwork(item.InterfaceId, item.Name, BssType.Any));
+			return Task.Run(() => _player.ConnectNetwork(item.InterfaceId, item.Name, item.BssType));
 		}
 
 		public Task<bool> DisconnectNetworkAsync(ProfileItem profileItem)

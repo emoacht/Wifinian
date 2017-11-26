@@ -75,7 +75,7 @@ namespace WlanProfileViewer.Models.Wlan
 			if (targetProfile == null)
 				return false;
 
-			targetProfile.IsAutoConnectionEnabled = profileItem.IsAutoConnectionEnabled;
+			targetProfile.IsAutoConnectEnabled = profileItem.IsAutoConnectEnabled;
 			targetProfile.IsAutoSwitchEnabled = profileItem.IsAutoSwitchEnabled;
 
 			deferTask = DeferAsync(() => ProfileChanged?.Invoke(this, EventArgs.Empty));
@@ -175,7 +175,7 @@ namespace WlanProfileViewer.Models.Wlan
 					interfaceDescription: interfaceDescription0,
 					authentication: AuthenticationMethod.Open,
 					encryption: EncryptionType.None,
-					isAutoConnectionEnabled: false,
+					isAutoConnectEnabled: false,
 					isAutoSwitchEnabled: false,
 					position: 0,
 					signal: 90,
@@ -188,7 +188,7 @@ namespace WlanProfileViewer.Models.Wlan
 					interfaceDescription: interfaceDescription0,
 					authentication: AuthenticationMethod.Open,
 					encryption: EncryptionType.None,
-					isAutoConnectionEnabled: true,
+					isAutoConnectEnabled: true,
 					isAutoSwitchEnabled: false,
 					position: 1,
 					signal: 0,
@@ -201,7 +201,7 @@ namespace WlanProfileViewer.Models.Wlan
 					interfaceDescription: interfaceDescription0,
 					authentication: AuthenticationMethod.WPA2_Personal,
 					encryption: EncryptionType.AES,
-					isAutoConnectionEnabled: true,
+					isAutoConnectEnabled: true,
 					isAutoSwitchEnabled: false,
 					position: 2,
 					signal: 0,
@@ -214,7 +214,7 @@ namespace WlanProfileViewer.Models.Wlan
 					interfaceDescription: interfaceDescription0,
 					authentication: AuthenticationMethod.WPA2_Personal,
 					encryption: EncryptionType.AES,
-					isAutoConnectionEnabled: true,
+					isAutoConnectEnabled: true,
 					isAutoSwitchEnabled: true,
 					position: 3,
 					signal: 90,
@@ -227,7 +227,7 @@ namespace WlanProfileViewer.Models.Wlan
 					interfaceDescription: interfaceDescription0,
 					authentication: AuthenticationMethod.WPA2_Personal,
 					encryption: EncryptionType.AES,
-					isAutoConnectionEnabled: true,
+					isAutoConnectEnabled: true,
 					isAutoSwitchEnabled: true,
 					position: 4,
 					signal: 0,
@@ -240,7 +240,7 @@ namespace WlanProfileViewer.Models.Wlan
 					interfaceDescription: interfaceDescription1,
 					authentication: AuthenticationMethod.Open,
 					encryption: EncryptionType.None,
-					isAutoConnectionEnabled: false,
+					isAutoConnectEnabled: false,
 					isAutoSwitchEnabled: false,
 					position: 0,
 					signal: 70,
@@ -253,7 +253,7 @@ namespace WlanProfileViewer.Models.Wlan
 					interfaceDescription: interfaceDescription1,
 					authentication: AuthenticationMethod.WPA_Personal,
 					encryption: EncryptionType.AES,
-					isAutoConnectionEnabled: true,
+					isAutoConnectEnabled: true,
 					isAutoSwitchEnabled: false,
 					position: 1,
 					signal: 0,
@@ -266,7 +266,7 @@ namespace WlanProfileViewer.Models.Wlan
 					interfaceDescription: interfaceDescription2,
 					authentication: AuthenticationMethod.Open,
 					encryption: EncryptionType.None,
-					isAutoConnectionEnabled: true,
+					isAutoConnectEnabled: true,
 					isAutoSwitchEnabled: false,
 					position: 0,
 					signal: 0,

@@ -75,7 +75,7 @@ namespace WlanProfileViewer.Models.Wlan
 					   interfaceDescription: interfacePack.Description,
 					   authentication: ConvertToAuthenticationMethod(profilePack.Authentication),
 					   encryption: ConvertToEncryptionType(profilePack.Encryption),
-					   isAutoConnectionEnabled: profilePack.IsAutoConnectionEnabled,
+					   isAutoConnectEnabled: profilePack.IsAutoConnectEnabled,
 					   isAutoSwitchEnabled: profilePack.IsAutoSwitchEnabled,
 					   position: profilePack.Position,
 					   signal: (networkPack?.Signal ?? 0),
@@ -126,7 +126,7 @@ namespace WlanProfileViewer.Models.Wlan
 		{
 			var item = profileItem ?? throw new ArgumentNullException(nameof(profileItem));
 
-			if (!await Netsh.SetProfileParameterAsync(item.InterfaceName, item.Name, item.IsAutoConnectionEnabled, item.IsAutoSwitchEnabled))
+			if (!await Netsh.SetProfileParameterAsync(item.InterfaceName, item.Name, item.IsAutoConnectEnabled, item.IsAutoSwitchEnabled))
 				return false;
 
 			deferTask = DeferAsync(() => ProfileChanged?.Invoke(this, EventArgs.Empty));

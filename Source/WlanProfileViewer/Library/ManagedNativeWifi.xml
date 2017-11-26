@@ -81,7 +81,7 @@
         </member>
         <member name="F:ManagedNativeWifi.AuthenticationMethod.None">
             <summary>
-            None
+            None (invalid value)
             </summary>
         </member>
         <member name="F:ManagedNativeWifi.AuthenticationMethod.Open">
@@ -215,7 +215,7 @@
         </member>
         <member name="F:ManagedNativeWifi.BssType.None">
             <summary>
-            None
+            None (invalid value)
             </summary>
         </member>
         <member name="F:ManagedNativeWifi.BssType.Infrastructure">
@@ -228,11 +228,6 @@
             Independent BSS (IBSS) network (Ad hoc network)
             </summary>
         </member>
-        <member name="F:ManagedNativeWifi.BssType.Any">
-            <summary>
-            Any BSS network
-            </summary>
-        </member>
         <member name="T:ManagedNativeWifi.EncryptionType">
             <summary>
             Data encryption type to be used to connect to wireless LAN
@@ -243,7 +238,7 @@
         </member>
         <member name="F:ManagedNativeWifi.EncryptionType.None">
             <summary>
-            None
+            None (valid value)
             </summary>
         </member>
         <member name="F:ManagedNativeWifi.EncryptionType.WEP">
@@ -802,7 +797,7 @@
             </summary>
             <param name="xml">Profile XML</param>
         </member>
-        <member name="P:ManagedNativeWifi.ProfileDocument.IsAutoConnectionEnabled">
+        <member name="P:ManagedNativeWifi.ProfileDocument.IsAutoConnectEnabled">
             <summary>
             Whether automatic connection for this profile is enabled
             </summary>

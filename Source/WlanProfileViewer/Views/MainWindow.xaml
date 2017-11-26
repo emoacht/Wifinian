@@ -240,7 +240,8 @@
 									<LineBreak/>
 									<Run Text="{Binding Authentication, Mode=OneTime}"/>
 									<Run Text="{Binding Encryption, Mode=OneTime, StringFormat=[{0}]}"/>
-									<Run Text="{Binding IsAutomatic.Value, Mode=OneWay}"/>
+									<Run Text="{Binding IsAutoConnectEnabled.Value, Mode=OneWay}"/>
+									<Run Text="{Binding IsAutoSwitchEnabled.Value, Mode=OneWay}"/>
 								</TextBlock>
 
 								<Grid Margin="32,2,0,6"

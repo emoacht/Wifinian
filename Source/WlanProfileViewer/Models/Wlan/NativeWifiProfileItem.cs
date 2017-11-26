@@ -14,19 +14,20 @@ namespace WlanProfileViewer.Models.Wlan
 
 		private ProfileDocument _document;
 
+		public BssType BssType => _document.BssType;
 		public override AuthenticationMethod Authentication => _document.Authentication;
 		public override EncryptionType Encryption => _document.Encryption;
 
-		public override bool IsAutoConnectionEnabled
+		public override bool IsAutoConnectEnabled
 		{
-			get => _document.IsAutoConnectionEnabled;
+			get => _document.IsAutoConnectEnabled;
 			set
 			{
 				if ((_document == null) || /* The base class's constructor may access before _document is filled. */
-					(_document.IsAutoConnectionEnabled == value))
+					(_document.IsAutoConnectEnabled == value))
 					return;
 
-				_document.IsAutoConnectionEnabled = value;
+				_document.IsAutoConnectEnabled = value;
 				RaisePropertyChanged();
 			}
 		}
@@ -64,7 +65,7 @@ namespace WlanProfileViewer.Models.Wlan
 				interfaceDescription: interfaceDescription,
 				authentication: default(AuthenticationMethod),
 				encryption: default(EncryptionType),
-				isAutoConnectionEnabled: false,
+				isAutoConnectEnabled: false,
 				isAutoSwitchEnabled: false,
 				position: position,
 				signal: signal,

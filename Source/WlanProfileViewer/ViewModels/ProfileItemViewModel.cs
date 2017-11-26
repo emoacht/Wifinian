@@ -20,7 +20,7 @@ namespace WlanProfileViewer.ViewModels
 		public string Authentication { get; }
 		public string Encryption { get; }
 
-		public ReactiveProperty<bool> IsAutoConnectionEnabled { get; }
+		public ReactiveProperty<bool> IsAutoConnectEnabled { get; }
 		public ReactiveProperty<bool> IsAutoSwitchEnabled { get; }
 
 		public ReadOnlyReactiveProperty<int> Position { get; }
@@ -39,8 +39,8 @@ namespace WlanProfileViewer.ViewModels
 			Authentication = profileItem.Authentication.ToString().Replace("_", "-");
 			Encryption = profileItem.Encryption.ToString();
 
-			IsAutoConnectionEnabled = profileItem
-				.ObserveProperty(x => x.IsAutoConnectionEnabled)
+			IsAutoConnectEnabled = profileItem
+				.ObserveProperty(x => x.IsAutoConnectEnabled)
 				.ToReactiveProperty()
 				.AddTo(this.Subscription);
 

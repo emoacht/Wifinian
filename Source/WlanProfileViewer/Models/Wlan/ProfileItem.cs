@@ -51,12 +51,12 @@ namespace WlanProfileViewer.Models.Wlan
 		/// <summary>
 		/// Whether automatic connection for this profile is enabled
 		/// </summary>
-		public virtual bool IsAutoConnectionEnabled
+		public virtual bool IsAutoConnectEnabled
 		{
-			get => _isAutoConnectionEnabled;
-			set => SetPropertyValue(ref _isAutoConnectionEnabled, value);
+			get => _isAutoConnectEnabled;
+			set => SetPropertyValue(ref _isAutoConnectEnabled, value);
 		}
-		private bool _isAutoConnectionEnabled;
+		private bool _isAutoConnectEnabled;
 
 		/// <summary>
 		/// Whether automatic switch for this profile is enabled
@@ -130,7 +130,7 @@ namespace WlanProfileViewer.Models.Wlan
 			string interfaceDescription,
 			AuthenticationMethod authentication,
 			EncryptionType encryption,
-			bool isAutoConnectionEnabled,
+			bool isAutoConnectEnabled,
 			bool isAutoSwitchEnabled,
 			int position,
 			int signal,
@@ -148,7 +148,7 @@ namespace WlanProfileViewer.Models.Wlan
 			this.InterfaceDescription = interfaceDescription;
 			this.Authentication = authentication;
 			this.Encryption = encryption;
-			this.IsAutoConnectionEnabled = isAutoConnectionEnabled;
+			this.IsAutoConnectEnabled = isAutoConnectEnabled;
 			this.IsAutoSwitchEnabled = isAutoSwitchEnabled;
 			this.Position = position;
 			this.Signal = signal;
@@ -163,7 +163,7 @@ namespace WlanProfileViewer.Models.Wlan
 		/// <param name="other">Other instance</param>
 		public virtual void Copy(ProfileItem other)
 		{
-			this.IsAutoConnectionEnabled = other.IsAutoConnectionEnabled;
+			this.IsAutoConnectEnabled = other.IsAutoConnectEnabled;
 			this.IsAutoSwitchEnabled = other.IsAutoSwitchEnabled;
 			this.Position = other.Position;
 			this.Signal = other.Signal;
