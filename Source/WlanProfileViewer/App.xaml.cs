@@ -9,7 +9,6 @@ using System.Windows;
 using System.Windows.Threading;
 
 using WlanProfileViewer.Models;
-using WlanProfileViewer.Views;
 
 namespace WlanProfileViewer
 {
@@ -21,28 +20,31 @@ namespace WlanProfileViewer
 				AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
 		}
 
-		protected override void OnStartup(StartupEventArgs e)
+		private MainController _controller;
+
+		protected async override void OnStartup(StartupEventArgs e)
 		{
 			base.OnStartup(e);
 
 			if (ProcessService.CheckActivateExistingProcess())
 			{
-				Application.Current.Shutdown(1); // This exit code is for unusual shutdown.
+				this.Shutdown(1); // This exit code is for unusual shutdown.
 				return;
 			}
 
 			if (!Debugger.IsAttached)
 				this.DispatcherUnhandledException += OnDispatcherUnhandledException;
 
-			Settings.Current.Initialize();
+			_controller = new MainController();
+			await _controller.InitiateAsync();
 
-			this.MainWindow = new MainWindow();
-			this.MainWindow.Show();
+			//this.MainWindow = new MainWindow();
+			//this.MainWindow.Show();
 		}
 
 		protected override void OnExit(ExitEventArgs e)
 		{
-			Settings.Current.Dispose();
+			_controller?.Dispose();
 
 			base.OnExit(e);
 		}
@@ -59,7 +61,7 @@ namespace WlanProfileViewer
 			LogService.RecordException(sender, e.Exception);
 
 			e.Handled = true;
-			Application.Current.Shutdown(1); // This exit code is for unusual shutdown.
+			this.Shutdown(1); // This exit code is for unusual shutdown.
 		}
 
 		#endregion

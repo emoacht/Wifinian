@@ -47,15 +47,15 @@
       <HintPath>Library\ManagedNativeWifi.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="MonitorAware, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Library\MonitorAware.dll</HintPath>
-    </Reference>
     <Reference Include="ReactiveProperty, Version=3.6.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ReactiveProperty.3.6.0\lib\net46\ReactiveProperty.dll</HintPath>
     </Reference>
     <Reference Include="ReactiveProperty.NET46, Version=3.6.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ReactiveProperty.3.6.0\lib\net46\ReactiveProperty.NET46.dll</HintPath>
+    </Reference>
+    <Reference Include="ScreenFrame, Version=1.3.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Library\ScreenFrame.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -103,10 +103,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Page Include="Views\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -126,11 +122,11 @@
     <Compile Include="Models\LanguageService.cs" />
     <Compile Include="Models\LogService.cs" />
     <Compile Include="Models\ProcessService.cs" />
-    <Compile Include="Models\Operation.cs" />
     <Compile Include="Models\Settings.cs" />
-    <Compile Include="Models\WindowPlacement.cs" />
+    <Compile Include="Models\ProductInfo.cs" />
+    <Compile Include="MainController.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
-    <Compile Include="ViewModels\NotifyWindowViewModel.cs" />
+    <Compile Include="ViewModels\MenuWindowViewModel.cs" />
     <Compile Include="ViewModels\ProfileItemViewModel.cs" />
     <Compile Include="Views\Behaviors\FrameworkElementCenterBehavior.cs" />
     <Compile Include="Views\Behaviors\ListBoxSelectedItemBehavior.cs" />
@@ -143,20 +139,19 @@
     <Compile Include="Views\Converters\VisibilityInverseConverter.cs" />
     <Compile Include="Views\Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Views\Converters\StateChangedToBooleanConverter.cs" />
-    <Compile Include="Views\TaskbarAlignment.cs" />
     <Compile Include="Views\ThemeService.cs" />
-    <Compile Include="Views\WindowPosition.cs" />
-    <Compile Include="Views\NotifyIconComponent.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Views\NotifyWindow.xaml.cs">
-      <DependentUpon>NotifyWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\NotifyWindow.xaml">
+    <Compile Include="Views\MenuWindow.xaml.cs">
+      <DependentUpon>MenuWindow.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Views\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\MenuWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -205,11 +200,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Library\ManagedNativeWifi.dll" />
+    <Content Include="Library\ScreenFrame.dll" />
+    <Resource Include="Library\ScreenFrame.xml" />
     <Resource Include="Library\ManagedNativeWifi.xml" />
-    <Content Include="Library\MonitorAware.dll" />
     <Resource Include="Resources\language_ja.txt" />
     <Resource Include="Resources\language_en.txt" />
-    <Resource Include="Library\MonitorAware.xml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

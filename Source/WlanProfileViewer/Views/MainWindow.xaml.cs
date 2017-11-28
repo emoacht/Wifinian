@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -13,59 +12,63 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-using MonitorAware.Models;
-using WlanProfileViewer.Models;
+using ScreenFrame.Movers;
+using WlanProfileViewer.ViewModels;
 
 namespace WlanProfileViewer.Views
 {
 	public partial class MainWindow : Window
 	{
-		#region Property
+		private readonly SwitchWindowMover _mover;
+		private MainWindowViewModel ViewModel => (MainWindowViewModel)this.DataContext;
 
-		public static string ProductTitle { get; } =
-			((AssemblyTitleAttribute)Attribute.GetCustomAttribute(Assembly.GetExecutingAssembly(), typeof(AssemblyTitleAttribute))).Title;
-
-		public static Version ProductVersion { get; } = Assembly.GetExecutingAssembly().GetName().Version;
-
-		#endregion
-
-		public MainWindow()
+		internal MainWindow(MainController controller)
 		{
 			InitializeComponent();
 
+			this.ShowInTaskbar = false;
+
 			ThemeService.AdjustResourceColors(Application.Current.Resources);
-		}
 
-		private NotifyIconComponent _component;
+			this.DataContext = new MainWindowViewModel(controller);
 
-		protected override void OnSourceInitialized(EventArgs e)
-		{
-			base.OnSourceInitialized(e);
-
-			new WindowPlacement().Load(this);
-
-			var notificationAreaDpi = DpiChecker.GetNotificationAreaDpi();
-			_component = new NotifyIconComponent(this);
-			_component.ShowIcon("pack://application:,,,/Resources/ring.ico", ProductTitle, notificationAreaDpi.X);
+			_mover = new SwitchWindowMover(this, controller.NotifyIconContainer.NotifyIcon);
 		}
 
 		protected override void OnClosing(CancelEventArgs e)
 		{
-			base.OnClosing(e);
+			if (!e.Cancel)
+			{
+				ViewModel.Dispose();
+			}
 
-			if (e.Cancel)
+			base.OnClosing(e);
+		}
+
+		#region Show/Hide
+
+		public bool CanBeShown => (_preventionTime < DateTimeOffset.Now);
+		private DateTimeOffset _preventionTime;
+
+		protected override void OnDeactivated(EventArgs e)
+		{
+			base.OnDeactivated(e);
+
+			if (_mover.IsDeparted)
 				return;
 
-			new WindowPlacement().Save(this);
+			if (this.Visibility != Visibility.Visible)
+				return;
 
-			_component.Dispose();
+			// Set time to prevent this window from being shown unintentionally. 
+			_preventionTime = DateTimeOffset.Now + TimeSpan.FromSeconds(0.2);
+
+			// Clear focus.
+			FocusManager.SetFocusedElement(this, null);
+
+			this.Hide();
 		}
 
-		protected override void OnStateChanged(EventArgs e)
-		{
-			base.OnStateChanged(e);
-
-			this.ShowInTaskbar = (this.WindowState != WindowState.Minimized);
-		}
+		#endregion
 	}
 }

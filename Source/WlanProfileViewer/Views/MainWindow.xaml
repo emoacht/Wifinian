@@ -4,23 +4,21 @@
 		xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
 		xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
 		xmlns:r="clr-namespace:Reactive.Bindings.Interactivity;assembly=ReactiveProperty.NET46"
-		xmlns:ma="clr-namespace:MonitorAware.Views;assembly=MonitorAware"
 		xmlns:models="clr-namespace:WlanProfileViewer.Models"
 		xmlns:viewModels="clr-namespace:WlanProfileViewer.ViewModels"
 		xmlns:views="clr-namespace:WlanProfileViewer.Views"
 		xmlns:behaviors="clr-namespace:WlanProfileViewer.Views.Behaviors"
 		xmlns:controls="clr-namespace:WlanProfileViewer.Views.Controls"
 		xmlns:converters="clr-namespace:WlanProfileViewer.Views.Converters"
-		Title="{Binding Source={x:Static views:MainWindow.ProductTitle}, Mode=OneTime}"
+		Title="{Binding Source={x:Static models:ProductInfo.Title}, Mode=OneTime}"
 		Icon="/Resources/ring.ico"
 		Width="400" Height="500"
 		MinWidth="300" MinHeight="200">
-	<Window.DataContext>
+	<!--<Window.DataContext>
 		<viewModels:MainWindowViewModel/>
-	</Window.DataContext>
+	</Window.DataContext>-->
 
 	<i:Interaction.Behaviors>
-		<ma:MonitorAwareBehavior/>
 		<behaviors:WindowMaximizeBoxBehavior/>
 	</i:Interaction.Behaviors>
 
@@ -157,8 +155,8 @@
 						<TextBlock DockPanel.Dock="Right"
 								   Margin="8,0,0,0" VerticalAlignment="Center"
 								   Foreground="{StaticResource App.Foreground}">
-							<Run Text="{Binding Source={x:Static views:MainWindow.ProductTitle}, Mode=OneTime}"/>
-							<Run Text="{Binding Source={x:Static views:MainWindow.ProductVersion}, Mode=OneTime}"/>
+							<Run Text="{Binding Source={x:Static models:ProductInfo.Title}, Mode=OneTime}"/>
+							<Run Text="{Binding Source={x:Static models:ProductInfo.Version}, Mode=OneTime}"/>
 							<Run Text="("/><Run Text="Project Site"
 								 TextDecorations="Underline" Cursor="Hand">
 								<i:Interaction.Triggers>

@@ -40,7 +40,7 @@ namespace WlanProfileViewer.Models
 
 		#endregion
 
-		public void Initialize()
+		public void Initiate()
 		{
 			Load(Current);
 

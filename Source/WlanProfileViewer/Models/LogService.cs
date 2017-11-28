@@ -7,8 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-using WlanProfileViewer.Views;
-
 namespace WlanProfileViewer.Models
 {
 	internal class LogService
@@ -44,7 +42,7 @@ namespace WlanProfileViewer.Models
 
 		private static void RecordDesktop(string fileName, string content)
 		{
-			var result = MessageBox.Show(LanguageService.Content("RecordException"), MainWindow.ProductTitle, MessageBoxButton.YesNo, MessageBoxImage.Error, MessageBoxResult.Yes);
+			var result = MessageBox.Show(LanguageService.Content("RecordException"), ProductInfo.Title, MessageBoxButton.YesNo, MessageBoxImage.Error, MessageBoxResult.Yes);
 			if (result != MessageBoxResult.Yes)
 				return;
 

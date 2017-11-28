@@ -7,18 +7,26 @@ using System.Reactive.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using Reactive.Bindings.Helpers;
 using Reactive.Bindings.Notifiers;
 
+using ScreenFrame;
 using WlanProfileViewer.Common;
+using WlanProfileViewer.Models;
 using WlanProfileViewer.Models.Wlan;
+using WlanProfileViewer.Views;
 
-namespace WlanProfileViewer.Models
+namespace WlanProfileViewer
 {
-	internal class Operation : DisposableBase
+	internal class MainController : DisposableBase
 	{
+		private readonly Application _current = Application.Current;
+
+		public NotifyIconContainer NotifyIconContainer { get; }
+
 		public ObservableCollection<ProfileItem> Profiles { get; } = new ObservableCollection<ProfileItem>();
 
 		private readonly IWlanWorker _worker;
@@ -40,14 +48,23 @@ namespace WlanProfileViewer.Models
 		}
 		private bool _isSuspended;
 
+		public ReactiveCommand CloseCommand { get; }
+
 		private ReactiveTimer RescanTimer { get; }
 
-		public Operation() : this(new NativeWifiWorker())
+		public MainController() : this(
+			//new MockWorker() ??
+			//new NetshWorker() ??
+			new NativeWifiWorker())
 		{ }
 
-		public Operation(IWlanWorker worker)
+		public MainController(IWlanWorker worker)
 		{
 			this._worker = worker;
+
+			NotifyIconContainer = new NotifyIconContainer();
+			NotifyIconContainer.MouseLeftButtonClick += OnMainWindowShowRequested;
+			NotifyIconContainer.MouseRightButtonClick += OnMenuWindowShowRequested;
 
 			IsLoading = new BooleanNotifier();
 			IsWorking = new BooleanNotifier();
@@ -110,8 +127,24 @@ namespace WlanProfileViewer.Models
 				.Throttle(TimeSpan.FromMilliseconds(100))
 				.Subscribe(async _ => await LoadProfilesAsync())
 				.AddTo(this.Subscription);
+			
+			CloseCommand = new ReactiveProperty<bool>(true)
+				.ToReactiveCommand();
+			CloseCommand
+				.Subscribe(_ => _current.Shutdown())
+				.AddTo(this.Subscription);
+		}
 
-			var loadTask = LoadProfilesAsync();
+		public async Task InitiateAsync()
+		{
+			Settings.Current.Initiate();
+
+			NotifyIconContainer.ShowIcon("pack://application:,,,/Resources/ring.ico", ProductInfo.Title);
+
+			await LoadProfilesAsync();
+
+			_current.MainWindow = new MainWindow(this);
+			_current.MainWindow.Show();
 		}
 
 		#region Dispose
@@ -126,6 +159,10 @@ namespace WlanProfileViewer.Models
 			if (disposing)
 			{
 				_worker?.Dispose();
+
+				NotifyIconContainer.Dispose();
+
+				Settings.Current.Dispose();
 			}
 
 			_disposed = true;
@@ -134,6 +171,35 @@ namespace WlanProfileViewer.Models
 		}
 
 		#endregion
+
+		private void OnMainWindowShowRequested(object sender, EventArgs e)
+		{
+			ShowMainWindow();
+		}
+
+		private void OnMenuWindowShowRequested(object sender, Point e)
+		{
+			ShowMenuWindow(e);
+		}
+
+		private void ShowMainWindow()
+		{
+			var window = (MainWindow)_current.MainWindow;
+			if (!window.CanBeShown)
+				return;
+
+			if (window.Visibility != Visibility.Visible)
+			{
+				window.Show();
+			}
+			window.Activate();
+		}
+
+		private void ShowMenuWindow(Point pivot)
+		{
+			var window = new MenuWindow(this, pivot);
+			window.Show();
+		}
 
 		#region Load
 

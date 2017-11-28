@@ -12,14 +12,12 @@ using Reactive.Bindings.Extensions;
 using Reactive.Bindings.Helpers;
 
 using WlanProfileViewer.Common;
-using WlanProfileViewer.Models;
-using WlanProfileViewer.Models.Wlan;
 
 namespace WlanProfileViewer.ViewModels
 {
-	public class MainWindowViewModel : BindableBase
+	public class MainWindowViewModel : DisposableBase
 	{
-		private Operation Op { get; }
+		private readonly MainController _controller;
 
 		public ReadOnlyReactiveCollection<ProfileItemViewModel> Profiles { get; }
 
@@ -54,68 +52,79 @@ namespace WlanProfileViewer.ViewModels
 		public ReactiveCommand ConnectCommand { get; }
 		public ReactiveCommand DisconnectCommand { get; }
 
-		public MainWindowViewModel()
-		{
-			Op = new Operation(
-				//new MockWorker() ??
-				//new NetshWorker() ??
-				new NativeWifiWorker() as IWlanWorker);
+		public MainWindowViewModel() : this(new MainController())
+		{ }
 
-			this.Profiles = Op.Profiles.ToReadOnlyReactiveCollection(x => new ProfileItemViewModel(x));
+		internal MainWindowViewModel(MainController controller)
+		{
+			this._controller = controller;
+
+			this.Profiles = _controller.Profiles
+				.ToReadOnlyReactiveCollection(x => new ProfileItemViewModel(x))
+				.AddTo(this.Subscription);
 
 			#region AutoRescanEnabled/Suspended/ConfigMode
 
-			IsAutoRescanEnabled = Op
-				.ToReactivePropertyAsSynchronized(x => x.IsAutoRescanEnabled);
+			IsAutoRescanEnabled = _controller
+				.ToReactivePropertyAsSynchronized(x => x.IsAutoRescanEnabled)
+				.AddTo(this.Subscription);
 
-			IsSuspended = Op
-				.ToReactivePropertyAsSynchronized(x => x.IsSuspended);
+			IsSuspended = _controller
+				.ToReactivePropertyAsSynchronized(x => x.IsSuspended)
+				.AddTo(this.Subscription);
 
-			IsConfigMode = new ReactiveProperty<bool>();
+			IsConfigMode = new ReactiveProperty<bool>()
+				.AddTo(this.Subscription);
 
 			IsAutoRescanEnabled
 				.Merge(IsSuspended)
 				.Where(x => x)
-				.Subscribe(_ => IsConfigMode.Value = false);
+				.Subscribe(_ => IsConfigMode.Value = false)
+				.AddTo(this.Subscription);
 
 			IsConfigMode
 				.Where(x => x)
-				.Subscribe(_ => IsAutoRescanEnabled.Value = false);
+				.Subscribe(_ => IsAutoRescanEnabled.Value = false)
+				.AddTo(this.Subscription);
 
 			#endregion
 
 			#region Load
 
-			IsLoading = Op.IsLoading
-				.Where(_ => !Op.IsWorking.Value)
+			IsLoading = _controller.IsLoading
+				.Where(_ => !_controller.IsWorking.Value)
 				//.Select(x => Observable.Empty<bool>()
 				//	.Delay(TimeSpan.FromMilliseconds(10))
 				//	.StartWith(x))
 				//.Concat()
 				.ObserveOnUIDispatcher()
-				.ToReadOnlyReactiveProperty();
+				.ToReadOnlyReactiveProperty()
+				.AddTo(this.Subscription);
 
 			RescanCommand = IsLoading
 				.Select(x => !x)
 				.ToReactiveCommand();
 			RescanCommand
-				.Subscribe(async _ => await Op.ScanNetworkAsync());
+				.Subscribe(async _ => await _controller.ScanNetworkAsync())
+				.AddTo(this.Subscription);
 
 			Profiles
 				.ObserveElementObservableProperty(x => x.Position)
 				.Throttle(TimeSpan.FromMilliseconds(10))
 				.ObserveOn(SynchronizationContext.Current)
-				.Subscribe(_ => ProfilesView.Refresh()); // ListCollectionView.Refresh method seems not thread-safe.
+				.Subscribe(_ => ProfilesView.Refresh()) // ListCollectionView.Refresh method seems not thread-safe.
+				.AddTo(this.Subscription);
 
 			#endregion
 
 			#region Work
 
-			IsNotWorking = Op.IsWorking
+			IsNotWorking = _controller.IsWorking
 				.Select(x => !x)
 				.StartWith(true) // This is necessary for initial query.
 				.ObserveOnUIDispatcher()
-				.ToReadOnlyReactiveProperty();
+				.ToReadOnlyReactiveProperty()
+				.AddTo(this.Subscription);
 
 			// Query for a profile which is selected.
 			var querySelectedProfiles = Profiles
@@ -147,7 +156,8 @@ namespace WlanProfileViewer.ViewModels
 				.CombineLatestValuesAreAllTrue()
 				.ToReactiveCommand();
 			MoveUpCommand
-				.Subscribe(async _ => await Op.MoveUpProfileAsync());
+				.Subscribe(async _ => await _controller.MoveUpProfileAsync())
+				.AddTo(this.Subscription);
 
 			#endregion
 
@@ -160,7 +170,8 @@ namespace WlanProfileViewer.ViewModels
 				.CombineLatestValuesAreAllTrue()
 				.ToReactiveCommand();
 			MoveDownCommand
-				.Subscribe(async _ => await Op.MoveDownProfileAsync());
+				.Subscribe(async _ => await _controller.MoveDownProfileAsync())
+				.AddTo(this.Subscription);
 
 			#endregion
 
@@ -169,7 +180,8 @@ namespace WlanProfileViewer.ViewModels
 			DeleteCommand = IsNotWorking
 				.ToReactiveCommand();
 			DeleteCommand
-				.Subscribe(async _ => await Op.DeleteProfileAsync());
+				.Subscribe(async _ => await _controller.DeleteProfileAsync())
+				.AddTo(this.Subscription);
 
 			#endregion
 
@@ -182,7 +194,8 @@ namespace WlanProfileViewer.ViewModels
 				.CombineLatestValuesAreAllTrue()
 				.ToReactiveCommand();
 			ConnectCommand
-				.Subscribe(async _ => await Op.ConnectNetworkAsync());
+				.Subscribe(async _ => await _controller.ConnectNetworkAsync())
+				.AddTo(this.Subscription);
 
 			#endregion
 
@@ -195,13 +208,14 @@ namespace WlanProfileViewer.ViewModels
 				.CombineLatestValuesAreAllTrue()
 				.ToReactiveCommand();
 			DisconnectCommand
-				.Subscribe(async _ => await Op.DisconnectNetworkAsync());
+				.Subscribe(async _ => await _controller.DisconnectNetworkAsync())
+				.AddTo(this.Subscription);
 
 			#endregion
 
-			querySelectedProfiles.Connect();
-			queryConnectedProfiles.Connect();
-			queryAvailableProfiles.Connect();
+			querySelectedProfiles.Connect().AddTo(this.Subscription);
+			queryConnectedProfiles.Connect().AddTo(this.Subscription);
+			queryAvailableProfiles.Connect().AddTo(this.Subscription);
 
 			#endregion
 		}
