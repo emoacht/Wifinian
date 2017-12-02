@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
 using Reactive.Bindings.Extensions;
-using static System.Math;
 
 using WlanProfileViewer.Common;
 
@@ -30,11 +29,7 @@ namespace WlanProfileViewer.Models
 		public int AutoRescanInterval
 		{
 			get => _autoRescanInterval;
-			set
-			{
-				var clamped = Max(Min(value, _intervalMax), _intervalMin);
-				SetPropertyValue(ref _autoRescanInterval, clamped);
-			}
+			set => SetPropertyValue(ref _autoRescanInterval, value, _intervalMin, _intervalMax);
 		}
 		private int _autoRescanInterval = 8; // Default
 

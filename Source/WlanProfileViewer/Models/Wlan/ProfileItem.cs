@@ -98,11 +98,7 @@ namespace WlanProfileViewer.Models.Wlan
 		public int Signal
 		{
 			get => _signal;
-			set
-			{
-				var clamped = Max(Min(value, 100), 0);
-				SetPropertyValue(ref _signal, clamped);
-			}
+			set => SetPropertyValue(ref _signal, value, 0, 100);
 		}
 		private int _signal;
 
