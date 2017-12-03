@@ -52,12 +52,13 @@
 					<controls:PlainToggleButton
 						Grid.Column="1"
 						Height="24"
-						Style="{StaticResource NormalToggleButtonStyle}"
+						Style="{StaticResource MenuToggleButtonStyle}"
 						Content="Quick Rescan"
 						IsChecked="{Binding IsQuickRescanEnabled.Value, Mode=TwoWay}"/>
 
 					<Button Grid.Column="2"
 							Height="24"
+							Style="{StaticResource MenuButtonStyle}"
 							Content="{Binding Source={x:Static models:Settings.Current}, Path=RescanInterval, Mode=OneWay}">
 						<i:Interaction.Triggers>
 							<i:EventTrigger EventName="Click">
@@ -71,12 +72,13 @@
 					<controls:PlainToggleButton
 						Grid.Column="4"
 						Height="24"
-						Style="{StaticResource NormalToggleButtonStyle}"
+						Style="{StaticResource MenuToggleButtonStyle}"
 						Content="Active Priority"
 						IsChecked="{Binding IsActivePriorityEnabled.Value, Mode=TwoWay}"/>
 
 					<Button Grid.Column="5"
 							Height="24"
+							Style="{StaticResource MenuButtonStyle}"
 							Content="{Binding Source={x:Static models:Settings.Current}, Path=SignalThreshold, Mode=OneWay}">
 						<i:Interaction.Triggers>
 							<i:EventTrigger EventName="Click">
@@ -90,7 +92,7 @@
 					<controls:PlainToggleButton
 						Grid.Column="7"
 						Height="24"
-						Style="{StaticResource NormalToggleButtonStyle}"
+						Style="{StaticResource MenuToggleButtonStyle}"
 						Content="Config"
 						IsChecked="{Binding IsConfigMode.Value, Mode=TwoWay}"/>
 				</Grid>
@@ -164,7 +166,9 @@
 									<LineBreak/>
 									<Run Text="{Binding Authentication, Mode=OneTime}"/>
 									<Run Text="{Binding Encryption, Mode=OneTime, StringFormat=[{0}]}"/>
+									<Run Text="| Auto Connect:"/>
 									<Run Text="{Binding IsAutoConnectEnabled.Value, Mode=OneWay}"/>
+									<Run Text="| Auto Switch:"/>
 									<Run Text="{Binding IsAutoSwitchEnabled.Value, Mode=OneWay}"/>
 								</TextBlock>
 

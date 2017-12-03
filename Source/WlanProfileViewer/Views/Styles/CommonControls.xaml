@@ -73,6 +73,77 @@
 		</Setter>
 	</Style>
 
+	<Style x:Key="MenuButtonStyle" TargetType="{x:Type Button}">
+		<Setter Property="Background" Value="{StaticResource App.Background}"/>
+		<Setter Property="BorderBrush" Value="{StaticResource ToggleButton.Normal.Foreground}"/>
+		<Setter Property="BorderThickness" Value="2"/>
+		<Setter Property="Foreground" Value="{StaticResource ToggleButton.Normal.Foreground}"/>
+		<Setter Property="FontSize" Value="12"/>
+		<Setter Property="FontWeight" Value="SemiBold"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type Button}">
+					<Grid>
+						<Border x:Name="border"
+								Background="{TemplateBinding Background}"
+								BorderBrush="{TemplateBinding BorderBrush}"
+								BorderThickness="{TemplateBinding BorderThickness}"
+								SnapsToDevicePixels="True"
+								UseLayoutRounding="True">
+							<ContentPresenter x:Name="contentPresenter"
+											  Margin="{TemplateBinding Padding}"
+											  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+											  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+											  Content="{TemplateBinding Content}"/>
+						</Border>
+
+						<VisualStateManager.VisualStateGroups>
+							<VisualStateGroup x:Name="CommonStates">
+								<VisualState x:Name="Normal"/>
+								<VisualState x:Name="MouseOver">
+									<Storyboard>
+										<DoubleAnimation Storyboard.TargetName="border"
+														 Storyboard.TargetProperty="(Control.BorderBrush).(SolidColorBrush.Opacity)"
+														 To="0.8"
+														 Duration="0:0:0.1"/>
+										<DoubleAnimation Storyboard.TargetName="border"
+														 Storyboard.TargetProperty="(Control.Foreground).(SolidColorBrush.Opacity)"
+														 To="0.8"
+														 Duration="0:0:0.1"/>
+									</Storyboard>
+								</VisualState>
+								<VisualState x:Name="Pressed">
+									<Storyboard>
+										<DoubleAnimation Storyboard.TargetName="border"
+														 Storyboard.TargetProperty="(Control.BorderBrush).(SolidColorBrush.Opacity)"
+														 To="0.9"
+														 Duration="0:0:0.1"/>
+										<DoubleAnimation Storyboard.TargetName="border"
+														 Storyboard.TargetProperty="(Control.Foreground).(SolidColorBrush.Opacity)"
+														 To="0.9"
+														 Duration="0:0:0.1"/>
+									</Storyboard>
+								</VisualState>
+								<VisualState x:Name="Disabled">
+									<Storyboard>
+										<DoubleAnimation Storyboard.TargetName="border"
+														 Storyboard.TargetProperty="(Control.BorderBrush).(SolidColorBrush.Opacity)"
+														 To="0.4"
+														 Duration="0:0:0"/>
+										<DoubleAnimation Storyboard.TargetName="border"
+														 Storyboard.TargetProperty="(Control.Foreground).(SolidColorBrush.Opacity)"
+														 To="0.4"
+														 Duration="0:0:0"/>
+									</Storyboard>
+								</VisualState>
+							</VisualStateGroup>
+						</VisualStateManager.VisualStateGroups>
+					</Grid>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+	
 	<Style x:Key="ArrowButtonStyle" TargetType="{x:Type Button}">
 		<Setter Property="Width" Value="12"/>
 		<Setter Property="Height" Value="12"/>

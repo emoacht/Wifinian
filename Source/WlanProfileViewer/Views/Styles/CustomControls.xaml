@@ -293,7 +293,7 @@
 	</Style>
 
 	<!-- PlainToggleButton -->
-	<Style x:Key="NormalToggleButtonStyle" TargetType="{x:Type controls:PlainToggleButton}">
+	<Style x:Key="MenuToggleButtonStyle" TargetType="{x:Type controls:PlainToggleButton}">
 		<Setter Property="Background" Value="{StaticResource App.Background}"/>
 		<Setter Property="BorderBrush" Value="{StaticResource ToggleButton.Normal.Foreground}"/>
 		<Setter Property="BorderThickness" Value="2"/>
