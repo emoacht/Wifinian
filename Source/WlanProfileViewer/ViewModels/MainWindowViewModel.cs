@@ -37,15 +37,14 @@ namespace WlanProfileViewer.ViewModels
 		}
 		private ListCollectionView _profilesView;
 
-		public ReactiveProperty<bool> IsAutoRescanEnabled { get; }
-		public ReactiveProperty<bool> IsSuspended { get; }
+		public ReactiveProperty<bool> IsQuickRescanEnabled => _controller.IsQuickRescanEnabled;
+		public ReactiveProperty<bool> IsActivePriorityEnabled => _controller.IsActivePriorityEnabled;
 		public ReactiveProperty<bool> IsConfigMode { get; }
 
-		public ReadOnlyReactiveProperty<bool> IsLoading { get; }
+		public ReadOnlyReactiveProperty<bool> IsUpdating { get; }
 		public ReadOnlyReactiveProperty<bool> IsNotWorking { get; }
 
-		public ReactiveCommand RescanCommand { get; }
-
+		public ReactiveCommand RescanCommand => _controller.RescanCommand;
 		public ReactiveCommand MoveUpCommand { get; }
 		public ReactiveCommand MoveDownCommand { get; }
 		public ReactiveCommand DeleteCommand { get; }
@@ -59,39 +58,20 @@ namespace WlanProfileViewer.ViewModels
 		{
 			this._controller = controller;
 
-			this.Profiles = _controller.Profiles
+			Profiles = _controller.Profiles
 				.ToReadOnlyReactiveCollection(x => new ProfileItemViewModel(x))
 				.AddTo(this.Subscription);
-
-			#region AutoRescanEnabled/Suspended/ConfigMode
-
-			IsAutoRescanEnabled = _controller
-				.ToReactivePropertyAsSynchronized(x => x.IsAutoRescanEnabled)
-				.AddTo(this.Subscription);
-
-			IsSuspended = _controller
-				.ToReactivePropertyAsSynchronized(x => x.IsSuspended)
+			Profiles
+				.ObserveElementObservableProperty(x => x.Position)
+				.Throttle(TimeSpan.FromMilliseconds(10))
+				.ObserveOn(SynchronizationContext.Current)
+				.Subscribe(_ => ProfilesView.Refresh()) // ListCollectionView.Refresh method seems not thread-safe.
 				.AddTo(this.Subscription);
 
 			IsConfigMode = new ReactiveProperty<bool>()
 				.AddTo(this.Subscription);
 
-			IsAutoRescanEnabled
-				.Merge(IsSuspended)
-				.Where(x => x)
-				.Subscribe(_ => IsConfigMode.Value = false)
-				.AddTo(this.Subscription);
-
-			IsConfigMode
-				.Where(x => x)
-				.Subscribe(_ => IsAutoRescanEnabled.Value = false)
-				.AddTo(this.Subscription);
-
-			#endregion
-
-			#region Load
-
-			IsLoading = _controller.IsLoading
+			IsUpdating = _controller.IsUpdating
 				.Where(_ => !_controller.IsWorking.Value)
 				//.Select(x => Observable.Empty<bool>()
 				//	.Delay(TimeSpan.FromMilliseconds(10))
@@ -101,30 +81,14 @@ namespace WlanProfileViewer.ViewModels
 				.ToReadOnlyReactiveProperty()
 				.AddTo(this.Subscription);
 
-			RescanCommand = IsLoading
-				.Select(x => !x)
-				.ToReactiveCommand();
-			RescanCommand
-				.Subscribe(async _ => await _controller.ScanNetworkAsync())
-				.AddTo(this.Subscription);
-
-			Profiles
-				.ObserveElementObservableProperty(x => x.Position)
-				.Throttle(TimeSpan.FromMilliseconds(10))
-				.ObserveOn(SynchronizationContext.Current)
-				.Subscribe(_ => ProfilesView.Refresh()) // ListCollectionView.Refresh method seems not thread-safe.
-				.AddTo(this.Subscription);
-
-			#endregion
-
-			#region Work
-
 			IsNotWorking = _controller.IsWorking
 				.Select(x => !x)
 				.StartWith(true) // This is necessary for initial query.
 				.ObserveOnUIDispatcher()
 				.ToReadOnlyReactiveProperty()
 				.AddTo(this.Subscription);
+
+			#region Work
 
 			// Query for a profile which is selected.
 			var querySelectedProfiles = Profiles

@@ -3,38 +3,22 @@
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
 		xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
-		xmlns:r="clr-namespace:Reactive.Bindings.Interactivity;assembly=ReactiveProperty.NET46"
 		xmlns:models="clr-namespace:WlanProfileViewer.Models"
 		xmlns:viewModels="clr-namespace:WlanProfileViewer.ViewModels"
 		xmlns:views="clr-namespace:WlanProfileViewer.Views"
 		xmlns:behaviors="clr-namespace:WlanProfileViewer.Views.Behaviors"
 		xmlns:controls="clr-namespace:WlanProfileViewer.Views.Controls"
-		xmlns:converters="clr-namespace:WlanProfileViewer.Views.Converters"
 		Title="{Binding Source={x:Static models:ProductInfo.Title}, Mode=OneTime}"
-		Icon="/Resources/ring.ico"
-		Width="400" Height="500"
-		MinWidth="300" MinHeight="200">
-	<!--<Window.DataContext>
-		<viewModels:MainWindowViewModel/>
-	</Window.DataContext>-->
+		Width="500"
+		Height="400" MinHeight="200" ResizeMode="CanResize"
+		Background="{StaticResource App.Background}"
+		AllowsTransparency="True" WindowStyle="None">
+	<WindowChrome.WindowChrome>
+		<WindowChrome CaptionHeight="0"
+					  ResizeBorderThickness="0,4"/>
+	</WindowChrome.WindowChrome>
 
-	<i:Interaction.Behaviors>
-		<behaviors:WindowMaximizeBoxBehavior/>
-	</i:Interaction.Behaviors>
-
-	<i:Interaction.Triggers>
-		<i:EventTrigger EventName="StateChanged">
-			<r:EventToReactiveProperty ReactiveProperty="{Binding IsSuspended, Mode=OneWay}">
-				<converters:StateChangedToBooleanConverter/>
-			</r:EventToReactiveProperty>
-
-			<ei:ChangePropertyAction TargetObject="{Binding ElementName=RibbonButton, Mode=OneWay}"
-									 PropertyName="IsChecked"
-									 Value="False"/>
-		</i:EventTrigger>
-	</i:Interaction.Triggers>
-
-	<Grid Background="{StaticResource App.Background}">
+	<Grid>
 		<Grid>
 			<Grid.RowDefinitions>
 				<RowDefinition Height="Auto"/>
@@ -46,10 +30,13 @@
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="44"/>
 						<ColumnDefinition Width="92"/>
+						<ColumnDefinition Width="30"/>
 						<ColumnDefinition Width="12"/>
 						<ColumnDefinition Width="92"/>
+						<ColumnDefinition Width="30"/>
+						<ColumnDefinition Width="12"/>
+						<ColumnDefinition Width="72"/>
 						<ColumnDefinition Width="*"/>
-						<ColumnDefinition Width="34"/>
 					</Grid.ColumnDefinitions>
 
 					<!-- Rescan -->
@@ -58,115 +45,54 @@
 						x:Name="RescanButton"
 						Width="30" Height="30"
 						Style="{StaticResource RollingStyle}"
-						IsRunning="{Binding IsLoading.Value}"
+						IsRunning="{Binding IsUpdating.Value}"
 						Command="{Binding RescanCommand}"/>
 
-					<!-- Auto Rescan -->
+					<!-- Quick Rescan -->
 					<controls:PlainToggleButton
 						Grid.Column="1"
 						Height="24"
 						Style="{StaticResource NormalToggleButtonStyle}"
-						Content="Auto Rescan"
-						IsChecked="{Binding IsAutoRescanEnabled.Value, Mode=TwoWay}"/>
+						Content="Quick Rescan"
+						IsChecked="{Binding IsQuickRescanEnabled.Value, Mode=TwoWay}"/>
 
-					<!-- Config Mode -->
+					<Button Grid.Column="2"
+							Height="24"
+							Content="{Binding Source={x:Static models:Settings.Current}, Path=RescanInterval, Mode=OneWay}">
+						<i:Interaction.Triggers>
+							<i:EventTrigger EventName="Click">
+								<ei:CallMethodAction TargetObject="{Binding Source={x:Static models:Settings.Current}}"
+													 MethodName="IncrementRescanInterval"/>
+							</i:EventTrigger>
+						</i:Interaction.Triggers>
+					</Button>
+
+					<!-- Active Priority -->
 					<controls:PlainToggleButton
-						Grid.Column="3"
+						Grid.Column="4"
 						Height="24"
 						Style="{StaticResource NormalToggleButtonStyle}"
-						Content="Config Mode"
-						IsChecked="{Binding IsConfigMode.Value, Mode=TwoWay}"/>
+						Content="Active Priority"
+						IsChecked="{Binding IsActivePriorityEnabled.Value, Mode=TwoWay}"/>
 
-					<!-- Ribbon -->
+					<Button Grid.Column="5"
+							Height="24"
+							Content="{Binding Source={x:Static models:Settings.Current}, Path=SignalThreshold, Mode=OneWay}">
+						<i:Interaction.Triggers>
+							<i:EventTrigger EventName="Click">
+								<ei:CallMethodAction TargetObject="{Binding Source={x:Static models:Settings.Current}}"
+													 MethodName="IncrementSignalThreshold"/>
+							</i:EventTrigger>
+						</i:Interaction.Triggers>
+					</Button>
+					
+					<!-- Config -->
 					<controls:PlainToggleButton
-						Grid.Column="5"
-						x:Name="RibbonButton"
-						Style="{StaticResource ArrowToggleButtonStyle}"/>
-				</Grid>
-
-				<Grid Margin="0,0,0,6"
-					  Visibility="{Binding ElementName=RibbonButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverterKey}}">
-					<DockPanel x:Name="SettingsBox"
-							   Margin="8,0">
-						<Button DockPanel.Dock="Right"
-								Style="{StaticResource ArrowButtonStyle}"
-								RenderTransformOrigin="0.5 0.5">
-							<Button.RenderTransform>
-								<RotateTransform Angle="90"/>
-							</Button.RenderTransform>
-
-							<i:Interaction.Triggers>
-								<i:EventTrigger EventName="Click">
-									<ei:ChangePropertyAction TargetObject="{Binding ElementName=InfoBox, Mode=OneWay}"
-															 PropertyName="Visibility"
-															 Value="Visible"/>
-								</i:EventTrigger>
-							</i:Interaction.Triggers>
-						</Button>
-
-						<StackPanel DockPanel.Dock="Left">
-							<!-- Auto Rescan Interval -->
-							<StackPanel Height="24"
-										Orientation="Horizontal">
-								<Label VerticalAlignment="Center"
-									   Foreground="{StaticResource App.Foreground}"
-									   Content="Auto Rescan Interval"/>
-								<Slider x:Name="AutoRescanIntervalSlider"
-										Style="{StaticResource NormalSliderStyle}"
-										Width="90" Height="18"
-										Margin="2,0,8,0" VerticalAlignment="Center"
-										Minimum="4" Maximum="16" TickFrequency="1" IsSnapToTickEnabled="True"
-										Value="{Binding Source={x:Static models:Settings.Current}, Path=AutoRescanInterval, Mode=TwoWay}"/>
-								<Border Width="30" Height="20"
-										VerticalAlignment="Center"
-										BorderBrush="{StaticResource App.Foreground.Supplement}"
-										BorderThickness="1"
-										UseLayoutRounding="True">
-									<TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
-											   Foreground="{StaticResource App.Foreground}"
-											   FontWeight="SemiBold"
-											   Text="{Binding ElementName=AutoRescanIntervalSlider, Path=Value, Mode=OneWay}"/>
-								</Border>
-							</StackPanel>
-						</StackPanel>
-					</DockPanel>
-
-					<DockPanel x:Name="InfoBox"
-							   Margin="8,0"
-							   Background="{StaticResource App.Background}"
-							   Visibility="Collapsed">
-						<Button DockPanel.Dock="Left"
-								Style="{StaticResource ArrowButtonStyle}"
-								RenderTransformOrigin="0.5 0.5">
-							<Button.RenderTransform>
-								<RotateTransform Angle="-90"/>
-							</Button.RenderTransform>
-
-							<i:Interaction.Triggers>
-								<i:EventTrigger EventName="Click">
-									<ei:ChangePropertyAction TargetObject="{Binding ElementName=InfoBox, Mode=OneWay}"
-															 PropertyName="Visibility"
-															 Value="Collapsed"/>
-								</i:EventTrigger>
-							</i:Interaction.Triggers>
-						</Button>
-
-						<!-- Info -->
-						<TextBlock DockPanel.Dock="Right"
-								   Margin="8,0,0,0" VerticalAlignment="Center"
-								   Foreground="{StaticResource App.Foreground}">
-							<Run Text="{Binding Source={x:Static models:ProductInfo.Title}, Mode=OneTime}"/>
-							<Run Text="{Binding Source={x:Static models:ProductInfo.Version}, Mode=OneTime}"/>
-							<Run Text="("/><Run Text="Project Site"
-								 TextDecorations="Underline" Cursor="Hand">
-								<i:Interaction.Triggers>
-									<i:EventTrigger EventName="MouseDown">
-										<ei:LaunchUriOrFileAction Path="{Binding Source={x:Static models:LanguageService.ProjectSite}}"/>
-									</i:EventTrigger>
-								</i:Interaction.Triggers>
-							</Run><Run Text=")"/>
-						</TextBlock>
-					</DockPanel>
+						Grid.Column="7"
+						Height="24"
+						Style="{StaticResource NormalToggleButtonStyle}"
+						Content="Config"
+						IsChecked="{Binding IsConfigMode.Value, Mode=TwoWay}"/>
 				</Grid>
 			</StackPanel>
 
@@ -399,7 +325,7 @@
 		</Grid>
 
 		<!--<controls:MovingControl Style="{StaticResource BubbleStyle}"
-								IsEnabled="{Binding IsLoading.Value}">
+								IsEnabled="{Binding IsUpdating.Value}">
 			<i:Interaction.Behaviors>
 				<behaviors:FrameworkElementCenterBehavior Target="{Binding ElementName=RescanButton}"/>
 			</i:Interaction.Behaviors>

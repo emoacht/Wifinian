@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -11,8 +13,10 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Reactive.Bindings.Extensions;
 
 using ScreenFrame.Movers;
+using WlanProfileViewer.Models;
 using WlanProfileViewer.ViewModels;
 
 namespace WlanProfileViewer.Views
@@ -21,6 +25,8 @@ namespace WlanProfileViewer.Views
 	{
 		private readonly SwitchWindowMover _mover;
 		private MainWindowViewModel ViewModel => (MainWindowViewModel)this.DataContext;
+
+		protected CompositeDisposable Subscription { get; } = new CompositeDisposable();
 
 		internal MainWindow(MainController controller)
 		{
@@ -33,12 +39,42 @@ namespace WlanProfileViewer.Views
 			this.DataContext = new MainWindowViewModel(controller);
 
 			_mover = new SwitchWindowMover(this, controller.NotifyIconContainer.NotifyIcon);
+
+			#region Height
+
+			this.Height = Settings.Current.MainWindowHeight * _mover.Dpi.DpiScaleY;
+
+			Observable.FromEventPattern<SizeChangedEventHandler, SizeChangedEventArgs>(
+				h => h.Invoke,
+				h => this.SizeChanged += h,
+				h => this.SizeChanged -= h)
+				.Where(x => x.EventArgs.HeightChanged)
+				.Subscribe(x => Settings.Current.MainWindowHeight = x.EventArgs.NewSize.Height / _mover.Dpi.DpiScaleY)
+				.AddTo(this.Subscription);
+
+			#endregion
+
+			#region Drag
+
+			Observable.FromEventPattern<MouseButtonEventHandler, MouseButtonEventArgs>(
+				h => h.Invoke,
+				h => this.MouseLeftButtonDown += h,
+				h => this.MouseLeftButtonDown -= h)
+				.Subscribe(x =>
+				{
+					this.DragMove();
+					x.EventArgs.Handled = true;
+				})
+				.AddTo(this.Subscription);
+
+			#endregion
 		}
 
 		protected override void OnClosing(CancelEventArgs e)
 		{
 			if (!e.Cancel)
 			{
+				Subscription.Dispose();
 				ViewModel.Dispose();
 			}
 

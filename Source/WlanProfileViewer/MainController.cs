@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Data;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using Reactive.Bindings.Helpers;
@@ -25,32 +26,23 @@ namespace WlanProfileViewer
 	{
 		private readonly Application _current = Application.Current;
 
-		public NotifyIconContainer NotifyIconContainer { get; }
+		public ObservableCollection<ProfileItem> Profiles { get; }
+		private readonly object _profilesLock = new object();
 
-		public ObservableCollection<ProfileItem> Profiles { get; } = new ObservableCollection<ProfileItem>();
+		public NotifyIconContainer NotifyIconContainer { get; }
 
 		private readonly IWlanWorker _worker;
 
-		public BooleanNotifier IsLoading { get; }
+		public BooleanNotifier IsUpdating { get; }
 		public BooleanNotifier IsWorking { get; }
 
-		public bool IsAutoRescanEnabled
-		{
-			get => _isAutoRescanEnabled;
-			set => SetPropertyValue(ref _isAutoRescanEnabled, value);
-		}
-		private bool _isAutoRescanEnabled;
-
-		public bool IsSuspended
-		{
-			get => _isSuspended;
-			set => SetPropertyValue(ref _isSuspended, value);
-		}
-		private bool _isSuspended;
-
-		public ReactiveCommand CloseCommand { get; }
+		public ReactiveProperty<bool> IsQuickRescanEnabled { get; }
+		public ReactiveProperty<bool> IsActivePriorityEnabled { get; }
 
 		private ReactiveTimer RescanTimer { get; }
+
+		public ReactiveCommand RescanCommand { get; }
+		public ReactiveCommand CloseCommand { get; }
 
 		public MainController() : this(
 			//new MockWorker() ??
@@ -60,55 +52,56 @@ namespace WlanProfileViewer
 
 		public MainController(IWlanWorker worker)
 		{
-			this._worker = worker;
+			Profiles = new ObservableCollection<ProfileItem>();
+			BindingOperations.EnableCollectionSynchronization(Profiles, _profilesLock);
 
 			NotifyIconContainer = new NotifyIconContainer();
 			NotifyIconContainer.MouseLeftButtonClick += OnMainWindowShowRequested;
 			NotifyIconContainer.MouseRightButtonClick += OnMenuWindowShowRequested;
 
-			IsLoading = new BooleanNotifier();
+			this._worker = worker;
+
+			IsUpdating = new BooleanNotifier();
 			IsWorking = new BooleanNotifier();
 
-			ShowLoadingTime(); // For debug
+			ShowUpdatingTime(); // For debug
 			ShowWorkingTime(); // For debug
 
-			RescanTimer = new ReactiveTimer(TimeSpan.FromSeconds(Settings.Current.AutoRescanInterval))
+			IsQuickRescanEnabled = new ReactiveProperty<bool>()
+				.AddTo(this.Subscription);
+
+			IsActivePriorityEnabled = new ReactiveProperty<bool>()
+				.AddTo(this.Subscription);
+
+			#region Update
+
+			RescanTimer = new ReactiveTimer(TimeSpan.FromSeconds(Settings.Current.RescanInterval))
 				.AddTo(this.Subscription);
 			RescanTimer
 				.Subscribe(async _ => await ScanNetworkAsync())
 				.AddTo(this.Subscription);
 
 			Settings.Current
-				.ObserveProperty(x => x.AutoRescanInterval)
+				.ObserveProperty(x => x.RescanInterval)
 				.Throttle(TimeSpan.FromMilliseconds(100))
-				.Subscribe(x => RescanTimer.Interval = TimeSpan.FromSeconds(x))
+				.Subscribe(rescanInterval => RescanTimer.Interval = TimeSpan.FromSeconds(rescanInterval))
 				.AddTo(this.Subscription);
 
-			this.ObserveProperty(x => x.IsAutoRescanEnabled)
-				.Subscribe(isEnabled =>
+			IsQuickRescanEnabled
+				.Subscribe(isQuickRescanEnabled =>
 				{
-					if (isEnabled)
+					if (isQuickRescanEnabled)
 						RescanTimer.Start();
 					else
 						RescanTimer.Stop();
 				})
 				.AddTo(this.Subscription);
 
-			this.ObserveProperty(x => x.IsSuspended, false)
-				.Subscribe(async isSuspended =>
-				{
-					if (isSuspended)
-					{
-						RescanTimer.Stop();
-					}
-					else
-					{
-						if (IsAutoRescanEnabled)
-							RescanTimer.Start();
-						else
-							await ScanNetworkAsync();
-					}
-				})
+			RescanCommand = IsUpdating
+				.Select(x => !x)
+				.ToReactiveCommand();
+			RescanCommand
+				.Subscribe(async _ => await ScanNetworkAsync())
 				.AddTo(this.Subscription);
 
 			var networkRefreshed = Observable.FromEventPattern(
@@ -125,14 +118,26 @@ namespace WlanProfileViewer
 				h => _worker.ProfileChanged -= h);
 			Observable.Merge(networkRefreshed, interfaceChanged, connectionChanged, profileChanged)
 				.Throttle(TimeSpan.FromMilliseconds(100))
-				.Subscribe(async _ => await LoadProfilesAsync())
+				.Subscribe(async _ =>
+				{
+					if (IsQuickRescanEnabled.Value)
+						RescanTimer.Start(TimeSpan.FromSeconds(Settings.Current.RescanInterval)); // Wait for due time.
+
+					await LoadProfilesAsync();
+				})
 				.AddTo(this.Subscription);
-			
+
+			#endregion
+
+			#region Close
+
 			CloseCommand = new ReactiveProperty<bool>(true)
 				.ToReactiveCommand();
 			CloseCommand
 				.Subscribe(_ => _current.Shutdown())
 				.AddTo(this.Subscription);
+
+			#endregion
 		}
 
 		public async Task InitiateAsync()
@@ -141,6 +146,7 @@ namespace WlanProfileViewer
 
 			NotifyIconContainer.ShowIcon("pack://application:,,,/Resources/ring.ico", ProductInfo.Title);
 
+			await ScanNetworkAsync();
 			await LoadProfilesAsync();
 
 			_current.MainWindow = new MainWindow(this);
@@ -159,9 +165,7 @@ namespace WlanProfileViewer
 			if (disposing)
 			{
 				_worker?.Dispose();
-
 				NotifyIconContainer.Dispose();
-
 				Settings.Current.Dispose();
 			}
 
@@ -201,7 +205,7 @@ namespace WlanProfileViewer
 			window.Show();
 		}
 
-		#region Load
+		#region Update
 
 		private static readonly TimeSpan _scanTimeout = TimeSpan.FromSeconds(5);
 
@@ -209,88 +213,118 @@ namespace WlanProfileViewer
 		{
 			Debug.WriteLine("Scan start!");
 
-			await _worker.ScanNetworkAsync(_scanTimeout);
+			await UpdateAsync(() => _worker.ScanNetworkAsync(_scanTimeout));
 		}
-
-		private readonly object _locker = new object();
 
 		public async Task LoadProfilesAsync()
 		{
-			lock (_locker)
-			{
-				if (IsLoading.Value)
-					return;
-
-				IsLoading.TurnOn();
-			}
-
 			Debug.WriteLine("Load start!");
 
-			try
+			await UpdateAsync(() => Task.Run(() => LoadProfilesBaseAsync()));
+		}
+
+		private async Task LoadProfilesBaseAsync()
+		{
+			var oldProfileIndices = Enumerable.Range(0, Profiles.Count).ToList();
+			var newProfiles = new List<ProfileItem>();
+
+			foreach (var newProfile in await _worker.GetProfilesAsync())
 			{
-				var oldProfileIndices = Enumerable.Range(0, Profiles.Count).ToList();
-				var newProfiles = new List<ProfileItem>();
+				var isExisting = false;
 
-				foreach (var newProfile in await _worker.GetProfilesAsync())
+				foreach (int index in oldProfileIndices)
 				{
-					var isExisting = false;
-
-					foreach (int index in oldProfileIndices)
+					var oldProfile = Profiles[index];
+					if (string.Equals(oldProfile.Id, newProfile.Id, StringComparison.Ordinal))
 					{
-						var oldProfile = Profiles[index];
-						if (string.Equals(oldProfile.Id, newProfile.Id, StringComparison.Ordinal))
-						{
-							isExisting = true;
-							oldProfile.Copy(newProfile);
-							oldProfileIndices.Remove(index);
-							break;
-						}
+						isExisting = true;
+						oldProfile.Copy(newProfile);
+						oldProfileIndices.Remove(index);
+						break;
 					}
-
-					if (!isExisting)
-						newProfiles.Add(newProfile);
 				}
 
-				if ((oldProfileIndices.Count > 0) || (newProfiles.Count > 0))
+				if (!isExisting)
+					newProfiles.Add(newProfile);
+			}
+
+			if ((oldProfileIndices.Count > 0) || (newProfiles.Count > 0))
+			{
+				lock (_profilesLock)
 				{
 					oldProfileIndices.Reverse(); // Reverse indices to start removing from the tail.
 					oldProfileIndices.ForEach(x => Profiles.RemoveAt(x));
 					newProfiles.ForEach(x => Profiles.Add(x));
-
-					// Calculate count of positions for each interface.
-					Profiles
-						.GroupBy(x => x.InterfaceId)
-						.ToList()
-						.ForEach(profilesGroup =>
-						{
-							var count = profilesGroup.Count();
-
-							foreach (var profile in profilesGroup)
-								profile.PositionCount = count;
-						});
 				}
 
-				Debug.WriteLine(Profiles.Any()
-					? Profiles
-						.Select(x => $"Profile {x.Name} -> AutoConnect {x.IsAutoConnectEnabled}, AutoSwitch {x.IsAutoSwitchEnabled}, Position: {x.Position}, Signal: {x.Signal}, IsConnected {x.IsConnected}")
-						.Aggregate((work, next) => work + Environment.NewLine + next)
-					: "No Profile");
+				// Calculate count of positions for each interface.
+				Profiles
+					.GroupBy(x => x.InterfaceId)
+					.ToList()
+					.ForEach(profilesGroup =>
+					{
+						var count = profilesGroup.Count();
+
+						foreach (var profile in profilesGroup)
+							profile.PositionCount = count;
+					});
+			}
+
+			Debug.WriteLine(Profiles.Any()
+				? Profiles
+					.Select(x => $"Profile {x.Name} -> AutoConnect {x.IsAutoConnectEnabled}, AutoSwitch {x.IsAutoSwitchEnabled}, Position: {x.Position}, Signal: {x.Signal}, IsConnected {x.IsConnected}")
+					.Aggregate((work, next) => work + Environment.NewLine + next)
+				: "No Profile");
+
+			if (IsActivePriorityEnabled.Value)
+			{
+				var targetProfiles = Profiles
+					.Where(x => x.IsAutoConnectEnabled && x.IsAutoSwitchEnabled && (Settings.Current.SignalThreshold <= x.Signal))
+					.GroupBy(x => x.InterfaceId)
+					.Select(y => y.OrderBy(x => x.Position).Where(x => !x.IsConnected).FirstOrDefault())
+					.Where(x => x != null)
+					.ToArray();
+
+				if (targetProfiles.Length > 0)
+				{
+					await Task.WhenAll(targetProfiles.Select(x => ConnectNetworkAsync(x)));
+				}
+			}
+		}
+
+		private readonly SemaphoreSlim _updateSemaphore = new SemaphoreSlim(1);
+
+		private async Task UpdateAsync(Func<Task> perform)
+		{
+			bool isEntered = false;
+			try
+			{
+				if (!(isEntered = _updateSemaphore.Wait(TimeSpan.Zero)))
+					return;
+
+				IsUpdating.TurnOn();
+
+				await perform.Invoke();
 			}
 			finally
 			{
-				IsLoading.TurnOff();
+				if (isEntered)
+				{
+					_updateSemaphore.Release();
+					IsUpdating.TurnOff();
+				}
 			}
 		}
 
 		[Conditional("DEBUG")]
-		private void ShowLoadingTime()
+		private void ShowUpdatingTime()
 		{
-			this.IsLoading
+			this.IsUpdating
 				.Select(x => new { Value = x, Ticks = DateTime.Now.Ticks })
 				.Pairwise()
 				.Where(x => x.OldItem.Value && !x.NewItem.Value)
 				.Select(x => (x.NewItem.Ticks - x.OldItem.Ticks) / TimeSpan.TicksPerMillisecond)
-				.Subscribe(x => Debug.WriteLine($"Loading Time: {x}"))
+				.Subscribe(x => Debug.WriteLine($"Updating Time: {x}"))
 				.AddTo(this.Subscription);
 		}
 
@@ -348,15 +382,26 @@ namespace WlanProfileViewer
 		{
 			Debug.WriteLine("Connect start!");
 
+			IsActivePriorityEnabled.Value = false;
 			return await WorkAsync(x => _worker.ConnectNetworkAsync(x));
+		}
+
+		private async Task<bool> ConnectNetworkAsync(ProfileItem targetProfile)
+		{
+			Debug.WriteLine("Connect for force priority start!");
+
+			return await WorkAsync(targetProfile, x => _worker.ConnectNetworkAsync(x));
 		}
 
 		public async Task<bool> DisconnectNetworkAsync()
 		{
 			Debug.WriteLine("Disconnect start!");
 
+			IsActivePriorityEnabled.Value = false;
 			return await WorkAsync(x => _worker.DisconnectNetworkAsync(x));
 		}
+
+		private int _workCount = 0;
 
 		private Task<bool> WorkAsync(Func<ProfileItem, Task<bool>> perform)
 		{
@@ -371,13 +416,15 @@ namespace WlanProfileViewer
 		{
 			try
 			{
+				Interlocked.Increment(ref _workCount);
 				IsWorking.TurnOn();
 
-				return await perform(targetProfile);
+				return await perform.Invoke(targetProfile);
 			}
 			finally
 			{
-				IsWorking.TurnOff();
+				if (Interlocked.Decrement(ref _workCount) == 0)
+					IsWorking.TurnOff();
 			}
 		}
 

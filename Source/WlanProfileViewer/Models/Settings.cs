@@ -19,30 +19,63 @@ namespace WlanProfileViewer.Models
 	/// </summary>
 	public class Settings : DisposableBase
 	{
-		public static Settings Current { get; } = new Settings();
+		public static Settings Current => _current.Value;
+		private static readonly Lazy<Settings> _current = new Lazy<Settings>(() => new Settings());
+
+		private Settings()
+		{ }
 
 		#region Settings
 
-		private const int _intervalMin = 4;
-		private const int _intervalMax = 16;
+		private const int IntervalMin = 10;
+		private const int IntervalMax = 50;
 
-		public int AutoRescanInterval
+		public int RescanInterval
 		{
-			get => _autoRescanInterval;
-			set => SetPropertyValue(ref _autoRescanInterval, value, _intervalMin, _intervalMax);
+			get => _rescanInterval;
+			set => SetPropertyValue(ref _rescanInterval, value, IntervalMin, IntervalMax);
 		}
-		private int _autoRescanInterval = 8; // Default
+		private int _rescanInterval = 30; // Default
+
+		public void IncrementRescanInterval() =>
+			RescanInterval = IncrementLoop(RescanInterval, IntervalMin, IntervalMax);
+
+		private const int ThresholdMin = 10;
+		private const int ThresholdMax = 90;
+
+		public int SignalThreshold
+		{
+			get => _signalThreshold;
+			set => SetPropertyValue(ref _signalThreshold, value, ThresholdMin, ThresholdMax);
+		}
+		private int _signalThreshold = 50; // Default
+
+		public void IncrementSignalThreshold() =>
+			SignalThreshold = IncrementLoop(SignalThreshold, ThresholdMin, ThresholdMax);
+
+		private int IncrementLoop(int value, int min, int max)
+		{
+			var buff = (value / 10 + 1) * 10;
+			return (buff <= max) ? buff : min;
+		}
+
+		public double MainWindowHeight
+		{
+			get => _mainWindowHeight;
+			set => SetPropertyValue(ref _mainWindowHeight, value);
+		}
+		private double _mainWindowHeight;
 
 		#endregion
 
 		public void Initiate()
 		{
-			Load(Current);
+			Load(this);
 
-			Current.PropertyChangedAsObservable()
+			this.PropertyChangedAsObservable()
 				.Throttle(TimeSpan.FromSeconds(1))
-				.Subscribe(_ => Save(Current))
-				.AddTo(Current.Subscription);
+				.Subscribe(_ => Save(this))
+				.AddTo(this.Subscription);
 		}
 
 		#region Load/Save
