@@ -36,13 +36,13 @@ namespace WlanProfileViewer.Models
 			}
 			catch (Exception ex)
 			{
-				Trace.WriteLine($"Failed to record log to AppData.\r\n{ex}");
+				Trace.WriteLine($"Failed to record log to AppData.{Environment.NewLine}{ex}");
 			}
 		}
 
 		private static void RecordDesktop(string fileName, string content)
 		{
-			var result = MessageBox.Show(LanguageService.Content("RecordException"), ProductInfo.Title, MessageBoxButton.YesNo, MessageBoxImage.Error, MessageBoxResult.Yes);
+			var result = MessageBox.Show(LanguageService.RecordException, ProductInfo.Title, MessageBoxButton.YesNo, MessageBoxImage.Error, MessageBoxResult.Yes);
 			if (result != MessageBoxResult.Yes)
 				return;
 
@@ -56,7 +56,7 @@ namespace WlanProfileViewer.Models
 			}
 			catch (Exception ex)
 			{
-				Trace.WriteLine($"Failed to record log to Desktop.\r\n{ex}");
+				Trace.WriteLine($"Failed to record log to Desktop.{Environment.NewLine}{ex}");
 			}
 		}
 

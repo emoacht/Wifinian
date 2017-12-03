@@ -198,7 +198,7 @@ namespace WlanProfileViewer.Models.Wlan
 				}
 				catch (Exception ex)
 				{
-					Debug.WriteLine($"Failed to enumerate interfaces.\r\n{ex}");
+					Debug.WriteLine($"Failed to enumerate interfaces.{Environment.NewLine}{ex}");
 					throw;
 				}
 
@@ -291,7 +291,7 @@ namespace WlanProfileViewer.Models.Wlan
 				}
 				catch (Exception ex)
 				{
-					Debug.WriteLine($"Failed to enumerate networks.\r\n{ex}");
+					Debug.WriteLine($"Failed to enumerate networks.{Environment.NewLine}{ex}");
 					throw;
 				}
 
@@ -433,7 +433,7 @@ namespace WlanProfileViewer.Models.Wlan
 				}
 				catch (Exception ex)
 				{
-					Debug.WriteLine($"Failed to enumerate profiles.\r\n{ex}");
+					Debug.WriteLine($"Failed to enumerate profiles.{Environment.NewLine}{ex}");
 					throw;
 				}
 			}

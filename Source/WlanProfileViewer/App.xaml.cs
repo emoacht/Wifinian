@@ -26,7 +26,7 @@ namespace WlanProfileViewer
 		{
 			base.OnStartup(e);
 
-			if (ProcessService.CheckActivateExistingProcess())
+			if (ProcessService.ActivateExistingProcess())
 			{
 				this.Shutdown(1); // This exit code is for unusual shutdown.
 				return;

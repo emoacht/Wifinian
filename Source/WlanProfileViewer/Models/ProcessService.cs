@@ -71,11 +71,11 @@ namespace WlanProfileViewer.Models
 		#endregion
 
 		/// <summary>
-		/// Checks if a process of this application already exists and if so, activate its window.
+		/// Activates the window of existing process of this application, if any.
 		/// </summary>
 		/// <returns>True if exists</returns>
 		/// <remarks>This method should work even if the window is minimized and ShowInTaskbar is false.</remarks>
-		public static bool CheckActivateExistingProcess()
+		public static bool ActivateExistingProcess()
 		{
 			var currentProcess = Process.GetCurrentProcess();
 			Process existingProcess = null;
@@ -119,7 +119,7 @@ namespace WlanProfileViewer.Models
 			}
 			catch (Exception ex)
 			{
-				Trace.WriteLine($"Failed to check and activate existing process.\r\n{ex}");
+				Trace.WriteLine($"Failed to check and activate existing process.{Environment.NewLine}{ex}");
 				throw;
 			}
 			finally
