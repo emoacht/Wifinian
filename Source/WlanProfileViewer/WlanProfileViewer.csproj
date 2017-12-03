@@ -59,8 +59,11 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Reactive.Core, Version=3.0.3000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Reactive.Core.3.1.1\lib\net46\System.Reactive.Core.dll</HintPath>
     </Reference>
@@ -80,15 +83,12 @@
     <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -111,6 +111,7 @@
     <Compile Include="Common\DisposableBase.cs" />
     <Compile Include="Helper\ColorExtension.cs" />
     <Compile Include="Helper\HsbColor.cs" />
+    <Compile Include="Helper\OsVersion.cs" />
     <Compile Include="Models\Wlan\IWlanWorker.cs" />
     <Compile Include="Models\Wlan\MockWorker.cs" />
     <Compile Include="Models\Wlan\NativeWifiProfileItem.cs" />
@@ -140,6 +141,7 @@
     <Compile Include="Views\Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Views\Converters\StateChangedToBooleanConverter.cs" />
     <Compile Include="Views\ThemeService.cs" />
+    <Compile Include="Views\WindowEffect.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

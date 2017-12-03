@@ -1,12 +1,13 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-	<Color x:Key="App.BackgroundColor">#FF3f3f3f</Color>
+	<Color x:Key="App.BackgroundColor">#CC171717</Color>
+	<Color x:Key="App.ForegroundColor">White</Color>
 
 	<SolidColorBrush x:Key="App.Background" Color="{StaticResource App.BackgroundColor}"/>
 	<SolidColorBrush x:Key="App.Background.Inactive" Color="White" Opacity="0.3"/>
 
-	<SolidColorBrush x:Key="App.Foreground" Color="White"/>
+	<SolidColorBrush x:Key="App.Foreground" Color="{StaticResource App.ForegroundColor}"/>
 	<SolidColorBrush x:Key="App.Foreground.Supplement" Color="Silver"/>
 
 	<Color x:Key="Profile.Normal.BackgroundColor">#FF454545</Color>

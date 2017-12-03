@@ -70,6 +70,13 @@ namespace WlanProfileViewer.Views
 			#endregion
 		}
 
+		protected override void OnSourceInitialized(EventArgs e)
+		{
+			base.OnSourceInitialized(e);
+
+			WindowEffect.EnableBackgroundBlur(this);
+		}
+
 		protected override void OnClosing(CancelEventArgs e)
 		{
 			if (!e.Cancel)

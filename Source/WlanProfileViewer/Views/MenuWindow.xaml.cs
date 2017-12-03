@@ -21,17 +21,24 @@ namespace WlanProfileViewer.Views
 	{
 		private readonly FloatWindowMover _mover;
 		private MenuWindowViewModel ViewModel => (MenuWindowViewModel)this.DataContext;
-		
+
 		internal MenuWindow(MainController controller, Point pivot)
 		{
 			InitializeComponent();
 
 			this.Topmost = true;
 			this.ShowInTaskbar = false;
-			
+
 			this.DataContext = new MenuWindowViewModel(controller);
 
 			_mover = new FloatWindowMover(this, pivot);
+		}
+
+		protected override void OnSourceInitialized(EventArgs e)
+		{
+			base.OnSourceInitialized(e);
+
+			WindowEffect.EnableBackgroundBlur(this);
 		}
 
 		#region Close
