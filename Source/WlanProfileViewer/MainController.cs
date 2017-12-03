@@ -77,13 +77,18 @@ namespace WlanProfileViewer
 
 			RescanTimer = new ReactiveTimer(TimeSpan.FromSeconds(Settings.Current.RescanInterval))
 				.AddTo(this.Subscription);
-			RescanTimer
+
+			RescanCommand = IsUpdating
+				.Select(x => !x)
+				.ToReactiveCommand();
+			RescanCommand
+				.Merge(IsActivePriorityEnabled.Where(x => x).Select(x => x as object))
+				.Merge(RescanTimer.Select(x => x as object))				
 				.Subscribe(async _ => await ScanNetworkAsync())
 				.AddTo(this.Subscription);
 
 			Settings.Current
 				.ObserveProperty(x => x.RescanInterval)
-				.Throttle(TimeSpan.FromMilliseconds(100))
 				.Subscribe(rescanInterval => RescanTimer.Interval = TimeSpan.FromSeconds(rescanInterval))
 				.AddTo(this.Subscription);
 
@@ -95,13 +100,6 @@ namespace WlanProfileViewer
 					else
 						RescanTimer.Stop();
 				})
-				.AddTo(this.Subscription);
-
-			RescanCommand = IsUpdating
-				.Select(x => !x)
-				.ToReactiveCommand();
-			RescanCommand
-				.Subscribe(async _ => await ScanNetworkAsync())
 				.AddTo(this.Subscription);
 
 			var networkRefreshed = Observable.FromEventPattern(
@@ -146,11 +144,17 @@ namespace WlanProfileViewer
 
 			NotifyIconContainer.ShowIcon("pack://application:,,,/Resources/ring.ico", ProductInfo.Title);
 
-			await ScanNetworkAsync();
 			await LoadProfilesAsync();
 
 			_current.MainWindow = new MainWindow(this);
 			_current.MainWindow.Show();
+
+			Observable.FromEventPattern(
+				h => _current.MainWindow.Activated += h,
+				h => _current.MainWindow.Activated -= h)
+				.StartWith(new object()) // This is necessary for initial query.
+				.Subscribe(async _ => await ScanNetworkAsync())
+				.AddTo(this.Subscription);
 		}
 
 		#region Dispose
