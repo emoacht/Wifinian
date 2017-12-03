@@ -83,7 +83,7 @@ namespace WlanProfileViewer
 				.ToReactiveCommand();
 			RescanCommand
 				.Merge(IsActivePriorityEnabled.Where(x => x).Select(x => x as object))
-				.Merge(RescanTimer.Select(x => x as object))				
+				.Merge(RescanTimer.Select(x => x as object))
 				.Subscribe(async _ => await ScanNetworkAsync())
 				.AddTo(this.Subscription);
 
@@ -336,6 +336,8 @@ namespace WlanProfileViewer
 
 		#region Work
 
+		private static readonly TimeSpan _connectTimeout = TimeSpan.FromSeconds(10);
+
 		public async Task<bool> ChangeProfileParameterAsync()
 		{
 			Debug.WriteLine("ChangeParameter start!");
@@ -387,14 +389,14 @@ namespace WlanProfileViewer
 			Debug.WriteLine("Connect start!");
 
 			IsActivePriorityEnabled.Value = false;
-			return await WorkAsync(x => _worker.ConnectNetworkAsync(x));
+			return await WorkAsync(x => _worker.ConnectNetworkAsync(x, _connectTimeout));
 		}
 
 		private async Task<bool> ConnectNetworkAsync(ProfileItem targetProfile)
 		{
-			Debug.WriteLine("Connect for force priority start!");
+			Debug.WriteLine("Connect for active priority start!");
 
-			return await WorkAsync(targetProfile, x => _worker.ConnectNetworkAsync(x));
+			return await WorkAsync(targetProfile, x => _worker.ConnectNetworkAsync(x, _connectTimeout));
 		}
 
 		public async Task<bool> DisconnectNetworkAsync()
@@ -402,7 +404,7 @@ namespace WlanProfileViewer
 			Debug.WriteLine("Disconnect start!");
 
 			IsActivePriorityEnabled.Value = false;
-			return await WorkAsync(x => _worker.DisconnectNetworkAsync(x));
+			return await WorkAsync(x => _worker.DisconnectNetworkAsync(x, _connectTimeout));
 		}
 
 		private int _workCount = 0;

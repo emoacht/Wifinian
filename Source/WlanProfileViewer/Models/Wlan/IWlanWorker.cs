@@ -21,7 +21,7 @@ namespace WlanProfileViewer.Models.Wlan
 		Task<bool> SetProfilePositionAsync(ProfileItem profileItem, int position);
 		Task<bool> DeleteProfileAsync(ProfileItem profileItem);
 
-		Task<bool> ConnectNetworkAsync(ProfileItem profileItem);
-		Task<bool> DisconnectNetworkAsync(ProfileItem profileItem);
+		Task<bool> ConnectNetworkAsync(ProfileItem profileItem, TimeSpan timeout);
+		Task<bool> DisconnectNetworkAsync(ProfileItem profileItem, TimeSpan timeout);
 	}
 }

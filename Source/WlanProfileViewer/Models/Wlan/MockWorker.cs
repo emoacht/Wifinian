@@ -122,7 +122,7 @@ namespace WlanProfileViewer.Models.Wlan
 			return true;
 		}
 
-		public async Task<bool> ConnectNetworkAsync(ProfileItem profileItem)
+		public async Task<bool> ConnectNetworkAsync(ProfileItem profileItem, TimeSpan timeout)
 		{
 			await WaitAsync(); // Dummy
 
@@ -136,7 +136,7 @@ namespace WlanProfileViewer.Models.Wlan
 			return true;
 		}
 
-		public async Task<bool> DisconnectNetworkAsync(ProfileItem profileItem)
+		public async Task<bool> DisconnectNetworkAsync(ProfileItem profileItem, TimeSpan timeout)
 		{
 			await WaitAsync(); // Dummy
 

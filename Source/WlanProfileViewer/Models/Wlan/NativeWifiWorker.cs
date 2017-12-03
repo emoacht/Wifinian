@@ -130,19 +130,19 @@ namespace WlanProfileViewer.Models.Wlan
 
 		#region Connect/Disconnect
 
-		public Task<bool> ConnectNetworkAsync(ProfileItem profileItem)
+		public Task<bool> ConnectNetworkAsync(ProfileItem profileItem, TimeSpan timeout)
 		{
 			if (!(profileItem is NativeWifiProfileItem item))
 				throw new ArgumentException(nameof(profileItem));
 
-			return Task.Run(() => _player.ConnectNetwork(item.InterfaceId, item.Name, item.BssType));
+			return _player.ConnectNetworkAsync(item.InterfaceId, item.Name, item.BssType, timeout, CancellationToken.None);
 		}
 
-		public Task<bool> DisconnectNetworkAsync(ProfileItem profileItem)
+		public Task<bool> DisconnectNetworkAsync(ProfileItem profileItem, TimeSpan timeout)
 		{
 			var item = profileItem ?? throw new ArgumentNullException(nameof(profileItem));
 
-			return Task.Run(() => _player.DisconnectNetwork(item.InterfaceId));
+			return _player.DisconnectNetworkAsync(item.InterfaceId, timeout, CancellationToken.None);
 		}
 
 		#endregion

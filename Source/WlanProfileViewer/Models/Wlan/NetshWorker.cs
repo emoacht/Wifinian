@@ -166,7 +166,7 @@ namespace WlanProfileViewer.Models.Wlan
 
 		#region Connect/Disconnect
 
-		public async Task<bool> ConnectNetworkAsync(ProfileItem profileItem)
+		public async Task<bool> ConnectNetworkAsync(ProfileItem profileItem, TimeSpan timeout)
 		{
 			var item = profileItem ?? throw new ArgumentNullException(nameof(profileItem));
 
@@ -177,7 +177,7 @@ namespace WlanProfileViewer.Models.Wlan
 			return true;
 		}
 
-		public async Task<bool> DisconnectNetworkAsync(ProfileItem profileItem)
+		public async Task<bool> DisconnectNetworkAsync(ProfileItem profileItem, TimeSpan timeout)
 		{
 			var item = profileItem ?? throw new ArgumentNullException(nameof(profileItem));
 
