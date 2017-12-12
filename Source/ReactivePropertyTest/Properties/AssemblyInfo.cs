@@ -12,7 +12,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("ReactiveProperty Test")]
-[assembly: AssemblyCopyright("Copyright © 2015 EMO")]
+[assembly: AssemblyCopyright("Copyright © 2015 emoacht")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
