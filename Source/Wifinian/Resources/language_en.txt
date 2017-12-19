@@ -1,4 +1,4 @@
-﻿ProjectSite=https://github.com/emoacht/WlanProfileViewer/blob/master/README.md
-License=https://github.com/emoacht/WlanProfileViewer/blob/master/LICENSE.txt
+﻿ProjectSite=https://github.com/emoacht/Wifinian/blob/master/README.md
+License=https://github.com/emoacht/Wifinian/blob/master/LICENSE.txt
 Close=Close
 RecordException=This app will terminate, because unexpected problem happened. Leave exception log on Desktop?
