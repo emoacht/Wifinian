@@ -9,396 +9,53 @@
 			 d:DesignHeight="256" d:DesignWidth="256"
 			 Width="256" Height="256">
 	<UserControl.Resources>
-		<SolidColorBrush x:Key="ThemeBackground" Color="#FF3571C7"/>
-		<SolidColorBrush x:Key="ThemeStroke" Color="White"/>
-		<SolidColorBrush x:Key="ThemeStrokeDark" Color="#FFDFDFDF"/>
-		<SolidColorBrush x:Key="ThemeStrokeDarkDark" Color="#FFD8D8D8"/>
+		<Color x:Key="EdgeColor">#FF343434</Color>
+		<Color x:Key="BackColor">#FF262626</Color>
 
-		<sys:Double x:Key="OutlineStrokeThickness">6</sys:Double>
+		<SolidColorBrush x:Key="FanBrush" Color="White"/>
+		<SolidColorBrush x:Key="EdgeBrush" Color="{StaticResource EdgeColor}"/>
+		<SolidColorBrush x:Key="BackBrush" Color="{StaticResource BackColor}"/>
+
+		<sys:Double x:Key="OutlineStrokeThickness">16</sys:Double>
 	</UserControl.Resources>
 
 	<Grid Background="{x:Null}">
-		<Grid x:Name="Image2">
-			<Grid x:Name="BigRing">
-				<Path x:Name="BigRing256"
-					  Fill="{StaticResource ThemeBackground}"
-					  Stroke="{StaticResource ThemeStroke}"
-					  StrokeThickness="8">
-					<Path.Data>
-						<GeometryGroup FillRule="EvenOdd">
-							<EllipseGeometry RadiusX="124" RadiusY="124" Center="128,128"/>
-							<EllipseGeometry RadiusX="33" RadiusY="33" Center="142,142"/>
-						</GeometryGroup>
-					</Path.Data>
-				</Path>
+		<!--<Grid Background="{StaticResource BackBrush}"/>-->
 
-				<Path x:Name="BigRing48"
-					  Fill="{StaticResource ThemeBackground}"
-					  Stroke="{StaticResource ThemeStroke}"
-					  StrokeThickness="10" Visibility="Hidden">
-					<Path.Data>
-						<GeometryGroup FillRule="EvenOdd">
-							<EllipseGeometry RadiusX="123" RadiusY="123" Center="128,128"/>
-							<EllipseGeometry RadiusX="34" RadiusY="34" Center="142,142"/>
-						</GeometryGroup>
-					</Path.Data>
-				</Path>
+		<Path x:Name="FanForm"
+			  Fill="{StaticResource FanBrush}"
+			  Stroke="{StaticResource EdgeBrush}"
+			  StrokeThickness="{DynamicResource OutlineStrokeThickness}">
+			<Path.Data>
+				<PathGeometry>
+					<PathFigureCollection>
+						<PathFigure IsClosed="True" StartPoint="18,128">
+							<ArcSegment Point="112,34"
+										Size="94,94"
+										IsLargeArc="False" SweepDirection="Clockwise"/>
+							<LineSegment Point="112,128"/>
+						</PathFigure>
 
-				<Path x:Name="BigRing32"
-					  Fill="{StaticResource ThemeBackground}"
-					  Stroke="{StaticResource ThemeStroke}"
-					  StrokeThickness="11" Visibility="Hidden">
-					<Path.Data>
-						<GeometryGroup FillRule="EvenOdd">
-							<EllipseGeometry RadiusX="122" RadiusY="122" Center="128,128"/>
-							<EllipseGeometry RadiusX="35" RadiusY="35" Center="142,142"/>
-						</GeometryGroup>
-					</Path.Data>
-				</Path>
+						<PathFigure IsClosed="True" StartPoint="154,80">
+							<ArcSegment Point="208,26"
+										Size="54,54"
+										IsLargeArc="False" SweepDirection="Clockwise"/>
+							<LineSegment Point="208,80"/>
+						</PathFigure>
 
-				<Path x:Name="BigRing24"
-					  Fill="{StaticResource ThemeBackground}"
-					  Stroke="{StaticResource ThemeStroke}"
-					  StrokeThickness="15" Visibility="Hidden">
-					<Path.Data>
-						<GeometryGroup FillRule="EvenOdd">
-							<EllipseGeometry RadiusX="120.5" RadiusY="120.5" Center="128,128"/>
-							<EllipseGeometry RadiusX="38" RadiusY="38" Center="142,142"/>
-						</GeometryGroup>
-					</Path.Data>
-				</Path>
+						<PathFigure IsClosed="True" StartPoint="128,224">
+							<ArcSegment Point="240,112"
+										Size="112,112"
+										IsLargeArc="False" SweepDirection="Clockwise"/>
+							<LineSegment Point="240,224"/>
+						</PathFigure>
 
-				<Path x:Name="BigRing16"
-					  Fill="{StaticResource ThemeBackground}"
-					  Stroke="{StaticResource ThemeStroke}"
-					  StrokeThickness="18" Visibility="Hidden">
-					<Path.Data>
-						<GeometryGroup FillRule="EvenOdd">
-							<EllipseGeometry RadiusX="118" RadiusY="118" Center="128,128"/>
-							<EllipseGeometry RadiusX="38" RadiusY="38" Center="142,142"/>
-						</GeometryGroup>
-					</Path.Data>
-				</Path>
-			</Grid>
+					</PathFigureCollection>
+				</PathGeometry>
+			</Path.Data>
+		</Path>
 
-			<Grid x:Name="SmallGear"
-				  RenderTransformOrigin="0.5 0.5">
-				<Grid.Resources>
-					<Style x:Key="GearTeathStyle" TargetType="{x:Type Path}">
-						<Setter Property="Stroke" Value="{StaticResource ThemeBackground}"/>
-						<Setter Property="StrokeThickness" Value="22"/>
-						<Setter Property="StrokeStartLineCap" Value="Round"/>
-						<Setter Property="StrokeEndLineCap" Value="Round"/>
-						<Setter Property="Data" Value="M128,64 A70,70,0,0,1,131.4,64.09"/>
-						<Setter Property="RenderTransformOrigin" Value="0.5 0.5"/>
-					</Style>
-				</Grid.Resources>
-
-				<Grid.RenderTransform>
-					<TransformGroup>
-						<RotateTransform Angle="17"/>
-						<TranslateTransform X="14" Y="14"/>
-					</TransformGroup>
-				</Grid.RenderTransform>
-
-				<Ellipse Width="126"
-						 Height="{Binding Width, RelativeSource={RelativeSource Self}}"
-						 Stroke="{StaticResource ThemeStrokeDarkDark}"
-						 StrokeThickness="34"/>
-
-				<Path Stroke="{StaticResource ThemeBackground}"
-					  StrokeThickness="22"
-					  StrokeStartLineCap="Round"
-					  StrokeEndLineCap="Round"
-					  Data="M128,64 A70,70,0,0,1,131.4,64.09">
-					<!--<Path.Data>
-						<PathGeometry>
-							<PathFigure StartPoint="128,64">
-								<ArcSegment Point="131.4,64.09"
-											Size="70,70"
-											SweepDirection="Clockwise"
-											IsLargeArc="False"
-											RotationAngle="0"/>
-							</PathFigure>
-						</PathGeometry>
-					</Path.Data>-->
-				</Path>
-
-				<Path Style="{StaticResource GearTeathStyle}">
-					<Path.RenderTransform>
-						<RotateTransform Angle="36"/>
-					</Path.RenderTransform>
-				</Path>
-
-				<Path Style="{StaticResource GearTeathStyle}">
-					<Path.RenderTransform>
-						<RotateTransform Angle="72"/>
-					</Path.RenderTransform>
-				</Path>
-
-				<Path Style="{StaticResource GearTeathStyle}">
-					<Path.RenderTransform>
-						<RotateTransform Angle="108"/>
-					</Path.RenderTransform>
-				</Path>
-
-				<Path Style="{StaticResource GearTeathStyle}">
-					<Path.RenderTransform>
-						<RotateTransform Angle="144"/>
-					</Path.RenderTransform>
-				</Path>
-
-				<Path Style="{StaticResource GearTeathStyle}">
-					<Path.RenderTransform>
-						<RotateTransform Angle="180"/>
-					</Path.RenderTransform>
-				</Path>
-
-				<Path Style="{StaticResource GearTeathStyle}">
-					<Path.RenderTransform>
-						<RotateTransform Angle="216"/>
-					</Path.RenderTransform>
-				</Path>
-
-				<Path Style="{StaticResource GearTeathStyle}">
-					<Path.RenderTransform>
-						<RotateTransform Angle="252"/>
-					</Path.RenderTransform>
-				</Path>
-
-				<Path Style="{StaticResource GearTeathStyle}">
-					<Path.RenderTransform>
-						<RotateTransform Angle="288"/>
-					</Path.RenderTransform>
-				</Path>
-
-				<Path Style="{StaticResource GearTeathStyle}">
-					<Path.RenderTransform>
-						<RotateTransform Angle="324"/>
-					</Path.RenderTransform>
-				</Path>
-			</Grid>
-
-			<Grid x:Name="GearRing">
-				<Ellipse x:Name="GearRing24"
-						 Width="91"
-						 Height="{Binding Width, RelativeSource={RelativeSource Self}}"
-						 Stroke="{StaticResource ThemeStrokeDark}"
-						 StrokeThickness="15" Visibility="Hidden">
-					<Ellipse.RenderTransform>
-						<TranslateTransform X="14" Y="14"/>
-					</Ellipse.RenderTransform>
-				</Ellipse>
-
-				<Ellipse x:Name="GearRing16"
-						 Width="94"
-						 Height="{Binding Width, RelativeSource={RelativeSource Self}}"
-						 Stroke="{StaticResource ThemeStrokeDark}"
-						 StrokeThickness="18" Visibility="Hidden">
-					<Ellipse.RenderTransform>
-						<TranslateTransform X="14" Y="14"/>
-					</Ellipse.RenderTransform>
-				</Ellipse>
-			</Grid>
-
-			<Grid x:Name="MiddleRing">
-				<Ellipse x:Name="MiddleRing256"
-						 Width="190"
-						 Height="{Binding Width, RelativeSource={RelativeSource Self}}"
-						 Stroke="{StaticResource ThemeStrokeDark}"
-						 StrokeThickness="7" Visibility="Visible">
-					<Ellipse.RenderTransform>
-						<TranslateTransform X="7" Y="7"/>
-					</Ellipse.RenderTransform>
-				</Ellipse>
-
-				<Ellipse x:Name="MiddleRing48"
-						 Width="190"
-						 Height="{Binding Width, RelativeSource={RelativeSource Self}}"
-						 Stroke="{StaticResource ThemeStrokeDark}"
-						 StrokeThickness="8" Visibility="Hidden">
-					<Ellipse.RenderTransform>
-						<TranslateTransform X="7" Y="7"/>
-					</Ellipse.RenderTransform>
-				</Ellipse>
-
-				<Ellipse x:Name="MiddleRing32"
-						 Width="190"
-						 Height="{Binding Width, RelativeSource={RelativeSource Self}}"
-						 Stroke="{StaticResource ThemeStrokeDark}"
-						 StrokeThickness="9" Visibility="Hidden">
-					<Ellipse.RenderTransform>
-						<TranslateTransform X="7" Y="7"/>
-					</Ellipse.RenderTransform>
-				</Ellipse>
-			</Grid>
-		</Grid>
-
-		<Grid x:Name="Image1" Visibility="Hidden">
-			<Path x:Name="MainRing"
-				  Fill="{StaticResource ThemeBackground}"
-				  Stroke="{StaticResource ThemeStroke}"
-				  StrokeThickness="{DynamicResource OutlineStrokeThickness}">
-				<Path.Data>
-					<GeometryGroup FillRule="EvenOdd">
-						<EllipseGeometry RadiusX="124" RadiusY="124" Center="128,128"/>
-						<EllipseGeometry RadiusX="42" RadiusY="42" Center="128,128"/>
-					</GeometryGroup>
-				</Path.Data>
-			</Path>
-
-			<Grid x:Name="SubRing">
-				<Ellipse x:Name="SubRing256_1"
-						 Width="234"
-						 Height="{Binding Width, RelativeSource={RelativeSource Self}}"
-						 Stroke="{StaticResource ThemeStroke}"
-						 StrokeThickness="1.6"/>
-
-				<Ellipse x:Name="SubRing256_2"
-						 Width="216"
-						 Height="{Binding Width, RelativeSource={RelativeSource Self}}"
-						 Stroke="{StaticResource ThemeStroke}"
-						 StrokeThickness="1.6"/>
-
-				<Ellipse x:Name="SubRing48"
-						 Width="214"
-						 Height="{Binding Width, RelativeSource={RelativeSource Self}}"
-						 Stroke="{StaticResource ThemeStroke}"
-						 StrokeThickness="2.4" Visibility="Hidden">
-					<Ellipse.RenderTransform>
-						<TranslateTransform X="4" Y="4"/>
-					</Ellipse.RenderTransform>
-				</Ellipse>
-			</Grid>
-
-			<Grid x:Name="LargeGear"
-				  RenderTransformOrigin="0.5 0.5">
-				<Grid.Resources>
-					<Style x:Key="GearTeathStyle" TargetType="{x:Type Path}">
-						<Setter Property="Stroke" Value="{StaticResource ThemeStroke}"/>
-						<Setter Property="StrokeThickness" Value="15"/>
-						<Setter Property="StrokeStartLineCap" Value="Round"/>
-						<Setter Property="StrokeEndLineCap" Value="Round"/>
-						<Setter Property="Data" Value="M128,48 A80,80,0,0,1,132,48.1"/>
-						<Setter Property="RenderTransformOrigin" Value="0.5 0.5"/>
-					</Style>
-				</Grid.Resources>
-
-				<Grid.RenderTransform>
-					<TransformGroup>
-						<RotateTransform Angle="12"/>
-						<TranslateTransform X="8" Y="8"/>
-					</TransformGroup>
-				</Grid.RenderTransform>
-
-				<Ellipse Width="175"
-						 Height="{Binding Width, RelativeSource={RelativeSource Self}}"
-						 Stroke="{StaticResource ThemeStroke}"
-						 StrokeThickness="6"/>
-
-				<Path Stroke="{StaticResource ThemeStroke}"
-					  StrokeThickness="15"
-					  StrokeStartLineCap="Round"
-					  StrokeEndLineCap="Round"
-					  Data="M128,48 A80,80,0,0,1,132,48.1">
-					<!--<Path.Data>
-						<PathGeometry>
-							<PathFigure StartPoint="128,48">
-								<ArcSegment Point="132,48.1"
-											Size="80,80"
-											SweepDirection="Clockwise"
-											IsLargeArc="False"
-											RotationAngle="0"/>
-							</PathFigure>
-						</PathGeometry>
-					</Path.Data>-->
-				</Path>
-
-				<Path Style="{StaticResource GearTeathStyle}">
-					<Path.RenderTransform>
-						<RotateTransform Angle="24"/>
-					</Path.RenderTransform>
-				</Path>
-
-				<Path Style="{StaticResource GearTeathStyle}">
-					<Path.RenderTransform>
-						<RotateTransform Angle="48"/>
-					</Path.RenderTransform>
-				</Path>
-
-				<Path Style="{StaticResource GearTeathStyle}">
-					<Path.RenderTransform>
-						<RotateTransform Angle="72"/>
-					</Path.RenderTransform>
-				</Path>
-
-				<Path Style="{StaticResource GearTeathStyle}">
-					<Path.RenderTransform>
-						<RotateTransform Angle="96"/>
-					</Path.RenderTransform>
-				</Path>
-
-				<Path Style="{StaticResource GearTeathStyle}">
-					<Path.RenderTransform>
-						<RotateTransform Angle="120"/>
-					</Path.RenderTransform>
-				</Path>
-
-				<Path Style="{StaticResource GearTeathStyle}">
-					<Path.RenderTransform>
-						<RotateTransform Angle="144"/>
-					</Path.RenderTransform>
-				</Path>
-
-				<Path Style="{StaticResource GearTeathStyle}">
-					<Path.RenderTransform>
-						<RotateTransform Angle="168"/>
-					</Path.RenderTransform>
-				</Path>
-
-				<Path Style="{StaticResource GearTeathStyle}">
-					<Path.RenderTransform>
-						<RotateTransform Angle="192"/>
-					</Path.RenderTransform>
-				</Path>
-
-				<Path Style="{StaticResource GearTeathStyle}">
-					<Path.RenderTransform>
-						<RotateTransform Angle="216"/>
-					</Path.RenderTransform>
-				</Path>
-
-				<Path Style="{StaticResource GearTeathStyle}">
-					<Path.RenderTransform>
-						<RotateTransform Angle="240"/>
-					</Path.RenderTransform>
-				</Path>
-
-				<Path Style="{StaticResource GearTeathStyle}">
-					<Path.RenderTransform>
-						<RotateTransform Angle="264"/>
-					</Path.RenderTransform>
-				</Path>
-
-				<Path Style="{StaticResource GearTeathStyle}">
-					<Path.RenderTransform>
-						<RotateTransform Angle="288"/>
-					</Path.RenderTransform>
-				</Path>
-
-				<Path Style="{StaticResource GearTeathStyle}">
-					<Path.RenderTransform>
-						<RotateTransform Angle="312"/>
-					</Path.RenderTransform>
-				</Path>
-
-				<Path Style="{StaticResource GearTeathStyle}">
-					<Path.RenderTransform>
-						<RotateTransform Angle="336"/>
-					</Path.RenderTransform>
-				</Path>
-			</Grid>
-		</Grid>
-
+		<Path Fill="{StaticResource FanBrush}"
+			  Data="{Binding ElementName=FanForm, Path=Data}"/>
 	</Grid>
 </UserControl>

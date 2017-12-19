@@ -39,7 +39,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resources\ring.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\Icons\AppIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ManagedNativeWifi, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -198,9 +198,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\ring.ico" />
-  </ItemGroup>
-  <ItemGroup>
+    <Resource Include="Resources\Icons\AppIcon.ico" />
+    <Resource Include="Resources\Icons\TrayIcon.ico" />    
     <Content Include="Library\ManagedNativeWifi.dll" />
     <Content Include="Library\ScreenFrame.dll" />
     <Resource Include="Library\ScreenFrame.xml" />

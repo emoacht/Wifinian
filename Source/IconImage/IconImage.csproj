@@ -63,19 +63,12 @@
     <Compile Include="AppIcon.xaml.cs">
       <DependentUpon>AppIcon.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ArrowImage.xaml.cs">
-      <DependentUpon>ArrowImage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="FrameworkElementImage.cs" />
     <Compile Include="ScaleConverter.cs" />
     <Compile Include="UpdateImage.xaml.cs">
       <DependentUpon>UpdateImage.xaml</DependentUpon>
     </Compile>
     <Page Include="AppIcon.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ArrowImage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

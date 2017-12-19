@@ -142,7 +142,7 @@ namespace Wifinian
 		{
 			Settings.Current.Initiate();
 
-			NotifyIconContainer.ShowIcon("pack://application:,,,/Resources/ring.ico", ProductInfo.Title);
+			NotifyIconContainer.ShowIcon("pack://application:,,,/Resources/Icons/TrayIcon.ico", ProductInfo.Title);
 
 			await LoadProfilesAsync();
 
