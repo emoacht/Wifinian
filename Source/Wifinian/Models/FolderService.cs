@@ -13,27 +13,27 @@ namespace Wifinian.Models
 	/// </summary>
 	internal static class FolderService
 	{
-		public static string FolderAppDataPath
+		public static string AppDataFolderPath
 		{
 			get
 			{
-				if (_folderPathAppData == null)
+				if (_appDataFolderPath == null)
 				{
-					var pathAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-					if (string.IsNullOrEmpty(pathAppData)) // This should not happen.
+					var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+					if (string.IsNullOrEmpty(appDataPath)) // This should not happen.
 						throw new DirectoryNotFoundException();
 
-					_folderPathAppData = Path.Combine(pathAppData, Assembly.GetExecutingAssembly().GetName().Name);
+					_appDataFolderPath = Path.Combine(appDataPath, Assembly.GetExecutingAssembly().GetName().Name);
 				}
-				return _folderPathAppData;
+				return _appDataFolderPath;
 			}
 		}
-		private static string _folderPathAppData;
+		private static string _appDataFolderPath;
 
-		public static void AssureFolderAppData()
+		public static void AssureAppDataFolder()
 		{
-			if (!Directory.Exists(FolderAppDataPath))
-				Directory.CreateDirectory(FolderAppDataPath);
+			if (!Directory.Exists(AppDataFolderPath))
+				Directory.CreateDirectory(AppDataFolderPath);
 		}
 	}
 }

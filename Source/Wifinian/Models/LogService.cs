@@ -28,11 +28,11 @@ namespace Wifinian.Models
 		{
 			try
 			{
-				FolderService.AssureFolderAppData();
+				FolderService.AssureAppDataFolder();
 
-				var filePathAppData = Path.Combine(FolderService.FolderAppDataPath, fileName);
+				var appDataFilePath = Path.Combine(FolderService.AppDataFolderPath, fileName);
 
-				UpdateText(filePathAppData, content);
+				UpdateText(appDataFilePath, content);
 			}
 			catch (Exception ex)
 			{
@@ -48,11 +48,11 @@ namespace Wifinian.Models
 
 			try
 			{
-				var filePathDesktop = Path.Combine(
+				var desktopFilePath = Path.Combine(
 					Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory),
 					fileName);
 
-				UpdateText(filePathDesktop, content);
+				UpdateText(desktopFilePath, content);
 			}
 			catch (Exception ex)
 			{
