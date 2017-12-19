@@ -17,7 +17,7 @@ namespace Wifinian.Models.Wlan
 
 		Task<IEnumerable<ProfileItem>> GetProfilesAsync();
 
-		Task<bool> SetProfileParameterAsync(ProfileItem profileItem);
+		Task<bool> SetProfileOptionAsync(ProfileItem profileItem);
 		Task<bool> SetProfilePositionAsync(ProfileItem profileItem, int position);
 		Task<bool> DeleteProfileAsync(ProfileItem profileItem);
 

@@ -19,6 +19,7 @@ namespace Wifinian.ViewModels
 		public string InterfaceDescription { get; }
 		public string Authentication { get; }
 		public string Encryption { get; }
+		public bool CanSetOptions { get; }
 
 		public ReactiveProperty<bool> IsAutoConnectEnabled { get; }
 		public ReactiveProperty<bool> IsAutoSwitchEnabled { get; }
@@ -32,21 +33,31 @@ namespace Wifinian.ViewModels
 
 		public ReactiveProperty<bool> IsSelected { get; }
 
-		public ProfileItemViewModel(ProfileItem profileItem)
+		public ReactiveCommand ConnectCommand { get; }
+		public ReactiveCommand DisconnectCommand { get; }
+
+		internal ProfileItemViewModel(MainController controller, ProfileItem profileItem)
 		{
 			Name = profileItem.Name;
 			InterfaceDescription = profileItem.InterfaceDescription;
 			Authentication = profileItem.Authentication.ToString().Replace("_", "-");
 			Encryption = profileItem.Encryption.ToString();
+			CanSetOptions = profileItem.CanSetOptions;
 
 			IsAutoConnectEnabled = profileItem
-				.ObserveProperty(x => x.IsAutoConnectEnabled)
-				.ToReactiveProperty()
+				.ToReactivePropertyAsSynchronized(x => x.IsAutoConnectEnabled, ReactivePropertyMode.RaiseLatestValueOnSubscribe)
+				.AddTo(this.Subscription);
+			IsAutoConnectEnabled
+				.Where(x => !x)
+				.Subscribe(_ => IsAutoSwitchEnabled.Value = false)
 				.AddTo(this.Subscription);
 
 			IsAutoSwitchEnabled = profileItem
-				.ObserveProperty(x => x.IsAutoSwitchEnabled)
-				.ToReactiveProperty()
+				.ToReactivePropertyAsSynchronized(x => x.IsAutoSwitchEnabled, ReactivePropertyMode.RaiseLatestValueOnSubscribe)
+				.AddTo(this.Subscription);
+
+			Observable.Merge(IsAutoConnectEnabled, IsAutoSwitchEnabled)
+				.Subscribe(async _ => await controller.ChangeProfileOptionAsync(profileItem))
 				.AddTo(this.Subscription);
 
 			Position = profileItem
@@ -76,6 +87,32 @@ namespace Wifinian.ViewModels
 
 			IsSelected = ReactiveProperty.FromObject(profileItem, x => x.IsTarget)
 				.AddTo(this.Subscription);
+
+			#region Work
+
+			var isNotWorking = controller.IsWorking
+				.Inverse()
+				.ObserveOnUIDispatcher() // This is safety for thread access with ReactiveCommand.
+				.Publish();
+
+			ConnectCommand = new[] { isNotWorking, IsConnected.Inverse(), IsAvailable }
+				.CombineLatestValuesAreAllTrue()
+				.StartWith(IsAvailable.Value && !IsConnected.Value)
+				.ToReactiveCommand();
+			ConnectCommand
+				.Subscribe(async _ => await controller.ConnectNetworkAsync(profileItem))
+				.AddTo(this.Subscription);
+
+			DisconnectCommand = new[] { isNotWorking.AsObservable(), IsConnected }
+				.CombineLatestValuesAreAllTrue()
+				.ToReactiveCommand();
+			DisconnectCommand
+				.Subscribe(async _ => await controller.DisconnectNetworkAsync(profileItem))
+				.AddTo(this.Subscription);
+
+			isNotWorking.Connect().AddTo(this.Subscription);
+
+			#endregion
 		}
 	}
 }

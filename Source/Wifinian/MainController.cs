@@ -36,8 +36,8 @@ namespace Wifinian
 		public BooleanNotifier IsUpdating { get; }
 		public BooleanNotifier IsWorking { get; }
 
-		public ReactiveProperty<bool> IsQuickRescanEnabled { get; }
-		public ReactiveProperty<bool> IsActivePriorityEnabled { get; }
+		public ReactiveProperty<bool> RushesRescan { get; }
+		public ReactiveProperty<bool> EngagesPriority { get; }
 
 		private ReactiveTimer RescanTimer { get; }
 
@@ -67,10 +67,10 @@ namespace Wifinian
 			ShowUpdatingTime(); // For debug
 			ShowWorkingTime(); // For debug
 
-			IsQuickRescanEnabled = new ReactiveProperty<bool>()
+			RushesRescan = new ReactiveProperty<bool>()
 				.AddTo(this.Subscription);
 
-			IsActivePriorityEnabled = new ReactiveProperty<bool>()
+			EngagesPriority = new ReactiveProperty<bool>()
 				.AddTo(this.Subscription);
 
 			#region Update
@@ -79,10 +79,10 @@ namespace Wifinian
 				.AddTo(this.Subscription);
 
 			RescanCommand = IsUpdating
-				.Select(x => !x)
+				.Inverse()
 				.ToReactiveCommand();
 			RescanCommand
-				.Merge(IsActivePriorityEnabled.Where(x => x).Select(x => x as object))
+				.Merge(EngagesPriority.Where(x => x).Select(x => x as object))
 				.Merge(RescanTimer.Select(x => x as object))
 				.Subscribe(async _ => await ScanNetworkAsync())
 				.AddTo(this.Subscription);
@@ -92,10 +92,10 @@ namespace Wifinian
 				.Subscribe(rescanInterval => RescanTimer.Interval = TimeSpan.FromSeconds(rescanInterval))
 				.AddTo(this.Subscription);
 
-			IsQuickRescanEnabled
-				.Subscribe(isQuickRescanEnabled =>
+			RushesRescan
+				.Subscribe(rushesRescan =>
 				{
-					if (isQuickRescanEnabled)
+					if (rushesRescan)
 						RescanTimer.Start();
 					else
 						RescanTimer.Stop();
@@ -118,7 +118,7 @@ namespace Wifinian
 				.Throttle(TimeSpan.FromMilliseconds(100))
 				.Subscribe(async _ =>
 				{
-					if (IsQuickRescanEnabled.Value)
+					if (RushesRescan.Value)
 						RescanTimer.Start(TimeSpan.FromSeconds(Settings.Current.RescanInterval)); // Wait for due time.
 
 					await LoadProfilesAsync();
@@ -213,18 +213,18 @@ namespace Wifinian
 
 		private static readonly TimeSpan _scanTimeout = TimeSpan.FromSeconds(5);
 
-		public async Task ScanNetworkAsync()
+		private Task ScanNetworkAsync()
 		{
 			Debug.WriteLine("Scan start!");
 
-			await UpdateAsync(() => _worker.ScanNetworkAsync(_scanTimeout));
+			return UpdateAsync(() => _worker.ScanNetworkAsync(_scanTimeout));
 		}
 
-		public async Task LoadProfilesAsync()
+		private Task LoadProfilesAsync()
 		{
 			Debug.WriteLine("Load start!");
 
-			await UpdateAsync(() => Task.Run(() => LoadProfilesBaseAsync()));
+			return UpdateAsync(() => Task.Run(() => LoadProfilesBaseAsync()));
 		}
 
 		private async Task LoadProfilesBaseAsync()
@@ -280,7 +280,7 @@ namespace Wifinian
 					.Aggregate((work, next) => work + Environment.NewLine + next)
 				: "No Profile");
 
-			if (IsActivePriorityEnabled.Value)
+			if (EngagesPriority.Value)
 			{
 				var targetProfiles = Profiles
 					.Where(x => x.IsAutoConnectEnabled && x.IsAutoSwitchEnabled && (Settings.Current.SignalThreshold <= x.Signal))
@@ -291,7 +291,7 @@ namespace Wifinian
 
 				if (targetProfiles.Length > 0)
 				{
-					await Task.WhenAll(targetProfiles.Select(x => ConnectNetworkAsync(x)));
+					await Task.WhenAll(targetProfiles.Select(x => ConnectNetworkAsync(x, false)));
 				}
 			}
 		}
@@ -323,8 +323,8 @@ namespace Wifinian
 		[Conditional("DEBUG")]
 		private void ShowUpdatingTime()
 		{
-			this.IsUpdating
-				.Select(x => new { Value = x, Ticks = DateTime.Now.Ticks })
+			IsUpdating
+				.Select(x => new { Value = x, DateTime.Now.Ticks })
 				.Pairwise()
 				.Where(x => x.OldItem.Value && !x.NewItem.Value)
 				.Select(x => (x.NewItem.Ticks - x.OldItem.Ticks) / TimeSpan.TicksPerMillisecond)
@@ -338,85 +338,77 @@ namespace Wifinian
 
 		private static readonly TimeSpan _connectTimeout = TimeSpan.FromSeconds(10);
 
-		public async Task<bool> ChangeProfileParameterAsync()
+		public Task<bool> ChangeProfileOptionAsync(ProfileItem targetProfile)
 		{
 			Debug.WriteLine("ChangeParameter start!");
 
-			return await WorkAsync(x => _worker.SetProfileParameterAsync(x));
+			return WorkAsync(targetProfile, x => _worker.SetProfileOptionAsync(x));
 		}
 
-		public async Task<bool> MoveUpProfileAsync()
+		public Task<bool> MoveUpProfileAsync()
 		{
 			Debug.WriteLine("MoveUp start!");
 
-			var targetProfile = Profiles.FirstOrDefault(x => x.IsTarget);
-			if (targetProfile == null)
-				return false;
+			if (!TryGetTargetProfile(out ProfileItem targetProfile))
+				return Task.FromResult(false);
 
 			var oldPosition = targetProfile.Position;
 			var newPosition = oldPosition - 1;
 			if (newPosition < 0)
-				return false;
+				return Task.FromResult(false);
 
-			return await WorkAsync(targetProfile, x => _worker.SetProfilePositionAsync(x, newPosition));
+			return WorkAsync(targetProfile, x => _worker.SetProfilePositionAsync(x, newPosition));
 		}
 
-		public async Task<bool> MoveDownProfileAsync()
+		public Task<bool> MoveDownProfileAsync()
 		{
 			Debug.WriteLine("MoveDown start!");
 
-			var targetProfile = Profiles.FirstOrDefault(x => x.IsTarget);
-			if (targetProfile == null)
-				return false;
+			if (!TryGetTargetProfile(out ProfileItem targetProfile))
+				return Task.FromResult(false);
 
 			var oldPosition = targetProfile.Position;
 			var newPosition = oldPosition + 1;
 			if (newPosition > targetProfile.PositionCount - 1)
-				return false;
+				return Task.FromResult(false);
 
-			return await WorkAsync(targetProfile, x => _worker.SetProfilePositionAsync(x, newPosition));
+			return WorkAsync(targetProfile, x => _worker.SetProfilePositionAsync(x, newPosition));
 		}
 
-		public async Task<bool> DeleteProfileAsync()
+		public Task<bool> DeleteProfileAsync()
 		{
 			Debug.WriteLine("Delete start!");
 
-			return await WorkAsync(x => _worker.DeleteProfileAsync(x));
+			if (!TryGetTargetProfile(out ProfileItem targetProfile))
+				return Task.FromResult(false);
+
+			return WorkAsync(targetProfile, x => _worker.DeleteProfileAsync(x));
 		}
 
-		public async Task<bool> ConnectNetworkAsync()
+		public Task<bool> ConnectNetworkAsync(ProfileItem targetProfile, bool isManual = true)
 		{
 			Debug.WriteLine("Connect start!");
 
-			IsActivePriorityEnabled.Value = false;
-			return await WorkAsync(x => _worker.ConnectNetworkAsync(x, _connectTimeout));
+			if (isManual)
+				EngagesPriority.Value = false;
+
+			return WorkAsync(targetProfile, x => _worker.ConnectNetworkAsync(x, _connectTimeout));
 		}
 
-		private async Task<bool> ConnectNetworkAsync(ProfileItem targetProfile)
-		{
-			Debug.WriteLine("Connect for active priority start!");
-
-			return await WorkAsync(targetProfile, x => _worker.ConnectNetworkAsync(x, _connectTimeout));
-		}
-
-		public async Task<bool> DisconnectNetworkAsync()
+		public Task<bool> DisconnectNetworkAsync(ProfileItem targetProfile, bool isManual = true)
 		{
 			Debug.WriteLine("Disconnect start!");
 
-			IsActivePriorityEnabled.Value = false;
-			return await WorkAsync(x => _worker.DisconnectNetworkAsync(x, _connectTimeout));
+			if (isManual)
+				EngagesPriority.Value = false;
+
+			return WorkAsync(targetProfile, x => _worker.DisconnectNetworkAsync(x, _connectTimeout));
 		}
+
+		private bool TryGetTargetProfile(out ProfileItem targetProfile) =>
+			((targetProfile = Profiles.FirstOrDefault(x => x.IsTarget)) != null);
 
 		private int _workCount = 0;
-
-		private Task<bool> WorkAsync(Func<ProfileItem, Task<bool>> perform)
-		{
-			var targetProfile = Profiles.FirstOrDefault(x => x.IsTarget);
-			if (targetProfile == null)
-				return Task.FromResult(false);
-
-			return WorkAsync(targetProfile, perform);
-		}
 
 		private async Task<bool> WorkAsync(ProfileItem targetProfile, Func<ProfileItem, Task<bool>> perform)
 		{
@@ -437,8 +429,8 @@ namespace Wifinian
 		[Conditional("DEBUG")]
 		private void ShowWorkingTime()
 		{
-			this.IsWorking
-				.Select(x => new { Value = x, Ticks = DateTime.Now.Ticks })
+			IsWorking
+				.Select(x => new { Value = x, DateTime.Now.Ticks })
 				.Pairwise()
 				.Where(x => x.OldItem.Value && !x.NewItem.Value)
 				.Select(x => (x.NewItem.Ticks - x.OldItem.Ticks) / TimeSpan.TicksPerMillisecond)

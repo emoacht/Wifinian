@@ -18,6 +18,9 @@ namespace Wifinian.Models.Wlan
 		public override AuthenticationMethod Authentication => _document.Authentication;
 		public override EncryptionType Encryption => _document.Encryption;
 
+		public override bool CanSetOptions =>
+			(ProfileType != ProfileType.GroupPolicy) && (BssType == BssType.Infrastructure);
+
 		public override bool IsAutoConnectEnabled
 		{
 			get => _document.IsAutoConnectEnabled;

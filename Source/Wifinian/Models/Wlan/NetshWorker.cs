@@ -122,7 +122,7 @@ namespace Wifinian.Models.Wlan
 
 		#region Set profile
 
-		public async Task<bool> SetProfileParameterAsync(ProfileItem profileItem)
+		public async Task<bool> SetProfileOptionAsync(ProfileItem profileItem)
 		{
 			var item = profileItem ?? throw new ArgumentNullException(nameof(profileItem));
 

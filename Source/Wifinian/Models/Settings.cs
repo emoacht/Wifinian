@@ -28,7 +28,7 @@ namespace Wifinian.Models
 		#region Settings
 
 		private const int IntervalMin = 10;
-		private const int IntervalMax = 50;
+		private const int IntervalMax = 30;
 
 		public int RescanInterval
 		{
@@ -40,7 +40,7 @@ namespace Wifinian.Models
 		public void IncrementRescanInterval() =>
 			RescanInterval = IncrementLoop(RescanInterval, IntervalMin, IntervalMax);
 
-		private const int ThresholdMin = 10;
+		private const int ThresholdMin = 50;
 		private const int ThresholdMax = 90;
 
 		public int SignalThreshold
@@ -53,7 +53,7 @@ namespace Wifinian.Models
 		public void IncrementSignalThreshold() =>
 			SignalThreshold = IncrementLoop(SignalThreshold, ThresholdMin, ThresholdMax);
 
-		private int IncrementLoop(int value, int min, int max)
+		private static int IncrementLoop(int value, int min, int max)
 		{
 			var buff = (value / 10 + 1) * 10;
 			return (buff <= max) ? buff : min;

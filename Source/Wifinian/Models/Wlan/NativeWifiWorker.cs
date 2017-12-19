@@ -97,7 +97,7 @@ namespace Wifinian.Models.Wlan
 
 		#region Set profile
 
-		public Task<bool> SetProfileParameterAsync(ProfileItem profileItem)
+		public Task<bool> SetProfileOptionAsync(ProfileItem profileItem)
 		{
 			if (!(profileItem is NativeWifiProfileItem item))
 				throw new ArgumentException(nameof(profileItem));

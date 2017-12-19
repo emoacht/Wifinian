@@ -49,6 +49,11 @@ namespace Wifinian.Models.Wlan
 		public virtual EncryptionType Encryption { get; }
 
 		/// <summary>
+		/// Whether options for this profile can be set
+		/// </summary>
+		public virtual bool CanSetOptions => true;
+
+		/// <summary>
 		/// Whether automatic connection for this profile is enabled
 		/// </summary>
 		public virtual bool IsAutoConnectEnabled

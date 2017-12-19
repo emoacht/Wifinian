@@ -37,19 +37,17 @@ namespace Wifinian.ViewModels
 		}
 		private ListCollectionView _profilesView;
 
-		public ReactiveProperty<bool> IsQuickRescanEnabled => _controller.IsQuickRescanEnabled;
-		public ReactiveProperty<bool> IsActivePriorityEnabled => _controller.IsActivePriorityEnabled;
-		public ReactiveProperty<bool> IsConfigMode { get; }
+		public ReactiveProperty<bool> RushesRescan => _controller.RushesRescan;
+		public ReactiveProperty<bool> EngagesPriority => _controller.EngagesPriority;
+		public ReactiveProperty<bool> ReordersPriority { get; }
 
 		public ReadOnlyReactiveProperty<bool> IsUpdating { get; }
-		public ReadOnlyReactiveProperty<bool> IsNotWorking { get; }
+		public ReadOnlyReactiveProperty<bool> CanDelete { get; }
 
 		public ReactiveCommand RescanCommand => _controller.RescanCommand;
 		public ReactiveCommand MoveUpCommand { get; }
 		public ReactiveCommand MoveDownCommand { get; }
 		public ReactiveCommand DeleteCommand { get; }
-		public ReactiveCommand ConnectCommand { get; }
-		public ReactiveCommand DisconnectCommand { get; }
 
 		public MainWindowViewModel() : this(new MainController())
 		{ }
@@ -59,7 +57,7 @@ namespace Wifinian.ViewModels
 			this._controller = controller;
 
 			Profiles = _controller.Profiles
-				.ToReadOnlyReactiveCollection(x => new ProfileItemViewModel(x))
+				.ToReadOnlyReactiveCollection(x => new ProfileItemViewModel(_controller, x))
 				.AddTo(this.Subscription);
 			Profiles
 				.ObserveElementObservableProperty(x => x.Position)
@@ -68,7 +66,7 @@ namespace Wifinian.ViewModels
 				.Subscribe(_ => ProfilesView.Refresh()) // ListCollectionView.Refresh method seems not thread-safe.
 				.AddTo(this.Subscription);
 
-			IsConfigMode = new ReactiveProperty<bool>()
+			ReordersPriority = new ReactiveProperty<bool>()
 				.AddTo(this.Subscription);
 
 			IsUpdating = _controller.IsUpdating
@@ -81,105 +79,61 @@ namespace Wifinian.ViewModels
 				.ToReadOnlyReactiveProperty()
 				.AddTo(this.Subscription);
 
-			IsNotWorking = _controller.IsWorking
-				.Select(x => !x)
-				.StartWith(true) // This is necessary for initial query.
-				.ObserveOnUIDispatcher()
-				.ToReadOnlyReactiveProperty()
-				.AddTo(this.Subscription);
-
 			#region Work
 
-			// Query for a profile which is selected.
-			var querySelectedProfiles = Profiles
+			var isNotWorking = _controller.IsWorking
+				.Inverse()
+				.StartWith(true) // This is necessary for initial query.
+				.ObserveOnUIDispatcher() // This is safety for thread access with ReactiveCommand.
+				.Publish();
+
+			var selectedProfile = Profiles
 				.ObserveElementObservableProperty(x => x.IsSelected)
 				.Where(x => x.Value)
 				.Select(x => x.Instance)
 				.Publish();
 
-			// Query for the selected profile which is connected or disconnected.
-			var queryConnectedProfiles = Profiles
+			var connectedProfile = Profiles
 				.ObserveElementObservableProperty(x => x.IsConnected)
 				.Where(x => x.Instance.IsSelected.Value)
 				.Select(x => x.Instance)
 				.Publish();
 
-			// Query for the selected profile which changes to be available or unavailable.
-			var queryAvailableProfiles = Profiles
-				.ObserveElementObservableProperty(x => x.IsAvailable)
-				.Where(x => x.Instance.IsSelected.Value)
-				.Select(x => x.Instance)
-				.Publish();
-
-			#region MoveUp
-
-			var queryMoveUp = querySelectedProfiles
+			var canMoveUp = selectedProfile
 				.Select(x => x.Position.Value > 0);
 
-			MoveUpCommand = new[] { IsNotWorking, queryMoveUp }
+			MoveUpCommand = new[] { isNotWorking, canMoveUp }
 				.CombineLatestValuesAreAllTrue()
 				.ToReactiveCommand();
 			MoveUpCommand
 				.Subscribe(async _ => await _controller.MoveUpProfileAsync())
 				.AddTo(this.Subscription);
 
-			#endregion
-
-			#region MoveDown
-
-			var queryMoveDown = querySelectedProfiles
+			var canMoveDown = selectedProfile
 				.Select(x => x.Position.Value < x.PositionCount.Value - 1);
 
-			MoveDownCommand = new[] { IsNotWorking, queryMoveDown }
+			MoveDownCommand = new[] { isNotWorking, canMoveDown }
 				.CombineLatestValuesAreAllTrue()
 				.ToReactiveCommand();
 			MoveDownCommand
 				.Subscribe(async _ => await _controller.MoveDownProfileAsync())
 				.AddTo(this.Subscription);
 
-			#endregion
+			CanDelete = Observable.Merge(selectedProfile, connectedProfile)
+				.Select(x => !x.IsConnected.Value)
+				.Merge(isNotWorking)
+				.ToReadOnlyReactiveProperty()
+				.AddTo(this.Subscription);
 
-			#region Delete
-
-			DeleteCommand = IsNotWorking
+			DeleteCommand = CanDelete
 				.ToReactiveCommand();
 			DeleteCommand
 				.Subscribe(async _ => await _controller.DeleteProfileAsync())
 				.AddTo(this.Subscription);
 
-			#endregion
-
-			#region Connect
-
-			var queryConnect = Observable.Merge(querySelectedProfiles, queryConnectedProfiles, queryAvailableProfiles)
-				.Select(x => !x.IsConnected.Value && x.IsAvailable.Value);
-
-			ConnectCommand = new[] { IsNotWorking, queryConnect }
-				.CombineLatestValuesAreAllTrue()
-				.ToReactiveCommand();
-			ConnectCommand
-				.Subscribe(async _ => await _controller.ConnectNetworkAsync())
-				.AddTo(this.Subscription);
-
-			#endregion
-
-			#region Disconnect
-
-			var queryDisconnect = Observable.Merge(querySelectedProfiles, queryConnectedProfiles)
-				.Select(x => x.IsConnected.Value);
-
-			DisconnectCommand = new[] { IsNotWorking, queryDisconnect }
-				.CombineLatestValuesAreAllTrue()
-				.ToReactiveCommand();
-			DisconnectCommand
-				.Subscribe(async _ => await _controller.DisconnectNetworkAsync())
-				.AddTo(this.Subscription);
-
-			#endregion
-
-			querySelectedProfiles.Connect().AddTo(this.Subscription);
-			queryConnectedProfiles.Connect().AddTo(this.Subscription);
-			queryAvailableProfiles.Connect().AddTo(this.Subscription);
+			isNotWorking.Connect().AddTo(this.Subscription);
+			selectedProfile.Connect().AddTo(this.Subscription);
+			connectedProfile.Connect().AddTo(this.Subscription);
 
 			#endregion
 		}

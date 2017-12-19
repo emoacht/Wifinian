@@ -67,7 +67,7 @@ namespace Wifinian.Models.Wlan
 			return _sourceProfiles.ToArray();
 		}
 
-		public async Task<bool> SetProfileParameterAsync(ProfileItem profileItem)
+		public async Task<bool> SetProfileOptionAsync(ProfileItem profileItem)
 		{
 			await WaitAsync(); // Dummy
 
