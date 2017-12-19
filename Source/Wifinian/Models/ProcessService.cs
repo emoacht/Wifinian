@@ -92,7 +92,7 @@ namespace Wifinian.Models
 				var windowHandle = existingProcess.MainWindowHandle;
 				if (windowHandle == IntPtr.Zero) // If the window is minimized and ShowInTaskbar is false
 				{
-					Func<IntPtr, IntPtr, bool> search = (hWnd, lParam) =>
+					bool search(IntPtr hWnd, IntPtr lParam)
 					{
 						GetWindowThreadProcessId(hWnd, out uint processId);
 
@@ -106,7 +106,7 @@ namespace Wifinian.Models
 
 						windowHandle = hWnd;
 						return false; // Stop enumeration.
-					};
+					}
 
 					EnumWindows(new EnumWindowsProc(search), IntPtr.Zero);
 

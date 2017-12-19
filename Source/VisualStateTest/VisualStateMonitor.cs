@@ -27,8 +27,7 @@ namespace VisualStateTest
 
 		private static void OnIntervalChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			var element = d as FrameworkElement;
-			if (element == null)
+			if (!(d is FrameworkElement element))
 				return;
 
 			var interval = (double)e.NewValue;
