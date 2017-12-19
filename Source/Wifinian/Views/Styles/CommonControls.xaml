@@ -17,8 +17,7 @@
 								Background="{TemplateBinding Background}"
 								BorderBrush="{TemplateBinding BorderBrush}"
 								BorderThickness="{TemplateBinding BorderThickness}"
-								SnapsToDevicePixels="True"
-								UseLayoutRounding="True">
+								SnapsToDevicePixels="True" UseLayoutRounding="True">
 							<ContentPresenter x:Name="contentPresenter"
 											  Margin="{TemplateBinding Padding}"
 											  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
@@ -75,8 +74,7 @@
 
 	<Style x:Key="MenuButtonStyle" TargetType="{x:Type Button}">
 		<Setter Property="Background" Value="{StaticResource App.Background}"/>
-		<Setter Property="BorderBrush" Value="{StaticResource ToggleButton.Normal.Foreground}"/>
-		<Setter Property="BorderThickness" Value="2"/>
+		<Setter Property="BorderThickness" Value="0"/>
 		<Setter Property="Foreground" Value="{StaticResource ToggleButton.Normal.Foreground}"/>
 		<Setter Property="FontSize" Value="12"/>
 		<Setter Property="FontWeight" Value="SemiBold"/>
@@ -88,8 +86,7 @@
 								Background="{TemplateBinding Background}"
 								BorderBrush="{TemplateBinding BorderBrush}"
 								BorderThickness="{TemplateBinding BorderThickness}"
-								SnapsToDevicePixels="True"
-								UseLayoutRounding="True">
+								SnapsToDevicePixels="True" UseLayoutRounding="True">
 							<ContentPresenter x:Name="contentPresenter"
 											  Margin="{TemplateBinding Padding}"
 											  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
@@ -103,10 +100,6 @@
 								<VisualState x:Name="MouseOver">
 									<Storyboard>
 										<DoubleAnimation Storyboard.TargetName="border"
-														 Storyboard.TargetProperty="(Control.BorderBrush).(SolidColorBrush.Opacity)"
-														 To="0.8"
-														 Duration="0:0:0.1"/>
-										<DoubleAnimation Storyboard.TargetName="border"
 														 Storyboard.TargetProperty="(Control.Foreground).(SolidColorBrush.Opacity)"
 														 To="0.8"
 														 Duration="0:0:0.1"/>
@@ -115,25 +108,25 @@
 								<VisualState x:Name="Pressed">
 									<Storyboard>
 										<DoubleAnimation Storyboard.TargetName="border"
-														 Storyboard.TargetProperty="(Control.BorderBrush).(SolidColorBrush.Opacity)"
-														 To="0.9"
-														 Duration="0:0:0.1"/>
-										<DoubleAnimation Storyboard.TargetName="border"
 														 Storyboard.TargetProperty="(Control.Foreground).(SolidColorBrush.Opacity)"
-														 To="0.9"
+														 To="1.0"
 														 Duration="0:0:0.1"/>
 									</Storyboard>
 								</VisualState>
 								<VisualState x:Name="Disabled">
 									<Storyboard>
+										<ColorAnimation Storyboard.TargetName="border"
+														Storyboard.TargetProperty="(Control.Background).(SolidColorBrush.Color)"
+														To="{StaticResource ToggleButton.Checked.ForegroundColor}"
+														Duration="0:0:0.1"/>
 										<DoubleAnimation Storyboard.TargetName="border"
-														 Storyboard.TargetProperty="(Control.BorderBrush).(SolidColorBrush.Opacity)"
-														 To="0.4"
-														 Duration="0:0:0"/>
+														 Storyboard.TargetProperty="(Control.Background).(SolidColorBrush.Opacity)"
+														 To="1.0"
+														 Duration="0:0:0.1"/>
 										<DoubleAnimation Storyboard.TargetName="border"
 														 Storyboard.TargetProperty="(Control.Foreground).(SolidColorBrush.Opacity)"
-														 To="0.4"
-														 Duration="0:0:0"/>
+														 To="0.8"
+														 Duration="0:0:0.1"/>
 									</Storyboard>
 								</VisualState>
 							</VisualStateGroup>
@@ -143,25 +136,25 @@
 			</Setter.Value>
 		</Setter>
 	</Style>
-	
-	<Style x:Key="ArrowButtonStyle" TargetType="{x:Type Button}">
-		<Setter Property="Width" Value="12"/>
-		<Setter Property="Height" Value="12"/>
+
+	<Style x:Key="ActionButtonStyle" TargetType="{x:Type Button}">
+		<Setter Property="Background" Value="Transparent"/>
+		<Setter Property="BorderBrush" Value="{StaticResource Button.Normal.Foreground}"/>
+		<Setter Property="BorderThickness" Value="2"/>
+		<Setter Property="Foreground" Value="{StaticResource Button.Normal.Foreground}"/>
+		<Setter Property="FontSize" Value="12"/>
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type Button}">
 					<Grid>
 						<Border x:Name="border"
-								Background="Transparent"
-								BorderBrush="Transparent"
-								BorderThickness="0"
-								SnapsToDevicePixels="True"
-								UseLayoutRounding="True">
-							<Path x:Name="arrow"
-								  Margin="2"
-								  Data="{StaticResource ArrowForm}"
-								  Stretch="Uniform"
-								  Fill="{StaticResource Button.Normal.Foreground}"/>
+								Background="{TemplateBinding Background}"
+								BorderBrush="{TemplateBinding BorderBrush}"
+								BorderThickness="{TemplateBinding BorderThickness}"
+								SnapsToDevicePixels="True" UseLayoutRounding="True">
+							<ContentPresenter x:Name="contentPresenter"
+											  Margin="{TemplateBinding Padding}"
+											  Content="{TemplateBinding Content}"/>
 						</Border>
 
 						<VisualStateManager.VisualStateGroups>
@@ -169,24 +162,36 @@
 								<VisualState x:Name="Normal"/>
 								<VisualState x:Name="MouseOver">
 									<Storyboard>
-										<DoubleAnimation Storyboard.TargetName="arrow"
-														 Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Opacity)"
+										<DoubleAnimation Storyboard.TargetName="border"
+														 Storyboard.TargetProperty="(Control.BorderBrush).(SolidColorBrush.Opacity)"
+														 To="1.0"
+														 Duration="0:0:0.1"/>
+										<DoubleAnimation Storyboard.TargetName="border"
+														 Storyboard.TargetProperty="(Control.Foreground).(SolidColorBrush.Opacity)"
 														 To="1.0"
 														 Duration="0:0:0.1"/>
 									</Storyboard>
 								</VisualState>
 								<VisualState x:Name="Pressed">
 									<Storyboard>
-										<DoubleAnimation Storyboard.TargetName="arrow"
-														 Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Opacity)"
+										<DoubleAnimation Storyboard.TargetName="border"
+														 Storyboard.TargetProperty="(Control.BorderBrush).(SolidColorBrush.Opacity)"
+														 To="1.0"
+														 Duration="0:0:0.1"/>
+										<DoubleAnimation Storyboard.TargetName="border"
+														 Storyboard.TargetProperty="(Control.Foreground).(SolidColorBrush.Opacity)"
 														 To="1.0"
 														 Duration="0:0:0.1"/>
 									</Storyboard>
 								</VisualState>
 								<VisualState x:Name="Disabled">
 									<Storyboard>
-										<DoubleAnimation Storyboard.TargetName="arrow"
-														 Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Opacity)"
+										<DoubleAnimation Storyboard.TargetName="border"
+														 Storyboard.TargetProperty="(Control.BorderBrush).(SolidColorBrush.Opacity)"
+														 To="0.4"
+														 Duration="0:0:0"/>
+										<DoubleAnimation Storyboard.TargetName="border"
+														 Storyboard.TargetProperty="(Control.Foreground).(SolidColorBrush.Opacity)"
 														 To="0.4"
 														 Duration="0:0:0"/>
 									</Storyboard>
@@ -199,7 +204,47 @@
 		</Setter>
 	</Style>
 
-	<!-- RepeatButton for Slider and ScrollBar -->
+	<!-- CheckBox -->
+	<Style x:Key="ItemCheckBoxStyle" TargetType="{x:Type CheckBox}">
+		<Setter Property="Foreground" Value="{StaticResource Button.Normal.Foreground}"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type CheckBox}">
+					<Grid Background="Transparent"
+							  Margin="{TemplateBinding Padding}"
+							  SnapsToDevicePixels="True" UseLayoutRounding="True">
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="*"/>
+						</Grid.RowDefinitions>
+
+						<Border Grid.Row="1"
+								x:Name="checkMark"
+								BorderBrush="{TemplateBinding Foreground}" BorderThickness="0,0,0,2"
+								Opacity="0"/>
+
+						<ContentPresenter Grid.Column="1" Grid.Row="0"
+										  x:Name="content"
+										  Margin="4,2" HorizontalAlignment="Left" VerticalAlignment="Center"
+										  Focusable="False"
+										  Opacity="0.6"/>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsChecked" Value="True">
+							<Setter Property="Opacity" TargetName="content" Value="1"/>
+							<Setter Property="Opacity" TargetName="checkMark" Value="1"/>
+						</Trigger>
+						<Trigger Property="IsChecked" Value="{x:Null}">
+							<Setter Property="Opacity" TargetName="content" Value="0.6"/>
+							<Setter Property="Opacity" TargetName="checkMark" Value="0"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<!-- RepeatButton for ScrollBar -->
 	<Style x:Key="RepeatButtonTransparent" TargetType="{x:Type RepeatButton}">
 		<Setter Property="OverridesDefaultStyle" Value="True"/>
 		<Setter Property="Background" Value="Transparent"/>
@@ -211,85 +256,6 @@
 					<Rectangle Width="{TemplateBinding Width}"
 							   Height="{TemplateBinding Height}"
 							   Fill="{TemplateBinding Background}"/>
-				</ControlTemplate>
-			</Setter.Value>
-		</Setter>
-	</Style>
-
-	<!-- Slider -->
-	<SolidColorBrush x:Key="Slider.Static.Thumb.Background" Color="{StaticResource Slider.Normal.ThumbColor}"/>
-	<SolidColorBrush x:Key="Slider.Static.Thumb.Border" Color="{StaticResource Slider.Normal.ThumbColor}"/>
-	<SolidColorBrush x:Key="Slider.MouseOver.Thumb.Background" Color="{StaticResource Slider.MouseOver.ThumbColor}"/>
-	<SolidColorBrush x:Key="Slider.MouseOver.Thumb.Border" Color="{StaticResource Slider.MouseOver.ThumbColor}"/>
-	<SolidColorBrush x:Key="Slider.Pressed.Thumb.Background" Color="{StaticResource Slider.Pressed.ThumbColor}"/>
-	<SolidColorBrush x:Key="Slider.Pressed.Thumb.Border" Color="{StaticResource Slider.Pressed.ThumbColor}"/>
-	<SolidColorBrush x:Key="Slider.Disabled.Thumb.Background" Color="{StaticResource Slider.Disabled.ThumbColor}"/>
-	<SolidColorBrush x:Key="Slider.Disabled.Thumb.Border" Color="{StaticResource Slider.Disabled.ThumbColor}"/>
-
-	<SolidColorBrush x:Key="Slider.Track.Background" Color="{StaticResource Slider.TrackColor}"/>
-	<SolidColorBrush x:Key="Slider.Track.Border" Color="{StaticResource Slider.TrackColor}"/>
-
-	<Style x:Key="SliderThumbHorizontal" TargetType="{x:Type Thumb}">
-		<Setter Property="OverridesDefaultStyle" Value="True"/>
-		<Setter Property="Focusable" Value="False"/>
-		<Setter Property="Template">
-			<Setter.Value>
-				<ControlTemplate TargetType="{x:Type Thumb}">
-					<Rectangle x:Name="grip"
-							   Width="{TemplateBinding Width}"
-							   Height="{TemplateBinding Height}"
-							   Stroke="{StaticResource Slider.Static.Thumb.Border}"
-							   StrokeThickness="2"
-							   Fill="{StaticResource Slider.Static.Thumb.Background}"
-							   SnapsToDevicePixels="True"
-							   UseLayoutRounding="True"/>
-					<ControlTemplate.Triggers>
-						<Trigger Property="IsMouseOver" Value="True">
-							<Setter Property="Fill" TargetName="grip" Value="{StaticResource Slider.MouseOver.Thumb.Background}"/>
-							<Setter Property="Stroke" TargetName="grip" Value="{StaticResource Slider.MouseOver.Thumb.Border}"/>
-						</Trigger>
-						<Trigger Property="IsDragging" Value="True">
-							<Setter Property="Fill" TargetName="grip" Value="{StaticResource Slider.Pressed.Thumb.Background}"/>
-							<Setter Property="Stroke" TargetName="grip" Value="{StaticResource Slider.Pressed.Thumb.Border}"/>
-						</Trigger>
-						<Trigger Property="IsEnabled" Value="False">
-							<Setter Property="Fill" TargetName="grip" Value="{StaticResource Slider.Disabled.Thumb.Background}"/>
-							<Setter Property="Stroke" TargetName="grip" Value="{StaticResource Slider.Disabled.Thumb.Border}"/>
-						</Trigger>
-					</ControlTemplate.Triggers>
-				</ControlTemplate>
-			</Setter.Value>
-		</Setter>
-	</Style>
-
-	<Style x:Key="NormalSliderStyle" TargetType="{x:Type Slider}">
-		<Setter Property="Stylus.IsPressAndHoldEnabled" Value="False"/>
-		<Setter Property="Background" Value="{StaticResource Slider.Track.Background}"/>
-		<Setter Property="BorderBrush" Value="{StaticResource Slider.Track.Border}"/>
-		<Setter Property="Template">
-			<Setter.Value>
-				<ControlTemplate TargetType="{x:Type Slider}">
-					<Border x:Name="border"
-							BorderBrush="{TemplateBinding BorderBrush}"
-							BorderThickness="{TemplateBinding BorderThickness}"
-							Background="{TemplateBinding Background}"
-							SnapsToDevicePixels="True">
-						<Track x:Name="PART_Track">
-							<Track.DecreaseRepeatButton>
-								<RepeatButton Style="{StaticResource RepeatButtonTransparent}"
-											  Command="{x:Static Slider.DecreaseLarge}"/>
-							</Track.DecreaseRepeatButton>
-							<Track.IncreaseRepeatButton>
-								<RepeatButton Style="{StaticResource RepeatButtonTransparent}"
-											  Command="{x:Static Slider.IncreaseLarge}"/>
-							</Track.IncreaseRepeatButton>
-							<Track.Thumb>
-								<Thumb x:Name="Thumb"
-									   Width="18" Height="{TemplateBinding Height}"
-									   Style="{StaticResource SliderThumbHorizontal}"/>
-							</Track.Thumb>
-						</Track>
-					</Border>
 				</ControlTemplate>
 			</Setter.Value>
 		</Setter>
@@ -327,7 +293,7 @@
 							BorderBrush="{StaticResource ScrollBar.Static.Border}"
 							BorderThickness="1"
 							Background="{StaticResource ScrollBar.Static.Background}"
-							SnapsToDevicePixels="True">
+							SnapsToDevicePixels="True" UseLayoutRounding="True">
 						<ContentPresenter x:Name="contentPresenter"
 										  Margin="{TemplateBinding Padding}"
 										  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
@@ -365,7 +331,7 @@
 							   Width="{TemplateBinding Width}"
 							   Height="{TemplateBinding Height}"
 							   Fill="{StaticResource ScrollBar.Static.Thumb}"
-							   SnapsToDevicePixels="True"/>
+							   SnapsToDevicePixels="True" UseLayoutRounding="True"/>
 					<ControlTemplate.Triggers>
 						<Trigger Property="IsMouseOver" Value="True">
 							<Setter TargetName="rectangle" Property="Fill" Value="{StaticResource ScrollBar.MouseOver.Thumb}"/>
@@ -389,7 +355,7 @@
 							   Width="{TemplateBinding Width}"
 							   Height="{TemplateBinding Height}"
 							   Fill="{StaticResource ScrollBar.Static.Thumb}"
-							   SnapsToDevicePixels="True"/>
+							   SnapsToDevicePixels="True" UseLayoutRounding="True"/>
 					<ControlTemplate.Triggers>
 						<Trigger Property="IsMouseOver" Value="True">
 							<Setter TargetName="rectangle" Property="Fill" Value="{StaticResource ScrollBar.MouseOver.Thumb}"/>

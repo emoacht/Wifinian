@@ -63,11 +63,11 @@ namespace Wifinian.Views.Controls
 
 			var percentage = this.Value * 100D / this.Maximum;
 
-			_levelOne.Fill = (this.Value == 0D) ? this.Background : this.Foreground;
-			_levelTwo.Fill = (percentage <= 20D) ? this.Background : this.Foreground;
-			_levelThree.Fill = (percentage <= 40D) ? this.Background : this.Foreground;
-			_levelFour.Fill = (percentage <= 60D) ? this.Background : this.Foreground;
-			_levelFive.Fill = (percentage <= 80D) ? this.Background : this.Foreground;
+			_levelOne.Stroke = (this.Value == 0D) ? this.Background : this.Foreground;
+			_levelTwo.Stroke = (percentage <= 20D) ? this.Background : this.Foreground;
+			_levelThree.Stroke = (percentage <= 40D) ? this.Background : this.Foreground;
+			_levelFour.Stroke = (percentage <= 60D) ? this.Background : this.Foreground;
+			_levelFive.Stroke = (percentage <= 80D) ? this.Background : this.Foreground;
 		}
 	}
 }

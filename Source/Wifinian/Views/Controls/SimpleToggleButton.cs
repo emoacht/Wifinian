@@ -13,7 +13,7 @@ namespace Wifinian.Views.Controls
 	[TemplateVisualState(Name = "Pressed", GroupName = "CommonStates")]
 	[TemplateVisualState(Name = "Disabled", GroupName = "CommonStates")]
 	[TemplateVisualState(Name = "Checked", GroupName = "CommonStates")]
-	public class PlainToggleButton : Button
+	public class SimpleToggleButton : Button
 	{
 		#region Property
 
@@ -26,10 +26,17 @@ namespace Wifinian.Views.Controls
 			DependencyProperty.Register(
 				"IsChecked",
 				typeof(bool),
-				typeof(PlainToggleButton),
+				typeof(SimpleToggleButton),
 				new FrameworkPropertyMetadata(false));
 
 		#endregion
+
+		public override void OnApplyTemplate()
+		{
+			base.OnApplyTemplate();
+
+			//this.LayoutUpdated += (sender, e) => UpdateState(false);
+		}
 
 		protected override void OnClick()
 		{

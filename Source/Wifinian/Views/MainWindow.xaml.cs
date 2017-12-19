@@ -31,9 +31,7 @@ namespace Wifinian.Views
 		internal MainWindow(MainController controller)
 		{
 			InitializeComponent();
-
-			this.ShowInTaskbar = false;
-
+			
 			ThemeService.AdjustResourceColors(Application.Current.Resources);
 
 			this.DataContext = new MainWindowViewModel(controller);

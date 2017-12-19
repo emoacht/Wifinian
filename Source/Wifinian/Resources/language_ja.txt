@@ -1,2 +1,4 @@
 ﻿ProjectSite=https://github.com/emoacht/WlanProfileViewer/blob/master/README_ja.md
+License=https://github.com/emoacht/WlanProfileViewer/blob/master/LICENSE.txt
+Close=閉じる
 RecordException=予想外の問題が起きたため、このアプリを終了します。例外のログをデスクトップに残しますか?

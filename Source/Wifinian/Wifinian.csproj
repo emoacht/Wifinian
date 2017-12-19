@@ -123,23 +123,24 @@
     <Compile Include="Models\LanguageService.cs" />
     <Compile Include="Models\LogService.cs" />
     <Compile Include="Models\ProcessService.cs" />
-    <Compile Include="Models\Settings.cs" />
     <Compile Include="Models\ProductInfo.cs" />
+    <Compile Include="Models\Settings.cs" />
     <Compile Include="MainController.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\MenuWindowViewModel.cs" />
     <Compile Include="ViewModels\ProfileItemViewModel.cs" />
     <Compile Include="Views\Behaviors\FrameworkElementCenterBehavior.cs" />
+    <Compile Include="Views\Behaviors\ListBoxHeightBehavior.cs" />
     <Compile Include="Views\Behaviors\ListBoxSelectedItemBehavior.cs" />
     <Compile Include="Views\Behaviors\WindowMaximizeBoxBehavior.cs" />
-    <Compile Include="Views\Controls\MovingControl.cs" />
-    <Compile Include="Views\Controls\PlainToggleButton.cs" />
+    <Compile Include="Views\Controls\IconButton.cs" />
     <Compile Include="Views\Controls\MovingButton.cs" />
+    <Compile Include="Views\Controls\MovingControl.cs" />
     <Compile Include="Views\Controls\ProfileContentControl.cs" />
     <Compile Include="Views\Controls\SignalProgressBar.cs" />
+    <Compile Include="Views\Controls\SimpleToggleButton.cs" />
+    <Compile Include="Views\Converters\BooleanInverseConverter.cs" />
     <Compile Include="Views\Converters\VisibilityInverseConverter.cs" />
-    <Compile Include="Views\Converters\BooleanToVisibilityConverter.cs" />
-    <Compile Include="Views\Converters\StateChangedToBooleanConverter.cs" />
     <Compile Include="Views\ThemeService.cs" />
     <Compile Include="Views\WindowEffect.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
@@ -199,7 +200,7 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Icons\AppIcon.ico" />
-    <Resource Include="Resources\Icons\TrayIcon.ico" />    
+    <Resource Include="Resources\Icons\TrayIcon.ico" />
     <Content Include="Library\ManagedNativeWifi.dll" />
     <Content Include="Library\ScreenFrame.dll" />
     <Resource Include="Library\ScreenFrame.xml" />

@@ -4,15 +4,14 @@
 		xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
 		xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
 		xmlns:models="clr-namespace:Wifinian.Models"
-		xmlns:viewModels="clr-namespace:Wifinian.ViewModels"
 		xmlns:views="clr-namespace:Wifinian.Views"
 		xmlns:behaviors="clr-namespace:Wifinian.Views.Behaviors"
 		xmlns:controls="clr-namespace:Wifinian.Views.Controls"
 		Title="{Binding Source={x:Static models:ProductInfo.Title}, Mode=OneTime}"
-		Width="500"
-		Height="400" MinHeight="200" ResizeMode="CanResize"
-		Background="{StaticResource App.Background}"
-		AllowsTransparency="True" WindowStyle="None">
+		Width="360" Height="400" MinHeight="200"
+		ResizeMode="CanResize"
+		ShowInTaskbar="False"
+		Background="Transparent" AllowsTransparency="True" WindowStyle="None">
 	<WindowChrome.WindowChrome>
 		<WindowChrome CaptionHeight="0"
 					  ResizeBorderThickness="0,4"/>
@@ -25,17 +24,19 @@
 				<RowDefinition Height="*"/>
 			</Grid.RowDefinitions>
 
-			<StackPanel Grid.Row="0">
-				<Grid Margin="0,4,0,6">
+			<!-- Menu -->
+			<Grid Grid.Row="0"
+				  Background="{StaticResource App.Background}">
+				<Grid Margin="0,6">
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="44"/>
-						<ColumnDefinition Width="92"/>
+						<ColumnDefinition Width="60"/>
 						<ColumnDefinition Width="30"/>
 						<ColumnDefinition Width="12"/>
-						<ColumnDefinition Width="92"/>
+						<ColumnDefinition Width="60"/>
 						<ColumnDefinition Width="30"/>
 						<ColumnDefinition Width="12"/>
-						<ColumnDefinition Width="72"/>
+						<ColumnDefinition Width="60"/>
 						<ColumnDefinition Width="*"/>
 					</Grid.ColumnDefinitions>
 
@@ -43,23 +44,31 @@
 					<controls:MovingButton
 						Grid.Column="0"
 						x:Name="RescanButton"
-						Width="30" Height="30"
+						Width="28" Height="28"
 						Style="{StaticResource RollingStyle}"
-						IsRunning="{Binding IsUpdating.Value}"
+						IsRunning="{Binding IsUpdating.Value, Mode=OneWay}"
 						Command="{Binding RescanCommand}"/>
 
-					<!-- Quick Rescan -->
-					<controls:PlainToggleButton
+					<!-- Rush -->
+					<controls:SimpleToggleButton
 						Grid.Column="1"
+						x:Name="RushButton"
 						Height="24"
 						Style="{StaticResource MenuToggleButtonStyle}"
-						Content="Quick Rescan"
-						IsChecked="{Binding IsQuickRescanEnabled.Value, Mode=TwoWay}"/>
+						Content="Rush"
+						IsChecked="{Binding RushesRescan.Value, Mode=TwoWay}"/>
 
 					<Button Grid.Column="2"
 							Height="24"
 							Style="{StaticResource MenuButtonStyle}"
-							Content="{Binding Source={x:Static models:Settings.Current}, Path=RescanInterval, Mode=OneWay}">
+							Content="{Binding Source={x:Static models:Settings.Current}, Path=RescanInterval, Mode=OneWay}"
+							IsEnabled="{Binding ElementName=RushButton, Path=IsChecked, Mode=OneWay, Converter={StaticResource BooleanInverseConverterKey}}">
+						<Button.ToolTip>
+							<ToolTip DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}"
+									 Content="{Binding Content}"
+									 ContentStringFormat="{}Rescan interval {0} sec"/>
+						</Button.ToolTip>
+
 						<i:Interaction.Triggers>
 							<i:EventTrigger EventName="Click">
 								<ei:CallMethodAction TargetObject="{Binding Source={x:Static models:Settings.Current}}"
@@ -68,18 +77,26 @@
 						</i:Interaction.Triggers>
 					</Button>
 
-					<!-- Active Priority -->
-					<controls:PlainToggleButton
+					<!-- Engage -->
+					<controls:SimpleToggleButton
 						Grid.Column="4"
+						x:Name="EngageButton"
 						Height="24"
 						Style="{StaticResource MenuToggleButtonStyle}"
-						Content="Active Priority"
-						IsChecked="{Binding IsActivePriorityEnabled.Value, Mode=TwoWay}"/>
+						Content="Engage"
+						IsChecked="{Binding EngagesPriority.Value, Mode=TwoWay}"/>
 
 					<Button Grid.Column="5"
 							Height="24"
 							Style="{StaticResource MenuButtonStyle}"
-							Content="{Binding Source={x:Static models:Settings.Current}, Path=SignalThreshold, Mode=OneWay}">
+							Content="{Binding Source={x:Static models:Settings.Current}, Path=SignalThreshold, Mode=OneWay}"
+							IsEnabled="{Binding ElementName=EngageButton, Path=IsChecked, Mode=OneWay, Converter={StaticResource BooleanInverseConverterKey}}">
+						<Button.ToolTip>
+							<ToolTip DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}"
+									 Content="{Binding Content}"
+									 ContentStringFormat="{}Signal threshold {0} %"/>
+						</Button.ToolTip>
+
 						<i:Interaction.Triggers>
 							<i:EventTrigger EventName="Click">
 								<ei:CallMethodAction TargetObject="{Binding Source={x:Static models:Settings.Current}}"
@@ -87,190 +104,229 @@
 							</i:EventTrigger>
 						</i:Interaction.Triggers>
 					</Button>
-					
-					<!-- Config -->
-					<controls:PlainToggleButton
+
+					<!-- Reorder -->
+					<controls:SimpleToggleButton
 						Grid.Column="7"
 						Height="24"
 						Style="{StaticResource MenuToggleButtonStyle}"
-						Content="Config"
-						IsChecked="{Binding IsConfigMode.Value, Mode=TwoWay}"/>
+						Content="Reorder"
+						IsChecked="{Binding ReordersPriority.Value, Mode=TwoWay}"/>
 				</Grid>
-			</StackPanel>
+			</Grid>
 
-			<ListView Grid.Row="1"
-					  ItemsSource="{Binding ProfilesView}"
-					  SelectionMode="Multiple"
-					  IsSynchronizedWithCurrentItem="False">
-				<ListView.Template>
-					<ControlTemplate TargetType="{x:Type ListView}">
-						<Border BorderThickness="0">
-							<ScrollViewer CanContentScroll="False"
-										  HorizontalScrollBarVisibility="Disabled"
-										  VerticalScrollBarVisibility="Auto">
-								<VirtualizingStackPanel IsItemsHost="True"/>
-							</ScrollViewer>
-						</Border>
-					</ControlTemplate>
-				</ListView.Template>
-				<ListView.ItemTemplate>
-					<DataTemplate>
-						<controls:ProfileContentControl
-							IsSelected="{Binding IsSelected.Value}"
-							IsAvailable="{Binding IsAvailable.Value}"
-							IsConnected="{Binding IsConnected.Value}"
-							IsConfigMode="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.IsConfigMode.Value}">
-							<StackPanel>
-								<Grid Height="30">
-									<Grid Margin="4,0">
-										<Grid.ColumnDefinitions>
-											<ColumnDefinition Width="24"/>
-											<ColumnDefinition Width="*"/>
-										</Grid.ColumnDefinitions>
+			<!-- Profiles -->
+			<Grid Grid.Row="1"
+				  x:Name="ListRoot">
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="*"/>
+					</Grid.RowDefinitions>
 
-										<!-- Signal -->
-										<controls:SignalProgressBar
-											Grid.Column="0"
-											Style="{StaticResource BarStyle}"
-											Background="{StaticResource Profile.Signal.Background}"
-											Foreground="{StaticResource Profile.Signal.Foreground}"
-											Value="{Binding Signal.Value, Mode=OneWay}">
-											<Control.ToolTip>
-												<ToolTip DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}"
-														 Content="{Binding Value}"
-														 ContentStringFormat="{} {0}%"/>
-											</Control.ToolTip>
-										</controls:SignalProgressBar>
+					<ListView Grid.Row="0"
+							  ItemsSource="{Binding ProfilesView}"
+							  SelectionMode="Multiple"
+							  IsSynchronizedWithCurrentItem="False">
+						<ListView.Template>
+							<ControlTemplate TargetType="{x:Type ListView}">
+								<Border>
+									<ScrollViewer CanContentScroll="False"
+												  HorizontalScrollBarVisibility="Disabled"
+												  VerticalScrollBarVisibility="Auto">
+										<VirtualizingStackPanel IsItemsHost="True"/>
+									</ScrollViewer>
+								</Border>
+							</ControlTemplate>
+						</ListView.Template>
+						<ListView.ItemTemplate>
+							<DataTemplate>
+								<controls:ProfileContentControl
+									IsSelected="{Binding IsSelected.Value}"
+									IsAvailable="{Binding IsAvailable.Value}"
+									IsConnected="{Binding IsConnected.Value}">
+									<StackPanel>
+										<StackPanel Height="30" Margin="8,2,0,0"
+													Orientation="Horizontal">
+											<!-- Signal -->
+											<controls:SignalProgressBar
+												Width="24"
+												Style="{StaticResource BarStyle}"
+												Background="{StaticResource Profile.Signal.Background}"
+												Foreground="{StaticResource Profile.Signal.Foreground}"
+												Value="{Binding Signal.Value, Mode=OneWay}">
+											</controls:SignalProgressBar>
 
-										<!-- Profile name -->
-										<TextBlock Grid.Column="1"
-												   Margin="4,0,0,0" VerticalAlignment="Center"
-												   Foreground="{StaticResource App.Foreground}"
-												   FontSize="14"
-												   Text="{Binding Name, Mode=OneTime}"/>
-									</Grid>
+											<!-- Profile name -->
+											<TextBlock Margin="4,0,0,0" VerticalAlignment="Center"
+													   Foreground="{StaticResource App.Foreground}"
+													   FontSize="14"
+													   Text="{Binding Name, Mode=OneTime}"/>
+										</StackPanel>
 
-									<!-- Connected -->
-									<TextBlock Margin="0,0,6,0" HorizontalAlignment="Right" VerticalAlignment="Center"
-											   Foreground="{StaticResource App.Foreground}"
-											   FontWeight="Bold"
-											   Text="Connected"
-											   Visibility="{Binding IsConnected.Value, Converter={StaticResource BooleanToVisibilityConverterKey}}"/>
-								</Grid>
+										<Grid Height="64" Margin="8,2,8,10">
+											<Grid.ColumnDefinitions>
+												<ColumnDefinition Width="Auto"/>
+												<ColumnDefinition Width="*"/>
+											</Grid.ColumnDefinitions>
+											<Grid.RowDefinitions>
+												<RowDefinition Height="*"/>
+												<RowDefinition Height="Auto"/>
+											</Grid.RowDefinitions>
 
-								<!-- Supplement -->
-								<TextBlock Margin="32,0,0,6"
-										   Foreground="{StaticResource App.Foreground.Supplement}"
-										   FontSize="12">
-									<Run Text="{Binding InterfaceDescription, Mode=OneTime}"/>
-									<LineBreak/>
-									<Run Text="{Binding Authentication, Mode=OneTime}"/>
-									<Run Text="{Binding Encryption, Mode=OneTime, StringFormat=[{0}]}"/>
-									<Run Text="| Auto Connect:"/>
-									<Run Text="{Binding IsAutoConnectEnabled.Value, Mode=OneWay}"/>
-									<Run Text="| Auto Switch:"/>
-									<Run Text="{Binding IsAutoSwitchEnabled.Value, Mode=OneWay}"/>
-								</TextBlock>
+											<Grid Grid.Column="0" Grid.Row="0" Grid.RowSpan="2"
+												  Width="88" Height="64">
+												<!-- Connect -->
+												<Button Style="{StaticResource ActionButtonStyle}"
+														Visibility="{Binding ElementName=DisconnectButton, Path=Visibility, Mode=OneWay, Converter={StaticResource VisibilityInverseConverterKey}}"
+														Command="{Binding ConnectCommand}">
+													<Grid>
+														<TextBlock Margin="2" VerticalAlignment="Bottom"
+																   Foreground="{StaticResource App.Foreground}"
+																   Text="{Binding Signal.Value, Mode=OneWay, StringFormat={} {0}%}"/>
+													</Grid>
+												</Button>
 
-								<Grid Margin="32,2,0,6"
-									  Visibility="{Binding IsSelected.Value, Converter={StaticResource BooleanToVisibilityConverterKey}}">
-									<Grid Width="100" Height="30"
-										  HorizontalAlignment="Left"
-										  Visibility="{Binding ElementName=ConfigGrid, Path=Visibility, Converter={StaticResource VisibilityInverseConverterKey}}">
-										<!-- Connect -->
-										<Button x:Name="ConnectButton"
-												Style="{StaticResource NormalButtonStyle}"
-												Content="Connect"
-												Visibility="{Binding ElementName=DisconnectButton, Path=Visibility, Converter={StaticResource VisibilityInverseConverterKey}}"
-												Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.ConnectCommand}"/>
+												<!-- Disconnect -->
+												<Button x:Name="DisconnectButton"
+														Style="{StaticResource ActionButtonStyle}"
+														Visibility="{Binding IsConnected.Value, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverterKey}}"
+														Command="{Binding DisconnectCommand}">
+													<Grid>
+														<TextBlock Margin="4,2" VerticalAlignment="Top"
+																   Foreground="{StaticResource App.Foreground}"
+																   Text="Connected"/>
+														<TextBlock Margin="2" VerticalAlignment="Bottom"
+																   Foreground="{StaticResource App.Foreground}"
+																   Text="{Binding Signal.Value, Mode=OneWay, StringFormat={} {0}%}"/>
+													</Grid>
+												</Button>
+											</Grid>
 
-										<!-- Disconnect -->
-										<Button x:Name="DisconnectButton"
-												Style="{StaticResource NormalButtonStyle}"
-												Content="Disconnect"
-												Visibility="{Binding IsConnected.Value, Converter={StaticResource BooleanToVisibilityConverterKey}}"
-												Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.DisconnectCommand}"/>
-									</Grid>
+											<!-- Supplement -->
+											<TextBlock Grid.Column="1" Grid.Row="0"
+													   Margin="8,0"
+													   Foreground="{StaticResource App.Foreground.Shadow}"
+													   FontSize="12">
+												<Run Text="{Binding InterfaceDescription, Mode=OneTime}"/>
+												<LineBreak/>
+												<Run Text="{Binding Authentication, Mode=OneTime}"/>
+												<Run Text="{Binding Encryption, Mode=OneTime, StringFormat=[{0}]}"/>
+											</TextBlock>
 
-									<Grid x:Name="ConfigGrid"
-										  Width="260" Height="30"
-										  HorizontalAlignment="Left"
-										  Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.IsConfigMode.Value, Converter={StaticResource BooleanToVisibilityConverterKey}}">
-										<Grid.ColumnDefinitions>
-											<ColumnDefinition Width="80"/>
-											<ColumnDefinition Width="80"/>
-											<ColumnDefinition Width="20"/>
-											<ColumnDefinition Width="80"/>
-										</Grid.ColumnDefinitions>
+											<StackPanel Grid.Column="1" Grid.Row="1"
+														Margin="8,4,0,0"
+														Orientation="Horizontal"
+														Visibility="{Binding CanSetOptions, Mode=OneTime, Converter={StaticResource BooleanToVisibilityConverterKey}}">
+												<!-- Auto Connect -->
+												<CheckBox x:Name="AutoConnectCheckBox"
+														  Height="22"
+														  Style="{StaticResource ItemCheckBoxStyle}"
+														  Content="Auto Connect"
+														  IsChecked="{Binding IsAutoConnectEnabled.Value, Mode=TwoWay}"/>
 
-										<!-- Up -->
-										<Button Grid.Column="0"
-												Style="{StaticResource NormalButtonStyle}"
-												Content="Up"
-												Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.MoveUpCommand}"/>
+												<!-- Auto Switch -->
+												<CheckBox Height="22"
+														  Style="{StaticResource ItemCheckBoxStyle}"
+														  Content="Auto Switch"
+														  Visibility="{Binding ElementName=AutoConnectCheckBox, Path=IsChecked, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverterKey}}"
+														  IsChecked="{Binding IsAutoSwitchEnabled.Value, Mode=TwoWay}"/>
+											</StackPanel>
+										</Grid>
 
-										<!-- Down -->
-										<Button Grid.Column="1"
-												Style="{StaticResource NormalButtonStyle}"
-												Content="Down"
-												Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.MoveDownCommand}"/>
+										<Grid Visibility="{Binding IsSelected.Value, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverterKey}}">
+											<Grid Width="280" Height="30" Margin="8,2,0,10"
+												  HorizontalAlignment="Left"
+												  Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.ReordersPriority.Value, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverterKey}}">
+												<Grid.ColumnDefinitions>
+													<ColumnDefinition Width="80"/>
+													<ColumnDefinition Width="80"/>
+													<ColumnDefinition Width="40"/>
+													<ColumnDefinition Width="80"/>
+												</Grid.ColumnDefinitions>
 
-										<!-- Delete -->
-										<Button Grid.Column="3"
-												Style="{StaticResource NormalButtonStyle}"
-												Content="Delete"
-												IsEnabled="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.IsNotWorking.Value}">
-											<i:Interaction.Triggers>
-												<i:EventTrigger EventName="Click">
-													<ei:ChangePropertyAction TargetObject="{Binding ElementName=ConfirmationBox, Mode=OneWay}"
-																			 PropertyName="Visibility"
-																			 Value="Visible"/>
-													<ei:ChangePropertyAction TargetObject="{Binding ElementName=ConfirmationHeader, Mode=OneWay}"
-																			 PropertyName="Text"
-																			 Value="Delete: "/>
-													<ei:ChangePropertyAction TargetObject="{Binding ElementName=ConfirmationBody, Mode=OneWay}"
-																			 PropertyName="Text"
-																			 Value="{Binding Name}"/>
-													<ei:ChangePropertyAction TargetObject="{Binding ElementName=ConfirmationButton, Mode=OneWay}"
-																			 PropertyName="Command"
-																			 Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.DeleteCommand}"/>
-												</i:EventTrigger>
-											</i:Interaction.Triggers>
-										</Button>
-									</Grid>
-								</Grid>
-							</StackPanel>
-						</controls:ProfileContentControl>
-					</DataTemplate>
-				</ListView.ItemTemplate>
-				<ListView.ItemContainerStyle>
-					<Style TargetType="{x:Type ListViewItem}">
-						<Setter Property="IsSelected" Value="{Binding IsSelected.Value, Mode=OneWayToSource}"/>
-						<Setter Property="Margin" Value="0"/>
-						<Setter Property="OverridesDefaultStyle" Value="True"/>
-						<Setter Property="Template">
-							<Setter.Value>
-								<ControlTemplate TargetType="{x:Type ContentControl}">
-									<ContentPresenter/>
-								</ControlTemplate>
-							</Setter.Value>
-						</Setter>
-					</Style>
-				</ListView.ItemContainerStyle>
+												<!-- Up -->
+												<controls:IconButton
+													Grid.Column="0"
+													Style="{StaticResource IconButtonStyle}"
+													IconData="{StaticResource UpForm}"
+													Content="Up"
+													Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.MoveUpCommand}"/>
 
-				<i:Interaction.Behaviors>
-					<behaviors:ListBoxSelectedItemBehavior IsSelectionSwitched="{Binding IsConfigMode.Value}"/>
-				</i:Interaction.Behaviors>
-			</ListView>
+												<!-- Down -->
+												<controls:IconButton
+													Grid.Column="1"
+													Style="{StaticResource IconButtonStyle}"
+													IconData="{StaticResource DownForm}"
+													Content="Down"
+													Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.MoveDownCommand}"/>
+
+												<!-- Delete -->
+												<controls:IconButton
+													Grid.Column="3"
+													Style="{StaticResource IconButtonStyle}"
+													IconData="{StaticResource DeleteForm}"
+													Content="Delete"
+													IsEnabled="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.CanDelete.Value}">
+													<i:Interaction.Triggers>
+														<i:EventTrigger EventName="Click">
+															<ei:ChangePropertyAction TargetObject="{Binding ElementName=ConfirmationBox, Mode=OneWay}"
+																					 PropertyName="Visibility"
+																					 Value="Visible"/>
+															<ei:ChangePropertyAction TargetObject="{Binding ElementName=ConfirmationHeader, Mode=OneWay}"
+																					 PropertyName="Text"
+																					 Value="Delete: "/>
+															<ei:ChangePropertyAction TargetObject="{Binding ElementName=ConfirmationBody, Mode=OneWay}"
+																					 PropertyName="Text"
+																					 Value="{Binding Name}"/>
+															<ei:ChangePropertyAction TargetObject="{Binding ElementName=ConfirmationButton, Mode=OneWay}"
+																					 PropertyName="Command"
+																					 Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.DeleteCommand}"/>
+														</i:EventTrigger>
+													</i:Interaction.Triggers>
+												</controls:IconButton>
+											</Grid>
+										</Grid>
+									</StackPanel>
+								</controls:ProfileContentControl>
+							</DataTemplate>
+						</ListView.ItemTemplate>
+						<ListView.ItemContainerStyle>
+							<Style TargetType="{x:Type ListViewItem}">
+								<Setter Property="IsSelected" Value="{Binding IsSelected.Value, Mode=OneWayToSource}"/>
+								<Setter Property="Margin" Value="0"/>
+								<Setter Property="OverridesDefaultStyle" Value="True"/>
+								<Setter Property="Template">
+									<Setter.Value>
+										<ControlTemplate TargetType="{x:Type ContentControl}">
+											<ContentPresenter/>
+										</ControlTemplate>
+									</Setter.Value>
+								</Setter>
+							</Style>
+						</ListView.ItemContainerStyle>
+
+						<i:Interaction.Behaviors>
+							<behaviors:ListBoxSelectedItemBehavior/>
+							<behaviors:ListBoxHeightBehavior ParentHeight="{Binding ElementName=ListRoot, Path=ActualHeight}"/>
+						</i:Interaction.Behaviors>
+					</ListView>
+
+					<!-- Blank -->
+					<Grid Grid.Row="1"
+						  Background="{StaticResource App.Background}"/>
+				</Grid>
+			</Grid>
 		</Grid>
 
 		<!-- Overlay -->
 		<Grid x:Name="ConfirmationBox"
+			  UseLayoutRounding="True"
 			  Visibility="Collapsed">
 			<Grid Background="{StaticResource App.Background.Inactive}">
 				<i:Interaction.Triggers>
 					<i:EventTrigger EventName="MouseDown">
-						<ei:ChangePropertyAction TargetObject="{Binding ElementName=ConfirmationBox, Mode=OneWay}"
+						<ei:ChangePropertyAction TargetName="ConfirmationBox"
 												 PropertyName="Visibility"
 												 Value="Collapsed"/>
 					</i:EventTrigger>
@@ -278,8 +334,7 @@
 			</Grid>
 
 			<Border Height="100"
-					Background="{StaticResource App.Background}"
-					UseLayoutRounding="True">
+					Background="{StaticResource App.Background}">
 				<StackPanel VerticalAlignment="Center">
 					<TextBlock Height="30"
 							   HorizontalAlignment="Center"
@@ -304,7 +359,7 @@
 								Content="OK">
 							<i:Interaction.Triggers>
 								<i:EventTrigger EventName="Click">
-									<ei:ChangePropertyAction TargetObject="{Binding ElementName=ConfirmationBox, Mode=OneWay}"
+									<ei:ChangePropertyAction TargetName="ConfirmationBox"
 															 PropertyName="Visibility"
 															 Value="Collapsed"/>
 								</i:EventTrigger>
@@ -317,7 +372,7 @@
 								Content="Cancel">
 							<i:Interaction.Triggers>
 								<i:EventTrigger EventName="Click">
-									<ei:ChangePropertyAction TargetObject="{Binding ElementName=ConfirmationBox, Mode=OneWay}"
+									<ei:ChangePropertyAction TargetName="ConfirmationBox"
 															 PropertyName="Visibility"
 															 Value="Collapsed"/>
 								</i:EventTrigger>
@@ -328,8 +383,9 @@
 			</Border>
 		</Grid>
 
-		<!--<controls:MovingControl Style="{StaticResource BubbleStyle}"
-								IsEnabled="{Binding IsUpdating.Value}">
+		<!--<controls:MovingControl
+			Style="{StaticResource BubbleStyle}"
+			IsEnabled="{Binding IsUpdating.Value}">
 			<i:Interaction.Behaviors>
 				<behaviors:FrameworkElementCenterBehavior Target="{Binding ElementName=RescanButton}"/>
 			</i:Interaction.Behaviors>

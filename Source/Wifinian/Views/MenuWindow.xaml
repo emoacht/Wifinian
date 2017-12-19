@@ -3,34 +3,115 @@
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
 		xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
-		xmlns:r="clr-namespace:Reactive.Bindings.Interactivity;assembly=ReactiveProperty.NET46"
 		xmlns:models="clr-namespace:Wifinian.Models"
-		Width="180" Height="120"
-		SizeToContent="WidthAndHeight" ResizeMode="NoResize"
-		Background="{StaticResource App.Background}"
-		AllowsTransparency="True" WindowStyle="None">
+		Width="200"
+		ResizeMode="NoResize" SizeToContent="WidthAndHeight"
+		ShowInTaskbar="False" Topmost="True"
+		Background="{StaticResource App.Background}" AllowsTransparency="True" WindowStyle="None">
+	<Window.Resources>
+		<!-- Menu separator -->
+		<Style x:Key="MenuSeparatorStyle" TargetType="{x:Type Separator}">
+			<Setter Property="Margin" Value="8,4"/>
+			<Setter Property="Background" Value="{StaticResource Menu.Separator}"/>
+		</Style>
 
-	<i:Interaction.Triggers>
-		<i:EventTrigger EventName="MouseUp">
-			<r:EventToReactiveCommand Command="{Binding CloseCommand}"/>
-		</i:EventTrigger>
-	</i:Interaction.Triggers>
+		<!-- Menu item -->
+		<Style x:Key="MenuItemStyle" TargetType="{x:Type ContentControl}">
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type ContentControl}">
+						<Grid x:Name="body"
+							  Background="{StaticResource Menu.Item.Normal.Backgound}">
+							<ContentPresenter Margin="{TemplateBinding Padding}"
+											  Content="{TemplateBinding Content}"
+											  ContentTemplate="{TemplateBinding ContentTemplate}"/>
+						</Grid>
+						<ControlTemplate.Triggers>
+							<Trigger Property="IsMouseOver" Value="True">
+								<Setter Property="Background" TargetName="body" Value="{StaticResource Menu.Item.MouseOver.Background}"/>
+							</Trigger>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
 
-	<Grid>
-		<!-- Info -->
-		<TextBlock Margin="8"
+		<!-- Close Button -->
+		<Style x:Key="CloseButtonItemStyle" TargetType="{x:Type Button}">
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type Button}">
+						<Grid Background="Transparent"
+							  Margin="{TemplateBinding Padding}"
+							  SnapsToDevicePixels="True" UseLayoutRounding="True">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="*"/>
+							</Grid.ColumnDefinitions>
+							<Grid Grid.Column="0"
+								  Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}">
+								<Path Margin="3"
+									  Stretch="Uniform"
+									  Stroke="{TemplateBinding Foreground}" StrokeThickness="1">
+									<Path.Data>
+										<GeometryGroup>
+											<LineGeometry StartPoint="0,0" EndPoint="1,1"/>
+											<LineGeometry StartPoint="0,1" EndPoint="1,0"/>
+										</GeometryGroup>
+									</Path.Data>
+								</Path>
+							</Grid>
+							<ContentPresenter Grid.Column="1"
+											  Margin="3" HorizontalAlignment="Left" VerticalAlignment="Center"
+											  Focusable="False"/>
+						</Grid>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+	</Window.Resources>
+
+	<StackPanel Margin="0,4,0,4">
+		<TextBlock HorizontalAlignment="Left"
+				   Padding="8,2,8,2"
+				   Foreground="{StaticResource App.Foreground}"
+				   Text="{Binding Source={x:Static models:ProductInfo.Title}, Mode=OneTime}"/>
+		<TextBlock Width="140" HorizontalAlignment="Left"
+				   Padding="8,0,8,6"
 				   Foreground="{StaticResource App.Foreground}">
-			<Run Text="{Binding Source={x:Static models:ProductInfo.Title}, Mode=OneTime}"/>
 			<Run Text="{Binding Source={x:Static models:ProductInfo.Version}, Mode=OneTime}"/>
-			<LineBreak/>
-			<Run Text="("/><Run Text="Project Site"
-								TextDecorations="Underline" Cursor="Hand">
+			<Run Text="|"/>
+			<Run Foreground="{StaticResource App.Foreground.Shadow}"
+				 TextDecorations="Underline" Cursor="Hand"
+				 Text="Site">
 				<i:Interaction.Triggers>
 					<i:EventTrigger EventName="MouseDown">
 						<ei:LaunchUriOrFileAction Path="{Binding Source={x:Static models:LanguageService.ProjectSite}}"/>
 					</i:EventTrigger>
 				</i:Interaction.Triggers>
-			</Run><Run Text=")"/>
+			</Run>
+			<Run Text="|"/>
+			<Run Foreground="{StaticResource App.Foreground.Shadow}"
+				 TextDecorations="Underline" Cursor="Hand"
+				 Text="License">
+				<i:Interaction.Triggers>
+					<i:EventTrigger EventName="MouseDown">
+						<ei:LaunchUriOrFileAction Path="{Binding Source={x:Static models:LanguageService.License}}"/>
+					</i:EventTrigger>
+				</i:Interaction.Triggers>
+			</Run>
 		</TextBlock>
-	</Grid>
+
+		<Separator Style="{StaticResource MenuSeparatorStyle}"/>
+
+		<!-- Close -->
+		<ContentControl Style="{StaticResource MenuItemStyle}">
+			<Button Padding="8,4"
+					Style="{StaticResource CloseButtonItemStyle}"
+					Foreground="{StaticResource App.Foreground}"
+					FontSize="14"
+					Content="{x:Static models:LanguageService.Close}"
+					Command="{Binding CloseCommand}"/>
+		</ContentControl>
+	</StackPanel>
 </Window>

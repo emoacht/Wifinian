@@ -6,6 +6,7 @@
 		<ResourceDictionary>
 			<!-- Converters -->
 			<BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverterKey"/>
+			<converters:BooleanInverseConverter x:Key="BooleanInverseConverterKey"/>
 			<converters:VisibilityInverseConverter x:Key="VisibilityInverseConverterKey"/>
 
 			<!-- Styles, Templates -->

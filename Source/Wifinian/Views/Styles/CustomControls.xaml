@@ -3,53 +3,19 @@
 					xmlns:sys="clr-namespace:System;assembly=mscorlib"
 					xmlns:controls="clr-namespace:Wifinian.Views.Controls">
 
-	<!-- SignalProgressBar -->
-	<Style x:Key="BarStyle" TargetType="{x:Type controls:SignalProgressBar}">
-		<Setter Property="Template">
-			<Setter.Value>
-				<ControlTemplate TargetType="{x:Type controls:SignalProgressBar}">
-					<Canvas Width="19" Height="16"
-							RenderOptions.EdgeMode="Aliased">
-						<Rectangle x:Name="PART_LevelOne"
-								   Canvas.Left="0" Canvas.Top="12" Width="3" Height="4"
-								   Fill="DarkGray"/>
-						<Rectangle x:Name="PART_LevelTwo"
-								   Canvas.Left="4" Canvas.Top="9" Width="3" Height="7"
-								   Fill="DarkGray"/>
-						<Rectangle x:Name="PART_LevelThree"
-								   Canvas.Left="8" Canvas.Top="6" Width="3" Height="10"
-								   Fill="DarkGray"/>
-						<Rectangle x:Name="PART_LevelFour"
-								   Canvas.Left="12" Canvas.Top="3" Width="3" Height="13"
-								   Fill="DarkGray"/>
-						<Rectangle x:Name="PART_LevelFive"
-								   Canvas.Left="16" Canvas.Top="0" Width="3" Height="16"
-								   Fill="DarkGray"/>
-					</Canvas>
-				</ControlTemplate>
-			</Setter.Value>
-		</Setter>
-	</Style>
-
 	<!-- MovingButton -->
 	<Style x:Key="RollingStyle" TargetType="{x:Type controls:MovingButton}">
 		<Style.Resources>
-			<!-- Width:100, Height:120, Center of rolling:50,70 -->
-			<GeometryGroup x:Key="UpdateForm"
-						   FillRule="Nonzero">
-				<CombinedGeometry GeometryCombineMode="Exclude">
-					<CombinedGeometry.Geometry1>
-						<GeometryGroup FillRule="EvenOdd">
-							<EllipseGeometry RadiusX="50" RadiusY="50" Center="50,70"/>
-							<EllipseGeometry RadiusX="35" RadiusY="35" Center="50,70"/>
-						</GeometryGroup>
-					</CombinedGeometry.Geometry1>
-					<CombinedGeometry.Geometry2>
-						<RectangleGeometry Rect="51,12.8,50,50"/>
-					</CombinedGeometry.Geometry2>
-				</CombinedGeometry>
-				<PathGeometry Figures="M50.0,0.0 L77.3,27.3 L50.0,54.6 z"/>
-			</GeometryGroup>
+			<!-- Width:100, Height:100, Center:50,50 -->
+			<PathGeometry x:Key="ArcForm">
+				<PathFigure StartPoint="93.3,25">
+					<ArcSegment Point="50,0"
+								Size="50,50"
+								IsLargeArc="True"
+								SweepDirection="Clockwise"
+								RotationAngle="0"/>
+				</PathFigure>
+			</PathGeometry>
 
 			<Duration x:Key="MovingDuration">0:0:0.6</Duration>
 		</Style.Resources>
@@ -61,19 +27,12 @@
 				<ControlTemplate TargetType="{x:Type controls:MovingButton}">
 					<Grid>
 						<Grid x:Name="container"
-							  Margin="2.1"
+							  Margin="2"
 							  Background="{TemplateBinding Background}"
 							  Opacity="0.8"
 							  RenderTransformOrigin="0.5 0.5">
-							<Grid.RowDefinitions>
-								<RowDefinition Height="120*"/>
-								<!-- Margin to adjust center of rolling -->
-								<RowDefinition Height="20*"/>
-							</Grid.RowDefinitions>
-
-							<Path Fill="{TemplateBinding Foreground}"
-								  Data="{StaticResource UpdateForm}"
-								  Stretch="Uniform"/>
+							<Path Data="{StaticResource ArcForm}" Stretch="Uniform"
+								  Stroke="{TemplateBinding Foreground}" StrokeThickness="1.6"/>
 
 							<Grid.RenderTransform>
 								<RotateTransform Angle="0"/>
@@ -203,8 +162,6 @@
 	<!-- ProfileContentControl -->
 	<Style TargetType="{x:Type controls:ProfileContentControl}">
 		<Setter Property="Background" Value="{StaticResource Profile.Normal.Background}"/>
-		<Setter Property="BorderBrush" Value="{StaticResource App.Background}"/>
-		<Setter Property="BorderThickness" Value="1"/>
 		<Setter Property="Foreground" Value="{StaticResource App.Foreground}"/>
 		<Setter Property="Template">
 			<Setter.Value>
@@ -212,8 +169,6 @@
 					<Grid>
 						<Border x:Name="border"
 								Background="{TemplateBinding Background}"
-								BorderBrush="{TemplateBinding BorderBrush}"
-								BorderThickness="{TemplateBinding BorderThickness}"
 								SnapsToDevicePixels="True"
 								UseLayoutRounding="True">
 							<ContentPresenter x:Name="contentPresenter"
@@ -267,23 +222,6 @@
 														Duration="0:0:0.1"/>
 									</Storyboard>
 								</VisualState>
-
-								<VisualState x:Name="ConfigMode">
-									<Storyboard>
-										<ColorAnimation Storyboard.TargetName="border"
-														Storyboard.TargetProperty="(Control.Background).(SolidColorBrush.Color)"
-														To="{StaticResource Profile.ConfigMode.BackgroundColor}"
-														Duration="0:0:0.1"/>
-									</Storyboard>
-								</VisualState>
-								<VisualState x:Name="ConfigModeSelected">
-									<Storyboard>
-										<ColorAnimation Storyboard.TargetName="border"
-														Storyboard.TargetProperty="(Control.Background).(SolidColorBrush.Color)"
-														To="{DynamicResource Profile.ConfigMode.Selected.BackgroundColor}"
-														Duration="0:0:0.1"/>
-									</Storyboard>
-								</VisualState>
 							</VisualStateGroup>
 						</VisualStateManager.VisualStateGroups>
 					</Grid>
@@ -292,17 +230,92 @@
 		</Setter>
 	</Style>
 
-	<!-- PlainToggleButton -->
-	<Style x:Key="MenuToggleButtonStyle" TargetType="{x:Type controls:PlainToggleButton}">
+	<!-- SignalProgressBar -->
+	<Style x:Key="BarStyle" TargetType="{x:Type controls:SignalProgressBar}">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type controls:SignalProgressBar}">
+					<Grid Width="18" Height="18">
+						<Path x:Name="PART_LevelOne"
+							  Stroke="DarkGray" StrokeThickness="2.5">
+							<Path.Data>
+								<PathGeometry>
+									<PathFigure StartPoint="16,18">
+										<ArcSegment Point="18,16"
+													Size="2,2"
+													IsLargeArc="False" SweepDirection="Clockwise"/>
+									</PathFigure>
+								</PathGeometry>
+							</Path.Data>
+						</Path>
+
+						<Path x:Name="PART_LevelTwo"
+							  Stroke="DarkGray" StrokeThickness="2">
+							<Path.Data>
+								<PathGeometry>
+									<PathFigure StartPoint="12,18">
+										<ArcSegment Point="18,12"
+													Size="6,6"
+													IsLargeArc="False" SweepDirection="Clockwise"/>
+									</PathFigure>
+								</PathGeometry>
+							</Path.Data>
+						</Path>
+
+						<Path x:Name="PART_LevelThree"
+							  Stroke="DarkGray" StrokeThickness="2">
+							<Path.Data>
+								<PathGeometry>
+									<PathFigure StartPoint="8,18">
+										<ArcSegment Point="18,8"
+													Size="10,10"
+													IsLargeArc="False" SweepDirection="Clockwise"/>
+									</PathFigure>
+								</PathGeometry>
+							</Path.Data>
+						</Path>
+
+						<Path x:Name="PART_LevelFour"
+							  Stroke="DarkGray" StrokeThickness="2">
+							<Path.Data>
+								<PathGeometry>
+									<PathFigure StartPoint="4,18">
+										<ArcSegment Point="18,4"
+													Size="14,14"
+													IsLargeArc="False" SweepDirection="Clockwise"/>
+									</PathFigure>
+								</PathGeometry>
+							</Path.Data>
+						</Path>
+
+						<Path x:Name="PART_LevelFive"
+							  Stroke="DarkGray" StrokeThickness="2">
+							<Path.Data>
+								<PathGeometry>
+									<PathFigure StartPoint="0,18">
+										<ArcSegment Point="18,0"
+													Size="18,18"
+													IsLargeArc="False" SweepDirection="Clockwise"/>
+									</PathFigure>
+								</PathGeometry>
+							</Path.Data>
+						</Path>
+					</Grid>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<!-- SimpleToggleButton -->
+	<Style x:Key="MenuToggleButtonStyle" TargetType="{x:Type controls:SimpleToggleButton}">
 		<Setter Property="Background" Value="{StaticResource App.Background}"/>
-		<Setter Property="BorderBrush" Value="{StaticResource ToggleButton.Normal.Foreground}"/>
-		<Setter Property="BorderThickness" Value="2"/>
+		<Setter Property="BorderThickness" Value="0"/>
 		<Setter Property="Foreground" Value="{StaticResource ToggleButton.Normal.Foreground}"/>
 		<Setter Property="FontSize" Value="12"/>
 		<Setter Property="FontWeight" Value="SemiBold"/>
 		<Setter Property="Template">
 			<Setter.Value>
-				<ControlTemplate TargetType="{x:Type controls:PlainToggleButton}">
+				<ControlTemplate TargetType="{x:Type controls:SimpleToggleButton}">
 					<Grid>
 						<Border x:Name="border"
 								Background="{TemplateBinding Background}"
@@ -323,10 +336,6 @@
 								<VisualState x:Name="MouseOver">
 									<Storyboard>
 										<DoubleAnimation Storyboard.TargetName="border"
-														 Storyboard.TargetProperty="(Control.BorderBrush).(SolidColorBrush.Opacity)"
-														 To="0.8"
-														 Duration="0:0:0.1"/>
-										<DoubleAnimation Storyboard.TargetName="border"
 														 Storyboard.TargetProperty="(Control.Foreground).(SolidColorBrush.Opacity)"
 														 To="0.8"
 														 Duration="0:0:0.1"/>
@@ -335,24 +344,16 @@
 								<VisualState x:Name="Pressed">
 									<Storyboard>
 										<DoubleAnimation Storyboard.TargetName="border"
-														 Storyboard.TargetProperty="(Control.BorderBrush).(SolidColorBrush.Opacity)"
-														 To="0.9"
-														 Duration="0:0:0.1"/>
-										<DoubleAnimation Storyboard.TargetName="border"
 														 Storyboard.TargetProperty="(Control.Foreground).(SolidColorBrush.Opacity)"
-														 To="0.9"
+														 To="1.0"
 														 Duration="0:0:0.1"/>
 									</Storyboard>
 								</VisualState>
 								<VisualState x:Name="Disabled">
 									<Storyboard>
 										<DoubleAnimation Storyboard.TargetName="border"
-														 Storyboard.TargetProperty="(Control.BorderBrush).(SolidColorBrush.Opacity)"
-														 To="0.4"
-														 Duration="0:0:0"/>
-										<DoubleAnimation Storyboard.TargetName="border"
 														 Storyboard.TargetProperty="(Control.Foreground).(SolidColorBrush.Opacity)"
-														 To="0.4"
+														 To="0.8"
 														 Duration="0:0:0"/>
 									</Storyboard>
 								</VisualState>
@@ -366,18 +367,6 @@
 														 Storyboard.TargetProperty="(Control.Background).(SolidColorBrush.Opacity)"
 														 To="1.0"
 														 Duration="0:0:0.1"/>
-										<ColorAnimation Storyboard.TargetName="border"
-														Storyboard.TargetProperty="(Control.BorderBrush).(SolidColorBrush.Color)"
-														To="{StaticResource ToggleButton.Checked.ForegroundColor}"
-														Duration="0:0:0.1"/>
-										<DoubleAnimation Storyboard.TargetName="border"
-														 Storyboard.TargetProperty="(Control.BorderBrush).(SolidColorBrush.Opacity)"
-														 To="1.0"
-														 Duration="0:0:0.1"/>
-										<ColorAnimation Storyboard.TargetName="border"
-														Storyboard.TargetProperty="(Control.Foreground).(SolidColorBrush.Color)"
-														To="{StaticResource App.BackgroundColor}"
-														Duration="0:0:0.1"/>
 										<DoubleAnimation Storyboard.TargetName="border"
 														 Storyboard.TargetProperty="(Control.Foreground).(SolidColorBrush.Opacity)"
 														 To="1.0"
@@ -393,32 +382,37 @@
 		</Setter>
 	</Style>
 
-	<PathGeometry x:Key="ArrowForm"
-				  Figures="M 0,60 L50,10 100,60 100,88 50,38, 0,88 z"/>
+	<!-- IconButton -->
+	<PathGeometry x:Key="UpForm" Figures="M 0,1 L1,0 2,1"/>
+	<PathGeometry x:Key="DownForm" Figures="M 0,0 L1,1 2,0"/>
+	<PathGeometry x:Key="DeleteForm" Figures="M 0,0 2,2 M 2,0 0,2"/>
 
-	<Style x:Key="ArrowToggleButtonStyle" TargetType="{x:Type controls:PlainToggleButton}">
-		<Setter Property="Width" Value="12"/>
-		<Setter Property="Height" Value="12"/>
+	<Style x:Key="IconButtonStyle" TargetType="{x:Type controls:IconButton}">
+		<Setter Property="Background" Value="Transparent"/>
+		<Setter Property="BorderBrush" Value="{StaticResource Button.Normal.Foreground}"/>
+		<Setter Property="BorderThickness" Value="2"/>
+		<Setter Property="Foreground" Value="{StaticResource Button.Normal.Foreground}"/>
+		<Setter Property="FontSize" Value="13"/>
+		<Setter Property="FontWeight" Value="SemiBold"/>
 		<Setter Property="Template">
 			<Setter.Value>
-				<ControlTemplate TargetType="{x:Type controls:PlainToggleButton}">
+				<ControlTemplate TargetType="{x:Type controls:IconButton}">
 					<Grid>
 						<Border x:Name="border"
-								Background="Transparent"
-								BorderBrush="Transparent"
-								BorderThickness="0"
-								SnapsToDevicePixels="True"
-								UseLayoutRounding="True">
-							<Path x:Name="arrow"
-								  Margin="2"
-								  Data="{StaticResource ArrowForm}"
-								  Stretch="Uniform"
-								  Fill="{StaticResource ToggleButton.Normal.Foreground}"
-								  RenderTransformOrigin="0.5 0.5">
-								<Path.RenderTransform>
-									<ScaleTransform ScaleY="-1"/>
-								</Path.RenderTransform>
-							</Path>
+								Background="{TemplateBinding Background}"
+								BorderBrush="{TemplateBinding BorderBrush}"
+								BorderThickness="{TemplateBinding BorderThickness}"
+								SnapsToDevicePixels="True" UseLayoutRounding="True">
+							<StackPanel Orientation="Horizontal">
+								<Path x:Name="icon"
+									  Width="14" Height="14" Margin="8,0,6,0"
+									  Data="{TemplateBinding IconData}" Stretch="Uniform"
+									  Stroke="{TemplateBinding Foreground}" StrokeThickness="1.6"/>
+								<ContentPresenter x:Name="content"
+												  VerticalAlignment="Center"
+												  TextBlock.Foreground="{TemplateBinding Foreground}"
+												  Content="{TemplateBinding Content}"/>
+							</StackPanel>
 						</Border>
 
 						<VisualStateManager.VisualStateGroups>
@@ -426,41 +420,52 @@
 								<VisualState x:Name="Normal"/>
 								<VisualState x:Name="MouseOver">
 									<Storyboard>
-										<DoubleAnimation Storyboard.TargetName="arrow"
-														 Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Opacity)"
+										<DoubleAnimation Storyboard.TargetName="border"
+														 Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Opacity)"
+														 To="1.0"
+														 Duration="0:0:0.1"/>
+										<DoubleAnimation Storyboard.TargetName="icon"
+														 Storyboard.TargetProperty="(Shape.Stroke).(SolidColorBrush.Opacity)"
 														 To="0.8"
+														 Duration="0:0:0.1"/>
+										<DoubleAnimation Storyboard.TargetName="content"
+														 Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Opacity)"
+														 To="1.0"
 														 Duration="0:0:0.1"/>
 									</Storyboard>
 								</VisualState>
 								<VisualState x:Name="Pressed">
 									<Storyboard>
-										<DoubleAnimation Storyboard.TargetName="arrow"
-														 Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Opacity)"
+										<DoubleAnimation Storyboard.TargetName="border"
+														 Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Opacity)"
+														 To="1.0"
+														 Duration="0:0:0.1"/>
+										<DoubleAnimation Storyboard.TargetName="icon"
+														 Storyboard.TargetProperty="(Shape.Stroke).(SolidColorBrush.Opacity)"
 														 To="0.9"
+														 Duration="0:0:0.1"/>
+										<DoubleAnimation Storyboard.TargetName="content"
+														 Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Opacity)"
+														 To="1.0"
 														 Duration="0:0:0.1"/>
 									</Storyboard>
 								</VisualState>
 								<VisualState x:Name="Disabled">
 									<Storyboard>
-										<DoubleAnimation Storyboard.TargetName="arrow"
-														 Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Opacity)"
+										<DoubleAnimation Storyboard.TargetName="border"
+														 Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Opacity)"
+														 To="0.4"
+														 Duration="0:0:0"/>
+										<DoubleAnimation Storyboard.TargetName="icon"
+														 Storyboard.TargetProperty="(Shape.Stroke).(SolidColorBrush.Opacity)"
+														 To="0.4"
+														 Duration="0:0:0"/>
+										<DoubleAnimation Storyboard.TargetName="content"
+														 Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Opacity)"
 														 To="0.4"
 														 Duration="0:0:0"/>
 									</Storyboard>
 								</VisualState>
-								<VisualState x:Name="Checked">
-									<Storyboard>
-										<DoubleAnimation Storyboard.TargetName="arrow"
-														 Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Opacity)"
-														 To="1.0"
-														 Duration="0:0:0.1"/>
-										<DoubleAnimation Storyboard.TargetName="arrow"
-														 Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
-														 To="1"
-														 Duration="0:0:0.1"/>
-									</Storyboard>
-								</VisualState>
-								<VisualState x:Name="Unchecked"/>
 							</VisualStateGroup>
 						</VisualStateManager.VisualStateGroups>
 					</Grid>

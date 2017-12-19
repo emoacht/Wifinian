@@ -14,8 +14,6 @@ namespace Wifinian.Views.Controls
 	[TemplateVisualState(Name = "AvailableSelected", GroupName = "CommonStates")]
 	[TemplateVisualState(Name = "Connected", GroupName = "CommonStates")]
 	[TemplateVisualState(Name = "ConnectedSelected", GroupName = "CommonStates")]
-	[TemplateVisualState(Name = "ConfigMode", GroupName = "CommonStates")]
-	[TemplateVisualState(Name = "ConfigModeSelected", GroupName = "CommonStates")]
 	public class ProfileContentControl : ContentControl
 	{
 		#region Property
@@ -56,18 +54,6 @@ namespace Wifinian.Views.Controls
 				typeof(ProfileContentControl),
 				new PropertyMetadata(false));
 
-		public bool IsConfigMode
-		{
-			get { return (bool)GetValue(IsConfigModeProperty); }
-			set { SetValue(IsConfigModeProperty, value); }
-		}
-		public static readonly DependencyProperty IsConfigModeProperty =
-			DependencyProperty.Register(
-				"IsConfigMode",
-				typeof(bool),
-				typeof(ProfileContentControl),
-				new PropertyMetadata(false));
-
 		#endregion
 
 		public ProfileContentControl()
@@ -87,8 +73,7 @@ namespace Wifinian.Views.Controls
 			if ((e.Property == IsMouseOverProperty) ||
 				(e.Property == IsSelectedProperty) ||
 				(e.Property == IsAvailableProperty) ||
-				(e.Property == IsConnectedProperty) ||
-				(e.Property == IsConfigModeProperty))
+				(e.Property == IsConnectedProperty))
 				UpdateState(true);
 		}
 
@@ -99,16 +84,8 @@ namespace Wifinian.Views.Controls
 
 		private string GetVisualStateName()
 		{
-			if (IsConfigMode && IsSelected)
-			{
-				return "ConfigMode" +
-					(IsMouseOver ? "Selected" : string.Empty);
-			}
-			else
-			{
-				return (IsConnected ? "Connected" : (IsAvailable ? "Available" : "Normal")) +
-					((IsSelected || IsMouseOver) ? "Selected" : string.Empty);
-			}
+			return (IsConnected ? "Connected" : (IsAvailable ? "Available" : "Normal")) +
+				((IsSelected || IsMouseOver) ? "Selected" : string.Empty);
 		}
 	}
 }

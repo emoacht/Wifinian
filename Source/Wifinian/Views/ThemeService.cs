@@ -18,8 +18,6 @@ namespace Wifinian.Views
 		private const string _availableSelectedKey = "Profile.Available.Selected.BackgroundColor";
 		private const string _connectedKey = "Profile.Connected.BackgroundColor";
 		private const string _connectedSelectedKey = "Profile.Connected.Selected.BackgroundColor";
-		private const string _configModeKey = "Profile.ConfigMode.BackgroundColor";
-		private const string _configModeSelectedKey = "Profile.ConfigMode.Selected.BackgroundColor";
 
 		public static void AdjustResourceColors(ResourceDictionary resources)
 		{
@@ -28,7 +26,6 @@ namespace Wifinian.Views
 			AdjustResourceColor(resources, _normalKey, _normalSelectedKey, factor);
 			AdjustResourceColor(resources, _availableKey, _availableSelectedKey, factor);
 			AdjustResourceColor(resources, _connectedKey, _connectedSelectedKey, factor);
-			AdjustResourceColor(resources, _configModeKey, _configModeSelectedKey, factor);
 		}
 
 		private static void AdjustResourceColor(ResourceDictionary resources, string sourceKey, string targetKey, float factor)

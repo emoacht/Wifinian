@@ -25,10 +25,7 @@ namespace Wifinian.Views
 		internal MenuWindow(MainController controller, Point pivot)
 		{
 			InitializeComponent();
-
-			this.Topmost = true;
-			this.ShowInTaskbar = false;
-
+			
 			this.DataContext = new MenuWindowViewModel(controller);
 
 			_mover = new FloatWindowMover(this, pivot);

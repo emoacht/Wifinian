@@ -12,7 +12,9 @@ namespace Wifinian.Models
 	internal static class LanguageService
 	{
 		public static string ProjectSite => GetContentValue() ?? Properties.Resources.ProjectSite;
-		public static string RecordException => GetContentValue() ?? "Exception";
+		public static string License => GetContentValue() ?? nameof(License);
+		public static string Close => GetContentValue() ?? nameof(Close);
+		public static string RecordException => GetContentValue() ?? nameof(RecordException);
 
 		#region Base
 
@@ -25,6 +27,10 @@ namespace Wifinian.Models
 			var languageName = CultureInfo.CurrentUICulture.Parent.Name; // Language name only
 			if (string.IsNullOrEmpty(languageName))
 				return null;
+
+#if DEBUG
+			languageName = "en";
+#endif
 
 			if (_languageName != languageName)
 			{
