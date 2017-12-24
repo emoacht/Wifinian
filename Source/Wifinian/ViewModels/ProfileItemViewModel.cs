@@ -44,16 +44,15 @@ namespace Wifinian.ViewModels
 			Encryption = profileItem.Encryption.ToString();
 			CanSetOptions = profileItem.CanSetOptions;
 
+			IsAutoSwitchEnabled = profileItem
+				.ToReactivePropertyAsSynchronized(x => x.IsAutoSwitchEnabled, ReactivePropertyMode.DistinctUntilChanged)
+				.AddTo(this.Subscription);
 			IsAutoConnectEnabled = profileItem
-				.ToReactivePropertyAsSynchronized(x => x.IsAutoConnectEnabled, ReactivePropertyMode.RaiseLatestValueOnSubscribe)
+				.ToReactivePropertyAsSynchronized(x => x.IsAutoConnectEnabled, ReactivePropertyMode.DistinctUntilChanged)
 				.AddTo(this.Subscription);
 			IsAutoConnectEnabled
 				.Where(x => !x)
 				.Subscribe(_ => IsAutoSwitchEnabled.Value = false)
-				.AddTo(this.Subscription);
-
-			IsAutoSwitchEnabled = profileItem
-				.ToReactivePropertyAsSynchronized(x => x.IsAutoSwitchEnabled, ReactivePropertyMode.RaiseLatestValueOnSubscribe)
 				.AddTo(this.Subscription);
 
 			Observable.Merge(IsAutoConnectEnabled, IsAutoSwitchEnabled)
