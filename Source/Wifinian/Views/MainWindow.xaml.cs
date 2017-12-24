@@ -15,7 +15,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Reactive.Bindings.Extensions;
 
+using ScreenFrame;
 using ScreenFrame.Movers;
+using Wifinian.Helper;
 using Wifinian.Models;
 using Wifinian.ViewModels;
 
@@ -31,26 +33,12 @@ namespace Wifinian.Views
 		internal MainWindow(MainController controller)
 		{
 			InitializeComponent();
-			
+
 			ThemeService.AdjustResourceColors(Application.Current.Resources);
 
 			this.DataContext = new MainWindowViewModel(controller);
 
 			_mover = new SwitchWindowMover(this, controller.NotifyIconContainer.NotifyIcon);
-
-			#region Height
-
-			this.Height = Settings.Current.MainWindowHeight * _mover.Dpi.DpiScaleY;
-
-			Observable.FromEventPattern<SizeChangedEventHandler, SizeChangedEventArgs>(
-				h => h.Invoke,
-				h => this.SizeChanged += h,
-				h => this.SizeChanged -= h)
-				.Where(x => x.EventArgs.HeightChanged)
-				.Subscribe(x => Settings.Current.MainWindowHeight = x.EventArgs.NewSize.Height / _mover.Dpi.DpiScaleY)
-				.AddTo(this.Subscription);
-
-			#endregion
 
 			#region Drag
 
@@ -73,6 +61,26 @@ namespace Wifinian.Views
 			base.OnSourceInitialized(e);
 
 			WindowEffect.EnableBackgroundBlur(this);
+
+			#region Size
+
+			// This restoration must be done here because the DPI value is incorrect at constructor.
+			RestoreWindowSize();
+
+			Observable.FromEventPattern<SizeChangedEventHandler, SizeChangedEventArgs>(
+				h => h.Invoke,
+				h => this.SizeChanged += h,
+				h => this.SizeChanged -= h)
+				.Subscribe(x => SaveWindowSize(x.EventArgs.NewSize))
+				.AddTo(this.Subscription);
+
+			Observable.FromEventPattern(
+				h => _mover.IsDepartedChanged += h,
+				h => _mover.IsDepartedChanged -= h)
+				.Subscribe(_ => SetResizeBorderThickness())
+				.AddTo(this.Subscription);
+
+			#endregion
 		}
 
 		protected override void OnClosing(CancelEventArgs e)
@@ -85,6 +93,82 @@ namespace Wifinian.Views
 
 			base.OnClosing(e);
 		}
+
+		#region Size
+
+		public Thickness ResizeBorderThickness
+		{
+			get { return (Thickness)GetValue(ResizeBorderThicknessProperty); }
+			set { SetValue(ResizeBorderThicknessProperty, value); }
+		}
+		public static readonly DependencyProperty ResizeBorderThicknessProperty =
+			DependencyProperty.Register(
+				"ResizeBorderThickness",
+				typeof(Thickness),
+				typeof(MainWindow),
+				new PropertyMetadata(default(Thickness)));
+
+		protected override void OnActivated(EventArgs e)
+		{
+			base.OnActivated(e);
+
+			SetResizeBorderThickness();
+		}
+
+		protected override void OnStateChanged(EventArgs e)
+		{
+			base.OnStateChanged(e);
+
+			if (this.WindowState == WindowState.Maximized)
+				this.WindowState = WindowState.Normal;
+		}
+
+		private void RestoreWindowSize()
+		{
+			var windowSize = Settings.Current.MainWindowSize;
+
+			this.Width = OsVersion.Is10Threshold1OrNewer
+				? windowSize.Width
+				: windowSize.Width * _mover.Dpi.DpiScaleX;
+			this.Height = OsVersion.Is10Threshold1OrNewer
+				? windowSize.Height
+				: windowSize.Height * _mover.Dpi.DpiScaleY;
+		}
+
+		private void SaveWindowSize(Size windowSize)
+		{
+			Settings.Current.MainWindowSize = OsVersion.Is10Threshold1OrNewer
+				? windowSize
+				: new Size(
+					windowSize.Width / _mover.Dpi.DpiScaleX,
+					windowSize.Height / _mover.Dpi.DpiScaleY);
+		}
+
+		private void SetResizeBorderThickness()
+		{
+			var borderWidth = 4D * _mover.Dpi.DpiScaleX;
+
+			switch (_mover.PivotAlignment)
+			{
+				case PivotAlignment.TopLeft:
+					ResizeBorderThickness = new Thickness(0, 0, borderWidth, borderWidth);
+					break;
+				case PivotAlignment.TopRight:
+					ResizeBorderThickness = new Thickness(borderWidth, 0, 0, borderWidth);
+					break;
+				case PivotAlignment.BottomRight:
+					ResizeBorderThickness = new Thickness(borderWidth, borderWidth, 0, 0);
+					break;
+				case PivotAlignment.BottomLeft:
+					ResizeBorderThickness = new Thickness(0, borderWidth, borderWidth, 0);
+					break;
+				default:
+					ResizeBorderThickness = new Thickness(borderWidth);
+					break;
+			}
+		}
+
+		#endregion
 
 		#region Show/Hide
 

@@ -6,6 +6,7 @@ using System.Reactive.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Xml;
 using System.Xml.Serialization;
 using Reactive.Bindings.Extensions;
@@ -59,12 +60,12 @@ namespace Wifinian.Models
 			return (buff <= max) ? buff : min;
 		}
 
-		public double MainWindowHeight
+		public Size MainWindowSize
 		{
-			get => _mainWindowHeight;
-			set => SetPropertyValue(ref _mainWindowHeight, value);
+			get => _mainWindowSize;
+			set => SetPropertyValue(ref _mainWindowSize, value);
 		}
-		private double _mainWindowHeight;
+		private Size _mainWindowSize;
 
 		#endregion
 

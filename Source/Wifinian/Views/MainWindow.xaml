@@ -8,13 +8,14 @@
 		xmlns:behaviors="clr-namespace:Wifinian.Views.Behaviors"
 		xmlns:controls="clr-namespace:Wifinian.Views.Controls"
 		Title="{Binding Source={x:Static models:ProductInfo.Title}, Mode=OneTime}"
-		Width="360" Height="400" MinHeight="200"
+		Width="360" MinWidth="360"
+		Height="400" MinHeight="200"
 		ResizeMode="CanResize"
 		ShowInTaskbar="False"
 		Background="Transparent" AllowsTransparency="True" WindowStyle="None">
 	<WindowChrome.WindowChrome>
 		<WindowChrome CaptionHeight="0"
-					  ResizeBorderThickness="0,4"/>
+					  ResizeBorderThickness="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=ResizeBorderThickness}"/>
 	</WindowChrome.WindowChrome>
 
 	<Grid>
