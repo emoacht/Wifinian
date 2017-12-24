@@ -26,17 +26,16 @@
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type controls:MovingButton}">
 					<Grid>
-						<Grid x:Name="container"
-							  Margin="2"
-							  Background="{TemplateBinding Background}"
-							  Opacity="0.8"
-							  RenderTransformOrigin="0.5 0.5">
-							<Path Data="{StaticResource ArcForm}" Stretch="Uniform"
-								  Stroke="{TemplateBinding Foreground}" StrokeThickness="1.6"/>
-
-							<Grid.RenderTransform>
-								<RotateTransform Angle="0"/>
-							</Grid.RenderTransform>
+						<Grid Background="{TemplateBinding Background}">
+							<Path x:Name="ark"
+								  Data="{StaticResource ArcForm}" Stretch="Uniform"
+								  Stroke="{TemplateBinding Foreground}" StrokeThickness="1.6"
+								  Opacity="0.8"
+								  RenderTransformOrigin="0.5 0.5">
+								<Path.RenderTransform>
+									<RotateTransform Angle="0"/>
+								</Path.RenderTransform>
+							</Path>
 						</Grid>
 
 						<VisualStateManager.VisualStateGroups>
@@ -44,23 +43,23 @@
 								<VisualState x:Name="Normal"/>
 								<VisualState x:Name="MouseOver">
 									<Storyboard>
-										<DoubleAnimation Storyboard.TargetName="container"
+										<DoubleAnimation Storyboard.TargetName="ark"
 														 Storyboard.TargetProperty="(UIElement.Opacity)"
-														 To="1.0"
+														 To="0.9"
 														 Duration="0:0:0.1"/>
 									</Storyboard>
 								</VisualState>
 								<VisualState x:Name="Pressed">
 									<Storyboard>
-										<DoubleAnimation Storyboard.TargetName="container"
+										<DoubleAnimation Storyboard.TargetName="ark"
 														 Storyboard.TargetProperty="(UIElement.Opacity)"
-														 To="1.0"
+														 To="0.9"
 														 Duration="0:0:0.1"/>
 									</Storyboard>
 								</VisualState>
 								<VisualState x:Name="Disabled">
 									<Storyboard>
-										<DoubleAnimation Storyboard.TargetName="container"
+										<DoubleAnimation Storyboard.TargetName="ark"
 														 Storyboard.TargetProperty="(UIElement.Opacity)"
 														 To="0.6"
 														 Duration="0:0:0.1"/>
@@ -71,9 +70,82 @@
 								<VisualState x:Name="MovingOff"/>
 								<VisualState x:Name="MovingOn">
 									<Storyboard>
-										<DoubleAnimation Storyboard.TargetName="container"
+										<DoubleAnimation Storyboard.TargetName="ark"
 														 Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
 														 From="0" To="360"
+														 RepeatBehavior="1x"
+														 Duration="{StaticResource MovingDuration}"/>
+									</Storyboard>
+								</VisualState>
+							</VisualStateGroup>
+						</VisualStateManager.VisualStateGroups>
+					</Grid>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style x:Key="WindingStyle" TargetType="{x:Type controls:MovingButton}">
+		<Style.Resources>
+			<Duration x:Key="MovingDuration">0:0:0.6</Duration>
+		</Style.Resources>
+
+		<Setter Property="Background" Value="Transparent"/>
+		<Setter Property="Foreground" Value="{StaticResource App.Foreground}"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type controls:MovingButton}">
+					<Grid>
+						<Grid Background="{TemplateBinding Background}">
+							<Ellipse x:Name="ring" Stretch="Uniform"
+									 Stroke="{TemplateBinding Foreground}"
+									 Opacity="0.7"
+									 StrokeThickness="1.6"/>
+							<Ellipse x:Name="ark" Stretch="Uniform"
+									 Stroke="{TemplateBinding Foreground}"
+									 StrokeThickness="1.6" StrokeDashArray="100,100" StrokeDashOffset="100"
+									 RenderTransformOrigin="0.5,0.5">
+								<Ellipse.RenderTransform>
+									<RotateTransform Angle="-90"/>
+								</Ellipse.RenderTransform>
+							</Ellipse>
+						</Grid>
+
+						<VisualStateManager.VisualStateGroups>
+							<VisualStateGroup x:Name="CommonStates">
+								<VisualState x:Name="Normal"/>
+								<VisualState x:Name="MouseOver">
+									<Storyboard>
+										<DoubleAnimation Storyboard.TargetName="ring"
+														 Storyboard.TargetProperty="(UIElement.Opacity)"
+														 To="0.8"
+														 Duration="0:0:0.1"/>
+									</Storyboard>
+								</VisualState>
+								<VisualState x:Name="Pressed">
+									<Storyboard>
+										<DoubleAnimation Storyboard.TargetName="ring"
+														 Storyboard.TargetProperty="(UIElement.Opacity)"
+														 To="0.8"
+														 Duration="0:0:0.1"/>
+									</Storyboard>
+								</VisualState>
+								<VisualState x:Name="Disabled">
+									<Storyboard>
+										<DoubleAnimation Storyboard.TargetName="ring"
+														 Storyboard.TargetProperty="(UIElement.Opacity)"
+														 To="0.6"
+														 Duration="0:0:0.1"/>
+									</Storyboard>
+								</VisualState>
+							</VisualStateGroup>
+							<VisualStateGroup x:Name="MovingStates">
+								<VisualState x:Name="MovingOff"/>
+								<VisualState x:Name="MovingOn">
+									<Storyboard>
+										<DoubleAnimation Storyboard.TargetName="ark"
+														 Storyboard.TargetProperty="(Shape.StrokeDashOffset)"
+														 From="100" To="55"
 														 RepeatBehavior="1x"
 														 Duration="{StaticResource MovingDuration}"/>
 									</Storyboard>
@@ -237,7 +309,7 @@
 				<ControlTemplate TargetType="{x:Type controls:SignalProgressBar}">
 					<Grid Width="18" Height="18">
 						<Path x:Name="PART_LevelOne"
-							  Stroke="DarkGray" StrokeThickness="2.5">
+							  Stroke="DarkGray" StrokeThickness="2.7">
 							<Path.Data>
 								<PathGeometry>
 									<PathFigure StartPoint="16,18">
@@ -308,7 +380,7 @@
 
 	<!-- SimpleToggleButton -->
 	<Style x:Key="MenuToggleButtonStyle" TargetType="{x:Type controls:SimpleToggleButton}">
-		<Setter Property="Background" Value="{StaticResource App.Background}"/>
+		<Setter Property="Background" Value="{StaticResource ToggleButton.Normal.Background}"/>
 		<Setter Property="BorderThickness" Value="0"/>
 		<Setter Property="Foreground" Value="{StaticResource ToggleButton.Normal.Foreground}"/>
 		<Setter Property="FontSize" Value="12"/>
@@ -361,7 +433,7 @@
 									<Storyboard>
 										<ColorAnimation Storyboard.TargetName="border"
 														Storyboard.TargetProperty="(Control.Background).(SolidColorBrush.Color)"
-														To="{StaticResource ToggleButton.Checked.ForegroundColor}"
+														To="{StaticResource ToggleButton.Checked.BackgroundColor}"
 														Duration="0:0:0.1"/>
 										<DoubleAnimation Storyboard.TargetName="border"
 														 Storyboard.TargetProperty="(Control.Background).(SolidColorBrush.Opacity)"
@@ -422,15 +494,15 @@
 									<Storyboard>
 										<DoubleAnimation Storyboard.TargetName="border"
 														 Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Opacity)"
-														 To="1.0"
+														 To="0.9"
 														 Duration="0:0:0.1"/>
 										<DoubleAnimation Storyboard.TargetName="icon"
 														 Storyboard.TargetProperty="(Shape.Stroke).(SolidColorBrush.Opacity)"
-														 To="0.8"
+														 To="0.9"
 														 Duration="0:0:0.1"/>
 										<DoubleAnimation Storyboard.TargetName="content"
 														 Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Opacity)"
-														 To="1.0"
+														 To="0.9"
 														 Duration="0:0:0.1"/>
 									</Storyboard>
 								</VisualState>
@@ -442,7 +514,7 @@
 														 Duration="0:0:0.1"/>
 										<DoubleAnimation Storyboard.TargetName="icon"
 														 Storyboard.TargetProperty="(Shape.Stroke).(SolidColorBrush.Opacity)"
-														 To="0.9"
+														 To="1.0"
 														 Duration="0:0:0.1"/>
 										<DoubleAnimation Storyboard.TargetName="content"
 														 Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Opacity)"

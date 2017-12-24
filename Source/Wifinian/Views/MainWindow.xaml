@@ -28,7 +28,7 @@
 			<!-- Menu -->
 			<Grid Grid.Row="0"
 				  Background="{StaticResource App.Background}">
-				<Grid Margin="0,6">
+				<Grid Margin="0,8">
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="44"/>
 						<ColumnDefinition Width="60"/>
@@ -45,8 +45,8 @@
 					<controls:MovingButton
 						Grid.Column="0"
 						x:Name="RescanButton"
-						Width="28" Height="28"
-						Style="{StaticResource RollingStyle}"
+						Width="24" Height="24"
+						Style="{StaticResource WindingStyle}"
 						IsRunning="{Binding IsUpdating.Value, Mode=OneWay}"
 						Command="{Binding RescanCommand}"/>
 
@@ -54,13 +54,11 @@
 					<controls:SimpleToggleButton
 						Grid.Column="1"
 						x:Name="RushButton"
-						Height="24"
 						Style="{StaticResource MenuToggleButtonStyle}"
 						Content="Rush"
 						IsChecked="{Binding RushesRescan.Value, Mode=TwoWay}"/>
 
 					<Button Grid.Column="2"
-							Height="24"
 							Style="{StaticResource MenuButtonStyle}"
 							Content="{Binding Source={x:Static models:Settings.Current}, Path=RescanInterval, Mode=OneWay}"
 							IsEnabled="{Binding ElementName=RushButton, Path=IsChecked, Mode=OneWay, Converter={StaticResource BooleanInverseConverterKey}}">
@@ -82,13 +80,11 @@
 					<controls:SimpleToggleButton
 						Grid.Column="4"
 						x:Name="EngageButton"
-						Height="24"
 						Style="{StaticResource MenuToggleButtonStyle}"
 						Content="Engage"
 						IsChecked="{Binding EngagesPriority.Value, Mode=TwoWay}"/>
 
 					<Button Grid.Column="5"
-							Height="24"
 							Style="{StaticResource MenuButtonStyle}"
 							Content="{Binding Source={x:Static models:Settings.Current}, Path=SignalThreshold, Mode=OneWay}"
 							IsEnabled="{Binding ElementName=EngageButton, Path=IsChecked, Mode=OneWay, Converter={StaticResource BooleanInverseConverterKey}}">
@@ -109,7 +105,6 @@
 					<!-- Reorder -->
 					<controls:SimpleToggleButton
 						Grid.Column="7"
-						Height="24"
 						Style="{StaticResource MenuToggleButtonStyle}"
 						Content="Reorder"
 						IsChecked="{Binding ReordersPriority.Value, Mode=TwoWay}"/>
@@ -151,7 +146,7 @@
 													Orientation="Horizontal">
 											<!-- Signal -->
 											<controls:SignalProgressBar
-												Width="24"
+												Width="24" Margin="0,6,0,0" VerticalAlignment="Top"
 												Style="{StaticResource BarStyle}"
 												Background="{StaticResource Profile.Signal.Background}"
 												Foreground="{StaticResource Profile.Signal.Foreground}"
@@ -162,6 +157,7 @@
 											<TextBlock Margin="4,0,0,0" VerticalAlignment="Center"
 													   Foreground="{StaticResource App.Foreground}"
 													   FontSize="14"
+													   TextWrapping="Wrap"
 													   Text="{Binding Name, Mode=OneTime}"/>
 										</StackPanel>
 
@@ -324,7 +320,7 @@
 		<Grid x:Name="ConfirmationBox"
 			  UseLayoutRounding="True"
 			  Visibility="Collapsed">
-			<Grid Background="{StaticResource App.Background.Inactive}">
+			<Grid Background="{StaticResource App.Background.Hidden}">
 				<i:Interaction.Triggers>
 					<i:EventTrigger EventName="MouseDown">
 						<ei:ChangePropertyAction TargetName="ConfirmationBox"
