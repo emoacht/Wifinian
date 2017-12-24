@@ -1,4 +1,5 @@
 ﻿ProjectSite=https://github.com/emoacht/Wifinian/blob/master/README_ja.md
 License=https://github.com/emoacht/Wifinian/blob/master/LICENSE.txt
+StartSignIn=サインイン時に起動する
 Close=閉じる
-RecordException=予想外の問題が起きたため、このアプリを終了します。例外のログをデスクトップに残しますか?
+RecordException=予想外の問題が起きました。例外のログをデスクトップに残しますか？

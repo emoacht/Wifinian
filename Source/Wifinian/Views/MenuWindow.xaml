@@ -36,6 +36,43 @@
 			</Setter>
 		</Style>
 
+		<!-- CheckBox -->
+		<Style x:Key="CheckBoxItemStyle" TargetType="{x:Type CheckBox}">
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type CheckBox}">
+						<Grid Background="Transparent"
+							  Margin="{TemplateBinding Padding}"
+							  SnapsToDevicePixels="True" UseLayoutRounding="True">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="*"/>
+							</Grid.ColumnDefinitions>
+							<Grid Grid.Column="0"
+								  Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}">
+								<Polyline x:Name="checkMark"
+										  Margin="3"
+										  Points="0,5 4,9 12,0" Stretch="Uniform"
+										  Stroke="{TemplateBinding Foreground}" StrokeThickness="1"
+										  Opacity="0"/>
+							</Grid>
+							<ContentPresenter Grid.Column="1"
+											  Margin="3" HorizontalAlignment="Left" VerticalAlignment="Center"
+											  Focusable="False"/>
+						</Grid>
+						<ControlTemplate.Triggers>
+							<Trigger Property="IsChecked" Value="True">
+								<Setter Property="Opacity" TargetName="checkMark" Value="1"/>
+							</Trigger>
+							<Trigger Property="IsChecked" Value="{x:Null}">
+								<Setter Property="Opacity" TargetName="checkMark" Value="0"/>
+							</Trigger>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+
 		<!-- Close Button -->
 		<Style x:Key="CloseButtonItemStyle" TargetType="{x:Type Button}">
 			<Setter Property="Template">
@@ -101,6 +138,18 @@
 				</i:Interaction.Triggers>
 			</Run>
 		</TextBlock>
+
+		<Separator Style="{StaticResource MenuSeparatorStyle}"/>
+
+		<ContentControl Style="{StaticResource MenuItemStyle}">
+			<CheckBox Padding="8,4"
+					  Style="{StaticResource CheckBoxItemStyle}"
+					  Foreground="{StaticResource App.Foreground}"
+					  FontSize="13"
+					  Content="{x:Static models:LanguageService.StartSignIn}"
+					  IsChecked="{Binding IsRegistered}"
+					  Visibility="{Binding CanRegister, Mode=OneTime, Converter={StaticResource BooleanToVisibilityConverterKey}}"/>
+		</ContentControl>
 
 		<Separator Style="{StaticResource MenuSeparatorStyle}"/>
 

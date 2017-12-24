@@ -12,6 +12,7 @@ using Reactive.Bindings.Extensions;
 using Reactive.Bindings.Helpers;
 
 using Wifinian.Common;
+using Wifinian.Models;
 
 namespace Wifinian.ViewModels
 {
@@ -25,5 +26,38 @@ namespace Wifinian.ViewModels
 		{
 			this._controller = controller;
 		}
+
+		#region Startup
+
+		public bool IsRegistered
+		{
+			get
+			{
+				if (!_isRegistered.HasValue)
+				{
+					_isRegistered = StartupService.IsRegistered();
+				}
+				return _isRegistered.Value;
+			}
+			set
+			{
+				if (_isRegistered == value)
+					return;
+
+				if (value)
+				{
+					StartupService.Register();
+				}
+				else
+				{
+					StartupService.Unregister();
+				}
+				_isRegistered = value;
+				RaisePropertyChanged();
+			}
+		}
+		private bool? _isRegistered;
+
+		#endregion
 	}
 }

@@ -147,7 +147,9 @@ namespace Wifinian
 			await LoadProfilesAsync();
 
 			_current.MainWindow = new MainWindow(this);
-			_current.MainWindow.Show();
+
+			if (!StartupService.IsStartedOnSignIn())
+				_current.MainWindow.Show();
 
 			Observable.FromEventPattern(
 				h => _current.MainWindow.Activated += h,

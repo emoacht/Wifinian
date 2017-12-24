@@ -11,10 +11,11 @@ namespace Wifinian.Models
 {
 	internal static class LanguageService
 	{
-		public static string ProjectSite => GetContentValue() ?? Properties.Resources.ProjectSite;
-		public static string License => GetContentValue() ?? nameof(License);
-		public static string Close => GetContentValue() ?? nameof(Close);
-		public static string RecordException => GetContentValue() ?? nameof(RecordException);
+		public static string ProjectSite => GetContentValue(fallback: Properties.Resources.ProjectSite);
+		public static string License => GetContentValue();
+		public static string StartSignIn => GetContentValue();
+		public static string Close => GetContentValue();
+		public static string RecordException => GetContentValue();
 
 		#region Base
 
@@ -22,7 +23,7 @@ namespace Wifinian.Models
 		private static Dictionary<string, string> _languageContent;
 		private const char Delimiter = '=';
 
-		private static string GetContentValue([CallerMemberName] string key = null)
+		private static string GetContentValue([CallerMemberName] string key = null, string fallback = null)
 		{
 			var languageName = CultureInfo.CurrentUICulture.Parent.Name; // Language name only
 			if (string.IsNullOrEmpty(languageName))
@@ -37,7 +38,10 @@ namespace Wifinian.Models
 				_languageName = languageName;
 				_languageContent = RetrieveLanguageContent(languageName);
 			}
-			return _languageContent.TryGetValue(key, out string value) ? value : null;
+			if (_languageContent.TryGetValue(key, out string value))
+				return value;
+
+			return fallback ?? key;
 		}
 
 		private static Dictionary<string, string> RetrieveLanguageContent(string languageName)

@@ -1,4 +1,5 @@
 ﻿ProjectSite=https://github.com/emoacht/Wifinian/blob/master/README.md
 License=https://github.com/emoacht/Wifinian/blob/master/LICENSE.txt
+StartSignIn=Start on sign in
 Close=Close
-RecordException=This app will terminate, because unexpected problem happened. Leave exception log on Desktop?
+RecordException=An unexpected problem occurred. Save exception log on Desktop?
