@@ -32,6 +32,7 @@ namespace Wifinian.Models.Wlan
 		#endregion
 
 		public event EventHandler NetworkRefreshed;
+		public event EventHandler AvailabilityChanged;
 		public event EventHandler InterfaceChanged;
 		public event EventHandler ConnectionChanged;
 		public event EventHandler ProfileChanged;
@@ -46,6 +47,7 @@ namespace Wifinian.Models.Wlan
 			deferTask = DeferAsync(() =>
 			{
 				NetworkRefreshed?.Invoke(this, EventArgs.Empty);
+				AvailabilityChanged?.Invoke(this, EventArgs.Empty);
 				InterfaceChanged?.Invoke(this, EventArgs.Empty);
 			});
 		}
@@ -178,6 +180,7 @@ namespace Wifinian.Models.Wlan
 					isAutoConnectEnabled: false,
 					isAutoSwitchEnabled: false,
 					position: 0,
+					isRadioOn: true,
 					signal: 90,
 					isConnected: false),
 
@@ -191,6 +194,7 @@ namespace Wifinian.Models.Wlan
 					isAutoConnectEnabled: true,
 					isAutoSwitchEnabled: false,
 					position: 1,
+					isRadioOn: true,
 					signal: 0,
 					isConnected: false),
 
@@ -204,6 +208,7 @@ namespace Wifinian.Models.Wlan
 					isAutoConnectEnabled: true,
 					isAutoSwitchEnabled: false,
 					position: 2,
+					isRadioOn: true,
 					signal: 0,
 					isConnected: false),
 
@@ -217,6 +222,7 @@ namespace Wifinian.Models.Wlan
 					isAutoConnectEnabled: true,
 					isAutoSwitchEnabled: true,
 					position: 3,
+					isRadioOn: true,
 					signal: 90,
 					isConnected: false),
 
@@ -230,6 +236,7 @@ namespace Wifinian.Models.Wlan
 					isAutoConnectEnabled: true,
 					isAutoSwitchEnabled: true,
 					position: 4,
+					isRadioOn: true,
 					signal: 0,
 					isConnected: false),
 
@@ -243,6 +250,7 @@ namespace Wifinian.Models.Wlan
 					isAutoConnectEnabled: false,
 					isAutoSwitchEnabled: false,
 					position: 0,
+					isRadioOn: true,
 					signal: 70,
 					isConnected: false),
 
@@ -256,6 +264,7 @@ namespace Wifinian.Models.Wlan
 					isAutoConnectEnabled: true,
 					isAutoSwitchEnabled: false,
 					position: 1,
+					isRadioOn: true,
 					signal: 0,
 					isConnected: false),
 
@@ -269,6 +278,7 @@ namespace Wifinian.Models.Wlan
 					isAutoConnectEnabled: true,
 					isAutoSwitchEnabled: false,
 					position: 0,
+					isRadioOn: false,
 					signal: 0,
 					isConnected: false),
 			};

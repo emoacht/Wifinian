@@ -556,6 +556,11 @@
             Occurs when wireless LAN list is refreshed.
             </summary>
         </member>
+        <member name="E:ManagedNativeWifi.NativeWifiPlayer.AvailabilityChanged">
+            <summary>
+            Occurs when availability of a wireless interface is changed.
+            </summary>
+        </member>
         <member name="E:ManagedNativeWifi.NativeWifiPlayer.InterfaceChanged">
             <summary>
             Occurs when a wireless interface is added/removed/enabled/disabled
@@ -563,7 +568,7 @@
         </member>
         <member name="E:ManagedNativeWifi.NativeWifiPlayer.ConnectionChanged">
             <summary>
-            Occurs when connection to wireless LAN is changed.
+            Occurs when connection of a wireless interface is changed.
             </summary>
         </member>
         <member name="E:ManagedNativeWifi.NativeWifiPlayer.ProfileChanged">
@@ -892,6 +897,11 @@
             Position in preference order of associated wireless interface
             </summary>
         </member>
+        <member name="P:ManagedNativeWifi.ProfilePack.IsRadioOn">
+            <summary>
+            Whether radio of associated wireless interface is on
+            </summary>
+        </member>
         <member name="P:ManagedNativeWifi.ProfilePack.SignalQuality">
             <summary>
             Signal quality of associated wireless LAN
@@ -899,10 +909,10 @@
         </member>
         <member name="P:ManagedNativeWifi.ProfilePack.IsConnected">
             <summary>
-            Whether this profile is currently connected
+            Whether associated wireless interface is connected to associated wireless LAN
             </summary>
         </member>
-        <member name="M:ManagedNativeWifi.ProfilePack.#ctor(System.String,ManagedNativeWifi.InterfaceInfo,ManagedNativeWifi.ProfileType,System.String,System.Int32,System.Int32,System.Boolean)">
+        <member name="M:ManagedNativeWifi.ProfilePack.#ctor(System.String,ManagedNativeWifi.InterfaceInfo,ManagedNativeWifi.ProfileType,System.String,System.Int32,System.Boolean,System.Int32,System.Boolean)">
             <summary>
             Constructor
             </summary>

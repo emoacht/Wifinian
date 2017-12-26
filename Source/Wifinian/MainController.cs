@@ -47,7 +47,7 @@ namespace Wifinian
 		public MainController() : this(
 			//new MockWorker() ??
 			//new NetshWorker() ??
-			new NativeWifiWorker())
+			(IWlanWorker)new NativeWifiWorker())
 		{ }
 
 		public MainController(IWlanWorker worker)
@@ -105,6 +105,9 @@ namespace Wifinian
 			var networkRefreshed = Observable.FromEventPattern(
 				h => _worker.NetworkRefreshed += h,
 				h => _worker.NetworkRefreshed -= h);
+			var availabilityChanged = Observable.FromEventPattern(
+				h => _worker.AvailabilityChanged += h,
+				h => _worker.AvailabilityChanged -= h);
 			var interfaceChanged = Observable.FromEventPattern(
 				h => _worker.InterfaceChanged += h,
 				h => _worker.InterfaceChanged -= h);
@@ -114,7 +117,7 @@ namespace Wifinian
 			var profileChanged = Observable.FromEventPattern(
 				h => _worker.ProfileChanged += h,
 				h => _worker.ProfileChanged -= h);
-			Observable.Merge(networkRefreshed, interfaceChanged, connectionChanged, profileChanged)
+			Observable.Merge(networkRefreshed, availabilityChanged, interfaceChanged, connectionChanged, profileChanged)
 				.Throttle(TimeSpan.FromMilliseconds(100))
 				.Subscribe(async _ =>
 				{
@@ -278,7 +281,7 @@ namespace Wifinian
 
 			Debug.WriteLine(Profiles.Any()
 				? Profiles
-					.Select(x => $"Profile {x.Name} -> AutoConnect {x.IsAutoConnectEnabled}, AutoSwitch {x.IsAutoSwitchEnabled}, Position: {x.Position}, Signal: {x.Signal}, IsConnected {x.IsConnected}")
+					.Select(x => $"Profile {x.Name} -> AutoConnect: {x.IsAutoConnectEnabled}, AutoSwitch: {x.IsAutoSwitchEnabled}, Position: {x.Position}, IsRadioOn: {x.IsRadioOn}, Signal: {x.Signal}, IsConnected {x.IsConnected}")
 					.Aggregate((work, next) => work + Environment.NewLine + next)
 				: "No Profile");
 

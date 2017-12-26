@@ -31,6 +31,7 @@ namespace Wifinian.Models.Wlan
 		#endregion
 
 		public event EventHandler NetworkRefreshed;
+		public event EventHandler AvailabilityChanged;
 		public event EventHandler InterfaceChanged;
 		public event EventHandler ConnectionChanged;
 		public event EventHandler ProfileChanged;
@@ -44,6 +45,7 @@ namespace Wifinian.Models.Wlan
 			deferTask = DeferAsync(() =>
 			{
 				NetworkRefreshed?.Invoke(this, EventArgs.Empty);
+				AvailabilityChanged?.Invoke(this, EventArgs.Empty);
 				InterfaceChanged?.Invoke(this, EventArgs.Empty);
 			});
 		}
@@ -78,6 +80,7 @@ namespace Wifinian.Models.Wlan
 					   isAutoConnectEnabled: profilePack.IsAutoConnectEnabled,
 					   isAutoSwitchEnabled: profilePack.IsAutoSwitchEnabled,
 					   position: profilePack.Position,
+					   isRadioOn: interfacePack.IsConnected, // Not enough.
 					   signal: (networkPack?.Signal ?? 0),
 					   isConnected: (interfacePack.IsConnected && profilePack.Name.Equals(interfacePack.ProfileName, StringComparison.Ordinal)));
 		}

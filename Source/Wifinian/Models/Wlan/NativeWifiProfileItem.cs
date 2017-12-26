@@ -60,6 +60,7 @@ namespace Wifinian.Models.Wlan
 			ProfileType profileType,
 			ProfileDocument document,
 			int position,
+			bool isRadioOn,
 			int signal,
 			bool isConnected) : base(
 				name: name,
@@ -71,6 +72,7 @@ namespace Wifinian.Models.Wlan
 				isAutoConnectEnabled: false,
 				isAutoSwitchEnabled: false,
 				position: position,
+				isRadioOn: isRadioOn,
 				signal: signal,
 				isConnected: isConnected)
 		{

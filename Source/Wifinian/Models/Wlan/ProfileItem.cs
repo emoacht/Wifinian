@@ -98,6 +98,16 @@ namespace Wifinian.Models.Wlan
 		private int _positionCount;
 
 		/// <summary>
+		/// Whether radio of associated wireless interface is on
+		/// </summary>
+		public bool IsRadioOn
+		{
+			get => _isRadioOn;
+			set => SetPropertyValue(ref _isRadioOn, value);
+		}
+		private bool _isRadioOn;
+
+		/// <summary>
 		/// Signal quality (0-100) of associated wireless LAN
 		/// </summary>
 		public int Signal
@@ -134,6 +144,7 @@ namespace Wifinian.Models.Wlan
 			bool isAutoConnectEnabled,
 			bool isAutoSwitchEnabled,
 			int position,
+			bool isRadioOn,
 			int signal,
 			bool isConnected)
 		{
@@ -152,6 +163,7 @@ namespace Wifinian.Models.Wlan
 			this.IsAutoConnectEnabled = isAutoConnectEnabled;
 			this.IsAutoSwitchEnabled = isAutoSwitchEnabled;
 			this.Position = position;
+			this.IsRadioOn = isRadioOn;
 			this.Signal = signal;
 			this.IsConnected = isConnected;
 		}
@@ -167,6 +179,7 @@ namespace Wifinian.Models.Wlan
 			this.IsAutoConnectEnabled = other.IsAutoConnectEnabled;
 			this.IsAutoSwitchEnabled = other.IsAutoSwitchEnabled;
 			this.Position = other.Position;
+			this.IsRadioOn = other.IsRadioOn;
 			this.Signal = other.Signal;
 			this.IsConnected = other.IsConnected;
 		}

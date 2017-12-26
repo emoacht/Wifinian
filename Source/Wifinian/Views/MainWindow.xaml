@@ -178,9 +178,15 @@
 														Visibility="{Binding ElementName=DisconnectButton, Path=Visibility, Mode=OneWay, Converter={StaticResource VisibilityInverseConverterKey}}"
 														Command="{Binding ConnectCommand}">
 													<Grid>
+														<TextBlock x:Name="SignalText"
+																   Margin="2" VerticalAlignment="Bottom"
+																   Foreground="{StaticResource App.Foreground}"
+																   Visibility="{Binding IsRadioOn.Value, Converter={StaticResource BooleanToVisibilityConverterKey}}"
+																   Text="{Binding Signal.Value, Mode=OneWay, StringFormat={} {0}%}"/>
 														<TextBlock Margin="2" VerticalAlignment="Bottom"
 																   Foreground="{StaticResource App.Foreground}"
-																   Text="{Binding Signal.Value, Mode=OneWay, StringFormat={} {0}%}"/>
+																   Visibility="{Binding ElementName=SignalText, Path=Visibility, Converter={StaticResource VisibilityInverseConverterKey}}"
+																   Text="Off"/>
 													</Grid>
 												</Button>
 

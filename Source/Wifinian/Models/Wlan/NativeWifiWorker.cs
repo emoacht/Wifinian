@@ -49,6 +49,12 @@ namespace Wifinian.Models.Wlan
 			remove => _player.NetworkRefreshed -= value;
 		}
 
+		public event EventHandler AvailabilityChanged
+		{
+			add => _player.AvailabilityChanged += value;
+			remove => _player.AvailabilityChanged -= value;
+		}
+
 		public event EventHandler InterfaceChanged
 		{
 			add => _player.InterfaceChanged += value;
@@ -89,6 +95,7 @@ namespace Wifinian.Models.Wlan
 				profileType: x.ProfileType,
 				document: x.Document,
 				position: x.Position,
+				isRadioOn: x.IsRadioOn,
 				signal: x.SignalQuality,
 				isConnected: x.IsConnected));
 		}

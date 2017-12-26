@@ -27,6 +27,7 @@ namespace Wifinian.ViewModels
 		public ReadOnlyReactiveProperty<int> Position { get; }
 		public ReadOnlyReactiveProperty<int> PositionCount { get; }
 
+		public ReadOnlyReactiveProperty<bool> IsRadioOn { get; }
 		public ReadOnlyReactiveProperty<int> Signal { get; }
 		public ReadOnlyReactiveProperty<bool> IsAvailable { get; }
 		public ReadOnlyReactiveProperty<bool> IsConnected { get; }
@@ -69,6 +70,11 @@ namespace Wifinian.ViewModels
 				.ToReadOnlyReactiveProperty()
 				.AddTo(this.Subscription);
 
+			IsRadioOn = profileItem
+				.ObserveProperty(x => x.IsRadioOn)
+				.ToReadOnlyReactiveProperty()
+				.AddTo(this.Subscription);
+
 			Signal = profileItem
 				.ObserveProperty(x => x.Signal)
 				.ToReadOnlyReactiveProperty()
@@ -91,10 +97,11 @@ namespace Wifinian.ViewModels
 
 			var isNotWorking = controller.IsWorking
 				.Inverse()
+				.StartWith(true) // This is necessary for initial query.
 				.ObserveOnUIDispatcher() // This is safety for thread access with ReactiveCommand.
 				.Publish();
 
-			ConnectCommand = new[] { isNotWorking, IsConnected.Inverse(), IsAvailable }
+			ConnectCommand = new[] { isNotWorking, IsAvailable, IsConnected.Inverse() }
 				.CombineLatestValuesAreAllTrue()
 				.StartWith(IsAvailable.Value && !IsConnected.Value)
 				.ToReactiveCommand();

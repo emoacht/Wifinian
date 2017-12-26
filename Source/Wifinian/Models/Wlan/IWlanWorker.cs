@@ -9,6 +9,7 @@ namespace Wifinian.Models.Wlan
 	internal interface IWlanWorker : IDisposable
 	{
 		event EventHandler NetworkRefreshed;
+		event EventHandler AvailabilityChanged;
 		event EventHandler InterfaceChanged;
 		event EventHandler ConnectionChanged;
 		event EventHandler ProfileChanged;
