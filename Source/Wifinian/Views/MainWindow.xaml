@@ -45,7 +45,7 @@
 					<controls:MovingButton
 						Grid.Column="0"
 						x:Name="RescanButton"
-						Width="24" Height="24"
+						Width="26" Height="26"
 						Style="{StaticResource WindingStyle}"
 						IsRunning="{Binding IsUpdating.Value, Mode=OneWay}"
 						Command="{Binding RescanCommand}"/>
@@ -208,7 +208,7 @@
 
 											<!-- Supplement -->
 											<TextBlock Grid.Column="1" Grid.Row="0"
-													   Margin="8,0"
+													   Margin="8,0,4,0"
 													   Foreground="{StaticResource App.Foreground.Shadow}"
 													   FontSize="12">
 												<Run Text="{Binding InterfaceDescription, Mode=OneTime}"/>

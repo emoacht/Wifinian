@@ -4,6 +4,21 @@
 					xmlns:controls="clr-namespace:Wifinian.Views.Controls">
 
 	<!-- MovingButton -->
+	<Style x:Key="RoundFocusVisual">
+		<Setter Property="Control.Template">
+			<Setter.Value>
+				<ControlTemplate>
+					<Border>
+						<Ellipse Margin="1"
+								 StrokeThickness="1"
+								 Stroke="Black"
+								 StrokeDashArray="1 2"/>
+					</Border>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
 	<Style x:Key="RollingStyle" TargetType="{x:Type controls:MovingButton}">
 		<Style.Resources>
 			<!-- Width:100, Height:100, Center:50,50 -->
@@ -22,6 +37,7 @@
 
 		<Setter Property="Background" Value="Transparent"/>
 		<Setter Property="Foreground" Value="{StaticResource App.Foreground}"/>
+		<Setter Property="FocusVisualStyle" Value="{StaticResource RoundFocusVisual}"/>
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type controls:MovingButton}">
@@ -30,7 +46,7 @@
 							<Path x:Name="ark"
 								  Data="{StaticResource ArcForm}" Stretch="Uniform"
 								  Stroke="{TemplateBinding Foreground}" StrokeThickness="1.6"
-								  Opacity="0.8"
+								  Opacity="0.6"
 								  RenderTransformOrigin="0.5 0.5">
 								<Path.RenderTransform>
 									<RotateTransform Angle="0"/>
@@ -45,7 +61,7 @@
 									<Storyboard>
 										<DoubleAnimation Storyboard.TargetName="ark"
 														 Storyboard.TargetProperty="(UIElement.Opacity)"
-														 To="0.9"
+														 To="0.8"
 														 Duration="0:0:0.1"/>
 									</Storyboard>
 								</VisualState>
@@ -53,7 +69,7 @@
 									<Storyboard>
 										<DoubleAnimation Storyboard.TargetName="ark"
 														 Storyboard.TargetProperty="(UIElement.Opacity)"
-														 To="0.9"
+														 To="0.8"
 														 Duration="0:0:0.1"/>
 									</Storyboard>
 								</VisualState>
@@ -61,7 +77,7 @@
 									<Storyboard>
 										<DoubleAnimation Storyboard.TargetName="ark"
 														 Storyboard.TargetProperty="(UIElement.Opacity)"
-														 To="0.6"
+														 To="0.4"
 														 Duration="0:0:0.1"/>
 									</Storyboard>
 								</VisualState>
@@ -70,6 +86,12 @@
 								<VisualState x:Name="MovingOff"/>
 								<VisualState x:Name="MovingOn">
 									<Storyboard>
+										<Storyboard>
+											<DoubleAnimation Storyboard.TargetName="ark"
+															 Storyboard.TargetProperty="(UIElement.Opacity)"
+															 To="1.0"
+															 Duration="0:0:0.1"/>
+										</Storyboard>
 										<DoubleAnimation Storyboard.TargetName="ark"
 														 Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
 														 From="0" To="360"
@@ -86,12 +108,9 @@
 	</Style>
 
 	<Style x:Key="WindingStyle" TargetType="{x:Type controls:MovingButton}">
-		<Style.Resources>
-			<Duration x:Key="MovingDuration">0:0:0.6</Duration>
-		</Style.Resources>
-
 		<Setter Property="Background" Value="Transparent"/>
 		<Setter Property="Foreground" Value="{StaticResource App.Foreground}"/>
+		<Setter Property="FocusVisualStyle" Value="{StaticResource RoundFocusVisual}"/>
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type controls:MovingButton}">
@@ -99,7 +118,7 @@
 						<Grid Background="{TemplateBinding Background}">
 							<Ellipse x:Name="ring" Stretch="Uniform"
 									 Stroke="{TemplateBinding Foreground}"
-									 Opacity="0.7"
+									 Opacity="0.6"
 									 StrokeThickness="1.6"/>
 							<Ellipse x:Name="ark" Stretch="Uniform"
 									 Stroke="{TemplateBinding Foreground}"
@@ -134,7 +153,7 @@
 									<Storyboard>
 										<DoubleAnimation Storyboard.TargetName="ring"
 														 Storyboard.TargetProperty="(UIElement.Opacity)"
-														 To="0.6"
+														 To="0.4"
 														 Duration="0:0:0.1"/>
 									</Storyboard>
 								</VisualState>
@@ -143,11 +162,26 @@
 								<VisualState x:Name="MovingOff"/>
 								<VisualState x:Name="MovingOn">
 									<Storyboard>
+										<!-- Width:26, Height:26 -->
+										<!-- The speed of leading edge is 60 degrees / 0.1 sec. -->
 										<DoubleAnimation Storyboard.TargetName="ark"
 														 Storyboard.TargetProperty="(Shape.StrokeDashOffset)"
-														 From="100" To="55"
+														 From="100" To="92"
 														 RepeatBehavior="1x"
-														 Duration="{StaticResource MovingDuration}"/>
+														 Duration="0:0:0.1"/>
+										<!-- The combined speed of leading edge is the same (660 degrees / 1.1 sec). -->
+										<DoubleAnimation Storyboard.TargetName="ark"
+														 Storyboard.TargetProperty="(Shape.StrokeDashOffset)"
+														 From="92" To="52"
+														 RepeatBehavior="1x"
+														 BeginTime="0:0:0.1"
+														 Duration="0:0:1.1"/>
+										<DoubleAnimation Storyboard.TargetName="ark"
+														 Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
+														 From="-90" To="270"
+														 RepeatBehavior="1x"
+														 BeginTime="0:0:0.1"
+														 Duration="0:0:1.1"/>
 									</Storyboard>
 								</VisualState>
 							</VisualStateGroup>
