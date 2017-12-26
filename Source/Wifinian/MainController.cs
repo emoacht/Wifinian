@@ -290,8 +290,8 @@ namespace Wifinian
 				var targetProfiles = Profiles
 					.Where(x => x.IsAutoConnectEnabled && x.IsAutoSwitchEnabled && (Settings.Current.SignalThreshold <= x.Signal))
 					.GroupBy(x => x.InterfaceId)
-					.Select(y => y.OrderBy(x => x.Position).Where(x => !x.IsConnected).FirstOrDefault())
-					.Where(x => x != null)
+					.Select(y => y.OrderBy(x => x.Position).First())
+					.Where(x => !x.IsConnected)
 					.ToArray();
 
 				if (targetProfiles.Length > 0)
