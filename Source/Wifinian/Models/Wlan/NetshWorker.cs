@@ -80,7 +80,7 @@ namespace Wifinian.Models.Wlan
 					   isAutoConnectEnabled: profilePack.IsAutoConnectEnabled,
 					   isAutoSwitchEnabled: profilePack.IsAutoSwitchEnabled,
 					   position: profilePack.Position,
-					   isRadioOn: interfacePack.IsConnected, // Not enough.
+					   isRadioOn: interfacePack.IsRadioOn,
 					   signal: (networkPack?.Signal ?? 0),
 					   isConnected: (interfacePack.IsConnected && profilePack.Name.Equals(interfacePack.ProfileName, StringComparison.Ordinal)));
 		}

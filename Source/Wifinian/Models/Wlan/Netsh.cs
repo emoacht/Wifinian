@@ -83,6 +83,7 @@ namespace Wifinian.Models.Wlan
 			public string Description { get; }
 			public Guid Id { get; }
 			public string PhysicalAddress { get; }
+			public bool IsRadioOn { get; }
 			public bool IsConnected { get; }
 			public string ProfileName { get; }
 
@@ -91,6 +92,7 @@ namespace Wifinian.Models.Wlan
 				string description,
 				Guid id,
 				string physicalAddress,
+				bool isRadioOn,
 				bool isConnected,
 				string profileName)
 			{
@@ -98,6 +100,7 @@ namespace Wifinian.Models.Wlan
 				this.Description = description;
 				this.Id = id;
 				this.PhysicalAddress = physicalAddress;
+				this.IsRadioOn = isRadioOn;
 				this.IsConnected = isConnected;
 				this.ProfileName = profileName;
 			}
@@ -150,6 +153,8 @@ namespace Wifinian.Models.Wlan
 			string physicalAddress = null;
 			bool? isConnected = null;
 			string profileName = null;
+			bool? isHardwareOn = null;
+			bool? isSoftwareOn = null;
 
 			foreach (var outputLine in outputLines)
 			{
@@ -195,6 +200,18 @@ namespace Wifinian.Models.Wlan
 						profileName = FindElement(outputLine, "Profile");
 						continue;
 					}
+					if (!isHardwareOn.HasValue)
+					{
+						isHardwareOn = FindBoolean(outputLine, "Hardware On", "Hardware Off");
+						if (isHardwareOn.HasValue)
+							continue;
+					}
+					if (!isSoftwareOn.HasValue)
+					{
+						isSoftwareOn = FindBoolean(outputLine, "Software On", "Software Off");
+						if (isSoftwareOn.HasValue)
+							continue;
+					}
 				}
 				catch (Exception ex)
 				{
@@ -207,6 +224,7 @@ namespace Wifinian.Models.Wlan
 					description: description,
 					id: id,
 					physicalAddress: physicalAddress,
+					isRadioOn: isHardwareOn.GetValueOrDefault() && isSoftwareOn.GetValueOrDefault(),
 					isConnected: isConnected.Value,
 					profileName: profileName);
 
@@ -216,6 +234,8 @@ namespace Wifinian.Models.Wlan
 				physicalAddress = null;
 				isConnected = null;
 				profileName = null;
+				isHardwareOn = null;
+				isSoftwareOn = null;
 			}
 		}
 
@@ -590,6 +610,20 @@ namespace Wifinian.Models.Wlan
 				return null;
 
 			return source.Substring(delimiterIndex + 1).Trim();
+		}
+
+		private static bool? FindBoolean(string source, string trueValue, string falseValue)
+		{
+			if (string.IsNullOrWhiteSpace(source))
+				return null;
+
+			if (0 <= source.IndexOf(trueValue, StringComparison.Ordinal))
+				return true;
+
+			if (0 <= source.IndexOf(falseValue, StringComparison.Ordinal))
+				return false;
+
+			return null;
 		}
 
 		private static NetworkType ConvertToNetworkType(string source)
