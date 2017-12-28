@@ -52,12 +52,10 @@ namespace Wifinian.Models.Wlan
 			});
 		}
 
-		public async Task<IEnumerable<ProfileItem>> GetProfilesAsync()
+		public Task<IEnumerable<ProfileItem>> GetProfilesAsync()
 		{
 			if (_sourceProfiles == null)
 				_sourceProfiles = PopulateProfiles().ToList();
-
-			await WaitAsync(); // Dummy
 
 			_sourceProfiles
 				.ForEach(x =>
@@ -66,42 +64,38 @@ namespace Wifinian.Models.Wlan
 						x.Signal = Max(Min(x.Signal + _random.Value.Next(-10, 10), 100), 50);
 				});
 
-			return _sourceProfiles.ToArray();
+			return Task.FromResult(_sourceProfiles.AsEnumerable());
 		}
 
-		public async Task<bool> SetProfileOptionAsync(ProfileItem profileItem)
+		public Task<bool> SetProfileOptionAsync(ProfileItem profileItem)
 		{
-			await WaitAsync(); // Dummy
-
 			var targetProfile = _sourceProfiles.FirstOrDefault(x => x.Id == profileItem.Id);
 			if (targetProfile == null)
-				return false;
+				return Task.FromResult(false);
 
 			targetProfile.IsAutoConnectEnabled = profileItem.IsAutoConnectEnabled;
 			targetProfile.IsAutoSwitchEnabled = profileItem.IsAutoSwitchEnabled;
 
 			deferTask = DeferAsync(() => ProfileChanged?.Invoke(this, EventArgs.Empty));
-			return true;
+			return Task.FromResult(true);
 		}
 
-		public async Task<bool> SetProfilePositionAsync(ProfileItem profileItem, int position)
+		public Task<bool> SetProfilePositionAsync(ProfileItem profileItem, int position)
 		{
-			await WaitAsync(); // Dummy
-
 			var targetProfiles = _sourceProfiles
 				.Where(x => x.InterfaceId == profileItem.InterfaceId)
 				.OrderBy(x => x.Position)
 				.ToList();
 
 			if ((targetProfiles.Count == 0) || (targetProfiles.Count - 1 < position))
-				return false;
+				return Task.FromResult(false);
 
 			var targetProfile = targetProfiles.FirstOrDefault(x => x.Id == profileItem.Id);
 			if (targetProfile == null)
-				return false;
+				return Task.FromResult(false);
 
 			if (targetProfile.Position == position)
-				return true;
+				return Task.FromResult(false);
 
 			targetProfiles.Remove(targetProfile);
 			targetProfiles.Insert(position, targetProfile);
@@ -110,181 +104,170 @@ namespace Wifinian.Models.Wlan
 			targetProfiles.ForEach(x => x.Position = index++);
 
 			deferTask = DeferAsync(() => ProfileChanged?.Invoke(this, EventArgs.Empty));
-			return true;
+			return Task.FromResult(true);
 		}
 
-		public async Task<bool> DeleteProfileAsync(ProfileItem profileItem)
+		public Task<bool> DeleteProfileAsync(ProfileItem profileItem)
 		{
-			await WaitAsync(); // Dummy
-
 			if (!_sourceProfiles.Remove(profileItem))
-				return false;
+				return Task.FromResult(false);
 
 			deferTask = DeferAsync(() => ProfileChanged?.Invoke(this, EventArgs.Empty));
-			return true;
+			return Task.FromResult(true);
 		}
 
-		public async Task<bool> ConnectNetworkAsync(ProfileItem profileItem, TimeSpan timeout)
+		public Task<bool> ConnectNetworkAsync(ProfileItem profileItem, TimeSpan timeout)
 		{
-			await WaitAsync(); // Dummy
-
 			var targetProfile = _sourceProfiles.FirstOrDefault(x => x.Id == profileItem.Id);
 			if (targetProfile == null)
-				return false;
+				return Task.FromResult(false);
 
 			targetProfile.IsConnected = true;
 
 			deferTask = DeferAsync(() => ConnectionChanged?.Invoke(this, EventArgs.Empty));
-			return true;
+			return Task.FromResult(true);
 		}
 
-		public async Task<bool> DisconnectNetworkAsync(ProfileItem profileItem, TimeSpan timeout)
+		public Task<bool> DisconnectNetworkAsync(ProfileItem profileItem, TimeSpan timeout)
 		{
-			await WaitAsync(); // Dummy
-
 			var targetProfile = _sourceProfiles.FirstOrDefault(x => x.Id == profileItem.Id);
 			if (targetProfile == null)
-				return false;
+				return Task.FromResult(false);
 
 			targetProfile.IsConnected = false;
 
 			deferTask = DeferAsync(() => ConnectionChanged?.Invoke(this, EventArgs.Empty));
-			return true;
+			return Task.FromResult(true);
 		}
 
 		#region Base
 
+		private class InterfacePack
+		{
+			public Guid Id { get; }
+			public string Name { get; }
+			public string Description { get; }
+			public bool IsRadioOn { get; }
+
+			public InterfacePack(string name, string description, bool isRadioOn)
+			{
+				Id = Guid.NewGuid();
+				this.Name = name;
+				this.Description = description;
+				this.IsRadioOn = isRadioOn;
+			}
+		}
+
 		private ProfileItem[] PopulateProfiles()
 		{
-			var interfaceGuid0 = Guid.NewGuid();
-			var interfaceGuid1 = Guid.NewGuid();
-			var interfaceGuid2 = Guid.NewGuid();
-
-			var interfaceName0 = "Wi-Fi";
-			var interfaceName1 = "Wi-Fi 2";
-			var interfaceName2 = "Wi-Fi 3";
-
-			var interfaceDescription0 = "Intel(R) Centrino(R) Advanced-N 6205";
-			var interfaceDescription1 = "GW-USValue-EZ";
-			var interfaceDescription2 = "WLI-UC-GNM";
+			var interfacePacks = new[]
+			{
+				new InterfacePack("Wi-Fi", "Intel(R) Centrino(R) Advanced-N 6205", true),
+				new InterfacePack("Wi-Fi 2", "WLI-UC-GNM", true),
+				new InterfacePack("Wi-Fi 3", "Marvel AVASTAR Wireless-AC Network Controller", false)
+			};
 
 			return new[]
 			{
 				new ProfileItem(
-					name: "at_STATION_Wi2",
-					interfaceId: interfaceGuid0,
-					interfaceName: interfaceName0,
-					interfaceDescription: interfaceDescription0,
-					authentication: AuthenticationMethod.Open,
-					encryption: EncryptionType.None,
+					name: "Cloud7",
+					interfaceId: interfacePacks[0].Id,
+					interfaceName: interfacePacks[0].Name,
+					interfaceDescription: interfacePacks[0].Description,
+					authentication: AuthenticationMethod.WPA_Personal,
+					encryption: EncryptionType.AES,
 					isAutoConnectEnabled: false,
 					isAutoSwitchEnabled: false,
 					position: 0,
-					isRadioOn: true,
+					isRadioOn: interfacePacks[0].IsRadioOn,
 					signal: 90,
 					isConnected: false),
 
 				new ProfileItem(
-					name: "MSFTOPEN",
-					interfaceId: interfaceGuid0,
-					interfaceName: interfaceName0,
-					interfaceDescription: interfaceDescription0,
+					name: "ESTACION",
+					interfaceId: interfacePacks[0].Id,
+					interfaceName: interfacePacks[0].Name,
+					interfaceDescription: interfacePacks[0].Description,
 					authentication: AuthenticationMethod.Open,
 					encryption: EncryptionType.None,
 					isAutoConnectEnabled: true,
 					isAutoSwitchEnabled: false,
 					position: 1,
-					isRadioOn: true,
+					isRadioOn: interfacePacks[0].IsRadioOn,
 					signal: 0,
 					isConnected: false),
 
 				new ProfileItem(
 					name: "flashair_W02",
-					interfaceId: interfaceGuid0,
-					interfaceName: interfaceName0,
-					interfaceDescription: interfaceDescription0,
+					interfaceId: interfacePacks[0].Id,
+					interfaceName: interfacePacks[0].Name,
+					interfaceDescription: interfacePacks[0].Description,
 					authentication: AuthenticationMethod.WPA2_Personal,
 					encryption: EncryptionType.AES,
 					isAutoConnectEnabled: true,
 					isAutoSwitchEnabled: false,
 					position: 2,
-					isRadioOn: true,
+					isRadioOn: interfacePacks[0].IsRadioOn,
 					signal: 0,
 					isConnected: false),
 
 				new ProfileItem(
 					name: "flashair_W03",
-					interfaceId: interfaceGuid0,
-					interfaceName: interfaceName0,
-					interfaceDescription: interfaceDescription0,
+					interfaceId: interfacePacks[0].Id,
+					interfaceName: interfacePacks[0].Name,
+					interfaceDescription: interfacePacks[0].Description,
 					authentication: AuthenticationMethod.WPA2_Personal,
 					encryption: EncryptionType.AES,
 					isAutoConnectEnabled: true,
 					isAutoSwitchEnabled: true,
 					position: 3,
-					isRadioOn: true,
+					isRadioOn: interfacePacks[0].IsRadioOn,
 					signal: 90,
 					isConnected: false),
 
 				new ProfileItem(
-					name: "WIFIGATE-968",
-					interfaceId: interfaceGuid0,
-					interfaceName: interfaceName0,
-					interfaceDescription: interfaceDescription0,
+					name: "Cloud7",
+					interfaceId: interfacePacks[1].Id,
+					interfaceName: interfacePacks[1].Name,
+					interfaceDescription: interfacePacks[1].Description,
 					authentication: AuthenticationMethod.WPA2_Personal,
 					encryption: EncryptionType.AES,
-					isAutoConnectEnabled: true,
-					isAutoSwitchEnabled: true,
-					position: 4,
-					isRadioOn: true,
-					signal: 0,
-					isConnected: false),
-
-				new ProfileItem(
-					name: "at_STATION_Wi2",
-					interfaceId: interfaceGuid1,
-					interfaceName: interfaceName1,
-					interfaceDescription: interfaceDescription1,
-					authentication: AuthenticationMethod.Open,
-					encryption: EncryptionType.None,
 					isAutoConnectEnabled: false,
 					isAutoSwitchEnabled: false,
 					position: 0,
-					isRadioOn: true,
+					isRadioOn: interfacePacks[1].IsRadioOn,
 					signal: 70,
 					isConnected: false),
 
 				new ProfileItem(
-					name: "ねこラン🐾🐾",
-					interfaceId: interfaceGuid1,
-					interfaceName: interfaceName1,
-					interfaceDescription: interfaceDescription1,
+					name: "nekoラン🐾🐾",
+					interfaceId: interfacePacks[1].Id,
+					interfaceName: interfacePacks[1].Name,
+					interfaceDescription: interfacePacks[1].Description,
 					authentication: AuthenticationMethod.WPA_Personal,
 					encryption: EncryptionType.AES,
 					isAutoConnectEnabled: true,
 					isAutoSwitchEnabled: false,
 					position: 1,
-					isRadioOn: true,
+					isRadioOn: interfacePacks[1].IsRadioOn,
 					signal: 0,
 					isConnected: false),
 
 				new ProfileItem(
 					name: "La La Lan...",
-					interfaceId: interfaceGuid2,
-					interfaceName: interfaceName2,
-					interfaceDescription: interfaceDescription2,
+					interfaceId: interfacePacks[2].Id,
+					interfaceName: interfacePacks[2].Name,
+					interfaceDescription: interfacePacks[2].Description,
 					authentication: AuthenticationMethod.Open,
 					encryption: EncryptionType.None,
 					isAutoConnectEnabled: true,
 					isAutoSwitchEnabled: false,
 					position: 0,
-					isRadioOn: false,
+					isRadioOn: interfacePacks[2].IsRadioOn,
 					signal: 0,
 					isConnected: false),
 			};
 		}
-
-		private Task WaitAsync() => Task.Delay(TimeSpan.FromMilliseconds(_random.Value.Next(0, 100)));
 
 		private Task deferTask;
 
