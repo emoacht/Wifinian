@@ -270,11 +270,11 @@ namespace Wifinian
 				Profiles
 					.GroupBy(x => x.InterfaceId)
 					.ToList()
-					.ForEach(profilesGroup =>
+					.ForEach(subProfiles =>
 					{
-						var count = profilesGroup.Count();
+						var count = subProfiles.Count();
 
-						foreach (var profile in profilesGroup)
+						foreach (var profile in subProfiles)
 							profile.PositionCount = count;
 					});
 			}
@@ -288,10 +288,13 @@ namespace Wifinian
 			if (EngagesPriority.Value)
 			{
 				var targetProfiles = Profiles
-					.Where(x => x.IsAutoConnectEnabled && x.IsAutoSwitchEnabled && (Settings.Current.SignalThreshold <= x.Signal))
 					.GroupBy(x => x.InterfaceId)
-					.Select(y => y.OrderBy(x => x.Position).First())
-					.Where(x => !x.IsConnected)
+					.Where(subProfiles => subProfiles.All(x => !x.IsConnected || x.IsAutoSwitchEnabled))
+					.Select(subProfiles => subProfiles
+						.Where(x => x.IsAutoSwitchEnabled && (Settings.Current.SignalThreshold <= x.Signal))
+						.OrderBy(x => x.Position)
+						.FirstOrDefault())
+					.Where(x => (x != null) && !x.IsConnected)
 					.ToArray();
 
 				if (targetProfiles.Length > 0)
