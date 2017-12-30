@@ -200,6 +200,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Wifinian.VisualElementsManifest.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Resource Include="Resources\Icons\AppIcon.ico" />
     <Resource Include="Resources\Icons\TrayIcon.ico" />
     <Content Include="Library\ManagedNativeWifi.dll" />
