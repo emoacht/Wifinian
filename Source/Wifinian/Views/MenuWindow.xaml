@@ -123,7 +123,7 @@
 				 Text="Site">
 				<i:Interaction.Triggers>
 					<i:EventTrigger EventName="MouseDown">
-						<ei:LaunchUriOrFileAction Path="{Binding Source={x:Static models:LanguageService.ProjectSite}}"/>
+						<ei:LaunchUriOrFileAction Path="{Binding Source={x:Static models:LanguageService.ProjectSite}, Mode=OneTime}"/>
 					</i:EventTrigger>
 				</i:Interaction.Triggers>
 			</Run>
@@ -133,7 +133,7 @@
 				 Text="License">
 				<i:Interaction.Triggers>
 					<i:EventTrigger EventName="MouseDown">
-						<ei:LaunchUriOrFileAction Path="{Binding Source={x:Static models:LanguageService.License}}"/>
+						<ei:LaunchUriOrFileAction Path="{Binding Source={x:Static models:LanguageService.License}, Mode=OneTime}"/>
 					</i:EventTrigger>
 				</i:Interaction.Triggers>
 			</Run>
@@ -147,7 +147,7 @@
 					  Foreground="{StaticResource App.Foreground}"
 					  FontSize="13"
 					  Content="{x:Static models:LanguageService.StartSignIn}"
-					  IsChecked="{Binding IsRegistered}"
+					  IsChecked="{Binding IsRegistered, Mode=TwoWay}"
 					  Visibility="{Binding CanRegister, Mode=OneTime, Converter={StaticResource BooleanToVisibilityConverterKey}}"/>
 		</ContentControl>
 
@@ -160,7 +160,7 @@
 					Foreground="{StaticResource App.Foreground}"
 					FontSize="14"
 					Content="{x:Static models:LanguageService.Close}"
-					Command="{Binding CloseCommand}"/>
+					Command="{Binding CloseCommand, Mode=OneTime}"/>
 		</ContentControl>
 	</StackPanel>
 </Window>

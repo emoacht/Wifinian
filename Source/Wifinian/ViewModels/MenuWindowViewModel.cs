@@ -29,6 +29,8 @@ namespace Wifinian.ViewModels
 
 		#region Startup
 
+		public bool CanRegister => StartupService.CanRegister();
+
 		public bool IsRegistered
 		{
 			get

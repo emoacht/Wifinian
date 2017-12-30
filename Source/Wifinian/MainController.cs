@@ -99,7 +99,13 @@ namespace Wifinian
 						RescanTimer.Start();
 					else
 						RescanTimer.Stop();
+
+					SetNotifyIconText();
 				})
+				.AddTo(this.Subscription);
+
+			EngagesPriority
+				.Subscribe(_ => SetNotifyIconText())
 				.AddTo(this.Subscription);
 
 			var networkRefreshed = Observable.FromEventPattern(
@@ -160,6 +166,13 @@ namespace Wifinian
 				.StartWith(new object()) // This is necessary for initial query.
 				.Subscribe(async _ => await ScanNetworkAsync())
 				.AddTo(this.Subscription);
+		}
+
+		private void SetNotifyIconText()
+		{
+			NotifyIconContainer.Text = ProductInfo.Title
+				+ (RushesRescan.Value ? $"{Environment.NewLine}Rush {Settings.Current.RescanInterval}" : string.Empty)
+				+ (EngagesPriority.Value ? $"{Environment.NewLine}Engage {Settings.Current.SignalThreshold}" : string.Empty);
 		}
 
 		#region Dispose

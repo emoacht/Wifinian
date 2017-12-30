@@ -23,6 +23,12 @@ namespace Wifinian.Models
 		}
 
 		/// <summary>
+		/// Whether this instance can be registered in startup
+		/// </summary>
+		/// <returns>True if can be registered</returns>
+		public static bool CanRegister() => true;
+
+		/// <summary>
 		/// Whether this instance is registered in startup
 		/// </summary>
 		/// <returns>True if registered</returns>

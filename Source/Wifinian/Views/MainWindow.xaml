@@ -8,7 +8,7 @@
 		xmlns:behaviors="clr-namespace:Wifinian.Views.Behaviors"
 		xmlns:controls="clr-namespace:Wifinian.Views.Controls"
 		Title="{Binding Source={x:Static models:ProductInfo.Title}, Mode=OneTime}"
-		Width="360" MinWidth="360"
+		Width="360" MinWidth="360" MaxWidth="600"
 		Height="400" MinHeight="200"
 		ResizeMode="CanResize"
 		ShowInTaskbar="False"
@@ -48,7 +48,7 @@
 						Width="26" Height="26"
 						Style="{StaticResource WindingStyle}"
 						IsRunning="{Binding IsUpdating.Value, Mode=OneWay}"
-						Command="{Binding RescanCommand}"/>
+						Command="{Binding RescanCommand, Mode=OneTime}"/>
 
 					<!-- Rush -->
 					<controls:SimpleToggleButton
@@ -176,7 +176,7 @@
 												<!-- Connect -->
 												<Button Style="{StaticResource ActionButtonStyle}"
 														Visibility="{Binding ElementName=DisconnectButton, Path=Visibility, Mode=OneWay, Converter={StaticResource VisibilityInverseConverterKey}}"
-														Command="{Binding ConnectCommand}">
+														Command="{Binding ConnectCommand, Mode=OneTime}">
 													<Grid>
 														<TextBlock x:Name="SignalText"
 																   Margin="2" VerticalAlignment="Bottom"
@@ -194,7 +194,7 @@
 												<Button x:Name="DisconnectButton"
 														Style="{StaticResource ActionButtonStyle}"
 														Visibility="{Binding IsConnected.Value, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverterKey}}"
-														Command="{Binding DisconnectCommand}">
+														Command="{Binding DisconnectCommand, Mode=OneTime}">
 													<Grid>
 														<TextBlock Margin="4,2" VerticalAlignment="Top"
 																   Foreground="{StaticResource App.Foreground}"
@@ -208,9 +208,10 @@
 
 											<!-- Supplement -->
 											<TextBlock Grid.Column="1" Grid.Row="0"
-													   Margin="8,0,4,0"
+													   Margin="8,0,0,0"
 													   Foreground="{StaticResource App.Foreground.Shadow}"
-													   FontSize="12">
+													   FontSize="12"
+													   TextTrimming="CharacterEllipsis">
 												<Run Text="{Binding InterfaceDescription, Mode=OneTime}"/>
 												<LineBreak/>
 												<Run Text="{Binding Authentication, Mode=OneTime}"/>
@@ -254,7 +255,7 @@
 													Style="{StaticResource IconButtonStyle}"
 													IconData="{StaticResource UpForm}"
 													Content="Up"
-													Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.MoveUpCommand}"/>
+													Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.MoveUpCommand, Mode=OneTime}"/>
 
 												<!-- Down -->
 												<controls:IconButton
@@ -262,7 +263,7 @@
 													Style="{StaticResource IconButtonStyle}"
 													IconData="{StaticResource DownForm}"
 													Content="Down"
-													Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.MoveDownCommand}"/>
+													Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.MoveDownCommand, Mode=OneTime}"/>
 
 												<!-- Delete -->
 												<controls:IconButton
@@ -270,7 +271,7 @@
 													Style="{StaticResource IconButtonStyle}"
 													IconData="{StaticResource DeleteForm}"
 													Content="Delete"
-													IsEnabled="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.CanDelete.Value}">
+													IsEnabled="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.CanDelete.Value, Mode=OneWay}">
 													<i:Interaction.Triggers>
 														<i:EventTrigger EventName="Click">
 															<ei:ChangePropertyAction TargetObject="{Binding ElementName=ConfirmationBox, Mode=OneWay}"

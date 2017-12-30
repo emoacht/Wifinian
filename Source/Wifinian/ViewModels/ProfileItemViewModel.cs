@@ -103,7 +103,6 @@ namespace Wifinian.ViewModels
 
 			ConnectCommand = new[] { isNotWorking, IsAvailable, IsConnected.Inverse() }
 				.CombineLatestValuesAreAllTrue()
-				.StartWith(IsAvailable.Value && !IsConnected.Value)
 				.ToReactiveCommand();
 			ConnectCommand
 				.Subscribe(async _ => await controller.ConnectNetworkAsync(profileItem))

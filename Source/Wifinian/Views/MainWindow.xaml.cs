@@ -126,6 +126,9 @@ namespace Wifinian.Views
 		private void RestoreWindowSize()
 		{
 			var windowSize = Settings.Current.MainWindowSize;
+			if ((windowSize.Width < this.MinWidth) ||
+				(windowSize.Height < this.MinHeight))
+				return;
 
 			this.Width = OsVersion.Is10Threshold1OrNewer
 				? windowSize.Width
