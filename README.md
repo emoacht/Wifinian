@@ -30,7 +30,7 @@ Wifinian is a Windows desktop app to enable user to actively control Wi-Fi conne
 When you use only executables, please note the following:
 
  - The settings file will be created at: `[system drive]\Users\[user name]\AppData\Local\Wifinian\`
- - When you checks [Start on sign in], a registry value will be added to: `HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run`
+ - When you check [Start on sign in], a registry value will be added to: `HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run`
 
 ## Remarks
 
