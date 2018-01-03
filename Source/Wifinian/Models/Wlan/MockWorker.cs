@@ -107,6 +107,33 @@ namespace Wifinian.Models.Wlan
 			return Task.FromResult(true);
 		}
 
+		public Task<bool> RenameProfileAsync(ProfileItem profileItem, string profileName)
+		{
+			var targetProfile = _sourceProfiles.FirstOrDefault(x => x.Id == profileItem.Id);
+			if (targetProfile == null)
+				return Task.FromResult(false);
+
+			var renamedProfile = new ProfileItem(
+				name: profileName,
+				interfaceId: targetProfile.InterfaceId,
+				interfaceName: targetProfile.InterfaceName,
+				interfaceDescription: targetProfile.InterfaceDescription,
+				authentication: targetProfile.Authentication,
+				encryption: targetProfile.Encryption,
+				isAutoConnectEnabled: targetProfile.IsAutoConnectEnabled,
+				isAutoSwitchEnabled: targetProfile.IsAutoSwitchEnabled,
+				position: targetProfile.Position,
+				isRadioOn: targetProfile.IsRadioOn,
+				signal: targetProfile.Signal,
+				isConnected: targetProfile.IsConnected);
+
+			_sourceProfiles.Remove(targetProfile);
+			_sourceProfiles.Add(renamedProfile);
+
+			deferTask = DeferAsync(() => ProfileChanged?.Invoke(this, EventArgs.Empty));
+			return Task.FromResult(true);
+		}
+
 		public Task<bool> DeleteProfileAsync(ProfileItem profileItem)
 		{
 			if (!_sourceProfiles.Remove(profileItem))

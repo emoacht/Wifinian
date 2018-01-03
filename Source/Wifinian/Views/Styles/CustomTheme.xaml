@@ -3,12 +3,12 @@
 
 	<Color x:Key="App.BackgroundColor">#CC171717</Color>
 	<Color x:Key="App.ForegroundColor">White</Color>
+	<Color x:Key="App.ShadowColor">LightGray</Color>
 
 	<SolidColorBrush x:Key="App.Background" Color="{StaticResource App.BackgroundColor}"/>
 	<SolidColorBrush x:Key="App.Background.Hidden" Color="Black" Opacity="0.4"/>
-
 	<SolidColorBrush x:Key="App.Foreground" Color="{StaticResource App.ForegroundColor}"/>
-	<SolidColorBrush x:Key="App.Foreground.Shadow" Color="LightGray"/>
+	<SolidColorBrush x:Key="App.Foreground.Shadow" Color="{StaticResource App.ShadowColor}"/>
 
 	<Color x:Key="Profile.Normal.BackgroundColor">#CC171717</Color>
 	<Color x:Key="Profile.Normal.Selected.BackgroundColor">Transparent</Color>
@@ -29,13 +29,16 @@
 	<SolidColorBrush x:Key="ToggleButton.Normal.Background" Color="#FF272727"/>
 	<SolidColorBrush x:Key="ToggleButton.Normal.Foreground" Color="{StaticResource App.ForegroundColor}" Opacity="0.6"/>
 
+	<SolidColorBrush x:Key="Text.Writable.Border" Color="{StaticResource App.ForegroundColor}"/>
+	<SolidColorBrush x:Key="Text.Writable.Background">#FF5F5F5F</SolidColorBrush>
+
 	<Color x:Key="ScrollBar.Normal.BackgroundColor">#CC171717</Color>
 	<Color x:Key="ScrollBar.Normal.ThumbColor">#33BCBCBC</Color>
 	<Color x:Key="ScrollBar.MouseOver.BackgroundColor">#CC171717</Color>
 	<Color x:Key="ScrollBar.MouseOver.ThumbColor">#33EFEFEF</Color>
 
 	<SolidColorBrush x:Key="Menu.Item.Normal.Backgound" Color="Transparent"/>
-	<SolidColorBrush x:Key="Menu.Item.MouseOver.Background" Color="#FF555555"/>
+	<SolidColorBrush x:Key="Menu.Item.MouseOver.Background" Color="#FF5F5F5F"/>
 	<SolidColorBrush x:Key="Menu.Separator" Color="#FF808080"/>
 
 </ResourceDictionary>

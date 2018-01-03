@@ -20,6 +20,7 @@ namespace Wifinian.Models.Wlan
 
 		Task<bool> SetProfileOptionAsync(ProfileItem profileItem);
 		Task<bool> SetProfilePositionAsync(ProfileItem profileItem, int position);
+		Task<bool> RenameProfileAsync(ProfileItem profileItem, string profileName);
 		Task<bool> DeleteProfileAsync(ProfileItem profileItem);
 
 		Task<bool> ConnectNetworkAsync(ProfileItem profileItem, TimeSpan timeout);

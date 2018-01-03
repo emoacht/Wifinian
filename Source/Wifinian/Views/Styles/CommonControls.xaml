@@ -204,6 +204,31 @@
 		</Setter>
 	</Style>
 
+	<!-- TextBox -->
+	<Style x:Key="NameTextBoxStyle" TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+		<Setter Property="CaretBrush" Value="{Binding RelativeSource={RelativeSource Self}, Path=Foreground}"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type TextBox}">
+					<Border x:Name="border"
+							BorderBrush="Transparent" BorderThickness="1"
+							Background="Transparent"
+							SnapsToDevicePixels="True">
+						<ScrollViewer x:Name="PART_ContentHost"
+									  VerticalScrollBarVisibility="Hidden"
+									  Focusable="False"/>
+					</Border>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsReadOnly" Value="False">
+							<Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Text.Writable.Border}"/>
+							<Setter Property="Background" TargetName="border" Value="{StaticResource Text.Writable.Background}"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
 	<!-- CheckBox -->
 	<Style x:Key="ItemCheckBoxStyle" TargetType="{x:Type CheckBox}">
 		<Setter Property="Foreground" Value="{StaticResource Button.Normal.Foreground}"/>

@@ -102,7 +102,7 @@ namespace Wifinian.Models.Wlan
 
 		#endregion
 
-		#region Set profile
+		#region Set/Rename/Delete profile
 
 		public Task<bool> SetProfileOptionAsync(ProfileItem profileItem)
 		{
@@ -122,9 +122,15 @@ namespace Wifinian.Models.Wlan
 			return Task.Run(() => _player.SetProfilePosition(item.InterfaceId, item.Name, position));
 		}
 
-		#endregion
+		public Task<bool> RenameProfileAsync(ProfileItem profileItem, string profileName)
+		{
+			var item = profileItem ?? throw new ArgumentNullException(nameof(profileItem));
 
-		#region Delete profile
+			if (string.IsNullOrWhiteSpace(profileName))
+				throw new ArgumentNullException(nameof(profileName));
+
+			return Task.Run(() => _player.RenameProfile(item.InterfaceId, item.Name, profileName));
+		}
 
 		public Task<bool> DeleteProfileAsync(ProfileItem profileItem)
 		{

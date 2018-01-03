@@ -491,7 +491,7 @@ namespace Wifinian.Models.Wlan
 
 		#endregion
 
-		#region Set profile
+		#region Set/Delete profile
 
 		public static async Task<bool> SetProfileParameterAsync(string interfaceName, string profileName, bool isAutoConnectEnabled, bool isAutoSwitchEnabled)
 		{
@@ -534,10 +534,6 @@ namespace Wifinian.Models.Wlan
 
 			return outputLines.Contains(expected);
 		}
-
-		#endregion
-
-		#region Delete profile
 
 		public static async Task<bool> DeleteProfileAsync(string interfaceName, string profileName)
 		{

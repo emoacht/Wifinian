@@ -140,6 +140,7 @@
     <Compile Include="Views\Controls\ProfileContentControl.cs" />
     <Compile Include="Views\Controls\SignalProgressBar.cs" />
     <Compile Include="Views\Controls\SimpleToggleButton.cs" />
+    <Compile Include="Views\Controls\SwitchTextBox.cs" />
     <Compile Include="Views\Converters\BooleanInverseConverter.cs" />
     <Compile Include="Views\Converters\VisibilityInverseConverter.cs" />
     <Compile Include="Views\ThemeService.cs" />

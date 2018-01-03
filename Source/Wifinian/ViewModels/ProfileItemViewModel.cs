@@ -15,7 +15,22 @@ namespace Wifinian.ViewModels
 {
 	public class ProfileItemViewModel : DisposableBase
 	{
-		public string Name { get; }
+		private readonly MainController _controller;
+
+		public string Name
+		{
+			get => _name;
+			set
+			{
+				if ((_name != null) && !_controller.IsUsableProfileName(InterfaceId, value))
+					return;
+
+				SetPropertyValue(ref _name, value);
+			}
+		}
+		private string _name;
+
+		private Guid InterfaceId { get; }
 		public string InterfaceDescription { get; }
 		public string Authentication { get; }
 		public string Encryption { get; }
@@ -39,11 +54,18 @@ namespace Wifinian.ViewModels
 
 		internal ProfileItemViewModel(MainController controller, ProfileItem profileItem)
 		{
+			this._controller = controller;
+
 			Name = profileItem.Name;
+			InterfaceId = profileItem.InterfaceId;
 			InterfaceDescription = profileItem.InterfaceDescription;
 			Authentication = profileItem.Authentication.ToString().Replace("_", "-");
 			Encryption = profileItem.Encryption.ToString();
 			CanSetOptions = profileItem.CanSetOptions;
+
+			this.ObserveProperty(x => x.Name, false)
+				.Subscribe(async x => await _controller.RenameProfileAsync(profileItem, x))
+				.AddTo(this.Subscription);
 
 			IsAutoSwitchEnabled = profileItem
 				.ToReactivePropertyAsSynchronized(x => x.IsAutoSwitchEnabled, ReactivePropertyMode.DistinctUntilChanged)
@@ -57,7 +79,7 @@ namespace Wifinian.ViewModels
 				.AddTo(this.Subscription);
 
 			Observable.Merge(IsAutoConnectEnabled, IsAutoSwitchEnabled)
-				.Subscribe(async _ => await controller.ChangeProfileOptionAsync(profileItem))
+				.Subscribe(async _ => await _controller.ChangeProfileOptionAsync(profileItem))
 				.AddTo(this.Subscription);
 
 			Position = profileItem
@@ -95,7 +117,7 @@ namespace Wifinian.ViewModels
 
 			#region Work
 
-			var isNotWorking = controller.IsWorking
+			var isNotWorking = _controller.IsWorking
 				.Inverse()
 				.StartWith(true) // This is necessary for initial query.
 				.ObserveOnUIDispatcher() // This is safety for thread access with ReactiveCommand.
@@ -105,14 +127,14 @@ namespace Wifinian.ViewModels
 				.CombineLatestValuesAreAllTrue()
 				.ToReactiveCommand();
 			ConnectCommand
-				.Subscribe(async _ => await controller.ConnectNetworkAsync(profileItem))
+				.Subscribe(async _ => await _controller.ConnectNetworkAsync(profileItem))
 				.AddTo(this.Subscription);
 
 			DisconnectCommand = new[] { isNotWorking.AsObservable(), IsConnected }
 				.CombineLatestValuesAreAllTrue()
 				.ToReactiveCommand();
 			DisconnectCommand
-				.Subscribe(async _ => await controller.DisconnectNetworkAsync(profileItem))
+				.Subscribe(async _ => await _controller.DisconnectNetworkAsync(profileItem))
 				.AddTo(this.Subscription);
 
 			isNotWorking.Connect().AddTo(this.Subscription);

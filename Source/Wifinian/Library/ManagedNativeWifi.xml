@@ -437,6 +437,15 @@
             <param name="position">Position (starting at 0)</param>
             <returns>True if successfully set. False if not.</returns>
         </member>
+        <member name="M:ManagedNativeWifi.NativeWifi.RenameProfile(System.Guid,System.String,System.String)">
+            <summary>
+            Renames a specified wireless profile.
+            </summary>
+            <param name="interfaceId">Interface ID</param>
+            <param name="oldProfileName">Old profile name</param>
+            <param name="newProfileName">New profile name</param>
+            <returns>True if successfully renamed. False if not.</returns>
+        </member>
         <member name="M:ManagedNativeWifi.NativeWifi.DeleteProfile(System.Guid,System.String)">
             <summary>
             Deletes a specified wireless profile.
@@ -630,6 +639,11 @@
         <member name="M:ManagedNativeWifi.NativeWifiPlayer.SetProfilePosition(System.Guid,System.String,System.Int32)">
             <summary>
             Sets the position of a specified wireless profile in preference order.
+            </summary>
+        </member>
+        <member name="M:ManagedNativeWifi.NativeWifiPlayer.RenameProfile(System.Guid,System.String,System.String)">
+            <summary>
+            Renames a specified wireless profile.
             </summary>
         </member>
         <member name="M:ManagedNativeWifi.NativeWifiPlayer.DeleteProfile(System.Guid,System.String)">

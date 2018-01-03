@@ -123,7 +123,7 @@ namespace Wifinian.Models.Wlan
 
 		#endregion
 
-		#region Set profile
+		#region Set/Rename/Delete profile
 
 		public async Task<bool> SetProfileOptionAsync(ProfileItem profileItem)
 		{
@@ -150,9 +150,10 @@ namespace Wifinian.Models.Wlan
 			return true;
 		}
 
-		#endregion
-
-		#region Delete profile
+		public Task<bool> RenameProfileAsync(ProfileItem profileItem, string profileName)
+		{
+			return Task.FromResult(false); // Netsh has no function to directly rename a wireless profile.
+		}
 
 		public async Task<bool> DeleteProfileAsync(ProfileItem profileItem)
 		{

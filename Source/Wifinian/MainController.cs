@@ -396,6 +396,23 @@ namespace Wifinian
 			return WorkAsync(targetProfile, x => _worker.SetProfilePositionAsync(x, newPosition));
 		}
 
+		public bool IsUsableProfileName(Guid interfaceId, string profileName)
+		{
+			if (string.IsNullOrWhiteSpace(profileName))
+				return false;
+
+			return Profiles
+				.Where(x => x.InterfaceId == interfaceId)
+				.All(x => !string.Equals(profileName, x.Name, StringComparison.Ordinal));
+		}
+
+		public Task<bool> RenameProfileAsync(ProfileItem targetProfile, string profileName)
+		{
+			Debug.WriteLine("Rename start!");
+
+			return WorkAsync(targetProfile, x => _worker.RenameProfileAsync(x, profileName));
+		}
+
 		public Task<bool> DeleteProfileAsync()
 		{
 			Debug.WriteLine("Delete start!");

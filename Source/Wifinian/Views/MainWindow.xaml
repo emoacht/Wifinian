@@ -154,11 +154,13 @@
 											</controls:SignalProgressBar>
 
 											<!-- Profile name -->
-											<TextBlock Margin="4,0,0,0" VerticalAlignment="Center"
-													   Foreground="{StaticResource App.Foreground}"
-													   FontSize="14"
-													   TextWrapping="Wrap"
-													   Text="{Binding Name, Mode=OneTime}"/>
+											<controls:SwitchTextBox
+												Margin="4,0,0,0" VerticalAlignment="Center"
+												Style="{StaticResource NameTextBoxStyle}"
+												Foreground="{StaticResource App.Foreground}"
+												FontSize="14"
+												TextWrapping="Wrap" MaxLength="64"
+												Text="{Binding Name, Mode=TwoWay}"/>
 										</StackPanel>
 
 										<Grid Height="64" Margin="8,2,8,10">
@@ -282,7 +284,7 @@
 																					 Value="Delete: "/>
 															<ei:ChangePropertyAction TargetObject="{Binding ElementName=ConfirmationBody, Mode=OneWay}"
 																					 PropertyName="Text"
-																					 Value="{Binding Name}"/>
+																					 Value="{Binding Name, Mode=OneWay}"/>
 															<ei:ChangePropertyAction TargetObject="{Binding ElementName=ConfirmationButton, Mode=OneWay}"
 																					 PropertyName="Command"
 																					 Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.DeleteCommand}"/>
