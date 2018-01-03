@@ -2,7 +2,7 @@
 
 Ver 2.0.0 2018-1-4
 
- - Recreated
+ - Recreated and renamed
 
 Ver 1.1.2 2015-12-2
 

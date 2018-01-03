@@ -27,7 +27,7 @@ WifinianはWi-Fi接続をユーザーが積極的にコントロールするこ�
 
 ## インストール/アンインストール
 
-実行ファイルだけ使うときは、以下に留意ください。
+実行ファイルだけを使うときは、以下に留意してください。
 
  - 設定ファイルは次の場所に作成されます: `[system drive]\Users\[user name]\AppData\Local\Wifinian\`
  - [サインイン時に起動する]にチェックしたときは、レジストリ値が次の位置に追加されます: `HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run`
