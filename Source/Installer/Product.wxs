@@ -4,7 +4,7 @@
 					 Language="1033" Codepage="1252" UpgradeCode="{A8357D71-600C-462A-AEEE-BF1B988DD2E4}">
 		<Package Id="*" InstallerVersion="500" Compressed="yes"
 						 InstallScope="perMachine"  InstallPrivileges="elevated"
-						 Description="Installer for [ProductName]" />
+						 Description="Installer for Wifinian" />
 
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
 
@@ -30,12 +30,12 @@
 		<DirectoryRef Id="INSTALLDIR">
 			<Component Id="MainExecutable" Guid="{55649EB0-5DB2-4466-A042-969BF97139B0}">
 				<File Id="MainExecutableEXE"
-							Source="$(var.Wifinian.TargetPath)" Name="$(var.Wifinian.TargetFileName)"	KeyPath="yes"/>
+							Source="$(var.Wifinian.TargetPath)" Name="$(var.Wifinian.TargetFileName)" KeyPath="yes"/>
 			</Component>
 
 			<Component Id="MainExecutableConfig" Guid="{BFF1C1AF-F676-4DA8-A126-3341FAFF7F62}">
 				<File Id="MainExecutableCONFIG"
-							Source="$(var.Wifinian.TargetDir)" Name="$(var.Wifinian.TargetName).exe.config" KeyPath="yes"/>
+							Source="$(var.Wifinian.TargetDir)" Name="$(var.Wifinian.TargetFileName).config" KeyPath="yes"/>
 			</Component>
 
 			<Component Id="InteractionsLibrary" Guid="{1E37729C-6161-453D-81BC-1BE333FCA178}">
@@ -48,33 +48,33 @@
 							Source="$(var.Wifinian.TargetDir)" Name="System.Windows.Interactivity.dll" KeyPath="yes"/>
 			</Component>
 
-			<Component Id="RxLibrary1" Guid="{11FE0FBB-888D-407A-93E5-F881B293326E}">
-				<File Id="RxDLL1"
+			<Component Id="RxCoreLibrary" Guid="{11FE0FBB-888D-407A-93E5-F881B293326E}">
+				<File Id="RxCoreDLL"
 							Source="$(var.Wifinian.TargetDir)" Name="System.Reactive.Core.dll" KeyPath="yes"/>
 			</Component>
-			<Component Id="RxLibrary2" Guid="{85EA74C1-1DE3-47D0-84DB-CB8475174BFD}">
-				<File Id="RxDLL2"
+			<Component Id="RxInterfacesLibrary" Guid="{85EA74C1-1DE3-47D0-84DB-CB8475174BFD}">
+				<File Id="RxInterfacesDLL"
 							Source="$(var.Wifinian.TargetDir)" Name="System.Reactive.Interfaces.dll" KeyPath="yes"/>
 			</Component>
-			<Component Id="RxLibrary3" Guid="{0392631C-7877-47E4-AB9D-DB6D6F0D79B5}">
-				<File Id="RxDLL3"
+			<Component Id="RxLinqLibrary" Guid="{0392631C-7877-47E4-AB9D-DB6D6F0D79B5}">
+				<File Id="RxLinqDLL"
 							Source="$(var.Wifinian.TargetDir)" Name="System.Reactive.Linq.dll" KeyPath="yes"/>
 			</Component>
-			<Component Id="RxLibrary4" Guid="{ED468260-8D34-4D9F-B18A-1A717E0587A5}">
-				<File Id="RxDLL4"
+			<Component Id="RxPlatformServicesLibrary" Guid="{ED468260-8D34-4D9F-B18A-1A717E0587A5}">
+				<File Id="RxPlatformServicesDLL"
 							Source="$(var.Wifinian.TargetDir)" Name="System.Reactive.PlatformServices.dll" KeyPath="yes"/>
 			</Component>
-			<Component Id="RxLibrary5" Guid="{E4E4D6AA-FA11-41C7-BD7A-B0E875CCD32A}">
-				<File Id="RxDLL5"
+			<Component Id="RxWindowsThreadingLibrary" Guid="{E4E4D6AA-FA11-41C7-BD7A-B0E875CCD32A}">
+				<File Id="RxWindowsThreadingDLL"
 							Source="$(var.Wifinian.TargetDir)" Name="System.Reactive.Windows.Threading.dll" KeyPath="yes"/>
 			</Component>
 
-			<Component Id="RpLibrary1" Guid="{15E45C59-C490-40F9-BA1B-C36E6932132F}">
-				<File Id="RpDLL1"
+			<Component Id="RpCoreLibrary" Guid="{15E45C59-C490-40F9-BA1B-C36E6932132F}">
+				<File Id="RpCoreDLL"
 							Source="$(var.Wifinian.TargetDir)" Name="ReactiveProperty.dll" KeyPath="yes"/>
 			</Component>
-			<Component Id="RpLibrary2" Guid="{4EBEE85A-C063-43BF-B3C8-CE68787D5F63}">
-				<File Id="RpDLL2"
+			<Component Id="RpPlatformLibrary" Guid="{4EBEE85A-C063-43BF-B3C8-CE68787D5F63}">
+				<File Id="RpPlatformDLL"
 							Source="$(var.Wifinian.TargetDir)" Name="ReactiveProperty.NET46.dll" KeyPath="yes"/>
 			</Component>
 
@@ -126,13 +126,13 @@
 			<ComponentRef Id="MainExecutableConfig"/>
 			<ComponentRef Id="InteractionsLibrary"/>
 			<ComponentRef Id="InteractivityLibrary"/>
-			<ComponentRef Id="RxLibrary1"/>
-			<ComponentRef Id="RxLibrary2"/>
-			<ComponentRef Id="RxLibrary3"/>
-			<ComponentRef Id="RxLibrary4"/>
-			<ComponentRef Id="RxLibrary5"/>
-			<ComponentRef Id="RpLibrary1"/>
-			<ComponentRef Id="RpLibrary2"/>
+			<ComponentRef Id="RxCoreLibrary"/>
+			<ComponentRef Id="RxInterfacesLibrary"/>
+			<ComponentRef Id="RxLinqLibrary"/>
+			<ComponentRef Id="RxPlatformServicesLibrary"/>
+			<ComponentRef Id="RxWindowsThreadingLibrary"/>
+			<ComponentRef Id="RpCoreLibrary"/>
+			<ComponentRef Id="RpPlatformLibrary"/>
 			<ComponentRef Id="WifiLibrary"/>
 			<ComponentRef Id="FrameLibrary"/>
 			<ComponentRef Id="VisualManifest"/>
