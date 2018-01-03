@@ -82,8 +82,7 @@ namespace Wifinian.ViewModels
 
 			var isNotWorking = _controller.IsWorking
 				.Inverse()
-				.StartWith(true) // This is necessary for initial query.
-				.ObserveOnUIDispatcher() // This is safety for thread access with ReactiveCommand.
+				.StartWith(true) // This is necessary to start combined sequence.
 				.Publish();
 
 			var selectedProfile = Profiles
@@ -92,35 +91,36 @@ namespace Wifinian.ViewModels
 				.Select(x => x.Instance)
 				.Publish();
 
-			var connectedProfile = Profiles
-				.ObserveElementObservableProperty(x => x.IsConnected)
-				.Where(x => x.Instance.IsSelected.Value)
-				.Select(x => x.Instance)
-				.Publish();
-
-			var canMoveUp = selectedProfile
+			var canProfileMovedUp = selectedProfile
 				.Select(x => x.Position.Value > 0);
 
-			MoveUpCommand = new[] { isNotWorking, canMoveUp }
+			MoveUpCommand = new[] { isNotWorking, canProfileMovedUp }
 				.CombineLatestValuesAreAllTrue()
+				.ObserveOnUIDispatcher() // This is for thread access by ReactiveCommand.
 				.ToReactiveCommand();
 			MoveUpCommand
 				.Subscribe(async _ => await _controller.MoveUpProfileAsync())
 				.AddTo(this.Subscription);
 
-			var canMoveDown = selectedProfile
+			var canProfileMovedDown = selectedProfile
 				.Select(x => x.Position.Value < x.PositionCount.Value - 1);
 
-			MoveDownCommand = new[] { isNotWorking, canMoveDown }
+			MoveDownCommand = new[] { isNotWorking, canProfileMovedDown }
 				.CombineLatestValuesAreAllTrue()
+				.ObserveOnUIDispatcher() // This is for thread access by ReactiveCommand.
 				.ToReactiveCommand();
 			MoveDownCommand
 				.Subscribe(async _ => await _controller.MoveDownProfileAsync())
 				.AddTo(this.Subscription);
 
-			CanDelete = Observable.Merge(selectedProfile, connectedProfile)
-				.Select(x => !x.IsConnected.Value)
-				.Merge(isNotWorking)
+			var canProfileDeleted = selectedProfile
+				.Select(x => x.IsConnected)
+				.Switch()
+				.Inverse();
+
+			CanDelete = new[] { isNotWorking, canProfileDeleted }
+				.CombineLatestValuesAreAllTrue()
+				.ObserveOnUIDispatcher() // This is for thread access by ReactiveCommand.
 				.ToReadOnlyReactiveProperty()
 				.AddTo(this.Subscription);
 
@@ -132,7 +132,6 @@ namespace Wifinian.ViewModels
 
 			isNotWorking.Connect().AddTo(this.Subscription);
 			selectedProfile.Connect().AddTo(this.Subscription);
-			connectedProfile.Connect().AddTo(this.Subscription);
 
 			#endregion
 		}

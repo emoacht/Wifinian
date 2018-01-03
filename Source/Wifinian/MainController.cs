@@ -72,6 +72,9 @@ namespace Wifinian
 
 			EngagesPriority = new ReactiveProperty<bool>()
 				.AddTo(this.Subscription);
+			EngagesPriority
+				.Subscribe(_ => SetNotifyIconText())
+				.AddTo(this.Subscription);
 
 			#region Update
 
@@ -80,6 +83,7 @@ namespace Wifinian
 
 			RescanCommand = IsUpdating
 				.Inverse()
+				.ObserveOnUIDispatcher() // This is for thread access by ReactiveCommand.
 				.ToReactiveCommand();
 			RescanCommand
 				.Merge(EngagesPriority.Where(x => x).Select(x => x as object))
@@ -102,10 +106,6 @@ namespace Wifinian
 
 					SetNotifyIconText();
 				})
-				.AddTo(this.Subscription);
-
-			EngagesPriority
-				.Subscribe(_ => SetNotifyIconText())
 				.AddTo(this.Subscription);
 
 			var networkRefreshed = Observable.FromEventPattern(
@@ -163,16 +163,9 @@ namespace Wifinian
 			Observable.FromEventPattern(
 				h => _current.MainWindow.Activated += h,
 				h => _current.MainWindow.Activated -= h)
-				.StartWith(new object()) // This is necessary for initial query.
+				.StartWith(new object()) // This is for initial scan.
 				.Subscribe(async _ => await ScanNetworkAsync())
 				.AddTo(this.Subscription);
-		}
-
-		private void SetNotifyIconText()
-		{
-			NotifyIconContainer.Text = ProductInfo.Title
-				+ (RushesRescan.Value ? $"{Environment.NewLine}Rush {Settings.Current.RescanInterval}" : string.Empty)
-				+ (EngagesPriority.Value ? $"{Environment.NewLine}Engage {Settings.Current.SignalThreshold}" : string.Empty);
 		}
 
 		#region Dispose
@@ -225,6 +218,13 @@ namespace Wifinian
 		{
 			var window = new MenuWindow(this, pivot);
 			window.Show();
+		}
+
+		private void SetNotifyIconText()
+		{
+			NotifyIconContainer.Text = ProductInfo.Title
+				+ (RushesRescan.Value ? $"{Environment.NewLine}Rush {Settings.Current.RescanInterval}" : string.Empty)
+				+ (EngagesPriority.Value ? $"{Environment.NewLine}Engage {Settings.Current.SignalThreshold}" : string.Empty);
 		}
 
 		#region Update
@@ -361,7 +361,7 @@ namespace Wifinian
 
 		public Task<bool> ChangeProfileOptionAsync(ProfileItem targetProfile)
 		{
-			Debug.WriteLine("ChangeParameter start!");
+			Debug.WriteLine("ChangeOption start!");
 
 			return WorkAsync(targetProfile, x => _worker.SetProfileOptionAsync(x));
 		}

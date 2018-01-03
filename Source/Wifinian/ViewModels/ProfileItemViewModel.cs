@@ -119,12 +119,12 @@ namespace Wifinian.ViewModels
 
 			var isNotWorking = _controller.IsWorking
 				.Inverse()
-				.StartWith(true) // This is necessary for initial query.
-				.ObserveOnUIDispatcher() // This is safety for thread access with ReactiveCommand.
+				.StartWith(true) // This is necessary to start combined sequence.
 				.Publish();
 
 			ConnectCommand = new[] { isNotWorking, IsAvailable, IsConnected.Inverse() }
 				.CombineLatestValuesAreAllTrue()
+				.ObserveOnUIDispatcher() // This is for thread access by ReactiveCommand.
 				.ToReactiveCommand();
 			ConnectCommand
 				.Subscribe(async _ => await _controller.ConnectNetworkAsync(profileItem))
@@ -132,6 +132,7 @@ namespace Wifinian.ViewModels
 
 			DisconnectCommand = new[] { isNotWorking.AsObservable(), IsConnected }
 				.CombineLatestValuesAreAllTrue()
+				.ObserveOnUIDispatcher() // This is for thread access by ReactiveCommand.
 				.ToReactiveCommand();
 			DisconnectCommand
 				.Subscribe(async _ => await _controller.DisconnectNetworkAsync(profileItem))

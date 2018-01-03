@@ -18,13 +18,21 @@ namespace Wifinian.Common
 			if (0 <= min.CompareTo(max))
 				throw new ArgumentException($"{nameof(min)} must be smaller than {nameof(max)}.");
 
-			var buff = (value.CompareTo(min) <= 0)
+			T normalize(T x) => (x.CompareTo(min) <= 0)
 				? min
-				: (0 <= value.CompareTo(max))
+				: (0 <= x.CompareTo(max))
 					? max
-					: value;
+					: x;
 
-			return SetPropertyValue(ref storage, buff, propertyName);
+			return SetPropertyValue(ref storage, value, normalize, propertyName);
+		}
+
+		protected virtual bool SetPropertyValue<T>(ref T storage, T value, Func<T, T> normalize, [CallerMemberName] string propertyName = null)
+		{
+			if (normalize == null)
+				throw new ArgumentNullException(nameof(normalize));
+
+			return SetPropertyValue(ref storage, normalize.Invoke(value), propertyName);
 		}
 
 		protected virtual bool SetPropertyValue<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)

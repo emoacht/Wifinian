@@ -145,11 +145,18 @@ namespace Wifinian.Models.Wlan
 
 		public Task<bool> ConnectNetworkAsync(ProfileItem profileItem, TimeSpan timeout)
 		{
-			var targetProfile = _sourceProfiles.FirstOrDefault(x => x.Id == profileItem.Id);
+			var targetProfiles = _sourceProfiles
+				.Where(x => x.InterfaceId == profileItem.InterfaceId)
+				.ToList();
+
+			var targetProfile = targetProfiles.FirstOrDefault(x => x.Id == profileItem.Id);
 			if (targetProfile == null)
 				return Task.FromResult(false);
 
 			targetProfile.IsConnected = true;
+			targetProfiles.Remove(targetProfile);
+
+			targetProfiles.ForEach(x => x.IsConnected = false);
 
 			deferTask = DeferAsync(() => ConnectionChanged?.Invoke(this, EventArgs.Empty));
 			return Task.FromResult(true);
