@@ -6,44 +6,108 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace Wifinian.Models
 {
 	internal class LogService
 	{
-		#region Exception
+		public static void Start()
+		{
+			App.Current.DispatcherUnhandledException += OnDispatcherUnhandledException;
+			TaskScheduler.UnobservedTaskException += OnUnobservedTaskException;
+			AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
+		}
 
-		private const string _exceptionFileName = "exception.log";
+		public static void End()
+		{
+			App.Current.DispatcherUnhandledException -= OnDispatcherUnhandledException;
+			TaskScheduler.UnobservedTaskException -= OnUnobservedTaskException;
+			AppDomain.CurrentDomain.UnhandledException -= OnUnhandledException;
+		}
 
+		private static void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+		{
+			OnException(sender, e.Exception, nameof(Application.DispatcherUnhandledException));
+			//e.Handled = true;
+		}
+
+		private static void OnUnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
+		{
+			OnException(sender, e.Exception, nameof(TaskScheduler.UnobservedTaskException));
+			//e.SetObserved();
+		}
+
+		private static void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
+		{
+			OnException(sender, (Exception)e.ExceptionObject, nameof(AppDomain.UnhandledException));
+		}
+
+		private static void OnException(object sender, Exception exception, string exceptionName)
+		{
+			RecordException(sender, exception);
+		}
+
+		#region Record
+
+		private const string OperationFileName = "operation.log";
+		private const string ExceptionFileName = "exception.log";
+
+		/// <summary>
+		/// Records operation to AppData.
+		/// </summary>
+		/// <param name="log">Log</param>
+		public static void RecordOperation(string log)
+		{
+			var content = $"[Date: {DateTime.Now}]" + Environment.NewLine
+				+ log + Environment.NewLine + Environment.NewLine;
+
+			RecordToAppData(OperationFileName, content);
+		}
+
+		/// <summary>
+		/// Records exception to AppData and Desktop.
+		/// </summary>
+		/// <param name="sender">Sender</param>
+		/// <param name="exception">Exception</param>
+		/// <remarks>A log file of previous dates will be overridden.</remarks>
 		public static void RecordException(object sender, Exception exception)
 		{
 			var content = $"[Date: {DateTime.Now} Sender: {sender}]" + Environment.NewLine
 				+ exception + Environment.NewLine + Environment.NewLine;
 
-			RecordAppData(_exceptionFileName, content);
-			RecordDesktop(_exceptionFileName, content);
+			RecordToAppData(ExceptionFileName, content);
+			RecordToDesktop(ExceptionFileName, content);
 		}
 
-		private static void RecordAppData(string fileName, string content)
+		private static void RecordToAppData(string fileName, string content)
 		{
 			try
 			{
 				FolderService.AssureAppDataFolder();
 
-				var appDataFilePath = Path.Combine(FolderService.AppDataFolderPath, fileName);
+				var appDataFilePath = Path.Combine(
+					FolderService.AppDataFolderPath,
+					fileName);
 
 				UpdateText(appDataFilePath, content);
 			}
 			catch (Exception ex)
 			{
-				Trace.WriteLine($"Failed to record log to AppData.{Environment.NewLine}{ex}");
+				Trace.WriteLine("Failed to record log to AppData." + Environment.NewLine
+					+ ex);
 			}
 		}
 
-		private static void RecordDesktop(string fileName, string content)
+		private static string RecordMessage => LanguageService.RecordException;
+
+		private static void RecordToDesktop(string fileName, string content)
 		{
-			var result = MessageBox.Show(LanguageService.RecordException, ProductInfo.Title, MessageBoxButton.YesNo, MessageBoxImage.Error, MessageBoxResult.Yes);
-			if (result != MessageBoxResult.Yes)
+			var response = MessageBox.Show(
+				RecordMessage,
+				ProductInfo.Title,
+				MessageBoxButton.YesNo, MessageBoxImage.Error, MessageBoxResult.Yes);
+			if (response != MessageBoxResult.Yes)
 				return;
 
 			try
@@ -56,9 +120,12 @@ namespace Wifinian.Models
 			}
 			catch (Exception ex)
 			{
-				Trace.WriteLine($"Failed to record log to Desktop.{Environment.NewLine}{ex}");
+				Trace.WriteLine("Failed to record log to Desktop." + Environment.NewLine
+					+ ex);
 			}
 		}
+
+		private const int MaxSectionCount = 100;
 
 		private static void UpdateText(string filePath, string newContent)
 		{
@@ -68,13 +135,15 @@ namespace Wifinian.Models
 			{
 				using (var sr = new StreamReader(filePath, Encoding.UTF8))
 					oldContent = sr.ReadToEnd();
+
+				oldContent = string.Join(Environment.NewLine, EnumerateLastLines(oldContent, "[Date:", MaxSectionCount - 1).Reverse());
 			}
 
 			using (var sw = new StreamWriter(filePath, false, Encoding.UTF8)) // BOM will be emitted.
-				sw.Write(string.Join(Environment.NewLine, GetLastLines(oldContent, "[Date:", 9).Reverse()) + newContent);
+				sw.Write(oldContent + newContent);
 		}
 
-		private static IEnumerable<string> GetLastLines(string source, string sectionHeader, int sectionCount)
+		private static IEnumerable<string> EnumerateLastLines(string source, string sectionHeader, int sectionCount)
 		{
 			if (string.IsNullOrEmpty(source))
 				yield break;
