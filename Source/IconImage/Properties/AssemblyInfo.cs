@@ -12,7 +12,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("IconImage")]
-[assembly: AssemblyCopyright("Copyright © 2015-2017 emoacht")]
+[assembly: AssemblyCopyright("Copyright © 2015-2018 emoacht")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
