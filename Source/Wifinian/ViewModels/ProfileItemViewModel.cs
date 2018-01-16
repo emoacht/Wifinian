@@ -54,7 +54,7 @@ namespace Wifinian.ViewModels
 
 		internal ProfileItemViewModel(MainController controller, ProfileItem profileItem)
 		{
-			this._controller = controller;
+			this._controller = controller ?? throw new ArgumentNullException(nameof(controller));
 
 			Name = profileItem.Name;
 			InterfaceId = profileItem.InterfaceId;

@@ -205,7 +205,8 @@ namespace Wifinian.Views
 			}
 			catch (Exception ex)
 			{
-				Trace.WriteLine($"Failed to set window composition attribute.{Environment.NewLine}{ex}");
+				Trace.WriteLine("Failed to set window composition attribute." + Environment.NewLine
+					+ ex);
 				return false;
 			}
 			finally

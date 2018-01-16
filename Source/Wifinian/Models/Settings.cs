@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
@@ -16,7 +17,7 @@ using Wifinian.Common;
 namespace Wifinian.Models
 {
 	/// <summary>
-	/// This application's settings
+	/// Persistent settings
 	/// </summary>
 	public class Settings : DisposableBase
 	{
@@ -28,31 +29,31 @@ namespace Wifinian.Models
 
 		#region Settings
 
-		private const int IntervalMin = 10;
-		private const int IntervalMax = 30;
+		private const int MinInterval = 10;
+		private const int MaxInterval = 30;
 
 		public int RescanInterval
 		{
 			get => _rescanInterval;
-			set => SetPropertyValue(ref _rescanInterval, value, IntervalMin, IntervalMax);
+			set => SetPropertyValue(ref _rescanInterval, value, MinInterval, MaxInterval);
 		}
 		private int _rescanInterval = 30; // Default
 
 		public void IncrementRescanInterval() =>
-			RescanInterval = IncrementLoop(RescanInterval, IntervalMin, IntervalMax);
+			RescanInterval = IncrementLoop(RescanInterval, MinInterval, MaxInterval);
 
-		private const int ThresholdMin = 50;
-		private const int ThresholdMax = 90;
+		private const int MinThreshold = 50;
+		private const int MaxThreshold = 90;
 
 		public int SignalThreshold
 		{
 			get => _signalThreshold;
-			set => SetPropertyValue(ref _signalThreshold, value, ThresholdMin, ThresholdMax);
+			set => SetPropertyValue(ref _signalThreshold, value, MinThreshold, MaxThreshold);
 		}
 		private int _signalThreshold = 50; // Default
 
 		public void IncrementSignalThreshold() =>
-			SignalThreshold = IncrementLoop(SignalThreshold, ThresholdMin, ThresholdMax);
+			SignalThreshold = IncrementLoop(SignalThreshold, MinThreshold, MaxThreshold);
 
 		private static int IncrementLoop(int value, int min, int max)
 		{
@@ -69,20 +70,20 @@ namespace Wifinian.Models
 
 		#endregion
 
-		public void Initiate()
+		internal void Initiate()
 		{
 			Load(this);
 
 			this.PropertyChangedAsObservable()
-				.Throttle(TimeSpan.FromSeconds(1))
+				.Throttle(TimeSpan.FromMilliseconds(100))
 				.Subscribe(_ => Save(this))
 				.AddTo(this.Subscription);
 		}
 
 		#region Load/Save
 
-		private const string _settingsFileName = "settings.xml";
-		private static readonly string _settingsFilePath = Path.Combine(FolderService.AppDataFolderPath, _settingsFileName);
+		private const string SettingsFileName = "settings.xml";
+		private static readonly string _settingsFilePath = Path.Combine(FolderService.AppDataFolderPath, SettingsFileName);
 
 		private static void Load<T>(T instance) where T : class
 		{
@@ -97,8 +98,7 @@ namespace Wifinian.Models
 					var serializer = new XmlSerializer(typeof(T));
 					var loaded = (T)serializer.Deserialize(fs);
 
-					typeof(T)
-						.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
+					typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
 						.Where(x => x.CanWrite)
 						.ToList()
 						.ForEach(x => x.SetValue(instance, x.GetValue(loaded)));
@@ -106,14 +106,8 @@ namespace Wifinian.Models
 			}
 			catch (Exception ex)
 			{
-				try
-				{
-					File.Delete(_settingsFilePath);
-				}
-				catch
-				{ }
-
-				throw new Exception("Failed to load settings.", ex);
+				Trace.WriteLine("Failed to load settings." + Environment.NewLine
+					+ ex);
 			}
 		}
 
@@ -131,7 +125,8 @@ namespace Wifinian.Models
 			}
 			catch (Exception ex)
 			{
-				throw new Exception("Failed to save settings.", ex);
+				Trace.WriteLine("Failed to save settings." + Environment.NewLine
+					+ ex);
 			}
 		}
 

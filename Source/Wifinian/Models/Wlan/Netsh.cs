@@ -215,7 +215,8 @@ namespace Wifinian.Models.Wlan
 				}
 				catch (Exception ex)
 				{
-					Debug.WriteLine($"Failed to enumerate interfaces.{Environment.NewLine}{ex}");
+					Debug.WriteLine("Failed to enumerate interfaces." + Environment.NewLine
+						+ ex);
 					throw;
 				}
 
@@ -311,7 +312,8 @@ namespace Wifinian.Models.Wlan
 				}
 				catch (Exception ex)
 				{
-					Debug.WriteLine($"Failed to enumerate networks.{Environment.NewLine}{ex}");
+					Debug.WriteLine("Failed to enumerate networks." + Environment.NewLine
+						+ ex);
 					throw;
 				}
 
@@ -453,7 +455,8 @@ namespace Wifinian.Models.Wlan
 				}
 				catch (Exception ex)
 				{
-					Debug.WriteLine($"Failed to enumerate profiles.{Environment.NewLine}{ex}");
+					Debug.WriteLine("Failed to enumerate profiles." + Environment.NewLine
+						+ ex);
 					throw;
 				}
 			}
