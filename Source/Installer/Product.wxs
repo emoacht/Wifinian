@@ -1,150 +1,161 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="*" Name="Wifinian" Manufacturer="emoacht" Version="2.0.0"
-					 Language="1033" Codepage="1252" UpgradeCode="{A8357D71-600C-462A-AEEE-BF1B988DD2E4}">
-		<Package Id="*" InstallerVersion="500" Compressed="yes"
-						 InstallScope="perMachine"  InstallPrivileges="elevated"
-						 Description="Installer for Wifinian" />
+  <Product Id="*" Name="Wifinian" Manufacturer="emoacht" Version="2.1.0"
+           Language="1033" Codepage="1252" UpgradeCode="{A8357D71-600C-462A-AEEE-BF1B988DD2E4}">
+    <Package Id="*" InstallerVersion="500" Compressed="yes"
+             InstallScope="perMachine"  InstallPrivileges="elevated"
+             Description="Installer for Wifinian" />
 
-		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
 
-		<Media Id="1" Cabinet="source.cab" EmbedCab="yes"/>
+    <Media Id="1" Cabinet="source.cab" EmbedCab="yes"/>
 
-		<Property Id="VEM" Value="yes"/>
+    <Property Id="VEM" Value="yes"/>
 
-		<Directory Id="TARGETDIR" Name="SourceDir">
-			<!-- Program Files -->
-			<Directory Id="ProgramFilesFolder">
-				<Directory Id="INSTALLDIR" Name="$(var.Wifinian.ProjectName)"/>
-			</Directory>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <!-- Program Files -->
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLDIR" Name="$(var.Wifinian.ProjectName)"/>
+      </Directory>
 
-			<!-- Program Menu -->
-			<Directory Id="ProgramMenuFolder"/>
+      <!-- Program Menu -->
+      <Directory Id="ProgramMenuFolder"/>
 
-			<!-- Local AppData -->
-			<Directory Id="LocalAppDataFolder">
-				<Directory Id="ApplicationLocalAppDataFolder" Name="$(var.Wifinian.ProjectName)"/>
-			</Directory>
-		</Directory>
+      <!-- Local AppData -->
+      <Directory Id="LocalAppDataFolder">
+        <Directory Id="ApplicationLocalAppDataFolder" Name="$(var.Wifinian.ProjectName)"/>
+      </Directory>
+    </Directory>
 
-		<DirectoryRef Id="INSTALLDIR">
-			<Component Id="MainExecutable" Guid="{55649EB0-5DB2-4466-A042-969BF97139B0}">
-				<File Id="MainExecutableEXE"
-							Source="$(var.Wifinian.TargetPath)" Name="$(var.Wifinian.TargetFileName)" KeyPath="yes"/>
-			</Component>
+    <DirectoryRef Id="INSTALLDIR">
+      <Component Id="MainExecutable" Guid="{55649EB0-5DB2-4466-A042-969BF97139B0}">
+        <File Id="MainExecutableEXE"
+              Source="$(var.Wifinian.TargetPath)" Name="$(var.Wifinian.TargetFileName)" KeyPath="yes"/>
+      </Component>
 
-			<Component Id="MainExecutableConfig" Guid="{BFF1C1AF-F676-4DA8-A126-3341FAFF7F62}">
-				<File Id="MainExecutableCONFIG"
-							Source="$(var.Wifinian.TargetDir)" Name="$(var.Wifinian.TargetFileName).config" KeyPath="yes"/>
-			</Component>
+      <Component Id="MainExecutableConfig" Guid="{BFF1C1AF-F676-4DA8-A126-3341FAFF7F62}">
+        <File Id="MainExecutableCONFIG"
+              Source="$(var.Wifinian.TargetDir)" Name="$(var.Wifinian.TargetFileName).config" KeyPath="yes"/>
+      </Component>
 
-			<Component Id="InteractionsLibrary" Guid="{1E37729C-6161-453D-81BC-1BE333FCA178}">
-				<File Id="InteractionsDLL"
-							Source="$(var.Wifinian.TargetDir)" Name="Microsoft.Expression.Interactions.dll"	KeyPath="yes"/>
-			</Component>
+      <Component Id="InteractionsLibrary" Guid="{1E37729C-6161-453D-81BC-1BE333FCA178}">
+        <File Id="InteractionsDLL"
+              Source="$(var.Wifinian.TargetDir)" Name="Microsoft.Expression.Interactions.dll"	KeyPath="yes"/>
+      </Component>
 
-			<Component Id="InteractivityLibrary" Guid="{3AD5129A-E3D9-4A46-B2E1-94A70543AFE1}">
-				<File Id="InteractivityDLL"
-							Source="$(var.Wifinian.TargetDir)" Name="System.Windows.Interactivity.dll" KeyPath="yes"/>
-			</Component>
+      <Component Id="InteractivityLibrary" Guid="{3AD5129A-E3D9-4A46-B2E1-94A70543AFE1}">
+        <File Id="InteractivityDLL"
+              Source="$(var.Wifinian.TargetDir)" Name="System.Windows.Interactivity.dll" KeyPath="yes"/>
+      </Component>
 
-			<Component Id="RxCoreLibrary" Guid="{11FE0FBB-888D-407A-93E5-F881B293326E}">
-				<File Id="RxCoreDLL"
-							Source="$(var.Wifinian.TargetDir)" Name="System.Reactive.Core.dll" KeyPath="yes"/>
-			</Component>
-			<Component Id="RxInterfacesLibrary" Guid="{85EA74C1-1DE3-47D0-84DB-CB8475174BFD}">
-				<File Id="RxInterfacesDLL"
-							Source="$(var.Wifinian.TargetDir)" Name="System.Reactive.Interfaces.dll" KeyPath="yes"/>
-			</Component>
-			<Component Id="RxLinqLibrary" Guid="{0392631C-7877-47E4-AB9D-DB6D6F0D79B5}">
-				<File Id="RxLinqDLL"
-							Source="$(var.Wifinian.TargetDir)" Name="System.Reactive.Linq.dll" KeyPath="yes"/>
-			</Component>
-			<Component Id="RxPlatformServicesLibrary" Guid="{ED468260-8D34-4D9F-B18A-1A717E0587A5}">
-				<File Id="RxPlatformServicesDLL"
-							Source="$(var.Wifinian.TargetDir)" Name="System.Reactive.PlatformServices.dll" KeyPath="yes"/>
-			</Component>
-			<Component Id="RxWindowsThreadingLibrary" Guid="{E4E4D6AA-FA11-41C7-BD7A-B0E875CCD32A}">
-				<File Id="RxWindowsThreadingDLL"
-							Source="$(var.Wifinian.TargetDir)" Name="System.Reactive.Windows.Threading.dll" KeyPath="yes"/>
-			</Component>
+      <Component Id="RxCoreLibrary" Guid="{11FE0FBB-888D-407A-93E5-F881B293326E}">
+        <File Id="RxCoreDLL"
+              Source="$(var.Wifinian.TargetDir)" Name="System.Reactive.Core.dll" KeyPath="yes"/>
+      </Component>
+      <Component Id="RxInterfacesLibrary" Guid="{85EA74C1-1DE3-47D0-84DB-CB8475174BFD}">
+        <File Id="RxInterfacesDLL"
+              Source="$(var.Wifinian.TargetDir)" Name="System.Reactive.Interfaces.dll" KeyPath="yes"/>
+      </Component>
+      <Component Id="RxLinqLibrary" Guid="{0392631C-7877-47E4-AB9D-DB6D6F0D79B5}">
+        <File Id="RxLinqDLL"
+              Source="$(var.Wifinian.TargetDir)" Name="System.Reactive.Linq.dll" KeyPath="yes"/>
+      </Component>
+      <Component Id="RxPlatformServicesLibrary" Guid="{ED468260-8D34-4D9F-B18A-1A717E0587A5}">
+        <File Id="RxPlatformServicesDLL"
+              Source="$(var.Wifinian.TargetDir)" Name="System.Reactive.PlatformServices.dll" KeyPath="yes"/>
+      </Component>
+      <Component Id="RxWindowsThreadingLibrary" Guid="{E4E4D6AA-FA11-41C7-BD7A-B0E875CCD32A}">
+        <File Id="RxWindowsThreadingDLL"
+              Source="$(var.Wifinian.TargetDir)" Name="System.Reactive.Windows.Threading.dll" KeyPath="yes"/>
+      </Component>
 
-			<Component Id="RpCoreLibrary" Guid="{15E45C59-C490-40F9-BA1B-C36E6932132F}">
-				<File Id="RpCoreDLL"
-							Source="$(var.Wifinian.TargetDir)" Name="ReactiveProperty.dll" KeyPath="yes"/>
-			</Component>
-			<Component Id="RpPlatformLibrary" Guid="{4EBEE85A-C063-43BF-B3C8-CE68787D5F63}">
-				<File Id="RpPlatformDLL"
-							Source="$(var.Wifinian.TargetDir)" Name="ReactiveProperty.NET46.dll" KeyPath="yes"/>
-			</Component>
+      <Component Id="RpCoreLibrary" Guid="{15E45C59-C490-40F9-BA1B-C36E6932132F}">
+        <File Id="RpCoreDLL"
+              Source="$(var.Wifinian.TargetDir)" Name="ReactiveProperty.dll" KeyPath="yes"/>
+      </Component>
+      <Component Id="RpPlatformLibrary" Guid="{4EBEE85A-C063-43BF-B3C8-CE68787D5F63}">
+        <File Id="RpPlatformDLL"
+              Source="$(var.Wifinian.TargetDir)" Name="ReactiveProperty.NET46.dll" KeyPath="yes"/>
+      </Component>
 
-			<Component Id="WifiLibrary" Guid="{50B8A962-E276-4DF8-8737-A1BE78B33153}">
-				<File Id="WifiDLL"
-							Source="$(var.Wifinian.TargetDir)" Name="ManagedNativeWifi.dll" KeyPath="yes"/>
-			</Component>
+      <Component Id="WifiLibrary" Guid="{50B8A962-E276-4DF8-8737-A1BE78B33153}">
+        <File Id="WifiDLL"
+              Source="$(var.Wifinian.TargetDir)" Name="ManagedNativeWifi.dll" KeyPath="yes"/>
+      </Component>
 
-			<Component Id="FrameLibrary" Guid="{E7F84162-087A-4A1F-BB6A-01FE78A29C8E}">
-				<File Id="FrameDLL"
-							Source="$(var.Wifinian.TargetDir)" Name="ScreenFrame.dll" KeyPath="yes"/>
-			</Component>
+      <Component Id="FrameLibrary" Guid="{E7F84162-087A-4A1F-BB6A-01FE78A29C8E}">
+        <File Id="FrameDLL"
+              Source="$(var.Wifinian.TargetDir)" Name="ScreenFrame.dll" KeyPath="yes"/>
+      </Component>
 
-			<Component Id="VisualManifest" Guid="{4DD773D0-D642-40DC-9576-D535D0AF89EB}">
-				<Condition><![CDATA[VEM = "yes"]]></Condition>
-				<File Id="VisualManifestXML"
-							Source="$(var.Wifinian.TargetDir)" Name="$(var.Wifinian.TargetName).VisualElementsManifest.xml" KeyPath="yes"/>
-			</Component>
-		</DirectoryRef>
+      <Component Id="AgencyLibrary" Guid="{8F507D9C-979F-4293-AC03-9603D7781F10}">
+        <File Id="AgencyDLL"
+              Source="$(var.Wifinian.TargetDir)" Name="StartupAgency.dll" KeyPath="yes"/>
+      </Component>
+      <Component Id="BridgeLibrary" Guid="{44985F46-8974-48CF-B4EA-F33446826B8C}">
+        <File Id="BridgeDLL"
+              Source="$(var.Wifinian.TargetDir)" Name="StartupBridge.dll" KeyPath="yes"/>
+      </Component>
 
-		<!-- Shortcut in Program Menu -->
-		<DirectoryRef Id="ProgramMenuFolder">
-			<Component Id="ApplicationShortcut" Guid="{CA94F3D2-1BB8-4581-9B37-BA3C31049DC4}">
-				<Shortcut Id="ApplicationProgramMenuShortcut" Name="$(var.Wifinian.ProjectName)"
-									Target="[#MainExecutableEXE]" WorkingDirectory="INSTALLDIR"
-									Icon="AppIcon.exe" IconIndex="0">
-					<ShortcutProperty Key="System.AppUserModel.ID" Value="[ProductName]"/>
-				</Shortcut>
-				<RegistryValue Root="HKCU" Key="Software\[ProductName]"
-											 Name="ApplicationShortcut" Type="integer" Value="1" KeyPath="yes"/>
-			</Component>
-		</DirectoryRef>
+      <Component Id="VisualManifest" Guid="{4DD773D0-D642-40DC-9576-D535D0AF89EB}">
+        <Condition><![CDATA[VEM = "yes"]]></Condition>
+        <File Id="VisualManifestXML"
+              Source="$(var.Wifinian.TargetDir)" Name="$(var.Wifinian.TargetName).VisualElementsManifest.xml" KeyPath="yes"/>
+      </Component>
+    </DirectoryRef>
 
-		<!-- Working Folder in Local AppData -->
-		<DirectoryRef Id="ApplicationLocalAppDataFolder">
-			<Component Id="ApplicationWorkingFolder" Guid="{64995AFD-6A46-47D7-8FFE-67C6376F0FF5}">
-				<RemoveFile Id="ApplicationLocalAppDataFiles" Directory="ApplicationLocalAppDataFolder" Name="*.*" On="uninstall"/>
-				<RemoveFolder Id="ApplicationLocalAppDataFolder" On="uninstall"/>
-				<RegistryValue Root="HKCU" Key="Software\[ProductName]"
-											 Name="ApplicationWorkingFolder" Type="integer" Value="1" KeyPath="yes"/>
-			</Component>
-		</DirectoryRef>
+    <!-- Shortcut in Program Menu -->
+    <DirectoryRef Id="ProgramMenuFolder">
+      <Component Id="ApplicationShortcut" Guid="{CA94F3D2-1BB8-4581-9B37-BA3C31049DC4}">
+        <Shortcut Id="ApplicationProgramMenuShortcut" Name="$(var.Wifinian.ProjectName)"
+                  Target="[#MainExecutableEXE]" WorkingDirectory="INSTALLDIR"
+                  Icon="AppIcon.exe" IconIndex="0">
+          <ShortcutProperty Key="System.AppUserModel.ID" Value="[ProductName]"/>
+        </Shortcut>
+        <RegistryValue Root="HKCU" Key="Software\[ProductName]"
+                       Name="ApplicationShortcut" Type="integer" Value="1" KeyPath="yes"/>
+      </Component>
+    </DirectoryRef>
 
-		<Icon Id="AppIcon.exe" SourceFile="$(var.Wifinian.TargetPath)"/>
-		<Property Id="ARPPRODUCTICON" Value="AppIcon.exe"/>
+    <!-- Working Folder in Local AppData -->
+    <DirectoryRef Id="ApplicationLocalAppDataFolder">
+      <Component Id="ApplicationWorkingFolder" Guid="{64995AFD-6A46-47D7-8FFE-67C6376F0FF5}">
+        <RemoveFile Id="ApplicationLocalAppDataFiles" Directory="ApplicationLocalAppDataFolder" Name="*.*" On="uninstall"/>
+        <RemoveFolder Id="ApplicationLocalAppDataFolder" On="uninstall"/>
+        <RegistryValue Root="HKCU" Key="Software\[ProductName]"
+                       Name="ApplicationWorkingFolder" Type="integer" Value="1" KeyPath="yes"/>
+      </Component>
+    </DirectoryRef>
 
-		<Feature Id="ProductFeature" Level="1">
-			<ComponentRef Id="MainExecutable"/>
-			<ComponentRef Id="MainExecutableConfig"/>
-			<ComponentRef Id="InteractionsLibrary"/>
-			<ComponentRef Id="InteractivityLibrary"/>
-			<ComponentRef Id="RxCoreLibrary"/>
-			<ComponentRef Id="RxInterfacesLibrary"/>
-			<ComponentRef Id="RxLinqLibrary"/>
-			<ComponentRef Id="RxPlatformServicesLibrary"/>
-			<ComponentRef Id="RxWindowsThreadingLibrary"/>
-			<ComponentRef Id="RpCoreLibrary"/>
-			<ComponentRef Id="RpPlatformLibrary"/>
-			<ComponentRef Id="WifiLibrary"/>
-			<ComponentRef Id="FrameLibrary"/>
-			<ComponentRef Id="VisualManifest"/>
-			<ComponentRef Id="ApplicationShortcut"/>
-			<ComponentRef Id="ApplicationWorkingFolder"/>
-		</Feature>
+    <Icon Id="AppIcon.exe" SourceFile="$(var.Wifinian.TargetPath)"/>
+    <Property Id="ARPPRODUCTICON" Value="AppIcon.exe"/>
 
-		<!-- Clean Current User Run -->
-		<CustomAction Id="CleanCurrentUserRun" Directory="TARGETDIR" Execute="immediate" Return="ignore"
-									ExeCommand="[SystemFolder]reg.exe delete HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v [ProductName] /f"/>
-		<InstallExecuteSequence>
-			<Custom Action="CleanCurrentUserRun" After="InstallFinalize">(NOT UPGRADINGPRODUCTCODE) AND (REMOVE="ALL")</Custom>
-		</InstallExecuteSequence>
-	</Product>
+    <Feature Id="ProductFeature" Level="1">
+      <ComponentRef Id="MainExecutable"/>
+      <ComponentRef Id="MainExecutableConfig"/>
+      <ComponentRef Id="InteractionsLibrary"/>
+      <ComponentRef Id="InteractivityLibrary"/>
+      <ComponentRef Id="RxCoreLibrary"/>
+      <ComponentRef Id="RxInterfacesLibrary"/>
+      <ComponentRef Id="RxLinqLibrary"/>
+      <ComponentRef Id="RxPlatformServicesLibrary"/>
+      <ComponentRef Id="RxWindowsThreadingLibrary"/>
+      <ComponentRef Id="RpCoreLibrary"/>
+      <ComponentRef Id="RpPlatformLibrary"/>
+      <ComponentRef Id="WifiLibrary"/>
+      <ComponentRef Id="FrameLibrary"/>
+      <ComponentRef Id="AgencyLibrary"/>
+      <ComponentRef Id="BridgeLibrary"/>
+      <ComponentRef Id="VisualManifest"/>
+      <ComponentRef Id="ApplicationShortcut"/>
+      <ComponentRef Id="ApplicationWorkingFolder"/>
+    </Feature>
+
+    <!-- Clean Current User Run -->
+    <CustomAction Id="CleanCurrentUserRun" Directory="TARGETDIR" Execute="immediate" Return="ignore"
+                  ExeCommand="[SystemFolder]reg.exe delete HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v [ProductName] /f"/>
+    <InstallExecuteSequence>
+      <Custom Action="CleanCurrentUserRun" After="InstallFinalize">(NOT UPGRADINGPRODUCTCODE) AND (REMOVE="ALL")</Custom>
+    </InstallExecuteSequence>
+  </Product>
 </Wix>
