@@ -41,9 +41,9 @@ namespace Wifinian.Views.Controls
 			this.IsReadOnly = true;
 		}
 
+		private const double Tolerance = 10D;
 		private InputDevice _device;
 		private Point _startPosition;
-		private const double _tolerance = 10D;
 		private bool _isContextMenuOpenable = true;
 
 		private void OnDeviceDown(InputDevice device, bool isContextMenuOpenable)
@@ -75,7 +75,7 @@ namespace Wifinian.Views.Controls
 			if (!TryGetDevicePosition(_device, out Point endPosition))
 				return;
 
-			if (new Vector(endPosition.X - _startPosition.X, endPosition.Y - _startPosition.Y).Length > _tolerance)
+			if (new Vector(endPosition.X - _startPosition.X, endPosition.Y - _startPosition.Y).Length > Tolerance)
 				return;
 
 			this.IsReadOnly = false;

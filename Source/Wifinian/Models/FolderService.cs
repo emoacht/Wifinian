@@ -8,9 +8,6 @@ using System.Threading.Tasks;
 
 namespace Wifinian.Models
 {
-	/// <summary>
-	/// This application's AppData folder
-	/// </summary>
 	internal static class FolderService
 	{
 		public static string AppDataFolderPath
