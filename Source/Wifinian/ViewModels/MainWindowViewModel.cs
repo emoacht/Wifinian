@@ -48,12 +48,9 @@ namespace Wifinian.ViewModels
 		public ReactiveCommand MoveDownCommand { get; }
 		public ReactiveCommand DeleteCommand { get; }
 
-		public MainWindowViewModel() : this(new MainController())
-		{ }
-
 		internal MainWindowViewModel(MainController controller)
 		{
-			this._controller = controller;
+			this._controller = controller ?? throw new ArgumentNullException(nameof(controller));
 
 			Profiles = _controller.Profiles
 				.ToReadOnlyReactiveCollection(x => new ProfileItemViewModel(_controller, x))

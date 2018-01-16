@@ -6,12 +6,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
+using StartupAgency;
 using Wifinian.Models;
 
 namespace Wifinian
 {
 	public partial class App : Application
 	{
+		private StartupAgent _agent;
 		private MainController _controller;
 
 		protected override async void OnStartup(StartupEventArgs e)
@@ -19,14 +21,15 @@ namespace Wifinian
 			base.OnStartup(e);
 
 			LogService.Start();
-
-			if (ProcessService.ActivateExistingProcess())
+			
+			_agent = new StartupAgent();
+			if (!_agent.Start(ProductInfo.StartupTaskId))
 			{
 				this.Shutdown(0); // This shutdown is expected behavior.
 				return;
 			}
 
-			_controller = new MainController();
+			_controller = new MainController(_agent);
 			await _controller.InitiateAsync();
 
 			//this.MainWindow = new MainWindow();
@@ -36,6 +39,7 @@ namespace Wifinian
 		protected override void OnExit(ExitEventArgs e)
 		{
 			_controller?.Dispose();
+			_agent?.Dispose();
 
 			LogService.End();
 

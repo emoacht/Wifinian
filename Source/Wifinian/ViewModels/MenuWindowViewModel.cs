@@ -1,18 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Data;
 using Reactive.Bindings;
-using Reactive.Bindings.Extensions;
-using Reactive.Bindings.Helpers;
 
 using Wifinian.Common;
-using Wifinian.Models;
 
 namespace Wifinian.ViewModels
 {
@@ -24,12 +17,12 @@ namespace Wifinian.ViewModels
 
 		internal MenuWindowViewModel(MainController controller)
 		{
-			this._controller = controller;
+			this._controller = controller ?? throw new ArgumentNullException(nameof(controller));
 		}
 
 		#region Startup
 
-		public bool CanRegister => StartupService.CanRegister();
+		public bool CanRegister => _controller.StartupAgent.CanRegister();
 
 		public bool IsRegistered
 		{
@@ -37,7 +30,7 @@ namespace Wifinian.ViewModels
 			{
 				if (!_isRegistered.HasValue)
 				{
-					_isRegistered = StartupService.IsRegistered();
+					_isRegistered = _controller.StartupAgent.IsRegistered();
 				}
 				return _isRegistered.Value;
 			}
@@ -48,11 +41,11 @@ namespace Wifinian.ViewModels
 
 				if (value)
 				{
-					StartupService.Register();
+					_controller.StartupAgent.Register();
 				}
 				else
 				{
-					StartupService.Unregister();
+					_controller.StartupAgent.Unregister();
 				}
 				_isRegistered = value;
 				RaisePropertyChanged();

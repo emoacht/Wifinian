@@ -15,6 +15,7 @@ using Reactive.Bindings.Helpers;
 using Reactive.Bindings.Notifiers;
 
 using ScreenFrame;
+using StartupAgency;
 using Wifinian.Common;
 using Wifinian.Models;
 using Wifinian.Models.Wlan;
@@ -24,7 +25,9 @@ namespace Wifinian
 {
 	internal class MainController : DisposableBase
 	{
-		private readonly Application _current = Application.Current;
+		private readonly Application _current = App.Current;
+
+		internal StartupAgent StartupAgent { get; }
 
 		public ObservableCollection<ProfileItem> Profiles { get; }
 		private readonly object _profilesLock = new object();
@@ -44,14 +47,16 @@ namespace Wifinian
 		public ReactiveCommand RescanCommand { get; }
 		public ReactiveCommand CloseCommand { get; }
 
-		public MainController() : this(
+		public MainController(StartupAgent agent) : this(agent,
 			//new MockWorker() ??
 			//new NetshWorker() ??
 			(IWlanWorker)new NativeWifiWorker())
 		{ }
 
-		public MainController(IWlanWorker worker)
+		public MainController(StartupAgent agent, IWlanWorker worker)
 		{
+			StartupAgent = agent ?? throw new ArgumentNullException(nameof(agent));
+
 			Profiles = new ObservableCollection<ProfileItem>();
 			BindingOperations.EnableCollectionSynchronization(Profiles, _profilesLock);
 
@@ -157,8 +162,10 @@ namespace Wifinian
 
 			_current.MainWindow = new MainWindow(this);
 
-			if (!StartupService.IsStartedOnSignIn())
+			if (!StartupAgent.IsStartedOnSignIn())
 				_current.MainWindow.Show();
+
+			StartupAgent.ShowRequested += OnMainWindowShowRequested;
 
 			Observable.FromEventPattern(
 				h => _current.MainWindow.Activated += h,
@@ -193,7 +200,7 @@ namespace Wifinian
 
 		private void OnMainWindowShowRequested(object sender, EventArgs e)
 		{
-			ShowMainWindow();
+			_current.Dispatcher.Invoke(() => ShowMainWindow());
 		}
 
 		private void OnMenuWindowShowRequested(object sender, Point e)

@@ -1,0 +1,175 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>StartupAgency</name>
+    </assembly>
+    <members>
+        <member name="T:StartupAgency.Helper.AssemblyExtension">
+            <summary>
+            Extension method for <see cref="T:System.Reflection.Assembly"/>
+            </summary>
+        </member>
+        <member name="T:StartupAgency.Helper.OsVersion">
+            <summary>
+            OS version information
+            </summary>
+        </member>
+        <member name="P:StartupAgency.Helper.OsVersion.IsVistaOrNewer">
+            <summary>
+            Whether OS is Windows Vista or newer
+            </summary>
+            <remarks>Windows Vista = version 6.0</remarks>
+        </member>
+        <member name="P:StartupAgency.Helper.OsVersion.Is8OrNewer">
+            <summary>
+            Whether OS is Windows 8 or newer
+            </summary>
+            <remarks>Windows 8 = version 6.2</remarks>
+        </member>
+        <member name="P:StartupAgency.Helper.OsVersion.Is81OrNewer">
+            <summary>
+            Whether OS is Windows 8.1 or newer
+            </summary>
+            <remarks>Windows 8.1 = version 6.3</remarks>
+        </member>
+        <member name="P:StartupAgency.Helper.OsVersion.Is10Threshold1OrNewer">
+            <summary>
+            Whether OS is Windows 10 (Threshold 1) or newer
+            </summary>
+            <remarks>Windows 10 (Threshold 1) = version 10.0.10240</remarks>
+        </member>
+        <member name="P:StartupAgency.Helper.OsVersion.Is10Redstone1OrNewer">
+            <summary>
+            Whether OS is Windows 10 (Redstone 1) or newer
+            </summary>
+            <remarks>Windows 10 (Redstone 1) = version 10.0.14393</remarks>
+        </member>
+        <member name="P:StartupAgency.Helper.OsVersion.Is10Redstone3OrNewer">
+            <summary>
+            Whether OS is Windows 10 (Redstone 3) or newer
+            </summary>
+            <remarks>Windows 10 (Redstone 3) = version 10.0.16299</remarks>
+        </member>
+        <member name="T:StartupAgency.Worker.BridgeWorker">
+            <summary>
+            Startup task (AppX) worker
+            </summary>
+        </member>
+        <member name="F:StartupAgency.Worker.BridgeWorker._taskId">
+            <summary>
+            Startup task ID
+            </summary>
+            <remarks>Startup task ID must match that in AppxManifest.xml.</remarks>
+        </member>
+        <member name="M:StartupAgency.Worker.IStartupWorker.IsStartedOnSignIn">
+            <summary>
+            Whether caller instance is presumed to have started on sign in
+            </summary>
+        </member>
+        <member name="M:StartupAgency.Worker.IStartupWorker.CanRegister">
+            <summary>
+            Whether caller instance can be registered in startup
+            </summary>
+        </member>
+        <member name="M:StartupAgency.Worker.IStartupWorker.IsRegistered">
+            <summary>
+            Whether caller instance is registered in startup
+            </summary>
+        </member>
+        <member name="M:StartupAgency.Worker.IStartupWorker.Register">
+            <summary>
+            Registers caller instance to startup.
+            </summary>
+        </member>
+        <member name="M:StartupAgency.Worker.IStartupWorker.Unregister">
+            <summary>
+            Unregisters caller instance from startup.
+            </summary>
+        </member>
+        <member name="T:StartupAgency.Worker.RegistryWorker">
+            <summary>
+            Registry worker
+            </summary>
+        </member>
+        <member name="M:StartupAgency.RemotingHolder.Create(System.String)">
+            <summary>
+            Creates semaphore to start remoting.
+            </summary>
+            <returns>True if no other instance there and this instance instantiated remoting server</returns>
+        </member>
+        <member name="M:StartupAgency.RemotingHolder.Release">
+            <summary>
+            Releases semaphore to end remoting.
+            </summary>
+        </member>
+        <member name="M:StartupAgency.RemotingSpace.RaiseShowRequested">
+            <summary>
+            Raise event.
+            </summary>
+            <remarks>
+            This method is intended to be called by an instance other than that instantiated this object.
+            </remarks>
+        </member>
+        <member name="T:StartupAgency.StartupAgent">
+            <summary>
+            Startup agent
+            </summary>
+        </member>
+        <member name="M:StartupAgency.StartupAgent.Start(System.String,System.Reflection.Assembly)">
+            <summary>
+            Starts functions.
+            </summary>
+            <param name="startupTaskId">Startup task ID</param>
+            <param name="caller">Caller assembly</param>
+            <remarks>Startup task ID must match that in AppxManifest.xml.</remarks>
+        </member>
+        <member name="M:StartupAgency.StartupAgent.Dispose">
+            <summary>
+            Dispose
+            </summary>
+        </member>
+        <member name="M:StartupAgency.StartupAgent.Dispose(System.Boolean)">
+            <summary>
+            Dispose
+            </summary>
+        </member>
+        <member name="E:StartupAgency.StartupAgent.ShowRequested">
+            <summary>
+            Occurs when caller instance is requested to show its existence by another instance.
+            </summary>
+            <remarks>
+            This event will be raised by a thread other than that instantiated this object.
+            Accordingly, the appropriate use of dispatcher is required.
+            </remarks>
+        </member>
+        <member name="M:StartupAgency.StartupAgent.IsStartedOnSignIn">
+            <summary>
+            Whether caller instance is presumed to have started on sign in
+            </summary>
+            <returns>True if presumed to have started on sign in</returns>
+        </member>
+        <member name="M:StartupAgency.StartupAgent.CanRegister">
+            <summary>
+            Whether caller instance can be registered in startup
+            </summary>
+            <returns>True if can be registered</returns>
+        </member>
+        <member name="M:StartupAgency.StartupAgent.IsRegistered">
+            <summary>
+            Whether caller instance is registered in startup
+            </summary>
+            <returns>True if already registered</returns>
+        </member>
+        <member name="M:StartupAgency.StartupAgent.Register">
+            <summary>
+            Registers caller instance to startup.
+            </summary>
+            <returns>True if successfully registered</returns>
+        </member>
+        <member name="M:StartupAgency.StartupAgent.Unregister">
+            <summary>
+            Unregisters caller instance from startup.
+            </summary>
+        </member>
+    </members>
+</doc>
