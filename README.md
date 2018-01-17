@@ -2,9 +2,12 @@
 
 # Wifinian
 
-More control over Wi-Fi connections.
+More control over Wi-Fi connections!
 
 Wifinian is a Windows desktop app to enable user to actively control Wi-Fi connections.
+
+![Screenshot on Windows 10](Images/Screenshot.png)<br>
+(DPI: 200%)
 
  - Connect to or disconnect from a wireless network.
  - Rename a wireless profile.
@@ -13,9 +16,6 @@ Wifinian is a Windows desktop app to enable user to actively control Wi-Fi conne
  - Engage - Execute automatic connection depending on signal strength, order and automatic switch setting of wireless profiles. The number indicates threshold of signal strength (%).
  - Reorder - Change the order (priority) of wireless profiles.
 
-![Screenshot on Windows 10](Images/Screenshot.png)<br>
-(DPI: 200%)
-
 ## Requirements
 
  * Windows 7 or newer
@@ -23,7 +23,7 @@ Wifinian is a Windows desktop app to enable user to actively control Wi-Fi conne
 
 ## Download
 
-:floppy_disk: [Installer](https://github.com/emoacht/Wifinian/releases/download/2.0.0-Installer/WifinianInstaller200.zip) | :floppy_disk: [Executables](https://github.com/emoacht/Wifinian/releases/download/2.0.0-Executables/Wifinian200.zip)
+:floppy_disk: [Installer](https://github.com/emoacht/Wifinian/releases/download/2.1.0-Installer/WifinianInstaller210.zip) | :floppy_disk: [Executables](https://github.com/emoacht/Wifinian/releases/download/2.1.0-Executables/Wifinian210.zip)
 
 ## Install/Uninstall
 
@@ -50,6 +50,8 @@ When you use only executables, please note the following:
  - [Reactive Property][2]
  - [Managed Native Wifi][3]
  - [Monitorian/ScreenFrame][4]
+ - [Monitorian/StartupAgency][4]
+ - [Monitorian/StartupBridge][4]
 
 [1]: https://github.com/Reactive-Extensions/Rx.NET
 [2]: https://github.com/runceel/ReactiveProperty
@@ -64,17 +66,17 @@ When you use only executables, please note the following:
 
  - emoacht (emotom[atmark]pobox.com)
 
-## Reference
+__________
 
-### How to delete wireless LAN profiles from OS's GUI
+### FYI: How to delete wireless profiles from OS's GUI
 
-The GUI to delete wireless LAN profiles has come back in Windows 8.1 Update. To reach this GUI, see the following.
+The GUI to delete wireless profiles has come back in Windows 8.1 Update. To reach this GUI, see the following.
 
 #### Windows 10
 
 [Network settings] from notification area (or [Settings] from Start menu) &rarr; [Network & Internet] &rarr; [Wi-Fi] &rarr; [Manage WiFi Settings] &rarr; [Manage known networks]
 
-Note: If multiple profiles of the same name exist (it will happen if you connected to the same wireless LAN using multiple wireless LAN adapters because SSID of wireless LAN is used for a profile name), such profiles will not be differentiated and will be deleted in bulk.
+Note: If multiple profiles of the same name exist (it will happen if you connected to the same wireless network using multiple wireless adapters because SSID of wireless network is used for a profile name), such profiles will not be differentiated and will be deleted in bulk.
 
 #### Windows 8.1 Update
 

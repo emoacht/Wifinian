@@ -2,9 +2,12 @@
 
 # Wifinian
 
-Wi-Fi接続にもっとコントロールを。
+Wi-Fi接続にもっとコントロールを!
 
 WifinianはWi-Fi接続をユーザーが積極的にコントロールすることができるWindowsデスクトップアプリです。
+
+![Screenshot on Windows 10](Images/Screenshot.png)<br>
+(DPI: 200%)
 
  - 無線ネットワークとの接続と切断。
  - 無線プロファイルの名称の変更。
@@ -13,9 +16,6 @@ WifinianはWi-Fi接続をユーザーが積極的にコントロールするこ�
  - Engage - 無線プロファイルの電波強度、順番、自動切換設定に応じた自動接続の実行。数字は電波強度（％）の閾値を示す。
  - Reorder - 無線プロファイルの順番（優先度）の変更
 
-![Screenshot on Windows 10](Images/Screenshot.png)<br>
-(DPI: 200%)
-
 ## 動作条件
 
  * Windows 7以降
@@ -23,7 +23,7 @@ WifinianはWi-Fi接続をユーザーが積極的にコントロールするこ�
 
 ## ダウンロード
 
-:floppy_disk: [インストーラー](https://github.com/emoacht/Wifinian/releases/download/2.0.0-Installer/WifinianInstaller200.zip) | :floppy_disk: [実行ファイル](https://github.com/emoacht/Wifinian/releases/download/2.0.0-Executables/Wifinian200.zip)
+:floppy_disk: [インストーラー](https://github.com/emoacht/Wifinian/releases/download/2.1.0-Installer/WifinianInstaller210.zip) | :floppy_disk: [実行ファイル](https://github.com/emoacht/Wifinian/releases/download/2.1.0-Executables/Wifinian210.zip)
 
 ## インストール/アンインストール
 
@@ -50,6 +50,8 @@ WifinianはWi-Fi接続をユーザーが積極的にコントロールするこ�
  - [Reactive Property][2]
  - [Managed Native Wifi][3]
  - [Monitorian/ScreenFrame][4]
+ - [Monitorian/StartupAgency][4]
+ - [Monitorian/StartupBridge][4]
 
 [1]: https://github.com/Reactive-Extensions/Rx.NET
 [2]: https://github.com/runceel/ReactiveProperty
@@ -64,17 +66,17 @@ WifinianはWi-Fi接続をユーザーが積極的にコントロールするこ�
 
  - emoacht (emotom[atmark]pobox.com)
 
-## 参考
+__________
 
-### 無線LANプロファイルをOSのGUIから削除する方法
+### FYI: 無線プロファイルをOSのGUIから削除する方法
 
-無線LANプロファイルを削除するためのGUIがWindows 8.1 Updateから復活しました。このGUIに辿り着くには以下を見てください。
+無線プロファイルを削除するためのGUIがWindows 8.1 Updateから復活しました。このGUIに辿り着くには以下を見てください。
 
 #### Windows 10
 
 通知領域から[ネットワーク設定]（またはスタートメニューから[設定]）&rarr; [ネットワークとインターネット] &rarr; [Wi-Fi] &rarr; [Wi-Fi設定を管理する] &rarr; [既知のネットワークの管理]
 
-注意: 同名のプロファイルが複数ある場合（プロファイル名には無線LANのSSIDが使われるので、同じ無線LANに複数の無線LANアダプターで接続した場合に起こる）、これらは区別されず、まとめて削除されます。
+注意: 同名のプロファイルが複数ある場合（プロファイル名には無線ネットワークのSSIDが使われるので、同じ無線ネットワークに複数の無線アダプターで接続した場合に起こる）、これらは区別されず、まとめて削除されます。
 
 #### Windows 8.1 Update
 

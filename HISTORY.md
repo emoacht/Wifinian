@@ -1,5 +1,9 @@
 ﻿## History
 
+Ver 2.1.0 2018-1-17
+
+ - Extended startup function
+
 Ver 2.0.0 2018-1-4
 
  - Recreated and renamed
