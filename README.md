@@ -9,12 +9,13 @@ Wifinian is a Windows desktop app to enable user to actively control Wi-Fi conne
 ![Screenshot on Windows 10](Images/Screenshot.png)<br>
 (DPI: 200%)
 
- - Connect to or disconnect from a wireless network.
- - Rename a wireless profile.
- - Change automatic connection (Auto Connect) or automatic switch (Auto Switch) settings of a wireless profile.
- - Rush - Perform rescan of wireless networks in short intervals. The number indicates interval (sec).
- - Engage - Execute automatic connection depending on signal strength, order and automatic switch setting of wireless profiles. The number indicates threshold of signal strength (%).
- - Reorder - Change the order (priority) of wireless profiles.
+Functions:
+ * Connect to or disconnect from a wireless network
+ * Rename a wireless profile
+ * Change automatic connection (Auto Connect) or automatic switch (Auto Switch) settings of a wireless profile
+ * __Rush__ - Perform rescan of wireless networks in short intervals (The number indicates interval (sec))
+ * __Engage__ - Execute automatic connection depending on signal strength, order and automatic switch setting of wireless profiles (The number indicates threshold of signal strength (%))
+ * __Reorder__ - Change the order (priority) of wireless profiles
 
 ## Requirements
 
@@ -66,9 +67,9 @@ When you use only executables, please note the following:
 
  - emoacht (emotom[atmark]pobox.com)
 
-__________
+_____
 
-### FYI: How to delete wireless profiles from OS's GUI
+### How to delete wireless profiles from OS's GUI
 
 The GUI to delete wireless profiles has come back in Windows 8.1 Update. To reach this GUI, see the following.
 
