@@ -307,12 +307,12 @@
         </member>
         <member name="E:ScreenFrame.NotifyIconContainer.MouseLeftButtonClick">
             <summary>
-            This event is raised after mouse left button is clicked on NotifyIcon.
+            Occurs when mouse left button is clicked while mouse pointer is over NotifyIcon.
             </summary>
         </member>
         <member name="E:ScreenFrame.NotifyIconContainer.MouseRightButtonClick">
             <summary>
-            This event is raised after mouse right button is clicked on NotifyIcon.
+            Occurs when mouse right button is clicked while mouse pointer is over NotifyIcon.
             </summary>
         </member>
         <member name="M:ScreenFrame.NotifyIconContainer.Dispose">
