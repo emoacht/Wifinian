@@ -4,7 +4,7 @@
 
 Wi-Fi接続にもっとコントロールを!
 
-WifinianはWi-Fi接続をユーザーが積極的にコントロールすることができるWindowsデスクトップアプリです。
+WifinianはWi-Fi接続をユーザーが積極的にコントロールすることができるWindowsデスクトップツールです。
 
 ![Screenshot on Windows 10](Images/Screenshot.png)<br>
 (DPI: 200%)

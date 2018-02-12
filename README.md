@@ -4,7 +4,7 @@
 
 More control over Wi-Fi connections!
 
-Wifinian is a Windows desktop app to enable user to actively control Wi-Fi connections.
+Wifinian is a Windows desktop tool to enable user to actively control Wi-Fi connections.
 
 ![Screenshot on Windows 10](Images/Screenshot.png)<br>
 (DPI: 200%)
