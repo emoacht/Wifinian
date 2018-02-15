@@ -2,4 +2,5 @@
 License=https://github.com/emoacht/Wifinian/blob/master/LICENSE.txt
 StartSignIn=Start on sign in
 Close=Close
+NotWorkable=Can not obtain information on Wi-Fi connections.
 RecordException=An unexpected problem occurred. Save exception log on Desktop?

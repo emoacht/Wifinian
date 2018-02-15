@@ -2,4 +2,5 @@
 License=https://github.com/emoacht/Wifinian/blob/master/LICENSE.txt
 StartSignIn=サインイン時に起動する
 Close=閉じる
+NotWorkable=Wi-Fi接続の情報を取得できません。
 RecordException=予想外の問題が起きました。例外のログをデスクトップに残しますか？

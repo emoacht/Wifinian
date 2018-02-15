@@ -8,6 +8,8 @@ namespace Wifinian.Models.Wlan
 {
 	internal interface IWlanWorker : IDisposable
 	{
+		bool IsWorkable { get; }
+
 		event EventHandler NetworkRefreshed;
 		event EventHandler AvailabilityChanged;
 		event EventHandler InterfaceChanged;

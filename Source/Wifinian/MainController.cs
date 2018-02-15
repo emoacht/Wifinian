@@ -35,6 +35,7 @@ namespace Wifinian
 		public NotifyIconContainer NotifyIconContainer { get; }
 
 		private readonly IWlanWorker _worker;
+		public bool IsWorkable => _worker.IsWorkable;
 
 		public BooleanNotifier IsUpdating { get; }
 		public BooleanNotifier IsWorking { get; }

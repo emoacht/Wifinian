@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -15,8 +16,18 @@ namespace Wifinian.Models.Wlan
 
 		public NativeWifiWorker()
 		{
-			_player = new NativeWifiPlayer();
+			try
+			{
+				_player = new NativeWifiPlayer();
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine("Failed to start NativeWifiPlayer." + Environment.NewLine
+					+ ex);
+			}
 		}
+
+		public bool IsWorkable => (_player != null);
 
 		#region Dispose
 
@@ -35,7 +46,7 @@ namespace Wifinian.Models.Wlan
 
 			if (disposing)
 			{
-				_player.Dispose();
+				_player?.Dispose();
 			}
 
 			_disposed = true;
@@ -45,38 +56,41 @@ namespace Wifinian.Models.Wlan
 
 		public event EventHandler NetworkRefreshed
 		{
-			add => _player.NetworkRefreshed += value;
-			remove => _player.NetworkRefreshed -= value;
+			add { if (IsWorkable) { _player.NetworkRefreshed += value; } }
+			remove { if (IsWorkable) { _player.NetworkRefreshed -= value; } }
 		}
 
 		public event EventHandler AvailabilityChanged
 		{
-			add => _player.AvailabilityChanged += value;
-			remove => _player.AvailabilityChanged -= value;
+			add { if (IsWorkable) { _player.AvailabilityChanged += value; } }
+			remove { if (IsWorkable) { _player.AvailabilityChanged -= value; } }
 		}
 
 		public event EventHandler InterfaceChanged
 		{
-			add => _player.InterfaceChanged += value;
-			remove => _player.InterfaceChanged -= value;
+			add { if (IsWorkable) { _player.InterfaceChanged += value; } }
+			remove { if (IsWorkable) { _player.InterfaceChanged -= value; } }
 		}
 
 		public event EventHandler ConnectionChanged
 		{
-			add => _player.ConnectionChanged += value;
-			remove => _player.ConnectionChanged -= value;
+			add { if (IsWorkable) { _player.ConnectionChanged += value; } }
+			remove { if (IsWorkable) { _player.ConnectionChanged -= value; } }
 		}
 
 		public event EventHandler ProfileChanged
 		{
-			add => _player.ProfileChanged += value;
-			remove => _player.ProfileChanged -= value;
+			add { if (IsWorkable) { _player.ProfileChanged += value; } }
+			remove { if (IsWorkable) { _player.ProfileChanged -= value; } }
 		}
 
 		#region Scan networks
 
 		public Task ScanNetworkAsync(TimeSpan timeout)
 		{
+			if (!IsWorkable)
+				return Task.CompletedTask;
+
 			return _player.ScanNetworksAsync(timeout, CancellationToken.None);
 		}
 
@@ -86,6 +100,9 @@ namespace Wifinian.Models.Wlan
 
 		public async Task<IEnumerable<ProfileItem>> GetProfilesAsync()
 		{
+			if (!IsWorkable)
+				return Array.Empty<NativeWifiProfileItem>();
+
 			var profilePacks = await Task.Run(() => _player.EnumerateProfiles()).ConfigureAwait(false);
 
 			return profilePacks.Select(x => new NativeWifiProfileItem(
@@ -109,6 +126,9 @@ namespace Wifinian.Models.Wlan
 			if (!(profileItem is NativeWifiProfileItem item))
 				throw new ArgumentException(nameof(profileItem));
 
+			if (!IsWorkable)
+				return Task.FromResult(false);
+
 			return Task.Run(() => _player.SetProfile(item.InterfaceId, item.ProfileType, item.Xml, null, true));
 		}
 
@@ -118,6 +138,9 @@ namespace Wifinian.Models.Wlan
 
 			if (position < 0)
 				throw new ArgumentOutOfRangeException(nameof(position));
+
+			if (!IsWorkable)
+				return Task.FromResult(false);
 
 			return Task.Run(() => _player.SetProfilePosition(item.InterfaceId, item.Name, position));
 		}
@@ -129,12 +152,18 @@ namespace Wifinian.Models.Wlan
 			if (string.IsNullOrWhiteSpace(profileName))
 				throw new ArgumentNullException(nameof(profileName));
 
+			if (!IsWorkable)
+				return Task.FromResult(false);
+
 			return Task.Run(() => _player.RenameProfile(item.InterfaceId, item.Name, profileName));
 		}
 
 		public Task<bool> DeleteProfileAsync(ProfileItem profileItem)
 		{
 			var item = profileItem ?? throw new ArgumentNullException(nameof(profileItem));
+
+			if (!IsWorkable)
+				return Task.FromResult(false);
 
 			return Task.Run(() => _player.DeleteProfile(item.InterfaceId, item.Name));
 		}
@@ -148,12 +177,18 @@ namespace Wifinian.Models.Wlan
 			if (!(profileItem is NativeWifiProfileItem item))
 				throw new ArgumentException(nameof(profileItem));
 
+			if (!IsWorkable)
+				return Task.FromResult(false);
+
 			return _player.ConnectNetworkAsync(item.InterfaceId, item.Name, item.BssType, timeout, CancellationToken.None);
 		}
 
 		public Task<bool> DisconnectNetworkAsync(ProfileItem profileItem, TimeSpan timeout)
 		{
 			var item = profileItem ?? throw new ArgumentNullException(nameof(profileItem));
+
+			if (!IsWorkable)
+				return Task.FromResult(false);
 
 			return _player.DisconnectNetworkAsync(item.InterfaceId, timeout, CancellationToken.None);
 		}

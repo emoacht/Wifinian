@@ -10,6 +10,8 @@ namespace Wifinian.Models.Wlan
 {
 	internal class NetshWorker : IWlanWorker
 	{
+		public bool IsWorkable => true;
+
 		#region Dispose
 
 		private bool _disposed = false;

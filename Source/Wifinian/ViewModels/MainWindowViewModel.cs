@@ -36,6 +36,8 @@ namespace Wifinian.ViewModels
 		}
 		private ListCollectionView _profilesView;
 
+		public bool IsWorkable => _controller.IsWorkable;
+
 		public ReactiveProperty<bool> RushesRescan => _controller.RushesRescan;
 		public ReactiveProperty<bool> EngagesPriority => _controller.EngagesPriority;
 		public ReactiveProperty<bool> ReordersPriority { get; }

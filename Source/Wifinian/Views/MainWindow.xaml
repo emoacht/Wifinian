@@ -113,7 +113,8 @@
 
 			<!-- Profiles -->
 			<Grid Grid.Row="1"
-				  x:Name="ListRoot">
+				  x:Name="ProfilesBox"
+				  Visibility="{Binding IsWorkable, Mode=OneTime, Converter={StaticResource BooleanToVisibilityConverterKey}}">
 				<Grid>
 					<Grid.RowDefinitions>
 						<RowDefinition Height="Auto"/>
@@ -314,7 +315,7 @@
 
 						<i:Interaction.Behaviors>
 							<behaviors:ListBoxSelectedItemBehavior/>
-							<behaviors:ListBoxHeightBehavior ParentHeight="{Binding ElementName=ListRoot, Path=ActualHeight}"/>
+							<behaviors:ListBoxHeightBehavior ParentHeight="{Binding ElementName=ProfilesBox, Mode=OneWay, Path=ActualHeight}"/>
 						</i:Interaction.Behaviors>
 					</ListView>
 
@@ -322,6 +323,15 @@
 					<Grid Grid.Row="1"
 						  Background="{StaticResource App.Background}"/>
 				</Grid>
+			</Grid>
+
+			<!-- Alternative -->
+			<Grid Grid.Row="1"
+				  Background="{StaticResource App.Background}"
+				  Visibility="{Binding ElementName=ProfilesBox, Path=Visibility, Mode=OneWay, Converter={StaticResource VisibilityInverseConverterKey}}">
+				<TextBlock Margin="10,4"
+						   Foreground="{StaticResource App.Foreground}"
+						   Text="{x:Static models:LanguageService.NotWorkable}"/>
 			</Grid>
 		</Grid>
 

@@ -15,6 +15,7 @@ namespace Wifinian.Models
 		public static string License => GetContentValue();
 		public static string StartSignIn => GetContentValue();
 		public static string Close => GetContentValue();
+		public static string NotWorkable => GetContentValue();
 		public static string RecordException => GetContentValue();
 
 		#region Base

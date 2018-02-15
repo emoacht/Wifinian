@@ -11,6 +11,8 @@ namespace Wifinian.Models.Wlan
 {
 	internal class MockWorker : IWlanWorker
 	{
+		public bool IsWorkable => true;
+
 		#region Dispose
 
 		private bool _disposed = false;
