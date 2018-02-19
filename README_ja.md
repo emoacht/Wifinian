@@ -4,7 +4,7 @@
 
 Wi-Fi接続にもっとコントロールを!
 
-WifinianはWi-Fi接続をユーザーが積極的にコントロールすることができるWindowsデスクトップツールです。
+WifinianはWi-Fi接続をユーザーが積極的にコントロールできるWindowsデスクトップツールです。
 
 ![Screenshot on Windows 10](Images/Screenshot.png)<br>
 (DPI: 200%)
@@ -13,8 +13,8 @@ WifinianはWi-Fi接続をユーザーが積極的にコントロールするこ�
  * 無線ネットワークとの接続と切断
  * 無線プロファイルの名称の変更
  * 無線プロファイルの自動接続（Auto Connect）と自動切換（Auto Switch）設定の変更
- * __Rush__ - 短い間隔での無線ネットワークの再スキャンの実行（数字は間隔（秒）を示す）
- * __Engage__ - 無線プロファイルの電波強度、順番、自動切換設定に応じた自動接続の実行（数字は電波強度（％）の閾値を示す）
+ * __Rush__ - 短い間隔での無線ネットワークの再スキャンの実行（数字は間隔（秒）を示す。）
+ * __Engage__ - 無線プロファイルの電波強度、順番、自動切換の設定に応じた自動接続の実行（数字は電波強度（％）の閾値を示す。）
  * __Reorder__ - 無線プロファイルの順番（優先度）の変更
 
 ## 動作条件
@@ -24,7 +24,7 @@ WifinianはWi-Fi接続をユーザーが積極的にコントロールするこ�
 
 ## ダウンロード
 
-:floppy_disk: [インストーラー](https://github.com/emoacht/Wifinian/releases/download/2.1.0-Installer/WifinianInstaller210.zip) | :floppy_disk: [実行ファイル](https://github.com/emoacht/Wifinian/releases/download/2.1.0-Executables/Wifinian210.zip)
+:floppy_disk: [インストーラー](https://github.com/emoacht/Wifinian/releases/download/2.1.1-Installer/WifinianInstaller211.zip) | :floppy_disk: [実行ファイル](https://github.com/emoacht/Wifinian/releases/download/2.1.1-Executables/Wifinian211.zip)
 
 ## インストール/アンインストール
 
@@ -35,9 +35,9 @@ WifinianはWi-Fi接続をユーザーが積極的にコントロールするこ�
 
 ## 特記事項
 
- - 無線プロファイルの名称を変更するには、名称を長押ししてください。
- - 無線ネットワークのOS自身による再スキャンは、幾つかのアクションに応じて行われるほか、そのようなアクションがない場合は、1分ごとに行われるようです。
- - Engage機能の自動接続は、自動切換が有効である無線プロファイルだけが対象です。自動切換が有効でない無線プロファイルが接続済みのときは、自動接続は行われません。
+ - 無線プロファイルの名称を変更するには、その名称を長押ししてください。
+ - OS自身による無線ネットワークの再スキャンは、幾つかのアクションに応じて行われるほか、そのようなアクションがなければ、1分ごとに行われるようです。
+ - Engage機能の自動接続は、自動切換が有効な無線プロファイルだけが対象です。自動切換が有効でない無線プロファイルが既に接続済みのときは、自動接続は行われません。
  - OSの無線メニューから接続すると、無線プロファイルの順番が自動的に変更されることがあります。
  - 無線プロファイルは特定の無線アダプターに関連付けられているので、そのアダプターが取り外されているときは表示されません。
 

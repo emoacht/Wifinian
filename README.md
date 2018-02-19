@@ -13,8 +13,8 @@ Functions:
  * Connect to or disconnect from a wireless network
  * Rename a wireless profile
  * Change automatic connection (Auto Connect) or automatic switch (Auto Switch) settings of a wireless profile
- * __Rush__ - Perform rescan of wireless networks in short intervals (The number indicates interval (sec))
- * __Engage__ - Execute automatic connection depending on signal strength, order and automatic switch setting of wireless profiles (The number indicates threshold of signal strength (%))
+ * __Rush__ - Perform rescan of wireless networks in short intervals (The number indicates interval (sec).)
+ * __Engage__ - Execute automatic connection depending on signal strength, order and automatic switch setting of wireless profiles (The number indicates threshold of signal strength (%).)
  * __Reorder__ - Change the order (priority) of wireless profiles
 
 ## Requirements
@@ -24,7 +24,7 @@ Functions:
 
 ## Download
 
-:floppy_disk: [Installer](https://github.com/emoacht/Wifinian/releases/download/2.1.0-Installer/WifinianInstaller210.zip) | :floppy_disk: [Executables](https://github.com/emoacht/Wifinian/releases/download/2.1.0-Executables/Wifinian210.zip)
+:floppy_disk: [Installer](https://github.com/emoacht/Wifinian/releases/download/2.1.1-Installer/WifinianInstaller211.zip) | :floppy_disk: [Executables](https://github.com/emoacht/Wifinian/releases/download/2.1.1-Executables/Wifinian211.zip)
 
 ## Install/Uninstall
 
@@ -35,11 +35,11 @@ When you use only executables, please note the following:
 
 ## Remarks
 
- - To rename a wireless profile, press and hold the name.
- - Rescan of wireless networks by OS itself is triggered by some actions and if no such actions take place, it seems to be performed once per one minute.
- - Automatic connection by Engage function targets only wireless profiles whose automatic switch are enabled. If a profile whose automatic switch is not enabled has been connected, automatic connection will not be executed.
+ - To rename a wireless profile, press and hold its name.
+ - Rescan of wireless networks by OS itself is triggered by some actions and if no such actions take place, seems to be performed once per one minute.
+ - Automatic connection by Engage function applies only to wireless profiles whose automatic switch are enabled. If a profile whose automatic switch is not enabled has been already connected, automatic connection will not be executed.
  - When you connect to a wireless network by OS's wireless menu, the order of wireless profiles may be automatically changed.
- - Each wireless profile is associated with a specific wireless adapter and if the adapter is removed, such profile will not be shown.
+ - A wireless profile is associated with a specific wireless adapter and if the adapter is not in place, such profile will not be shown.
 
 ## History
 
