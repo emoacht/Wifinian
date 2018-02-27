@@ -24,6 +24,10 @@ Functions:
 
 ## Download
 
+ * Windows 10 Anniversary Update (1607) or newer:<br>
+[Wifinian](https://www.microsoft.com/store/apps/9pngfqps4flh) (Windows Store)
+
+ * Other:<br>
 :floppy_disk: [Installer](https://github.com/emoacht/Wifinian/releases/download/2.1.1-Installer/WifinianInstaller211.zip) | :floppy_disk: [Executables](https://github.com/emoacht/Wifinian/releases/download/2.1.1-Executables/Wifinian211.zip)
 
 ## Install/Uninstall

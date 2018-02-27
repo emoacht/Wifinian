@@ -24,6 +24,10 @@ WifinianはWi-Fi接続をユーザーが積極的にコントロールできるW
 
 ## ダウンロード
 
+ * Windows 10 Anniversary Update (1607) 以降:<br>
+[Wifinian](https://www.microsoft.com/store/apps/9pngfqps4flh) (Windows ストア)
+
+ * その他:<br>
 :floppy_disk: [インストーラー](https://github.com/emoacht/Wifinian/releases/download/2.1.1-Installer/WifinianInstaller211.zip) | :floppy_disk: [実行ファイル](https://github.com/emoacht/Wifinian/releases/download/2.1.1-Executables/Wifinian211.zip)
 
 ## インストール/アンインストール
