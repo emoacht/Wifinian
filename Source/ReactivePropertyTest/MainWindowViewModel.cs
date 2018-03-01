@@ -5,6 +5,7 @@ using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using Reactive.Bindings.Helpers;
@@ -20,17 +21,19 @@ namespace ReactivePropertyTest
 		public ReactiveProperty<bool> AddMemberIsSelected { get; }
 		public ReactiveProperty<string> RemoveMemberName { get; }
 
-		public ReactiveCommand AddMemberCommand { get; }
+		public AsyncReactiveCommand AddMemberCommand { get; }
 		public ReactiveCommand RemoveMemberCommand { get; }
 		public ReactiveCommand ClearMemberCommand { get; }
 
-		private void AddMember(string name, bool isLong, bool isSelected)
+		private async Task AddMember(string name, bool isLong, bool isSelected)
 		{
 			if (string.IsNullOrWhiteSpace(name))
 				return;
 
 			if (!Members.Any(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase)))
 				Members.Add(new MemberViewModel(name, isSelected) { IsLong = isLong });
+			
+			await Task.Delay(TimeSpan.FromSeconds(1));
 		}
 
 		private void RemoveMember(string name)
@@ -54,7 +57,7 @@ namespace ReactivePropertyTest
 
 		public ReactiveProperty<bool> IsAllLong { get; }
 		public ReactiveProperty<bool> IsAnySelected { get; }
-
+		
 		public MainWindowViewModel()
 		{
 			#region Test
@@ -64,7 +67,7 @@ namespace ReactivePropertyTest
 			AddMemberIsSelected = new ReactiveProperty<bool>(false);
 			RemoveMemberName = new ReactiveProperty<string>(string.Empty);
 
-			AddMemberCommand = new ReactiveCommand();
+			AddMemberCommand = new AsyncReactiveCommand();
 			AddMemberCommand.Subscribe(_ => AddMember(AddMemberName.Value, AddMemberIsLong.Value, AddMemberIsSelected.Value));
 
 			RemoveMemberCommand = new ReactiveCommand();

@@ -17,35 +17,14 @@ namespace ReactivePropertyTest
 		}
 		private bool _isLong;
 
-		public ReactiveProperty<bool> IsSelected { get; }
-
-		#region Test
-
-		public bool IsSelectedValue
-		{
-			get { return _isSelectedValue; }
-			set { SetPropertyValue(ref _isSelectedValue, value); }
-		}
-		private bool _isSelectedValue;
-
-		public IObservable<bool> IsSelectedCopy { get; }
-
-		#endregion
+		public ReactivePropertySlim<bool> IsSelected { get; }
 
 		public MemberViewModel(string name, bool isSelected = false)
 		{
 			this.Name = name;
 
-			IsSelected = new ReactiveProperty<bool>(isSelected);
-
-			#region Test
-
-			IsSelectedCopy = this.ObserveProperty(x => x.IsSelectedValue);
-			IsSelectedCopy.Subscribe(x => Debug.WriteLine($"IsSelectedCopy {x}"));
-
-			IsSelected.Subscribe(x => IsSelectedValue = x);
-
-			#endregion
+			IsSelected = new ReactivePropertySlim<bool>(isSelected);
+			IsSelected.Subscribe(x => Debug.WriteLine($"IsSelected: {x}"));
 		}
 	}
 }
