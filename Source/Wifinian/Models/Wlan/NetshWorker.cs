@@ -42,9 +42,8 @@ namespace Wifinian.Models.Wlan
 
 		public async Task ScanNetworkAsync(TimeSpan timeout)
 		{
-			await Task.Delay(TimeSpan.FromSeconds(1)); // Dummy
-
-			deferTask = DeferAsync(() =>
+			// Netsh has no function to directly prompt to scan wireless LANs.
+			await DeferAsync(() =>
 			{
 				NetworkRefreshed?.Invoke(this, EventArgs.Empty);
 				AvailabilityChanged?.Invoke(this, EventArgs.Empty);
@@ -136,7 +135,7 @@ namespace Wifinian.Models.Wlan
 			if (!await Netsh.SetProfileParameterAsync(item.InterfaceName, item.Name, item.IsAutoConnectEnabled, item.IsAutoSwitchEnabled))
 				return false;
 
-			deferTask = DeferAsync(() => ProfileChanged?.Invoke(this, EventArgs.Empty));
+			await DeferAsync(() => ProfileChanged?.Invoke(this, EventArgs.Empty));
 			return true;
 		}
 
@@ -150,13 +149,14 @@ namespace Wifinian.Models.Wlan
 			if (!await Netsh.SetProfilePositionAsync(item.InterfaceName, item.Name, position))
 				return false;
 
-			deferTask = DeferAsync(() => ProfileChanged?.Invoke(this, EventArgs.Empty));
+			await DeferAsync(() => ProfileChanged?.Invoke(this, EventArgs.Empty));
 			return true;
 		}
 
 		public Task<bool> RenameProfileAsync(ProfileItem profileItem, string profileName)
 		{
-			return Task.FromResult(false); // Netsh has no function to directly rename a wireless profile.
+			// Netsh has no function to directly rename a wireless profile.
+			return Task.FromResult(false);
 		}
 
 		public async Task<bool> DeleteProfileAsync(ProfileItem profileItem)
@@ -166,7 +166,7 @@ namespace Wifinian.Models.Wlan
 			if (!await Netsh.DeleteProfileAsync(item.InterfaceName, item.Name))
 				return false;
 
-			deferTask = DeferAsync(() => ProfileChanged?.Invoke(this, EventArgs.Empty));
+			await DeferAsync(() => ProfileChanged?.Invoke(this, EventArgs.Empty));
 			return true;
 		}
 
@@ -181,7 +181,7 @@ namespace Wifinian.Models.Wlan
 			if (!await Netsh.ConnectNetworkAsync(item.InterfaceName, item.Name))
 				return false;
 
-			deferTask = DeferAsync(() => ConnectionChanged?.Invoke(this, EventArgs.Empty));
+			await DeferAsync(() => ConnectionChanged?.Invoke(this, EventArgs.Empty));
 			return true;
 		}
 
@@ -192,7 +192,7 @@ namespace Wifinian.Models.Wlan
 			if (!await Netsh.DisconnectNetworkAsync(item.InterfaceName))
 				return false;
 
-			deferTask = DeferAsync(() => ConnectionChanged?.Invoke(this, EventArgs.Empty));
+			await DeferAsync(() => ConnectionChanged?.Invoke(this, EventArgs.Empty));
 			return true;
 		}
 
@@ -200,11 +200,14 @@ namespace Wifinian.Models.Wlan
 
 		#region Base
 
-		private Task deferTask;
-
-		private async Task DeferAsync(Action action)
+		private Task DeferAsync(Action action)
 		{
-			await Task.Delay(TimeSpan.FromMilliseconds(100)).ConfigureAwait(false);
+			return DeferAsync(action, TimeSpan.FromSeconds(1));
+		}
+
+		private async Task DeferAsync(Action action, TimeSpan deferDuration)
+		{
+			await Task.Delay(deferDuration).ConfigureAwait(false);
 			action?.Invoke();
 		}
 

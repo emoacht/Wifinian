@@ -14,7 +14,7 @@ namespace Wifinian.Models.Wlan
 	/// <remarks>
 	/// Basic Netsh commands for wireless LAN are described in:
 	/// https://technet.microsoft.com/en-us/library/cc755301.aspx
-	/// However, this is some outdated. Check the latest information by Help command.
+	/// However, this is partly outdated. Check the latest information by Help command.
 	/// </remarks>
 	internal class Netsh
 	{
@@ -179,16 +179,7 @@ namespace Wifinian.Models.Wlan
 					if (id == Guid.Empty)
 					{
 						var buff = FindElement(outputLine, "GUID");
-						if (buff != null)
-						{
-							try
-							{
-								id = new Guid(buff);
-							}
-							catch (FormatException)
-							{
-							}
-						}
+						Guid.TryParse(buff, out id); // If parsing failed, out variable will be Guid.Empty.
 						continue;
 					}
 					if (physicalAddress == null)
@@ -231,7 +222,7 @@ namespace Wifinian.Models.Wlan
 					description: description,
 					id: id,
 					physicalAddress: physicalAddress,
-					isRadioOn: isHardwareOn.GetValueOrDefault() && isSoftwareOn.GetValueOrDefault(),
+					isRadioOn: isConnected.Value || ((true == isHardwareOn) == isSoftwareOn),
 					isConnected: isConnected.Value,
 					profileName: profileName);
 
