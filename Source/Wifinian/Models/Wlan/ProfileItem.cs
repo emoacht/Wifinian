@@ -94,7 +94,7 @@ namespace Wifinian.Models.Wlan
 		private int _positionCount;
 
 		/// <summary>
-		/// Whether radio of associated wireless interface is on
+		/// Whether the radio of associated wireless interface is on
 		/// </summary>
 		public bool IsRadioOn
 		{
@@ -102,6 +102,16 @@ namespace Wifinian.Models.Wlan
 			set => SetPropertyValue(ref _isRadioOn, value);
 		}
 		private bool _isRadioOn;
+
+		/// <summary>
+		/// Whether associated wireless interface is connected to associated wireless LAN
+		/// </summary>
+		public bool IsConnected
+		{
+			get => _isConnected;
+			set => SetPropertyValue(ref _isConnected, value);
+		}
+		private bool _isConnected;
 
 		/// <summary>
 		/// Signal quality (0-100) of associated wireless LAN
@@ -114,14 +124,24 @@ namespace Wifinian.Models.Wlan
 		private int _signal;
 
 		/// <summary>
-		/// Whether associated wireless interface is connected to associated wireless LAN
+		/// Frequency band (GHz) of associated wireless LAN
 		/// </summary>
-		public bool IsConnected
+		public float Band
 		{
-			get => _isConnected;
-			set => SetPropertyValue(ref _isConnected, value);
+			get => _band;
+			set => SetPropertyValue(ref _band, value);
 		}
-		private bool _isConnected;
+		private float _band;
+
+		/// <summary>
+		/// Channel of associated wireless LAN
+		/// </summary>
+		public int Channel
+		{
+			get => _channel;
+			set => SetPropertyValue(ref _channel, value);
+		}
+		private int _channel;
 
 		/// <summary>
 		/// Whether this profile is set to be target
@@ -141,8 +161,10 @@ namespace Wifinian.Models.Wlan
 			bool isAutoSwitchEnabled,
 			int position,
 			bool isRadioOn,
+			bool isConnected,
 			int signal,
-			bool isConnected)
+			float band,
+			int channel)
 		{
 			if (string.IsNullOrWhiteSpace(name))
 				throw new ArgumentNullException(nameof(name));
@@ -160,8 +182,10 @@ namespace Wifinian.Models.Wlan
 			this.IsAutoSwitchEnabled = isAutoSwitchEnabled;
 			this.Position = position;
 			this.IsRadioOn = isRadioOn;
-			this.Signal = signal;
 			this.IsConnected = isConnected;
+			this.Signal = signal;
+			this.Band = band;
+			this.Channel = channel;
 		}
 
 		#endregion
@@ -176,8 +200,10 @@ namespace Wifinian.Models.Wlan
 			this.IsAutoSwitchEnabled = other.IsAutoSwitchEnabled;
 			this.Position = other.Position;
 			this.IsRadioOn = other.IsRadioOn;
-			this.Signal = other.Signal;
 			this.IsConnected = other.IsConnected;
+			this.Signal = other.Signal;
+			this.Band = other.Band;
+			this.Channel = other.Channel;
 		}
 	}
 }

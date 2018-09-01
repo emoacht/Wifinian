@@ -83,8 +83,10 @@ namespace Wifinian.Models.Wlan
 					   isAutoSwitchEnabled: profilePack.IsAutoSwitchEnabled,
 					   position: profilePack.Position,
 					   isRadioOn: interfacePack.IsRadioOn,
+					   isConnected: (interfacePack.IsConnected && profilePack.Name.Equals(interfacePack.ProfileName, StringComparison.Ordinal)),
 					   signal: (networkPack?.Signal ?? 0),
-					   isConnected: (interfacePack.IsConnected && profilePack.Name.Equals(interfacePack.ProfileName, StringComparison.Ordinal)));
+					   band: (networkPack?.Band ?? 0),
+					   channel: (networkPack?.Channel ?? 0));
 		}
 
 		private static AuthenticationMethod ConvertToAuthenticationMethod(string authenticationString)

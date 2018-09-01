@@ -103,7 +103,7 @@ namespace Wifinian.Models.Wlan
 			if (!IsWorkable)
 				return Array.Empty<NativeWifiProfileItem>();
 
-			var profilePacks = await Task.Run(() => _player.EnumerateProfiles()).ConfigureAwait(false);
+			var profilePacks = await Task.Run(() => _player.EnumerateProfileRadios()).ConfigureAwait(false);
 
 			return profilePacks.Select(x => new NativeWifiProfileItem(
 				name: x.Name,
@@ -113,8 +113,10 @@ namespace Wifinian.Models.Wlan
 				document: x.Document,
 				position: x.Position,
 				isRadioOn: x.IsRadioOn,
+				isConnected: x.IsConnected,
 				signal: x.SignalQuality,
-				isConnected: x.IsConnected));
+				band: x.Band,
+				channel: x.Channel));
 		}
 
 		#endregion

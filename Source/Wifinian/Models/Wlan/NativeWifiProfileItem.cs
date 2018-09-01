@@ -61,8 +61,10 @@ namespace Wifinian.Models.Wlan
 			ProfileDocument document,
 			int position,
 			bool isRadioOn,
+			bool isConnected,
 			int signal,
-			bool isConnected) : base(
+			float band,
+			int channel) : base(
 				name: name,
 				interfaceId: interfaceId,
 				interfaceName: null,
@@ -73,8 +75,10 @@ namespace Wifinian.Models.Wlan
 				isAutoSwitchEnabled: false,
 				position: position,
 				isRadioOn: isRadioOn,
+				isConnected: isConnected,
 				signal: signal,
-				isConnected: isConnected)
+				band: band,
+				channel: channel)
 		{
 			this.ProfileType = profileType;
 			this._document = document ?? throw new ArgumentNullException(nameof(document));

@@ -27,7 +27,7 @@
             <summary>
             Returns the UTF-8 string representation of SSID
             </summary>
-            <returns>If successfully converted the byte array of SSID, UTF-8 string. If not, null.</returns>
+            <returns>UTF-8 string if successfully converted the byte array of SSID. Null if failed.</returns>
         </member>
         <member name="M:ManagedNativeWifi.Win32.NativeMethod.DOT11_MAC_ADDRESS.ToBytes">
             <summary>
@@ -120,7 +120,7 @@
         </member>
         <member name="T:ManagedNativeWifi.AvailableNetworkPack">
             <summary>
-            Wireless LAN information
+            Wireless LAN information on available network
             </summary>
         </member>
         <member name="P:ManagedNativeWifi.AvailableNetworkPack.Interface">
@@ -158,9 +158,44 @@
             Constructor
             </summary>
         </member>
+        <member name="T:ManagedNativeWifi.AvailableNetworkGroupPack">
+            <summary>
+            Wireless LAN information on available network and group of associated BSS networks
+            </summary>
+        </member>
+        <member name="P:ManagedNativeWifi.AvailableNetworkGroupPack.BssNetworks">
+            <summary>
+            Associated BSS networks information
+            </summary>
+        </member>
+        <member name="P:ManagedNativeWifi.AvailableNetworkGroupPack.LinkQuality">
+            <summary>
+            Link quality of associated BSS network which is the highest link quality
+            </summary>
+        </member>
+        <member name="P:ManagedNativeWifi.AvailableNetworkGroupPack.Frequency">
+            <summary>
+            Frequency (KHz) of associated BSS network which has the highest link quality
+            </summary>
+        </member>
+        <member name="P:ManagedNativeWifi.AvailableNetworkGroupPack.Band">
+            <summary>
+            Frequency band (GHz) of associated BSS network which has the highest link quality
+            </summary>
+        </member>
+        <member name="P:ManagedNativeWifi.AvailableNetworkGroupPack.Channel">
+            <summary>
+            Channel of associated BSS network which has the highest link quality
+            </summary>
+        </member>
+        <member name="M:ManagedNativeWifi.AvailableNetworkGroupPack.#ctor(ManagedNativeWifi.InterfaceInfo,ManagedNativeWifi.NetworkIdentifier,ManagedNativeWifi.BssType,System.Int32,System.Boolean,System.String,System.Collections.Generic.IEnumerable{ManagedNativeWifi.BssNetworkPack})">
+            <summary>
+            Constructor
+            </summary>
+        </member>
         <member name="T:ManagedNativeWifi.BssNetworkPack">
             <summary>
-            Wireless LAN information
+            Wireless LAN information on BSS network
             </summary>
         </member>
         <member name="P:ManagedNativeWifi.BssNetworkPack.Interface">
@@ -195,15 +230,20 @@
         </member>
         <member name="P:ManagedNativeWifi.BssNetworkPack.Frequency">
             <summary>
-            Wireless LAN frequency (KHz)
+            Frequency (KHz)
+            </summary>
+        </member>
+        <member name="P:ManagedNativeWifi.BssNetworkPack.Band">
+            <summary>
+            Frequency band (GHz)
             </summary>
         </member>
         <member name="P:ManagedNativeWifi.BssNetworkPack.Channel">
             <summary>
-            Wireless LAN channel
+            Channel
             </summary>
         </member>
-        <member name="M:ManagedNativeWifi.BssNetworkPack.#ctor(ManagedNativeWifi.InterfaceInfo,ManagedNativeWifi.NetworkIdentifier,ManagedNativeWifi.BssType,ManagedNativeWifi.NetworkIdentifier,System.Int32,System.Int32,System.Int32,System.Int32)">
+        <member name="M:ManagedNativeWifi.BssNetworkPack.#ctor(ManagedNativeWifi.InterfaceInfo,ManagedNativeWifi.NetworkIdentifier,ManagedNativeWifi.BssType,ManagedNativeWifi.NetworkIdentifier,System.Int32,System.Int32,System.Int32,System.Single,System.Int32)">
             <summary>
             Constructor
             </summary>
@@ -226,6 +266,41 @@
         <member name="F:ManagedNativeWifi.BssType.Independent">
             <summary>
             Independent BSS (IBSS) network (Ad hoc network)
+            </summary>
+        </member>
+        <member name="T:ManagedNativeWifi.ConnectionMode">
+            <summary>
+            Connection mode
+            </summary>
+        </member>
+        <member name="F:ManagedNativeWifi.ConnectionMode.Invalid">
+            <summary>
+            Not used.
+            </summary>
+        </member>
+        <member name="F:ManagedNativeWifi.ConnectionMode.Profile">
+            <summary>
+            A profile will be used to make the connection.
+            </summary>
+        </member>
+        <member name="F:ManagedNativeWifi.ConnectionMode.TemporaryProfile">
+            <summary>
+            A temporary profile will be used to make the connection.
+            </summary>
+        </member>
+        <member name="F:ManagedNativeWifi.ConnectionMode.DiscoverySecure">
+            <summary>
+            Secure discovery will be used to make the connection.
+            </summary>
+        </member>
+        <member name="F:ManagedNativeWifi.ConnectionMode.DiscoveryUnsecure">
+            <summary>
+            Unsecure discovery will be used to make the connection.
+            </summary>
+        </member>
+        <member name="F:ManagedNativeWifi.ConnectionMode.Auto">
+            <summary>
+            The connection is initiated by the wireless service automatically using a persistent profile.
             </summary>
         </member>
         <member name="T:ManagedNativeWifi.EncryptionType">
@@ -281,22 +356,32 @@
             Constructor
             </summary>
         </member>
-        <member name="T:ManagedNativeWifi.InterfaceRadio">
+        <member name="T:ManagedNativeWifi.InterfaceConnectionInfo">
             <summary>
-            Wireless interface radio information
+            Wireless interface and related connection information
             </summary>
         </member>
-        <member name="P:ManagedNativeWifi.InterfaceRadio.Id">
+        <member name="P:ManagedNativeWifi.InterfaceConnectionInfo.ConnectionMode">
             <summary>
-            Interface ID
+            Connection mode
             </summary>
         </member>
-        <member name="P:ManagedNativeWifi.InterfaceRadio.RadioSets">
+        <member name="P:ManagedNativeWifi.InterfaceConnectionInfo.IsRadioOn">
             <summary>
-            Radio information
+            Whether the radio of the wireless interface is on
             </summary>
         </member>
-        <member name="M:ManagedNativeWifi.InterfaceRadio.#ctor(System.Guid,System.Collections.Generic.IEnumerable{ManagedNativeWifi.RadioSet})">
+        <member name="P:ManagedNativeWifi.InterfaceConnectionInfo.IsConnected">
+            <summary>
+            Whether the wireless interface is connected to a wireless LAN
+            </summary>
+        </member>
+        <member name="P:ManagedNativeWifi.InterfaceConnectionInfo.ProfileName">
+            <summary>
+            Wireless profile name when the wireless profile is used for the connection
+            </summary>
+        </member>
+        <member name="M:ManagedNativeWifi.InterfaceConnectionInfo.#ctor(ManagedNativeWifi.Win32.NativeMethod.WLAN_INTERFACE_INFO,ManagedNativeWifi.ConnectionMode,System.Boolean,System.Boolean,System.String)">
             <summary>
             Constructor
             </summary>
@@ -358,6 +443,12 @@
             </summary>
             <returns>Wireless interface information</returns>
         </member>
+        <member name="M:ManagedNativeWifi.NativeWifi.EnumerateInterfaceConnections">
+            <summary>
+            Enumerates wireless interface and related connection information.
+            </summary>
+            <returns>Wireless interface and related connection information</returns>
+        </member>
         <member name="M:ManagedNativeWifi.NativeWifi.ScanNetworksAsync(System.TimeSpan)">
             <summary>
             Asynchronously requests wireless interfaces to scan wireless LANs.
@@ -389,15 +480,27 @@
             <summary>
             Enumerates wireless LAN information on available networks.
             </summary>
-            <returns>Wireless LAN information</returns>
-            <remarks>If multiple profiles are associated with a same network, there will be multiple
-            entries with the same SSID.</remarks>
+            <returns>Wireless LAN information on available networks</returns>
+            <remarks>
+            If multiple profiles are associated with a same network, there will be multiple entries with
+            the same SSID.
+            </remarks>
+        </member>
+        <member name="M:ManagedNativeWifi.NativeWifi.EnumerateAvailableNetworkGroups">
+            <summary>
+            Enumerates wireless LAN information on available networks and group of associated BSS networks.
+            </summary>
+            <returns>Wireless LAN information on available networks and group of associated BSS networks</returns>
+            <remarks>
+            If multiple profiles are associated with a same network, there will be multiple entries with
+            the same SSID.
+            </remarks>
         </member>
         <member name="M:ManagedNativeWifi.NativeWifi.EnumerateBssNetworks">
             <summary>
             Enumerates wireless LAN information on BSS networks.
             </summary>
-            <returns>Wireless LAN information</returns>
+            <returns>Wireless LAN information on BSS networks</returns>
         </member>
         <member name="M:ManagedNativeWifi.NativeWifi.EnumerateProfileNames">
             <summary>
@@ -411,6 +514,12 @@
             </summary>
             <returns>Wireless profile information</returns>
         </member>
+        <member name="M:ManagedNativeWifi.NativeWifi.EnumerateProfileRadios">
+            <summary>
+            Enumerates wireless profile and related radio information in preference order.
+            </summary>
+            <returns>Wireless profile and related radio information</returns>
+        </member>
         <member name="M:ManagedNativeWifi.NativeWifi.SetProfile(System.Guid,ManagedNativeWifi.ProfileType,System.String,System.String,System.Boolean)">
             <summary>
             Sets (adds or overwrites) the content of a specified wireless profile.
@@ -420,7 +529,7 @@
             <param name="profileXml">Profile XML</param>
             <param name="profileSecurity">Security descriptor for all-user profile</param>
             <param name="overwrite">Whether to overwrite an existing profile</param>
-            <returns>True if successfully set. False if not.</returns>
+            <returns>True if successfully set. False if failed.</returns>
             <remarks>
             If the content of the profile XML is not valid, a Win32Exception will be thrown.
             In such case, check the reason code in the message and see
@@ -435,7 +544,7 @@
             <param name="interfaceId">Interface ID</param>
             <param name="profileName">Profile name</param>
             <param name="position">Position (starting at 0)</param>
-            <returns>True if successfully set. False if not.</returns>
+            <returns>True if successfully set. False if failed.</returns>
         </member>
         <member name="M:ManagedNativeWifi.NativeWifi.RenameProfile(System.Guid,System.String,System.String)">
             <summary>
@@ -444,7 +553,7 @@
             <param name="interfaceId">Interface ID</param>
             <param name="oldProfileName">Old profile name</param>
             <param name="newProfileName">New profile name</param>
-            <returns>True if successfully renamed. False if not.</returns>
+            <returns>True if successfully renamed. False if failed.</returns>
         </member>
         <member name="M:ManagedNativeWifi.NativeWifi.DeleteProfile(System.Guid,System.String)">
             <summary>
@@ -452,7 +561,7 @@
             </summary>
             <param name="interfaceId">Interface ID</param>
             <param name="profileName">Profile name</param>
-            <returns>True if successfully deleted. False if could not delete.</returns>
+            <returns>True if successfully deleted. False if failed.</returns>
         </member>
         <member name="M:ManagedNativeWifi.NativeWifi.ConnectNetwork(System.Guid,System.String,ManagedNativeWifi.BssType)">
             <summary>
@@ -513,41 +622,48 @@
             Gets wireless interface radio information of a specified wireless interface.
             </summary>
             <param name="interfaceId">Interface ID</param>
-            <returns>Wireless interface radio information if succeeded. Null if not.</returns>
+            <returns>Wireless interface radio information if succeeded. Null if failed.</returns>
         </member>
         <member name="M:ManagedNativeWifi.NativeWifi.TurnOnInterfaceRadio(System.Guid)">
             <summary>
             Turns on the radio of a specified wireless interface (software radio state only).
             </summary>
             <param name="interfaceId">Interface ID</param>
-            <returns>True if successfully changed radio state. False if not.</returns>
-            <remarks>
-            If the user is not logged on as a member of Administrators group,
-            an UnauthorizedAccessException should be thrown.
-            </remarks>
+            <returns>True if successfully changed radio state. False if failed.</returns>
+            <exception cref="T:System.UnauthorizedAccessException">
+            If the user is not logged on as a member of Administrators group.
+            </exception>
         </member>
         <member name="M:ManagedNativeWifi.NativeWifi.TurnOffInterfaceRadio(System.Guid)">
             <summary>
             Turns off the radio of a specified wireless interface (software radio state only).
             </summary>
             <param name="interfaceId">Interface ID</param>
-            <returns>True if successfully changed radio state. False if not.</returns>
-            <remarks>
-            If the user is not logged on as a member of Administrators group,
-            an UnauthorizedAccessException should be thrown.
-            </remarks>
+            <returns>True if successfully changed radio state. False if failed.</returns>
+            <exception cref="T:System.UnauthorizedAccessException">
+            If the user is not logged on as a member of Administrators group.
+            </exception>
         </member>
-        <member name="M:ManagedNativeWifi.NativeWifi.DetectChannel(System.UInt32)">
+        <member name="M:ManagedNativeWifi.NativeWifi.GetInterfaceAutoConfig(System.Guid)">
             <summary>
-            Detects wireless LAN channel from center frequency.
+            Gets information on whether automatic configuration is enabled for a specified wireless interface.
+            </summary>
+            <param name="interfaceId">Interface ID</param>
+            <returns>True if enabled. False if disabled or failed to get information.</returns>
+        </member>
+        <member name="M:ManagedNativeWifi.NativeWifi.TryDetectBandChannel(System.UInt32,System.Single@,System.Int32@)">
+            <summary>
+            Attempts to detect frequency band and channel from center frequency.
             </summary>
             <param name="frequency">Center frequency (KHz)</param>
-            <returns>Channel number if successfully detected. 0 if not.</returns>
+            <param name="band">Frequency band (GHz)</param>
+            <param name="channel">Channel</param>
+            <returns>True if successfully detected. False if failed.</returns>
             <remarks>
             This method is marked as internal for unit test.
             As for 5GHz, this method may produce a channel number which is not actually in use.
-            Also, some channel numbers of 5GHz overlap those of 3.6GHz. In such cases, refer
-            the frequency to distinguish them.
+            Some channel numbers of 5GHz overlap those of 3.6GHz. In such cases, refer frequency band
+            to distinguish them.
             </remarks>
         </member>
         <member name="T:ManagedNativeWifi.NativeWifiPlayer">
@@ -601,6 +717,11 @@
             Enumerates wireless interface information.
             </summary>
         </member>
+        <member name="M:ManagedNativeWifi.NativeWifiPlayer.EnumerateInterfaceConnections">
+            <summary>
+            Enumerates wireless interface and related connection information.
+            </summary>
+        </member>
         <member name="M:ManagedNativeWifi.NativeWifiPlayer.ScanNetworksAsync(System.TimeSpan,System.Threading.CancellationToken)">
             <summary>
             Asynchronously requests wireless interfaces to scan wireless LANs.
@@ -618,7 +739,12 @@
         </member>
         <member name="M:ManagedNativeWifi.NativeWifiPlayer.EnumerateAvailableNetworks">
             <summary>
-            Enumerates wireless LAN information on available wireless LANs.
+            Enumerates wireless LAN information on available networks.
+            </summary>
+        </member>
+        <member name="M:ManagedNativeWifi.NativeWifiPlayer.EnumerateAvailableNetworkGroups">
+            <summary>
+            Enumerates wireless LAN information on available networks and group of associated BSS networks.
             </summary>
         </member>
         <member name="M:ManagedNativeWifi.NativeWifiPlayer.EnumerateBssNetworks">
@@ -629,6 +755,11 @@
         <member name="M:ManagedNativeWifi.NativeWifiPlayer.EnumerateProfiles">
             <summary>
             Enumerates wireless profile information in preference order.
+            </summary>
+        </member>
+        <member name="M:ManagedNativeWifi.NativeWifiPlayer.EnumerateProfileRadios">
+            <summary>
+            Enumerates wireless profile and related radio information in preference order.
             </summary>
         </member>
         <member name="M:ManagedNativeWifi.NativeWifiPlayer.SetProfile(System.Guid,ManagedNativeWifi.ProfileType,System.String,System.String,System.Boolean)">
@@ -911,22 +1042,57 @@
             Position in preference order of associated wireless interface
             </summary>
         </member>
-        <member name="P:ManagedNativeWifi.ProfilePack.IsRadioOn">
+        <member name="M:ManagedNativeWifi.ProfilePack.#ctor(System.String,ManagedNativeWifi.InterfaceInfo,ManagedNativeWifi.ProfileType,System.String,System.Int32)">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="T:ManagedNativeWifi.ProfileRadioPack">
+            <summary>
+            Wireless profile and related radio information
+            </summary>
+        </member>
+        <member name="P:ManagedNativeWifi.ProfileRadioPack.Interface">
+            <summary>
+            Associated wireless interface and associated information
+            </summary>
+        </member>
+        <member name="P:ManagedNativeWifi.ProfileRadioPack.IsRadioOn">
             <summary>
             Whether radio of associated wireless interface is on
             </summary>
         </member>
-        <member name="P:ManagedNativeWifi.ProfilePack.SignalQuality">
-            <summary>
-            Signal quality of associated wireless LAN
-            </summary>
-        </member>
-        <member name="P:ManagedNativeWifi.ProfilePack.IsConnected">
+        <member name="P:ManagedNativeWifi.ProfileRadioPack.IsConnected">
             <summary>
             Whether associated wireless interface is connected to associated wireless LAN
             </summary>
         </member>
-        <member name="M:ManagedNativeWifi.ProfilePack.#ctor(System.String,ManagedNativeWifi.InterfaceInfo,ManagedNativeWifi.ProfileType,System.String,System.Int32,System.Boolean,System.Int32,System.Boolean)">
+        <member name="P:ManagedNativeWifi.ProfileRadioPack.SignalQuality">
+            <summary>
+            Signal quality of associated wireless LAN
+            </summary>
+        </member>
+        <member name="P:ManagedNativeWifi.ProfileRadioPack.LinkQuality">
+            <summary>
+            Link quality of associated wireless LAN
+            </summary>
+        </member>
+        <member name="P:ManagedNativeWifi.ProfileRadioPack.Frequency">
+            <summary>
+            Frequency (KHz) of associated wireless LAN
+            </summary>
+        </member>
+        <member name="P:ManagedNativeWifi.ProfileRadioPack.Band">
+            <summary>
+            Frequency band (GHz) of associated wireless LAN
+            </summary>
+        </member>
+        <member name="P:ManagedNativeWifi.ProfileRadioPack.Channel">
+            <summary>
+            Channel of associated wireless LAN
+            </summary>
+        </member>
+        <member name="M:ManagedNativeWifi.ProfileRadioPack.#ctor(System.String,ManagedNativeWifi.InterfaceConnectionInfo,ManagedNativeWifi.ProfileType,System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.Single,System.Int32)">
             <summary>
             Constructor
             </summary>
@@ -953,6 +1119,26 @@
             </summary>
             <remarks>Equivalent to WLAN_PROFILE_USER</remarks>
         </member>
+        <member name="T:ManagedNativeWifi.RadioInfo">
+            <summary>
+            Wireless interface radio information
+            </summary>
+        </member>
+        <member name="P:ManagedNativeWifi.RadioInfo.Id">
+            <summary>
+            Interface ID
+            </summary>
+        </member>
+        <member name="P:ManagedNativeWifi.RadioInfo.RadioSets">
+            <summary>
+            Radio information
+            </summary>
+        </member>
+        <member name="M:ManagedNativeWifi.RadioInfo.#ctor(System.Guid,System.Collections.Generic.IEnumerable{ManagedNativeWifi.RadioSet})">
+            <summary>
+            Constructor
+            </summary>
+        </member>
         <member name="T:ManagedNativeWifi.RadioSet">
             <summary>
             Wireless radio information
@@ -963,14 +1149,14 @@
             802.11 PHY and media type
             </summary>
         </member>
-        <member name="P:ManagedNativeWifi.RadioSet.SoftwareOn">
-            <summary>
-            Whether software radio state is on
-            </summary>
-        </member>
         <member name="P:ManagedNativeWifi.RadioSet.HardwareOn">
             <summary>
             Whether hardware radio state is on
+            </summary>
+        </member>
+        <member name="P:ManagedNativeWifi.RadioSet.SoftwareOn">
+            <summary>
+            Whether software radio state is on
             </summary>
         </member>
         <member name="P:ManagedNativeWifi.RadioSet.On">
