@@ -209,17 +209,31 @@
 												</Button>
 											</Grid>
 
-											<!-- Supplement -->
-											<TextBlock Grid.Column="1" Grid.Row="0"
-													   Margin="8,0,0,0"
-													   Foreground="{StaticResource App.Foreground.Shadow}"
-													   FontSize="12"
-													   TextTrimming="CharacterEllipsis">
-												<Run Text="{Binding InterfaceDescription, Mode=OneTime}"/>
-												<LineBreak/>
-												<Run Text="{Binding Authentication, Mode=OneTime}"/>
-												<Run Text="{Binding Encryption, Mode=OneTime, StringFormat=[{0}]}"/>
-											</TextBlock>
+											<StackPanel Grid.Column="1" Grid.Row="0"
+														Margin="8,0,0,0">
+												<!-- Description -->
+												<TextBlock Foreground="{StaticResource App.Foreground.Shadow}"
+														   FontSize="12"
+														   TextTrimming="CharacterEllipsis"
+														   Text="{Binding InterfaceDescription, Mode=OneTime}"/>
+
+												<StackPanel Orientation="Horizontal">
+													<!-- Authentication, Encryption -->
+													<TextBlock Foreground="{StaticResource App.Foreground.Shadow}"
+															   FontSize="12">
+														<Run Text="{Binding Authentication, Mode=OneTime}"/>
+														<Run Text="{Binding Encryption, Mode=OneTime, StringFormat=[{0}]}"/>
+													</TextBlock>
+
+													<!-- Band, Channel -->
+													<TextBlock Foreground="{StaticResource App.Foreground.Shadow}"
+															   FontSize="12"
+															   Visibility="{Binding IsAvailable.Value, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverterKey}}">
+														<Run Text="{Binding Band.Value, Mode=OneWay, StringFormat={} {0}GHz}"/>
+														<Run Text="{Binding Channel.Value, Mode=OneWay}"/>
+													</TextBlock>
+												</StackPanel>
+											</StackPanel>
 
 											<StackPanel Grid.Column="1" Grid.Row="1"
 														Margin="8,4,0,0"

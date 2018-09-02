@@ -14,7 +14,7 @@ namespace Wifinian.Models.Wlan
 	/// <remarks>
 	/// Basic Netsh commands for wireless LAN are described in:
 	/// https://technet.microsoft.com/en-us/library/cc755301.aspx
-	/// However, this is some outdated. Check the latest information by Help command.
+	/// However, this is partly outdated. Check the latest information by Help command.
 	/// </remarks>
 	internal class Netsh
 	{
@@ -114,6 +114,8 @@ namespace Wifinian.Models.Wlan
 			public string Authenticaion { get; }
 			public string Encryption { get; }
 			public int Signal { get; }
+			public float Band { get; }
+			public int Channel { get; }
 
 			public NetworkPack(
 				string interfaceName,
@@ -121,7 +123,9 @@ namespace Wifinian.Models.Wlan
 				NetworkType networkType,
 				string authentication,
 				string encryption,
-				int signal)
+				int signal,
+				float band,
+				int channel)
 			{
 				this.InterfaceName = interfaceName;
 				this.Ssid = ssid;
@@ -129,6 +133,8 @@ namespace Wifinian.Models.Wlan
 				this.Authenticaion = authentication;
 				this.Encryption = encryption;
 				this.Signal = signal;
+				this.Band = band;
+				this.Channel = channel;
 			}
 		}
 
@@ -173,16 +179,7 @@ namespace Wifinian.Models.Wlan
 					if (id == Guid.Empty)
 					{
 						var buff = FindElement(outputLine, "GUID");
-						if (buff != null)
-						{
-							try
-							{
-								id = new Guid(buff);
-							}
-							catch (FormatException)
-							{
-							}
-						}
+						Guid.TryParse(buff, out id); // If parsing failed, out variable will be Guid.Empty.
 						continue;
 					}
 					if (physicalAddress == null)
@@ -225,7 +222,7 @@ namespace Wifinian.Models.Wlan
 					description: description,
 					id: id,
 					physicalAddress: physicalAddress,
-					isRadioOn: isHardwareOn.GetValueOrDefault() && isSoftwareOn.GetValueOrDefault(),
+					isRadioOn: isConnected.Value || ((true == isHardwareOn) == isSoftwareOn),
 					isConnected: isConnected.Value,
 					profileName: profileName);
 
@@ -257,6 +254,7 @@ namespace Wifinian.Models.Wlan
 		{
 			var ssidPattern = new Regex(@"\bSSID (?<index>[1-9](?:\d|)(?:\d|)) *: *(?<value>\S.*)");
 			var signalPattern = new Regex(@"\bSignal *: *(?<value>(?:100|[1-9](?:\d|)|0))%");
+			var channelPattern = new Regex(@"\bChannel *: *(?<value>[1-9]\d{0,2})");
 
 			string interfaceName = null;
 			string ssid = null;
@@ -264,6 +262,7 @@ namespace Wifinian.Models.Wlan
 			string authentication = null;
 			string encryption = null;
 			int? signal = null;
+			int? channel = null;
 
 			foreach (var outputLine in outputLines)
 			{
@@ -309,6 +308,16 @@ namespace Wifinian.Models.Wlan
 						}
 						continue;
 					}
+					if (!channel.HasValue)
+					{
+						if (!string.IsNullOrWhiteSpace(outputLine))
+						{
+							var match = channelPattern.Match(outputLine);
+							if (match.Success)
+								channel = int.Parse(match.Groups["value"].Value);
+						}
+						continue;
+					}
 				}
 				catch (Exception ex)
 				{
@@ -317,13 +326,14 @@ namespace Wifinian.Models.Wlan
 					throw;
 				}
 
-				//Debug.WriteLine("Interface: {0}, SSID: {1}, BSS type: {2}, Authentication: {3}, Encryption: {4}, Signal: {5}",
-				//	interfaceName,
-				//	ssid,
-				//	networkType,
-				//	authentication,
-				//	encryption,
-				//	signal.Value);
+				Debug.WriteLine("Interface: {0}, SSID: {1}, BSS type: {2}, Authentication: {3}, Encryption: {4}, Signal: {5}, Channel: {6}",
+					interfaceName,
+					ssid,
+					networkType,
+					authentication,
+					encryption,
+					signal.Value,
+					channel.Value);
 
 				yield return new NetworkPack(
 					interfaceName: interfaceName,
@@ -331,13 +341,16 @@ namespace Wifinian.Models.Wlan
 					networkType: networkType,
 					authentication: authentication,
 					encryption: encryption,
-					signal: signal.Value);
+					signal: signal.Value,
+					band: (channel.Value <= 14) ? 2.4F : 5F,
+					channel: channel.Value);
 
 				ssid = null;
 				networkType = default(NetworkType);
 				authentication = null;
 				encryption = null;
 				signal = null;
+				channel = null;
 			}
 		}
 

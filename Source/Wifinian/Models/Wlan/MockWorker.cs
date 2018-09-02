@@ -126,8 +126,10 @@ namespace Wifinian.Models.Wlan
 				isAutoSwitchEnabled: targetProfile.IsAutoSwitchEnabled,
 				position: targetProfile.Position,
 				isRadioOn: targetProfile.IsRadioOn,
+				isConnected: targetProfile.IsConnected,
 				signal: targetProfile.Signal,
-				isConnected: targetProfile.IsConnected);
+				band: targetProfile.Band,
+				channel: targetProfile.Channel);
 
 			_sourceProfiles.Remove(targetProfile);
 			_sourceProfiles.Add(renamedProfile);
@@ -216,8 +218,10 @@ namespace Wifinian.Models.Wlan
 					isAutoSwitchEnabled: false,
 					position: 0,
 					isRadioOn: interfacePacks[0].IsRadioOn,
+					isConnected: false,
 					signal: 90,
-					isConnected: false),
+					band: 5,
+					channel: 48),
 
 				new ProfileItem(
 					name: "ESTACION",
@@ -230,8 +234,10 @@ namespace Wifinian.Models.Wlan
 					isAutoSwitchEnabled: false,
 					position: 1,
 					isRadioOn: interfacePacks[0].IsRadioOn,
+					isConnected: false,
 					signal: 0,
-					isConnected: false),
+					band: 0,
+					channel: 0),
 
 				new ProfileItem(
 					name: "flashair_W02",
@@ -244,8 +250,10 @@ namespace Wifinian.Models.Wlan
 					isAutoSwitchEnabled: false,
 					position: 2,
 					isRadioOn: interfacePacks[0].IsRadioOn,
+					isConnected: false,
 					signal: 0,
-					isConnected: false),
+					band: 0,
+					channel: 0),
 
 				new ProfileItem(
 					name: "flashair_W03",
@@ -258,8 +266,10 @@ namespace Wifinian.Models.Wlan
 					isAutoSwitchEnabled: true,
 					position: 3,
 					isRadioOn: interfacePacks[0].IsRadioOn,
+					isConnected: false,
 					signal: 90,
-					isConnected: false),
+					band: 2.4F,
+					channel: 14),
 
 				new ProfileItem(
 					name: "Cloud7",
@@ -272,8 +282,10 @@ namespace Wifinian.Models.Wlan
 					isAutoSwitchEnabled: false,
 					position: 0,
 					isRadioOn: interfacePacks[1].IsRadioOn,
+					isConnected: false,
 					signal: 70,
-					isConnected: false),
+					band: 5,
+					channel: 36),
 
 				new ProfileItem(
 					name: "nekoラン🐾🐾",
@@ -286,8 +298,10 @@ namespace Wifinian.Models.Wlan
 					isAutoSwitchEnabled: false,
 					position: 1,
 					isRadioOn: interfacePacks[1].IsRadioOn,
+					isConnected: false,
 					signal: 0,
-					isConnected: false),
+					band: 0,
+					channel: 0),
 
 				new ProfileItem(
 					name: "La La Lan...",
@@ -300,8 +314,10 @@ namespace Wifinian.Models.Wlan
 					isAutoSwitchEnabled: false,
 					position: 0,
 					isRadioOn: interfacePacks[2].IsRadioOn,
+					isConnected: false,
 					signal: 0,
-					isConnected: false),
+					band: 0,
+					channel: 0),
 			};
 		}
 

@@ -39,13 +39,17 @@ namespace Wifinian.ViewModels
 		public ReactiveProperty<bool> IsAutoConnectEnabled { get; }
 		public ReactiveProperty<bool> IsAutoSwitchEnabled { get; }
 
-		public ReadOnlyReactiveProperty<int> Position { get; }
-		public ReadOnlyReactiveProperty<int> PositionCount { get; }
+		public ReadOnlyReactivePropertySlim<int> Position { get; }
+		public ReadOnlyReactivePropertySlim<int> PositionCount { get; }
 
-		public ReadOnlyReactiveProperty<bool> IsRadioOn { get; }
-		public ReadOnlyReactiveProperty<int> Signal { get; }
-		public ReadOnlyReactiveProperty<bool> IsAvailable { get; }
-		public ReadOnlyReactiveProperty<bool> IsConnected { get; }
+		public ReadOnlyReactivePropertySlim<bool> IsRadioOn { get; }
+		public ReadOnlyReactivePropertySlim<bool> IsConnected { get; }
+
+		public ReadOnlyReactivePropertySlim<int> Signal { get; }
+		public ReadOnlyReactivePropertySlim<float> Band { get; }
+		public ReadOnlyReactivePropertySlim<int> Channel { get; }
+
+		public ReadOnlyReactivePropertySlim<bool> IsAvailable { get; }
 
 		public ReactiveProperty<bool> IsSelected { get; }
 
@@ -84,32 +88,42 @@ namespace Wifinian.ViewModels
 
 			Position = profileItem
 				.ObserveProperty(x => x.Position)
-				.ToReadOnlyReactiveProperty()
+				.ToReadOnlyReactivePropertySlim()
 				.AddTo(this.Subscription);
 
 			PositionCount = profileItem
 				.ObserveProperty(x => x.PositionCount)
-				.ToReadOnlyReactiveProperty()
+				.ToReadOnlyReactivePropertySlim()
 				.AddTo(this.Subscription);
 
 			IsRadioOn = profileItem
 				.ObserveProperty(x => x.IsRadioOn)
-				.ToReadOnlyReactiveProperty()
-				.AddTo(this.Subscription);
-
-			Signal = profileItem
-				.ObserveProperty(x => x.Signal)
-				.ToReadOnlyReactiveProperty()
-				.AddTo(this.Subscription);
-
-			IsAvailable = Signal
-				.Select(x => 0 < x)
-				.ToReadOnlyReactiveProperty()
+				.ToReadOnlyReactivePropertySlim()
 				.AddTo(this.Subscription);
 
 			IsConnected = profileItem
 				.ObserveProperty(x => x.IsConnected)
-				.ToReadOnlyReactiveProperty()
+				.ToReadOnlyReactivePropertySlim()
+				.AddTo(this.Subscription);
+
+			Signal = profileItem
+				.ObserveProperty(x => x.Signal)
+				.ToReadOnlyReactivePropertySlim()
+				.AddTo(this.Subscription);
+
+			Band = profileItem
+				.ObserveProperty(x => x.Band)
+				.ToReadOnlyReactivePropertySlim()
+				.AddTo(this.Subscription);
+
+			Channel = profileItem
+				.ObserveProperty(x => x.Channel)
+				.ToReadOnlyReactivePropertySlim()
+				.AddTo(this.Subscription);
+
+			IsAvailable = Signal
+				.Select(x => 0 < x)
+				.ToReadOnlyReactivePropertySlim()
 				.AddTo(this.Subscription);
 
 			IsSelected = ReactiveProperty.FromObject(profileItem, x => x.IsTarget)
