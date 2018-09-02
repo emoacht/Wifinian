@@ -28,7 +28,7 @@ Functions:
 [Wifinian](https://www.microsoft.com/store/apps/9pngfqps4flh) (Windows Store)
 
  * Other:<br>
-:floppy_disk: [Installer](https://github.com/emoacht/Wifinian/releases/download/2.1.1-Installer/WifinianInstaller211.zip) | :floppy_disk: [Executables](https://github.com/emoacht/Wifinian/releases/download/2.1.1-Executables/Wifinian211.zip)
+:floppy_disk: [Installer](https://github.com/emoacht/Wifinian/releases/download/2.2.0-Installer/WifinianInstaller220.zip) | :floppy_disk: [Executables](https://github.com/emoacht/Wifinian/releases/download/2.2.0-Executables/Wifinian220.zip)
 
 ## Install/Uninstall
 
@@ -47,7 +47,7 @@ When you use only executables, please note the following:
 
 ## History
 
-[History](HISTORY.md)
+:scroll: [History](HISTORY.md)
 
 ## Libraries
 

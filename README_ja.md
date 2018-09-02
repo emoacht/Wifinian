@@ -28,7 +28,7 @@ WifinianはWi-Fi接続をユーザーが積極的にコントロールできるW
 [Wifinian](https://www.microsoft.com/store/apps/9pngfqps4flh) (Windows ストア)
 
  * その他:<br>
-:floppy_disk: [インストーラー](https://github.com/emoacht/Wifinian/releases/download/2.1.1-Installer/WifinianInstaller211.zip) | :floppy_disk: [実行ファイル](https://github.com/emoacht/Wifinian/releases/download/2.1.1-Executables/Wifinian211.zip)
+:floppy_disk: [インストーラー](https://github.com/emoacht/Wifinian/releases/download/2.2.0-Installer/WifinianInstaller220.zip) | :floppy_disk: [実行ファイル](https://github.com/emoacht/Wifinian/releases/download/2.2.0-Executables/Wifinian220.zip)
 
 ## インストール/アンインストール
 
@@ -47,7 +47,7 @@ WifinianはWi-Fi接続をユーザーが積極的にコントロールできるW
 
 ## 履歴
 
-[History](HISTORY.md)
+:scroll: [History](HISTORY.md)
 
 ## ライブラリ
 
