@@ -75,8 +75,8 @@ namespace Wifinian.Views.Behaviors
 			if (Target == null)
 				return;
 
-			var targetLocation = Target.PointToScreen(default(Point));
-			var currentLocation = this.AssociatedObject.PointToScreen(default(Point));
+			var targetLocation = Target.PointToScreen(default);
+			var currentLocation = this.AssociatedObject.PointToScreen(default);
 
 			var desiredLocationX = targetLocation.X + (Target.ActualWidth - this.AssociatedObject.ActualWidth) / 2D;
 			var desiredLocationY = targetLocation.Y + (Target.ActualHeight - this.AssociatedObject.ActualHeight) / 2D;

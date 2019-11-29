@@ -258,7 +258,7 @@ namespace Wifinian.Models.Wlan
 
 			string interfaceName = null;
 			string ssid = null;
-			NetworkType networkType = default(NetworkType);
+			NetworkType networkType = default;
 			string authentication = null;
 			string encryption = null;
 			int? signal = null;
@@ -283,7 +283,7 @@ namespace Wifinian.Models.Wlan
 						}
 						continue;
 					}
-					if (networkType == default(NetworkType))
+					if (networkType == default)
 					{
 						networkType = ConvertToNetworkType(FindElement(outputLine, "Network type"));
 						continue;
@@ -346,7 +346,7 @@ namespace Wifinian.Models.Wlan
 					channel: channel.Value);
 
 				ssid = null;
-				networkType = default(NetworkType);
+				networkType = default;
 				authentication = null;
 				encryption = null;
 				signal = null;
@@ -418,7 +418,7 @@ namespace Wifinian.Models.Wlan
 			bool? autoConnect = null;
 			bool? autoSwitch = null;
 			string ssid = null;
-			NetworkType networkType = default(NetworkType);
+			NetworkType networkType = default;
 			string authentication = null;
 			string encryption = null;
 
@@ -450,7 +450,7 @@ namespace Wifinian.Models.Wlan
 
 						continue;
 					}
-					if (networkType == default(NetworkType))
+					if (networkType == default)
 					{
 						networkType = ConvertToNetworkType(FindElement(outputLine, "Network type"));
 						continue;
@@ -477,7 +477,7 @@ namespace Wifinian.Models.Wlan
 			if (!autoConnect.HasValue ||
 				!autoSwitch.HasValue ||
 				(ssid == null) ||
-				(networkType == default(NetworkType)) ||
+				(networkType == default) ||
 				(authentication == null) ||
 				(encryption == null))
 				return null;
@@ -642,7 +642,7 @@ namespace Wifinian.Models.Wlan
 		{
 			if (string.IsNullOrWhiteSpace(source))
 			{
-				return default(NetworkType);
+				return default;
 			}
 			if (source.Equals("Infrastructure", StringComparison.OrdinalIgnoreCase))
 			{

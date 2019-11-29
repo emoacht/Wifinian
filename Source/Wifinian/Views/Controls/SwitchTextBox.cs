@@ -104,7 +104,7 @@ namespace Wifinian.Views.Controls
 					return true;
 
 				default:
-					position = default(Point);
+					position = default;
 					return false;
 			}
 		}

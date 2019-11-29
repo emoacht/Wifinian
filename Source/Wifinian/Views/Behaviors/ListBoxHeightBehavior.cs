@@ -83,7 +83,7 @@ namespace Wifinian.Views.Behaviors
 				return true;
 			}
 
-			fieldValue = default(TValue);
+			fieldValue = default;
 			return false;
 		}
 	}
