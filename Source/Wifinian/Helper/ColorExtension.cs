@@ -16,7 +16,7 @@ namespace Wifinian.Helper
 		public static Color ToBrightened(this Color source, float factor)
 		{
 			if (factor <= 0F)
-				throw new ArgumentOutOfRangeException(nameof(factor));
+				throw new ArgumentOutOfRangeException(nameof(factor), "The factor must be positive.");
 
 			var bridgeColor = HsbColor.FromArgb(source);
 			bridgeColor.B = Min(1F, bridgeColor.B * factor);

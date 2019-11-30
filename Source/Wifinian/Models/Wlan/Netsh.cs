@@ -538,7 +538,7 @@ namespace Wifinian.Models.Wlan
 				throw new ArgumentNullException(nameof(profileName));
 
 			if (position < 0)
-				throw new ArgumentOutOfRangeException(nameof(position));
+				throw new ArgumentOutOfRangeException(nameof(position), "The position must not be negative");
 
 			position++; // According to the error message, "Profile preference order starts with 1."
 
