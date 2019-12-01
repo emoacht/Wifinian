@@ -528,15 +528,15 @@
 									<Storyboard>
 										<DoubleAnimation Storyboard.TargetName="border"
 														 Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Opacity)"
-														 To="0.9"
+														 To="0.8"
 														 Duration="0:0:0.1"/>
 										<DoubleAnimation Storyboard.TargetName="icon"
 														 Storyboard.TargetProperty="(Shape.Stroke).(SolidColorBrush.Opacity)"
-														 To="0.9"
+														 To="0.8"
 														 Duration="0:0:0.1"/>
 										<DoubleAnimation Storyboard.TargetName="content"
 														 Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Opacity)"
-														 To="0.9"
+														 To="0.8"
 														 Duration="0:0:0.1"/>
 									</Storyboard>
 								</VisualState>

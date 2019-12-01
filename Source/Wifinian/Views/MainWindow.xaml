@@ -256,14 +256,14 @@
 										</Grid>
 
 										<Grid Visibility="{Binding IsSelected.Value, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverterKey}}">
-											<Grid Width="280" Height="30" Margin="8,2,0,10"
+											<Grid Width="260" Height="30" Margin="8,4,0,10"
 												  HorizontalAlignment="Left"
 												  Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.ReordersPriority.Value, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverterKey}}">
 												<Grid.ColumnDefinitions>
-													<ColumnDefinition Width="80"/>
-													<ColumnDefinition Width="80"/>
-													<ColumnDefinition Width="40"/>
-													<ColumnDefinition Width="80"/>
+													<ColumnDefinition Width="76"/>
+													<ColumnDefinition Width="76"/>
+													<ColumnDefinition Width="30"/>
+													<ColumnDefinition Width="78"/>
 												</Grid.ColumnDefinitions>
 
 												<!-- Up -->
@@ -314,9 +314,10 @@
 						</ListView.ItemTemplate>
 						<ListView.ItemContainerStyle>
 							<Style TargetType="{x:Type ListViewItem}">
-								<Setter Property="IsSelected" Value="{Binding IsSelected.Value, Mode=OneWayToSource}"/>
-								<Setter Property="Margin" Value="0"/>
 								<Setter Property="OverridesDefaultStyle" Value="True"/>
+								<Setter Property="Margin" Value="0"/>
+								<Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+								<Setter Property="IsSelected" Value="{Binding IsSelected.Value, Mode=OneWayToSource}"/>
 								<Setter Property="Template">
 									<Setter.Value>
 										<ControlTemplate TargetType="{x:Type ContentControl}">
