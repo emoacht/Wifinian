@@ -6,7 +6,8 @@
 		Width="200"
 		ResizeMode="NoResize" SizeToContent="WidthAndHeight"
 		ShowInTaskbar="False" Topmost="True"
-		Background="{StaticResource App.Background}" AllowsTransparency="True" WindowStyle="None">
+		AllowsTransparency="True" WindowStyle="None"
+		Background="{StaticResource App.Background.Difference}">
 	<Window.Resources>
 		<!-- Menu separator -->
 		<Style x:Key="MenuSeparatorStyle" TargetType="{x:Type Separator}">
@@ -107,14 +108,15 @@
 		</Style>
 	</Window.Resources>
 
-	<StackPanel Margin="0,4,0,4">
-		<TextBlock HorizontalAlignment="Left"
-				   Padding="8,2,8,2"
-				   Foreground="{StaticResource App.Foreground}"
-				   Text="{Binding Source={x:Static models:ProductInfo.Title}, Mode=OneTime}"/>
-		<TextBlock Width="140" HorizontalAlignment="Left"
-				   Padding="8,0,8,6"
-				   Foreground="{StaticResource App.Foreground}">
+	<Grid Background="{StaticResource App.Background}">
+		<StackPanel Margin="0,4,0,4">
+			<TextBlock HorizontalAlignment="Left"
+					   Padding="8,2,8,2"
+					   Foreground="{StaticResource App.Foreground}"
+					   Text="{Binding Source={x:Static models:ProductInfo.Title}, Mode=OneTime}"/>
+			<TextBlock Width="140" HorizontalAlignment="Left"
+					   Padding="8,0,8,6"
+					   Foreground="{StaticResource App.Foreground}">
 			<Run Text="{Binding Source={x:Static models:ProductInfo.Version}, Mode=OneTime}"/>
 			<Run Text="|"/>
 			<Run Foreground="{StaticResource App.Foreground.Shadow}"
@@ -136,30 +138,31 @@
 					</i:EventTrigger>
 				</i:Interaction.Triggers>
 			</Run>
-		</TextBlock>
+			</TextBlock>
 
-		<Separator Style="{StaticResource MenuSeparatorStyle}"/>
+			<Separator Style="{StaticResource MenuSeparatorStyle}"/>
 
-		<ContentControl Style="{StaticResource MenuItemStyle}">
-			<CheckBox Padding="8,4"
-					  Style="{StaticResource CheckBoxItemStyle}"
-					  Foreground="{StaticResource App.Foreground}"
-					  FontSize="13"
-					  Content="{x:Static models:LanguageService.StartSignIn}"
-					  IsChecked="{Binding IsRegistered, Mode=TwoWay}"
-					  Visibility="{Binding CanRegister, Mode=OneTime, Converter={StaticResource BooleanToVisibilityConverterKey}}"/>
-		</ContentControl>
+			<ContentControl Style="{StaticResource MenuItemStyle}">
+				<CheckBox Padding="8,4"
+						  Style="{StaticResource CheckBoxItemStyle}"
+						  Foreground="{StaticResource App.Foreground}"
+						  FontSize="13"
+						  Content="{x:Static models:LanguageService.StartSignIn}"
+						  IsChecked="{Binding IsRegistered, Mode=TwoWay}"
+						  Visibility="{Binding CanRegister, Mode=OneTime, Converter={StaticResource BooleanToVisibilityConverterKey}}"/>
+			</ContentControl>
 
-		<Separator Style="{StaticResource MenuSeparatorStyle}"/>
+			<Separator Style="{StaticResource MenuSeparatorStyle}"/>
 
-		<!-- Close -->
-		<ContentControl Style="{StaticResource MenuItemStyle}">
-			<Button Padding="8,4"
-					Style="{StaticResource CloseButtonItemStyle}"
-					Foreground="{StaticResource App.Foreground}"
-					FontSize="14"
-					Content="{x:Static models:LanguageService.Close}"
-					Command="{Binding CloseCommand, Mode=OneTime}"/>
-		</ContentControl>
-	</StackPanel>
+			<!-- Close -->
+			<ContentControl Style="{StaticResource MenuItemStyle}">
+				<Button Padding="8,4"
+						Style="{StaticResource CloseButtonItemStyle}"
+						Foreground="{StaticResource App.Foreground}"
+						FontSize="14"
+						Content="{x:Static models:LanguageService.Close}"
+						Command="{Binding CloseCommand, Mode=OneTime}"/>
+			</ContentControl>
+		</StackPanel>
+	</Grid>
 </Window>

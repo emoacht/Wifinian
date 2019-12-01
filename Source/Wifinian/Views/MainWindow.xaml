@@ -11,7 +11,8 @@
 		Height="400" MinHeight="200"
 		ResizeMode="CanResize"
 		ShowInTaskbar="False"
-		Background="Transparent" AllowsTransparency="True" WindowStyle="None">
+		AllowsTransparency="True" WindowStyle="None"
+		Background="{StaticResource App.Background.Difference}">
 	<WindowChrome.WindowChrome>
 		<WindowChrome CaptionHeight="0"
 					  ResizeBorderThickness="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=ResizeBorderThickness}"/>

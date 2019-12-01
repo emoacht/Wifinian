@@ -60,7 +60,7 @@ namespace Wifinian.Views
 		{
 			base.OnSourceInitialized(e);
 
-			WindowEffect.EnableBackgroundBlur(this);
+			WindowEffect.EnableBackgroundTranslucency(this);
 
 			#region Size
 

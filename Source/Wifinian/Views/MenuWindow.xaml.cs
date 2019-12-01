@@ -25,7 +25,7 @@ namespace Wifinian.Views
 		internal MenuWindow(MainController controller, Point pivot)
 		{
 			InitializeComponent();
-			
+
 			this.DataContext = new MenuWindowViewModel(controller);
 
 			_mover = new FloatWindowMover(this, pivot);
@@ -35,7 +35,7 @@ namespace Wifinian.Views
 		{
 			base.OnSourceInitialized(e);
 
-			WindowEffect.EnableBackgroundBlur(this);
+			WindowEffect.EnableBackgroundTranslucency(this);
 		}
 
 		#region Close
