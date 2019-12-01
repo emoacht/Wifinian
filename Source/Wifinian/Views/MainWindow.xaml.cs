@@ -30,7 +30,7 @@ namespace Wifinian.Views
 
 		protected CompositeDisposable Subscription { get; } = new CompositeDisposable();
 
-		internal MainWindow(MainController controller)
+		internal MainWindow(AppController controller)
 		{
 			InitializeComponent();
 
@@ -43,7 +43,6 @@ namespace Wifinian.Views
 			#region Drag
 
 			Observable.FromEventPattern<MouseButtonEventHandler, MouseButtonEventArgs>(
-				h => h.Invoke,
 				h => this.MouseLeftButtonDown += h,
 				h => this.MouseLeftButtonDown -= h)
 				.Subscribe(x =>
@@ -68,7 +67,6 @@ namespace Wifinian.Views
 			RestoreWindowSize();
 
 			Observable.FromEventPattern<SizeChangedEventHandler, SizeChangedEventArgs>(
-				h => h.Invoke,
 				h => this.SizeChanged += h,
 				h => this.SizeChanged -= h)
 				.Subscribe(x => SaveWindowSize(x.EventArgs.NewSize))
@@ -175,10 +173,12 @@ namespace Wifinian.Views
 
 		#region Show/Hide
 
+		public bool IsForeground => _mover.IsForeground();
+
 		public bool CanBeShown => (_preventionTime < DateTimeOffset.Now);
 		private DateTimeOffset _preventionTime;
 
-		protected override async void OnDeactivated(EventArgs e)
+		protected override void OnDeactivated(EventArgs e)
 		{
 			base.OnDeactivated(e);
 
@@ -191,6 +191,11 @@ namespace Wifinian.Views
 			// Set time to prevent this window from being shown unintentionally. 
 			_preventionTime = DateTimeOffset.Now + TimeSpan.FromSeconds(0.2);
 
+			ClearHide();
+		}
+
+		public async void ClearHide()
+		{
 			// Clear focus.
 			FocusManager.SetFocusedElement(this, null);
 

@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
-using Reactive.Bindings.Helpers;
 
 using Wifinian.Common;
 using Wifinian.Models.Wlan;
@@ -15,7 +14,7 @@ namespace Wifinian.ViewModels
 {
 	public class ProfileItemViewModel : DisposableBase
 	{
-		private readonly MainController _controller;
+		private readonly AppController _controller;
 
 		public string Name
 		{
@@ -56,7 +55,7 @@ namespace Wifinian.ViewModels
 		public ReactiveCommand ConnectCommand { get; }
 		public ReactiveCommand DisconnectCommand { get; }
 
-		internal ProfileItemViewModel(MainController controller, ProfileItem profileItem)
+		internal ProfileItemViewModel(AppController controller, ProfileItem profileItem)
 		{
 			this._controller = controller ?? throw new ArgumentNullException(nameof(controller));
 

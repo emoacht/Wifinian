@@ -12,73 +12,49 @@ namespace Wifinian.Models
 {
 	internal class LogService
 	{
-		public static void Start()
-		{
-			App.Current.DispatcherUnhandledException += OnDispatcherUnhandledException;
-			TaskScheduler.UnobservedTaskException += OnUnobservedTaskException;
-			AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
-		}
-
-		public static void End()
-		{
-			App.Current.DispatcherUnhandledException -= OnDispatcherUnhandledException;
-			TaskScheduler.UnobservedTaskException -= OnUnobservedTaskException;
-			AppDomain.CurrentDomain.UnhandledException -= OnUnhandledException;
-		}
-
-		private static void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
-		{
-			OnException(sender, e.Exception, nameof(Application.DispatcherUnhandledException));
-			//e.Handled = true;
-		}
-
-		private static void OnUnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
-		{
-			OnException(sender, e.Exception, nameof(TaskScheduler.UnobservedTaskException));
-			//e.SetObserved();
-		}
-
-		private static void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
-		{
-			OnException(sender, (Exception)e.ExceptionObject, nameof(AppDomain.UnhandledException));
-		}
-
-		private static void OnException(object sender, Exception exception, string exceptionName)
-		{
-			RecordException(sender, exception);
-		}
-
-		#region Record
-
 		private const string OperationFileName = "operation.log";
 		private const string ExceptionFileName = "exception.log";
 
+		private const string HeaderStart = "[Date:";
+		private static string ComposeHeader() => $"{HeaderStart} {DateTime.Now} Ver: {ProductInfo.Version}]";
+
 		/// <summary>
-		/// Records operation to AppData.
+		/// Records operation log to AppData.
 		/// </summary>
 		/// <param name="log">Log</param>
+		/// <remarks>A log file of previous dates will be overridden.</remarks>
 		public static void RecordOperation(string log)
 		{
-			var content = $"[Date: {DateTime.Now}]" + Environment.NewLine
+			var content = ComposeHeader() + Environment.NewLine
 				+ log + Environment.NewLine + Environment.NewLine;
 
 			RecordToAppData(OperationFileName, content);
 		}
 
 		/// <summary>
-		/// Records exception to AppData and Desktop.
+		/// Records exception log to AppData and Desktop.
 		/// </summary>
-		/// <param name="sender">Sender</param>
 		/// <param name="exception">Exception</param>
 		/// <remarks>A log file of previous dates will be overridden.</remarks>
-		public static void RecordException(object sender, Exception exception)
+		public static void RecordException(Exception exception)
 		{
-			var content = $"[Date: {DateTime.Now} Sender: {sender}]" + Environment.NewLine
-				+ exception + Environment.NewLine + Environment.NewLine;
+			var content = ComposeHeader() + Environment.NewLine
+				+ exception.ToString() + Environment.NewLine + Environment.NewLine;
 
 			RecordToAppData(ExceptionFileName, content);
-			RecordToDesktop(ExceptionFileName, content);
+
+			if (MessageBox.Show(
+				LanguageService.RecordException,
+				ProductInfo.Title,
+				MessageBoxButton.YesNo,
+				MessageBoxImage.Error,
+				MessageBoxResult.Yes) != MessageBoxResult.Yes)
+				return;
+
+			RecordToDesktop(ExceptionFileName, content, true);
 		}
+
+		#region Helper
 
 		private static void RecordToAppData(string fileName, string content)
 		{
@@ -99,30 +75,34 @@ namespace Wifinian.Models
 			}
 		}
 
-		private static string RecordMessage => LanguageService.RecordException;
-
-		private static void RecordToDesktop(string fileName, string content)
+		private static void RecordToDesktop(string fileName, string content, bool update)
 		{
-			var response = MessageBox.Show(
-				RecordMessage,
-				ProductInfo.Title,
-				MessageBoxButton.YesNo, MessageBoxImage.Error, MessageBoxResult.Yes);
-			if (response != MessageBoxResult.Yes)
-				return;
-
 			try
 			{
 				var desktopFilePath = Path.Combine(
 					Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory),
 					fileName);
 
-				UpdateText(desktopFilePath, content);
+				if (update)
+				{
+					UpdateText(desktopFilePath, content);
+				}
+				else
+				{
+					SaveText(desktopFilePath, content);
+				}
 			}
 			catch (Exception ex)
 			{
 				Trace.WriteLine("Failed to record log to Desktop." + Environment.NewLine
 					+ ex);
 			}
+		}
+
+		private static void SaveText(string filePath, string content)
+		{
+			using (var sw = new StreamWriter(filePath, false, Encoding.UTF8)) // BOM will be emitted.
+				sw.Write(content);
 		}
 
 		private const int MaxSectionCount = 100;
@@ -136,11 +116,10 @@ namespace Wifinian.Models
 				using (var sr = new StreamReader(filePath, Encoding.UTF8))
 					oldContent = sr.ReadToEnd();
 
-				oldContent = string.Join(Environment.NewLine, EnumerateLastLines(oldContent, "[Date:", MaxSectionCount - 1).Reverse());
+				oldContent = string.Join(Environment.NewLine, EnumerateLastLines(oldContent, HeaderStart, MaxSectionCount - 1).Reverse());
 			}
 
-			using (var sw = new StreamWriter(filePath, false, Encoding.UTF8)) // BOM will be emitted.
-				sw.Write(oldContent + newContent);
+			SaveText(filePath, oldContent + newContent);
 		}
 
 		private static IEnumerable<string> EnumerateLastLines(string source, string sectionHeader, int sectionCount)

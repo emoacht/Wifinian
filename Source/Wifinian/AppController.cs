@@ -11,7 +11,6 @@ using System.Windows;
 using System.Windows.Data;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
-using Reactive.Bindings.Helpers;
 using Reactive.Bindings.Notifiers;
 
 using ScreenFrame;
@@ -23,11 +22,12 @@ using Wifinian.Views;
 
 namespace Wifinian
 {
-	internal class MainController : DisposableBase
+	internal class AppController : DisposableBase
 	{
-		private readonly Application _current = App.Current;
+		private readonly Application _current = Application.Current;
 
-		internal StartupAgent StartupAgent { get; }
+		private readonly AppKeeper _keeper;
+		internal StartupAgent StartupAgent => _keeper.StartupAgent;
 
 		public ObservableCollection<ProfileItem> Profiles { get; }
 		private readonly object _profilesLock = new object();
@@ -48,15 +48,15 @@ namespace Wifinian
 		public ReactiveCommand RescanCommand { get; }
 		public ReactiveCommand CloseCommand { get; }
 
-		public MainController(StartupAgent agent) : this(agent,
+		public AppController(AppKeeper keeper) : this(keeper,
 			//new MockWorker() ??
 			//new NetshWorker() ??
 			(IWlanWorker)new NativeWifiWorker())
 		{ }
 
-		public MainController(StartupAgent agent, IWlanWorker worker)
+		public AppController(AppKeeper keeper, IWlanWorker worker)
 		{
-			StartupAgent = agent ?? throw new ArgumentNullException(nameof(agent));
+			this._keeper = keeper ?? throw new ArgumentNullException(nameof(keeper));
 
 			Profiles = new ObservableCollection<ProfileItem>();
 			BindingOperations.EnableCollectionSynchronization(Profiles, _profilesLock);
@@ -166,7 +166,7 @@ namespace Wifinian
 			if (!StartupAgent.IsStartedOnSignIn())
 				_current.MainWindow.Show();
 
-			StartupAgent.ShowRequested += OnMainWindowShowRequested;
+			StartupAgent.Requested += OnMainWindowShowRequested;
 
 			Observable.FromEventPattern(
 				h => _current.MainWindow.Activated += h,
@@ -215,10 +215,10 @@ namespace Wifinian
 			if (!window.CanBeShown)
 				return;
 
-			if (window.Visibility != Visibility.Visible)
-			{
-				window.Show();
-			}
+			if ((window.Visibility == Visibility.Visible) && window.IsForeground)
+				return;
+
+			window.Show();
 			window.Activate();
 		}
 

@@ -128,6 +128,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="AppController.cs" />
+    <Compile Include="AppKeeper.cs" />
     <Compile Include="Common\BindableBase.cs" />
     <Compile Include="Common\DisposableBase.cs" />
     <Compile Include="Helper\ColorExtension.cs" />
@@ -145,7 +147,6 @@
     <Compile Include="Models\LogService.cs" />
     <Compile Include="Models\ProductInfo.cs" />
     <Compile Include="Models\Settings.cs" />
-    <Compile Include="MainController.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\MenuWindowViewModel.cs" />
     <Compile Include="ViewModels\ProfileItemViewModel.cs" />

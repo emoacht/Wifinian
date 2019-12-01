@@ -17,7 +17,7 @@ namespace Wifinian.ViewModels
 {
 	public class MainWindowViewModel : DisposableBase
 	{
-		private readonly MainController _controller;
+		private readonly AppController _controller;
 
 		public ReadOnlyReactiveCollection<ProfileItemViewModel> Profiles { get; }
 
@@ -50,7 +50,7 @@ namespace Wifinian.ViewModels
 		public ReactiveCommand MoveDownCommand { get; }
 		public ReactiveCommand DeleteCommand { get; }
 
-		internal MainWindowViewModel(MainController controller)
+		internal MainWindowViewModel(AppController controller)
 		{
 			this._controller = controller ?? throw new ArgumentNullException(nameof(controller));
 
