@@ -4,11 +4,6 @@
         <name>StartupAgency</name>
     </assembly>
     <members>
-        <member name="T:StartupAgency.Helper.AssemblyExtension">
-            <summary>
-            Extension method for <see cref="T:System.Reflection.Assembly"/>
-            </summary>
-        </member>
         <member name="T:StartupAgency.Helper.OsVersion">
             <summary>
             OS version information
@@ -91,36 +86,46 @@
             Registry worker
             </summary>
         </member>
-        <member name="M:StartupAgency.RemotingHolder.Create(System.String)">
+        <member name="M:StartupAgency.RemotingHolder.Create(System.String,System.String[])">
             <summary>
-            Creates semaphore to start remoting.
+            Creates <see cref="T:System.Threading.Semaphore"/> to start remoting.
             </summary>
-            <returns>True if no other instance there and this instance instantiated remoting server</returns>
+            <param name="name">Name</param>
+            <param name="args">Arguments to another instance</param>
+            <returns>
+            <para>success: True if no other instance exists and this instance successfully creates</para>
+            <para>response: Response from another instance if that instance exists and returns an response</para>
+            </returns>
         </member>
         <member name="M:StartupAgency.RemotingHolder.Release">
             <summary>
-            Releases semaphore to end remoting.
+            Releases <see cref="T:System.Threading.Semaphore"/> to end remoting.
             </summary>
         </member>
-        <member name="M:StartupAgency.RemotingSpace.RaiseShowRequested">
+        <member name="M:StartupAgency.RemotingSpace.Request(System.String[])">
             <summary>
-            Raise event.
+            Requests the instance which instantiated this object to take an action.
             </summary>
-            <remarks>
-            This method is intended to be called by an instance other than that instantiated this object.
-            </remarks>
+            <param name="args">Arguments to that instance</param>
+            <returns>Response from that instance</returns>
+            <remarks>This method is to be called by an instance other than that instance.</remarks>
         </member>
         <member name="T:StartupAgency.StartupAgent">
             <summary>
             Startup agent
             </summary>
         </member>
-        <member name="M:StartupAgency.StartupAgent.Start(System.String,System.Reflection.Assembly)">
+        <member name="M:StartupAgency.StartupAgent.Start(System.String,System.String,System.Collections.Generic.IReadOnlyCollection{System.String})">
             <summary>
-            Starts functions.
+            Starts.
             </summary>
+            <param name="name">Name</param>
             <param name="startupTaskId">Startup task ID</param>
-            <param name="caller">Caller assembly</param>
+            <param name="args">Arguments to another instance</param>
+            <returns>
+            <para>success: True if no other instance exists and this instance successfully starts</para>
+            <para>response: Response from another instance if that instance exists and returns an response</para> 
+            </returns>
             <remarks>Startup task ID must match that in AppxManifest.xml.</remarks>
         </member>
         <member name="M:StartupAgency.StartupAgent.Dispose">
@@ -133,14 +138,30 @@
             Dispose
             </summary>
         </member>
-        <member name="E:StartupAgency.StartupAgent.ShowRequested">
+        <member name="P:StartupAgency.StartupAgent.IsPackaged">
             <summary>
-            Occurs when caller instance is requested to show its existence by another instance.
+            Whether this assembly is packaged in AppX package
+            </summary>
+        </member>
+        <member name="E:StartupAgency.StartupAgent.Requested">
+            <summary>
+            Occurs when this instance is requested to take an action by another instance.
             </summary>
             <remarks>
             This event will be raised by a thread other than that instantiated this object.
             Accordingly, the appropriate use of dispatcher is required.
             </remarks>
+        </member>
+        <member name="P:StartupAgency.StartupAgent.Options">
+            <summary>
+            Options
+            </summary>
+        </member>
+        <member name="M:StartupAgency.StartupAgent.IsWindowShowExpected">
+            <summary>
+            Whether caller instance is expected to show its window
+            </summary>
+            <returns>True if expected to be show its window</returns>
         </member>
         <member name="M:StartupAgency.StartupAgent.IsStartedOnSignIn">
             <summary>
@@ -156,20 +177,45 @@
         </member>
         <member name="M:StartupAgency.StartupAgent.IsRegistered">
             <summary>
-            Whether caller instance is registered in startup
+            Whether caller instance has been registered in startup
             </summary>
-            <returns>True if already registered</returns>
+            <returns>True if has been already registered</returns>
         </member>
         <member name="M:StartupAgency.StartupAgent.Register">
             <summary>
             Registers caller instance to startup.
             </summary>
-            <returns>True if successfully registered</returns>
+            <returns>True if successfully registers</returns>
         </member>
         <member name="M:StartupAgency.StartupAgent.Unregister">
             <summary>
             Unregisters caller instance from startup.
             </summary>
+        </member>
+        <member name="T:StartupAgency.StartupRequestEventArgs">
+            <summary>
+            Startup event data
+            </summary>
+        </member>
+        <member name="P:StartupAgency.StartupRequestEventArgs.Args">
+            <summary>
+            Arguments (immutable)
+            </summary>
+        </member>
+        <member name="P:StartupAgency.StartupRequestEventArgs.Response">
+            <summary>
+            Response (mutable)
+            </summary>
+            <remarks>
+            This property is mutable so that an instance which responds to this event can store its response
+            and then another instance which raises this event can make use of the response.
+            </remarks>
+        </member>
+        <member name="M:StartupAgency.StartupRequestEventArgs.#ctor(System.String[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="args">Arguments</param>
         </member>
     </members>
 </doc>

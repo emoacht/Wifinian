@@ -220,19 +220,23 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Library\ManagedNativeWifi.dll" />
+    <Content Include="Library\ManagedNativeWifi.pdb" />
+    <Resource Include="Library\ManagedNativeWifi.xml" />
+    <Content Include="Library\ScreenFrame.dll" />
+    <Content Include="Library\ScreenFrame.pdb" />
+    <Resource Include="Library\ScreenFrame.xml" />
     <Content Include="Library\StartupAgency.dll" />
-    <Content Include="Library\StartupBridge.dll" />
-    <Resource Include="Library\StartupBridge.xml" />
+    <Content Include="Library\StartupAgency.pdb" />
     <Resource Include="Library\StartupAgency.xml" />
+    <Content Include="Library\StartupBridge.dll" />
+    <Content Include="Library\StartupBridge.pdb" />
+    <Resource Include="Library\StartupBridge.xml" />
     <None Include="Wifinian.VisualElementsManifest.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Resource Include="Resources\Icons\AppIcon.ico" />
     <Resource Include="Resources\Icons\TrayIcon.ico" />
-    <Content Include="Library\ManagedNativeWifi.dll" />
-    <Content Include="Library\ScreenFrame.dll" />
-    <Resource Include="Library\ScreenFrame.xml" />
-    <Resource Include="Library\ManagedNativeWifi.xml" />
     <Resource Include="Resources\language_ja.txt" />
     <Resource Include="Resources\language_en.txt" />
   </ItemGroup>
