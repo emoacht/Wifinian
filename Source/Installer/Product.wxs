@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-  <Product Id="*" Name="Wifinian" Manufacturer="emoacht" Version="2.2.0"
+  <Product Id="*" Name="Wifinian" Manufacturer="emoacht" Version="2.3.0"
            Language="1033" Codepage="1252" UpgradeCode="{A8357D71-600C-462A-AEEE-BF1B988DD2E4}">
     <Package Id="*" InstallerVersion="500" Compressed="yes"
              InstallScope="perMachine"  InstallPrivileges="elevated"
-             Description="Installer for Wifinian" />
+             Description="Installer for Wifinian"/>
 
-    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed."/>
 
     <Media Id="1" Cabinet="source.cab" EmbedCab="yes"/>
 
@@ -29,77 +29,93 @@
 
     <DirectoryRef Id="INSTALLDIR">
       <Component Id="MainExecutable" Guid="{55649EB0-5DB2-4466-A042-969BF97139B0}">
-        <File Id="MainExecutableEXE"
+        <File Id="MainExecutable"
               Source="$(var.Wifinian.TargetPath)" Name="$(var.Wifinian.TargetFileName)" KeyPath="yes"/>
       </Component>
 
       <Component Id="MainExecutableConfig" Guid="{BFF1C1AF-F676-4DA8-A126-3341FAFF7F62}">
-        <File Id="MainExecutableCONFIG"
+        <File Id="MainExecutableConfig"
               Source="$(var.Wifinian.TargetDir)" Name="$(var.Wifinian.TargetFileName).config" KeyPath="yes"/>
       </Component>
 
-      <Component Id="InteractionsLibrary" Guid="{1E37729C-6161-453D-81BC-1BE333FCA178}">
-        <File Id="InteractionsDLL"
-              Source="$(var.Wifinian.TargetDir)" Name="Microsoft.Expression.Interactions.dll"	KeyPath="yes"/>
+      <Component Id="BehaviorsLibrary" Guid="{1E37729C-6161-453D-81BC-1BE333FCA178}">
+        <File Id="BehaviorsLibrary"
+              Source="$(var.Wifinian.TargetDir)" Name="Microsoft.Xaml.Behaviors.dll" KeyPath="yes"/>
       </Component>
 
-      <Component Id="InteractivityLibrary" Guid="{3AD5129A-E3D9-4A46-B2E1-94A70543AFE1}">
-        <File Id="InteractivityDLL"
-              Source="$(var.Wifinian.TargetDir)" Name="System.Windows.Interactivity.dll" KeyPath="yes"/>
-      </Component>
-
-      <Component Id="RxCoreLibrary" Guid="{11FE0FBB-888D-407A-93E5-F881B293326E}">
-        <File Id="RxCoreDLL"
-              Source="$(var.Wifinian.TargetDir)" Name="System.Reactive.Core.dll" KeyPath="yes"/>
-      </Component>
-      <Component Id="RxInterfacesLibrary" Guid="{85EA74C1-1DE3-47D0-84DB-CB8475174BFD}">
-        <File Id="RxInterfacesDLL"
-              Source="$(var.Wifinian.TargetDir)" Name="System.Reactive.Interfaces.dll" KeyPath="yes"/>
-      </Component>
-      <Component Id="RxLinqLibrary" Guid="{0392631C-7877-47E4-AB9D-DB6D6F0D79B5}">
-        <File Id="RxLinqDLL"
-              Source="$(var.Wifinian.TargetDir)" Name="System.Reactive.Linq.dll" KeyPath="yes"/>
-      </Component>
-      <Component Id="RxPlatformServicesLibrary" Guid="{ED468260-8D34-4D9F-B18A-1A717E0587A5}">
-        <File Id="RxPlatformServicesDLL"
-              Source="$(var.Wifinian.TargetDir)" Name="System.Reactive.PlatformServices.dll" KeyPath="yes"/>
-      </Component>
-      <Component Id="RxWindowsThreadingLibrary" Guid="{E4E4D6AA-FA11-41C7-BD7A-B0E875CCD32A}">
-        <File Id="RxWindowsThreadingDLL"
-              Source="$(var.Wifinian.TargetDir)" Name="System.Reactive.Windows.Threading.dll" KeyPath="yes"/>
-      </Component>
-
-      <Component Id="RpCoreLibrary" Guid="{15E45C59-C490-40F9-BA1B-C36E6932132F}">
-        <File Id="RpCoreDLL"
+      <Component Id="RpLibrary" Guid="{15E45C59-C490-40F9-BA1B-C36E6932132F}">
+        <File Id="RpLibrary"
               Source="$(var.Wifinian.TargetDir)" Name="ReactiveProperty.dll" KeyPath="yes"/>
       </Component>
       <Component Id="RpPlatformLibrary" Guid="{4EBEE85A-C063-43BF-B3C8-CE68787D5F63}">
-        <File Id="RpPlatformDLL"
+        <File Id="RpPlatformLibrary"
               Source="$(var.Wifinian.TargetDir)" Name="ReactiveProperty.NET46.dll" KeyPath="yes"/>
       </Component>
 
+      <Component Id="RxLibrary" Guid="{D47B9C0B-A1C4-40D8-8932-22C863EB5DC2}">
+        <File Id="RxLibrary"
+              Source="$(var.Wifinian.TargetDir)" Name="System.Reactive.dll" KeyPath="yes"/>
+      </Component>
+      <Component Id="RxCoreLibrary" Guid="{11FE0FBB-888D-407A-93E5-F881B293326E}">
+        <File Id="RxCoreLibrary"
+              Source="$(var.Wifinian.TargetDir)" Name="System.Reactive.Core.dll" KeyPath="yes"/>
+      </Component>
+      <Component Id="RxInterfacesLibrary" Guid="{85EA74C1-1DE3-47D0-84DB-CB8475174BFD}">
+        <File Id="RxInterfacesLibrary"
+              Source="$(var.Wifinian.TargetDir)" Name="System.Reactive.Interfaces.dll" KeyPath="yes"/>
+      </Component>
+      <Component Id="RxLinqLibrary" Guid="{0392631C-7877-47E4-AB9D-DB6D6F0D79B5}">
+        <File Id="RxLinqLibrary"
+              Source="$(var.Wifinian.TargetDir)" Name="System.Reactive.Linq.dll" KeyPath="yes"/>
+      </Component>
+      <Component Id="RxPlatformServicesLibrary" Guid="{ED468260-8D34-4D9F-B18A-1A717E0587A5}">
+        <File Id="RxPlatformServicesLibrary"
+              Source="$(var.Wifinian.TargetDir)" Name="System.Reactive.PlatformServices.dll" KeyPath="yes"/>
+      </Component>
+      <Component Id="RxWindowsThreadingLibrary" Guid="{E4E4D6AA-FA11-41C7-BD7A-B0E875CCD32A}">
+        <File Id="RxWindowsThreadingLibrary"
+              Source="$(var.Wifinian.TargetDir)" Name="System.Reactive.Windows.Threading.dll" KeyPath="yes"/>
+      </Component>
+
+      <Component Id="ComponentModelAnnotationsLibrary" Guid="{D59C7605-C145-4B19-8C71-B7C44551921A}">
+        <File Id="ComponentModelAnnotationsLibrary"
+              Source="$(var.Wifinian.TargetDir)" Name="System.ComponentModel.Annotations.dll" KeyPath="yes"/>
+      </Component>
+      <Component Id="RuntimeCompilerServicesUnsafeLibrary" Guid="{9CE63FE8-F5A0-47F8-BC31-015EF594BA91}">
+        <File Id="RuntimeCompilerServicesUnsafeLibrary"
+              Source="$(var.Wifinian.TargetDir)" Name="System.Runtime.CompilerServices.Unsafe.dll" KeyPath="yes"/>
+      </Component>
+      <Component Id="ThreadingTasksExtensionsLibrary" Guid="{1DFEF52D-BD86-4B0F-8AC7-2B3191C7A4EF}">
+        <File Id="ThreadingTasksExtensionsLibrary"
+              Source="$(var.Wifinian.TargetDir)" Name="System.Threading.Tasks.Extensions.dll" KeyPath="yes"/>
+      </Component>
+      <Component Id="ValueTupleLibrary" Guid="{BD6EC270-54BB-4231-BB01-D1E08398B5AB}">
+        <File Id="ValueTupleLibrary"
+              Source="$(var.Wifinian.TargetDir)" Name="System.ValueTuple.dll" KeyPath="yes"/>
+      </Component>
+
       <Component Id="WifiLibrary" Guid="{50B8A962-E276-4DF8-8737-A1BE78B33153}">
-        <File Id="WifiDLL"
+        <File Id="WifiLibrary"
               Source="$(var.Wifinian.TargetDir)" Name="ManagedNativeWifi.dll" KeyPath="yes"/>
       </Component>
 
       <Component Id="FrameLibrary" Guid="{E7F84162-087A-4A1F-BB6A-01FE78A29C8E}">
-        <File Id="FrameDLL"
+        <File Id="FrameLibrary"
               Source="$(var.Wifinian.TargetDir)" Name="ScreenFrame.dll" KeyPath="yes"/>
       </Component>
 
       <Component Id="AgencyLibrary" Guid="{8F507D9C-979F-4293-AC03-9603D7781F10}">
-        <File Id="AgencyDLL"
+        <File Id="AgencyLibrary"
               Source="$(var.Wifinian.TargetDir)" Name="StartupAgency.dll" KeyPath="yes"/>
       </Component>
       <Component Id="BridgeLibrary" Guid="{44985F46-8974-48CF-B4EA-F33446826B8C}">
-        <File Id="BridgeDLL"
+        <File Id="BridgeLibrary"
               Source="$(var.Wifinian.TargetDir)" Name="StartupBridge.dll" KeyPath="yes"/>
       </Component>
 
       <Component Id="VisualManifest" Guid="{4DD773D0-D642-40DC-9576-D535D0AF89EB}">
         <Condition><![CDATA[VEM = "yes"]]></Condition>
-        <File Id="VisualManifestXML"
+        <File Id="VisualManifest"
               Source="$(var.Wifinian.TargetDir)" Name="$(var.Wifinian.TargetName).VisualElementsManifest.xml" KeyPath="yes"/>
       </Component>
     </DirectoryRef>
@@ -108,7 +124,7 @@
     <DirectoryRef Id="ProgramMenuFolder">
       <Component Id="ApplicationShortcut" Guid="{CA94F3D2-1BB8-4581-9B37-BA3C31049DC4}">
         <Shortcut Id="ApplicationProgramMenuShortcut" Name="$(var.Wifinian.ProjectName)"
-                  Target="[#MainExecutableEXE]" WorkingDirectory="INSTALLDIR"
+                  Target="[#MainExecutable]" WorkingDirectory="INSTALLDIR"
                   Icon="AppIcon.exe" IconIndex="0">
           <ShortcutProperty Key="System.AppUserModel.ID" Value="[ProductName]"/>
         </Shortcut>
@@ -133,15 +149,19 @@
     <Feature Id="ProductFeature" Level="1">
       <ComponentRef Id="MainExecutable"/>
       <ComponentRef Id="MainExecutableConfig"/>
-      <ComponentRef Id="InteractionsLibrary"/>
-      <ComponentRef Id="InteractivityLibrary"/>
+      <ComponentRef Id="BehaviorsLibrary"/>
+      <ComponentRef Id="RpLibrary"/>
+      <ComponentRef Id="RpPlatformLibrary"/>
+      <ComponentRef Id="RxLibrary"/>
       <ComponentRef Id="RxCoreLibrary"/>
       <ComponentRef Id="RxInterfacesLibrary"/>
       <ComponentRef Id="RxLinqLibrary"/>
       <ComponentRef Id="RxPlatformServicesLibrary"/>
       <ComponentRef Id="RxWindowsThreadingLibrary"/>
-      <ComponentRef Id="RpCoreLibrary"/>
-      <ComponentRef Id="RpPlatformLibrary"/>
+      <ComponentRef Id="ComponentModelAnnotationsLibrary"/>
+      <ComponentRef Id="RuntimeCompilerServicesUnsafeLibrary"/>
+      <ComponentRef Id="ThreadingTasksExtensionsLibrary"/>
+      <ComponentRef Id="ValueTupleLibrary"/>
       <ComponentRef Id="WifiLibrary"/>
       <ComponentRef Id="FrameLibrary"/>
       <ComponentRef Id="AgencyLibrary"/>
