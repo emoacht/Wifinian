@@ -1,44 +1,44 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-	<Color x:Key="App.BackgroundColor">#CC171717</Color>
 	<Color x:Key="App.ForegroundColor">White</Color>
 	<Color x:Key="App.ShadowColor">LightGray</Color>
 
-	<SolidColorBrush x:Key="App.Background" Color="{StaticResource App.BackgroundColor}"/>
-	<SolidColorBrush x:Key="App.Background.Hidden" Color="Black" Opacity="0.4"/>
 	<SolidColorBrush x:Key="App.Foreground" Color="{StaticResource App.ForegroundColor}"/>
 	<SolidColorBrush x:Key="App.Foreground.Shadow" Color="{StaticResource App.ShadowColor}"/>
+	<SolidColorBrush x:Key="App.Background" Color="#CC171717"/>
+	<SolidColorBrush x:Key="App.Background.Difference" Color="#FF424242"/>
+	<SolidColorBrush x:Key="App.Background.Hidden" Color="Black" Opacity="0.4"/>
 
-	<Color x:Key="Profile.Normal.BackgroundColor">#CC171717</Color>
-	<Color x:Key="Profile.Normal.Selected.BackgroundColor">Transparent</Color>
-	<Color x:Key="Profile.Available.BackgroundColor">#CC0a4394</Color>
-	<Color x:Key="Profile.Available.Selected.BackgroundColor">Transparent</Color>
-	<Color x:Key="Profile.Connected.BackgroundColor">#CC3079bd</Color>
-	<Color x:Key="Profile.Connected.Selected.BackgroundColor">Transparent</Color>
+	<Color x:Key="Profile.Background.NormalColor">#CC171717</Color>
+	<Color x:Key="Profile.Background.NormalSelectedColor">Transparent</Color>
+	<Color x:Key="Profile.Background.AvailableColor">#CC0A4394</Color>
+	<Color x:Key="Profile.Background.AvailableSelectedColor">Transparent</Color>
+	<Color x:Key="Profile.Background.ConnectedColor">#CC3079BD</Color>
+	<Color x:Key="Profile.Background.ConnectedSelectedColor">Transparent</Color>
 
-	<SolidColorBrush x:Key="Profile.Normal.Background" Color="{StaticResource Profile.Normal.BackgroundColor}"/>
+	<SolidColorBrush x:Key="Profile.Background.Normal" Color="{StaticResource Profile.Background.NormalColor}"/>
 
-	<SolidColorBrush x:Key="Profile.Signal.Foreground" Color="{StaticResource App.ForegroundColor}" Opacity="1.0"/>
-	<SolidColorBrush x:Key="Profile.Signal.Background" Color="{StaticResource App.ForegroundColor}" Opacity="0.25"/>
+	<Color x:Key="ScrollBar.Background.NormalColor">#CC171717</Color>
+	<Color x:Key="ScrollBar.Background.MouseOverColor">#CC171717</Color>
+	<Color x:Key="ScrollBar.Thumb.NormalColor">#33BCBCBC</Color>
+	<Color x:Key="ScrollBar.Thumb.MouseOverColor">#33EFEFEF</Color>
 
-	<SolidColorBrush x:Key="Button.Normal.Foreground" Color="{StaticResource App.ForegroundColor}" Opacity="0.8"/>
+	<SolidColorBrush x:Key="Text.Border.Writable" Color="{StaticResource App.ForegroundColor}"/>
+	<SolidColorBrush x:Key="Text.Background.Writable" Color="#FF5F5F5F"/>
 
-	<Color x:Key="ToggleButton.Checked.BackgroundColor">#FF7fc5ff</Color>
+	<SolidColorBrush x:Key="Signal.Foreground" Color="{StaticResource App.ForegroundColor}" Opacity="1.0"/>
+	<SolidColorBrush x:Key="Signal.Background" Color="{StaticResource App.ForegroundColor}" Opacity="0.25"/>
 
-	<SolidColorBrush x:Key="ToggleButton.Normal.Background" Color="#FF272727"/>
-	<SolidColorBrush x:Key="ToggleButton.Normal.Foreground" Color="{StaticResource App.ForegroundColor}" Opacity="0.6"/>
+	<SolidColorBrush x:Key="Button.Foreground" Color="{StaticResource App.ForegroundColor}" Opacity="0.8"/>
 
-	<SolidColorBrush x:Key="Text.Writable.Border" Color="{StaticResource App.ForegroundColor}"/>
-	<SolidColorBrush x:Key="Text.Writable.Background">#FF5F5F5F</SolidColorBrush>
+	<Color x:Key="ToggleButton.Background.CheckedColor">#FF7FC5FF</Color>
 
-	<Color x:Key="ScrollBar.Normal.BackgroundColor">#CC171717</Color>
-	<Color x:Key="ScrollBar.Normal.ThumbColor">#33BCBCBC</Color>
-	<Color x:Key="ScrollBar.MouseOver.BackgroundColor">#CC171717</Color>
-	<Color x:Key="ScrollBar.MouseOver.ThumbColor">#33EFEFEF</Color>
+	<SolidColorBrush x:Key="ToggleButton.Foreground.Normal" Color="{StaticResource App.ForegroundColor}" Opacity="0.6"/>
+	<SolidColorBrush x:Key="ToggleButton.Background.Normal" Color="#FF272727"/>
 
-	<SolidColorBrush x:Key="Menu.Item.Normal.Backgound" Color="Transparent"/>
-	<SolidColorBrush x:Key="Menu.Item.MouseOver.Background" Color="#FF5F5F5F"/>
 	<SolidColorBrush x:Key="Menu.Separator" Color="#FF808080"/>
+	<SolidColorBrush x:Key="Menu.Item.Background.Normal" Color="Transparent"/>
+	<SolidColorBrush x:Key="Menu.Item.Background.MouseOver" Color="#FF5F5F5F"/>
 
 </ResourceDictionary>

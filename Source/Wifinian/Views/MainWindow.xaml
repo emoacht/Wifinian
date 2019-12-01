@@ -148,9 +148,9 @@
 											<!-- Signal -->
 											<controls:SignalProgressBar
 												Width="24" Margin="0,6,0,0" VerticalAlignment="Top"
-												Style="{StaticResource BarStyle}"
-												Background="{StaticResource Profile.Signal.Background}"
-												Foreground="{StaticResource Profile.Signal.Foreground}"
+												Style="{StaticResource ArcStyle}"
+												Background="{StaticResource Signal.Background}"
+												Foreground="{StaticResource Signal.Foreground}"
 												Value="{Binding Signal.Value, Mode=OneWay}">
 											</controls:SignalProgressBar>
 

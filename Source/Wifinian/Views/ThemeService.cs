@@ -12,20 +12,20 @@ namespace Wifinian.Views
 {
 	public class ThemeService
 	{
-		private const string _normalKey = "Profile.Normal.BackgroundColor";
-		private const string _normalSelectedKey = "Profile.Normal.Selected.BackgroundColor";
-		private const string _availableKey = "Profile.Available.BackgroundColor";
-		private const string _availableSelectedKey = "Profile.Available.Selected.BackgroundColor";
-		private const string _connectedKey = "Profile.Connected.BackgroundColor";
-		private const string _connectedSelectedKey = "Profile.Connected.Selected.BackgroundColor";
+		private const string NormalKey = "Profile.Background.NormalColor";
+		private const string NormalSelectedKey = "Profile.Background.NormalSelectedColor";
+		private const string AvailableKey = "Profile.Background.AvailableColor";
+		private const string AvailableSelectedKey = "Profile.Background.AvailableSelectedColor";
+		private const string ConnectedKey = "Profile.Background.ConnectedColor";
+		private const string ConnectedSelectedKey = "Profile.Background.ConnectedSelectedColor";
 
 		public static void AdjustResourceColors(ResourceDictionary resources)
 		{
 			const float factor = 1.08F;
 
-			AdjustResourceColor(resources, _normalKey, _normalSelectedKey, factor);
-			AdjustResourceColor(resources, _availableKey, _availableSelectedKey, factor);
-			AdjustResourceColor(resources, _connectedKey, _connectedSelectedKey, factor);
+			AdjustResourceColor(resources, NormalKey, NormalSelectedKey, factor);
+			AdjustResourceColor(resources, AvailableKey, AvailableSelectedKey, factor);
+			AdjustResourceColor(resources, ConnectedKey, ConnectedSelectedKey, factor);
 		}
 
 		private static void AdjustResourceColor(ResourceDictionary resources, string sourceKey, string targetKey, float factor)

@@ -21,14 +21,14 @@
 				<Setter.Value>
 					<ControlTemplate TargetType="{x:Type ContentControl}">
 						<Grid x:Name="body"
-							  Background="{StaticResource Menu.Item.Normal.Backgound}">
+							  Background="{StaticResource Menu.Item.Background.Normal}">
 							<ContentPresenter Margin="{TemplateBinding Padding}"
 											  Content="{TemplateBinding Content}"
 											  ContentTemplate="{TemplateBinding ContentTemplate}"/>
 						</Grid>
 						<ControlTemplate.Triggers>
 							<Trigger Property="IsMouseOver" Value="True">
-								<Setter Property="Background" TargetName="body" Value="{StaticResource Menu.Item.MouseOver.Background}"/>
+								<Setter Property="Background" TargetName="body" Value="{StaticResource Menu.Item.Background.MouseOver}"/>
 							</Trigger>
 						</ControlTemplate.Triggers>
 					</ControlTemplate>
