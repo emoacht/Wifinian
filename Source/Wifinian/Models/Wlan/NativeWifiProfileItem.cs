@@ -26,7 +26,7 @@ namespace Wifinian.Models.Wlan
 			get => _document.IsAutoConnectEnabled;
 			set
 			{
-				if ((_document == null) || /* The base class's constructor may access before _document is filled. */
+				if ((_document is null) || /* The base class's constructor may access before _document is filled. */
 					(_document.IsAutoConnectEnabled == value))
 					return;
 
@@ -40,7 +40,7 @@ namespace Wifinian.Models.Wlan
 			get => _document.IsAutoSwitchEnabled;
 			set
 			{
-				if ((_document == null) || /* The base class's constructor may access before _document is filled. */
+				if ((_document is null) || /* The base class's constructor may access before _document is filled. */
 					(_document.IsAutoSwitchEnabled == value))
 					return;
 

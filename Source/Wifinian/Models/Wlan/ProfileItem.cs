@@ -15,7 +15,7 @@ namespace Wifinian.Models.Wlan
 		/// <summary>
 		/// Profile ID
 		/// </summary>
-		public string Id => _id ?? (_id = Name + InterfaceId.ToString());
+		public string Id => _id ??= Name + InterfaceId.ToString();
 		private string _id;
 
 		/// <summary>
@@ -168,7 +168,6 @@ namespace Wifinian.Models.Wlan
 		{
 			if (string.IsNullOrWhiteSpace(name))
 				throw new ArgumentNullException(nameof(name));
-
 			if (interfaceId == Guid.Empty)
 				throw new ArgumentException(nameof(interfaceId));
 

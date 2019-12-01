@@ -12,8 +12,8 @@ namespace ReactivePropertyTest
 
 		public bool IsLong
 		{
-			get { return _isLong; }
-			set { SetPropertyValue(ref _isLong, value); }
+			get => _isLong;
+			set => SetPropertyValue(ref _isLong, value);
 		}
 		private bool _isLong;
 

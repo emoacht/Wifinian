@@ -8,7 +8,6 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Xml;
 using System.Xml.Serialization;
 using Reactive.Bindings.Extensions;
 
@@ -57,8 +56,8 @@ namespace Wifinian.Models
 
 		private static int IncrementLoop(int value, int min, int max)
 		{
-			var buff = (value / 10 + 1) * 10;
-			return (buff <= max) ? buff : min;
+			var buffer = (value / 10 + 1) * 10;
+			return (buffer <= max) ? buffer : min;
 		}
 
 		public Size MainWindowSize

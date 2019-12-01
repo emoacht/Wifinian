@@ -63,7 +63,7 @@ namespace Wifinian.Views.Behaviors
 					.ForEach(x => listBox.SelectedItems.Remove(x));
 			}
 
-			if ((listBox.SelectedIndex == -1) || (listBox.SelectedItem == null))
+			if ((listBox.SelectedIndex == -1) || (listBox.SelectedItem is null))
 				return;
 
 			var item = listBox.ItemContainerGenerator.ContainerFromItem(listBox.SelectedItem) as FrameworkElement;

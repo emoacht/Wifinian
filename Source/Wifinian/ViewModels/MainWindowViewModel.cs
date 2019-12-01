@@ -25,7 +25,7 @@ namespace Wifinian.ViewModels
 		{
 			get
 			{
-				if (_profilesView == null)
+				if (_profilesView is null)
 				{
 					_profilesView = new ListCollectionView(Profiles);
 					_profilesView.SortDescriptions.Add(new SortDescription(nameof(ProfileItemViewModel.InterfaceDescription), ListSortDirection.Ascending));

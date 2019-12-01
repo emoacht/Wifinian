@@ -128,12 +128,9 @@ namespace Wifinian.Views
 				(windowSize.Height < this.MinHeight))
 				return;
 
-			this.Width = OsVersion.Is10Threshold1OrNewer
-				? windowSize.Width
-				: windowSize.Width * _mover.Dpi.DpiScaleX;
-			this.Height = OsVersion.Is10Threshold1OrNewer
-				? windowSize.Height
-				: windowSize.Height * _mover.Dpi.DpiScaleY;
+			(this.Width, this.Height) = OsVersion.Is10Threshold1OrNewer
+				? (windowSize.Width, windowSize.Height)
+				: (windowSize.Width * _mover.Dpi.DpiScaleX, windowSize.Height * _mover.Dpi.DpiScaleY);
 		}
 
 		private void SaveWindowSize(Size windowSize)
@@ -149,24 +146,14 @@ namespace Wifinian.Views
 		{
 			var borderWidth = 4D * _mover.Dpi.DpiScaleX;
 
-			switch (_mover.PivotAlignment)
+			ResizeBorderThickness = _mover.PivotAlignment switch
 			{
-				case PivotAlignment.TopLeft:
-					ResizeBorderThickness = new Thickness(0, 0, borderWidth, borderWidth);
-					break;
-				case PivotAlignment.TopRight:
-					ResizeBorderThickness = new Thickness(borderWidth, 0, 0, borderWidth);
-					break;
-				case PivotAlignment.BottomRight:
-					ResizeBorderThickness = new Thickness(borderWidth, borderWidth, 0, 0);
-					break;
-				case PivotAlignment.BottomLeft:
-					ResizeBorderThickness = new Thickness(0, borderWidth, borderWidth, 0);
-					break;
-				default:
-					ResizeBorderThickness = new Thickness(borderWidth);
-					break;
-			}
+				PivotAlignment.TopLeft => new Thickness(0, 0, borderWidth, borderWidth),
+				PivotAlignment.TopRight => new Thickness(borderWidth, 0, 0, borderWidth),
+				PivotAlignment.BottomRight => new Thickness(borderWidth, borderWidth, 0, 0),
+				PivotAlignment.BottomLeft => new Thickness(0, borderWidth, borderWidth, 0),
+				_ => new Thickness(borderWidth),
+			};
 		}
 
 		#endregion

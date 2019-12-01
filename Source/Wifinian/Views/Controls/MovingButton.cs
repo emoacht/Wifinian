@@ -50,7 +50,7 @@ namespace Wifinian.Views.Controls
 
 		private async Task ManageStateAsync()
 		{
-			if (Interlocked.Exchange(ref _blocker, null) == null)
+			if (Interlocked.Exchange(ref _blocker, null) is null)
 				return;
 
 			try

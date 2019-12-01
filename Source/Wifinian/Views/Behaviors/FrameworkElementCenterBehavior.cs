@@ -72,7 +72,7 @@ namespace Wifinian.Views.Behaviors
 		/// </summary>
 		private void Center()
 		{
-			if (Target == null)
+			if (Target is null)
 				return;
 
 			var targetLocation = Target.PointToScreen(default);

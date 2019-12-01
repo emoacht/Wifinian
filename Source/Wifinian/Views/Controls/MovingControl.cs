@@ -38,8 +38,8 @@ namespace Wifinian.Views.Controls
 			base.OnApplyTemplate();
 
 			var movingDuration = this.TryFindResource("MovingDuration");
-			if (movingDuration is Duration)
-				_duration = ((Duration)movingDuration).TimeSpan;
+			if (movingDuration is Duration buffer)
+				_duration = buffer.TimeSpan;
 		}
 
 		private object _blocker = new object();
@@ -47,7 +47,7 @@ namespace Wifinian.Views.Controls
 
 		private async Task ManageStateAsync()
 		{
-			while (Interlocked.Exchange(ref _blocker, null) == null)
+			while (Interlocked.Exchange(ref _blocker, null) is null)
 			{
 				if (_source?.IsCancellationRequested == false)
 					_source.Cancel();

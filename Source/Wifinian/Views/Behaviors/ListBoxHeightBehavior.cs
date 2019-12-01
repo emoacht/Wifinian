@@ -68,7 +68,7 @@ namespace Wifinian.Views.Behaviors
 
 		private void AdjustHeight(double parentHeight)
 		{
-			if (_scrollHost == null)
+			if (_scrollHost is null)
 				return;
 
 			this.AssociatedObject.Height = Math.Min(_scrollHost.ExtentHeight, parentHeight);
@@ -82,7 +82,6 @@ namespace Wifinian.Views.Behaviors
 				fieldValue = value;
 				return true;
 			}
-
 			fieldValue = default;
 			return false;
 		}

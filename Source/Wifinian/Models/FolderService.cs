@@ -13,7 +13,7 @@ namespace Wifinian.Models
 		{
 			get
 			{
-				if (_appDataFolderPath == null)
+				if (_appDataFolderPath is null)
 				{
 					var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
 					if (string.IsNullOrEmpty(appDataPath)) // This should not happen.
