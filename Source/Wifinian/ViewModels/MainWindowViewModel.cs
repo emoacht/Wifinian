@@ -40,7 +40,7 @@ namespace Wifinian.ViewModels
 
 		public ReactiveProperty<bool> RushesRescan => _controller.RushesRescan;
 		public ReactiveProperty<bool> EngagesPriority => _controller.EngagesPriority;
-		public ReactiveProperty<bool> ReordersPriority { get; }
+		public ReactiveProperty<bool> OrganizesPriority { get; }
 
 		public ReadOnlyReactiveProperty<bool> IsUpdating { get; }
 		public ReadOnlyReactiveProperty<bool> CanDelete { get; }
@@ -64,7 +64,7 @@ namespace Wifinian.ViewModels
 				.Subscribe(_ => ProfilesView.Refresh()) // ListCollectionView.Refresh method seems not thread-safe.
 				.AddTo(this.Subscription);
 
-			ReordersPriority = new ReactiveProperty<bool>()
+			OrganizesPriority = new ReactiveProperty<bool>()
 				.AddTo(this.Subscription);
 
 			IsUpdating = _controller.IsUpdating

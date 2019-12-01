@@ -37,7 +37,7 @@
 						<ColumnDefinition Width="60"/>
 						<ColumnDefinition Width="30"/>
 						<ColumnDefinition Width="12"/>
-						<ColumnDefinition Width="60"/>
+						<ColumnDefinition Width="70"/>
 						<ColumnDefinition Width="*"/>
 					</Grid.ColumnDefinitions>
 
@@ -102,12 +102,12 @@
 						</i:Interaction.Triggers>
 					</Button>
 
-					<!-- Reorder -->
+					<!-- Organize -->
 					<controls:SimpleToggleButton
 						Grid.Column="7"
 						Style="{StaticResource MenuToggleButtonStyle}"
-						Content="Reorder"
-						IsChecked="{Binding ReordersPriority.Value, Mode=TwoWay}"/>
+						Content="Organize"
+						IsChecked="{Binding OrganizesPriority.Value, Mode=TwoWay}"/>
 				</Grid>
 			</Grid>
 
@@ -258,7 +258,7 @@
 										<Grid Visibility="{Binding IsSelected.Value, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverterKey}}">
 											<Grid Width="260" Height="30" Margin="8,4,0,10"
 												  HorizontalAlignment="Left"
-												  Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.ReordersPriority.Value, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverterKey}}">
+												  Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.OrganizesPriority.Value, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverterKey}}">
 												<Grid.ColumnDefinitions>
 													<ColumnDefinition Width="76"/>
 													<ColumnDefinition Width="76"/>
