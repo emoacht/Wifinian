@@ -56,7 +56,7 @@ namespace Wifinian.Models
 				? sources[languageName]
 				: sources["en"]; // language_en as fallback
 
-			return source.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries)
+			return source.Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries)
 				.Select(x => x.Split(new[] { Delimiter }, 2))
 				.Select(x => x.Select(y => y.Trim()).Where(y => !string.IsNullOrEmpty(y)).ToArray())
 				.Where(x => x.Length == 2) // Both key and value are not empty.
