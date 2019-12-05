@@ -166,23 +166,23 @@ namespace Wifinian.Models.Wlan
 			{
 				try
 				{
-					if (name == null)
+					if (name is null)
 					{
 						name = FindElement(outputLine, "Name");
 						continue;
 					}
-					if (description == null)
+					if (description is null)
 					{
 						description = FindElement(outputLine, "Description");
 						continue;
 					}
 					if (id == Guid.Empty)
 					{
-						var buff = FindElement(outputLine, "GUID");
-						Guid.TryParse(buff, out id); // If parsing failed, out variable will be Guid.Empty.
+						var buffer = FindElement(outputLine, "GUID");
+						Guid.TryParse(buffer, out id); // If parsing failed, out variable will be Guid.Empty.
 						continue;
 					}
-					if (physicalAddress == null)
+					if (physicalAddress is null)
 					{
 						physicalAddress = FindElement(outputLine, "Physical address");
 						continue;
@@ -192,7 +192,7 @@ namespace Wifinian.Models.Wlan
 						isConnected = FindElement(outputLine, "State").Equals("connected", StringComparison.Ordinal);
 						continue;
 					}
-					if (isConnected.Value && (profileName == null))
+					if (isConnected.Value && (profileName is null))
 					{
 						profileName = FindElement(outputLine, "Profile");
 						continue;
@@ -258,7 +258,7 @@ namespace Wifinian.Models.Wlan
 
 			string interfaceName = null;
 			string ssid = null;
-			NetworkType networkType = default(NetworkType);
+			NetworkType networkType = default;
 			string authentication = null;
 			string encryption = null;
 			int? signal = null;
@@ -268,12 +268,12 @@ namespace Wifinian.Models.Wlan
 			{
 				try
 				{
-					var interfaceNameBuff = FindElement(outputLine, "Interface name");
-					if (interfaceNameBuff != null)
+					var buffer = FindElement(outputLine, "Interface name");
+					if (buffer != null)
 					{
-						interfaceName = interfaceNameBuff;
+						interfaceName = buffer;
 					}
-					if (ssid == null)
+					if (ssid is null)
 					{
 						if (!string.IsNullOrWhiteSpace(outputLine))
 						{
@@ -283,17 +283,17 @@ namespace Wifinian.Models.Wlan
 						}
 						continue;
 					}
-					if (networkType == default(NetworkType))
+					if (networkType == default)
 					{
 						networkType = ConvertToNetworkType(FindElement(outputLine, "Network type"));
 						continue;
 					}
-					if (authentication == null)
+					if (authentication is null)
 					{
 						authentication = FindElement(outputLine, "Authentication");
 						continue;
 					}
-					if (encryption == null)
+					if (encryption is null)
 					{
 						encryption = FindElement(outputLine, "Encryption");
 						continue;
@@ -326,14 +326,14 @@ namespace Wifinian.Models.Wlan
 					throw;
 				}
 
-				Debug.WriteLine("Interface: {0}, SSID: {1}, BSS type: {2}, Authentication: {3}, Encryption: {4}, Signal: {5}, Channel: {6}",
-					interfaceName,
-					ssid,
-					networkType,
-					authentication,
-					encryption,
-					signal.Value,
-					channel.Value);
+				//Debug.WriteLine("Interface: {0}, SSID: {1}, BSS type: {2}, Authentication: {3}, Encryption: {4}, Signal: {5}, Channel: {6}",
+				//	interfaceName,
+				//	ssid,
+				//	networkType,
+				//	authentication,
+				//	encryption,
+				//	signal.Value,
+				//	channel.Value);
 
 				yield return new NetworkPack(
 					interfaceName: interfaceName,
@@ -346,7 +346,7 @@ namespace Wifinian.Models.Wlan
 					channel: channel.Value);
 
 				ssid = null;
-				networkType = default(NetworkType);
+				networkType = default;
 				authentication = null;
 				encryption = null;
 				signal = null;
@@ -385,7 +385,7 @@ namespace Wifinian.Models.Wlan
 					interfaceName = outputLine.Substring(profileHeader.Length).Trim().TrimEnd(':');
 					position = 0;
 				}
-				if (interfaceName == null)
+				if (interfaceName is null)
 					continue;
 
 				var match = profilePattern.Match(outputLine);
@@ -402,7 +402,6 @@ namespace Wifinian.Models.Wlan
 		{
 			if (string.IsNullOrWhiteSpace(interfaceName))
 				throw new ArgumentNullException(nameof(interfaceName));
-
 			if (string.IsNullOrWhiteSpace(profileName))
 				throw new ArgumentNullException(nameof(profileName));
 
@@ -418,7 +417,7 @@ namespace Wifinian.Models.Wlan
 			bool? autoConnect = null;
 			bool? autoSwitch = null;
 			string ssid = null;
-			NetworkType networkType = default(NetworkType);
+			NetworkType networkType = default;
 			string authentication = null;
 			string encryption = null;
 
@@ -428,39 +427,39 @@ namespace Wifinian.Models.Wlan
 				{
 					if (!autoConnect.HasValue)
 					{
-						var autoConnectBuff = FindElement(outputLine, "Connection mode");
-						if (autoConnectBuff != null)
-							autoConnect = autoConnectBuff.Equals("Connect automatically", StringComparison.OrdinalIgnoreCase);
+						var buffer = FindElement(outputLine, "Connection mode");
+						if (buffer != null)
+							autoConnect = buffer.Equals("Connect automatically", StringComparison.OrdinalIgnoreCase);
 
 						continue;
 					}
 					if (!autoSwitch.HasValue)
 					{
-						var autoSwitchBuff = FindElement(outputLine, "AutoSwitch");
-						if (autoSwitchBuff != null)
-							autoSwitch = autoSwitchBuff.Equals("Switch to more preferred network if possible", StringComparison.OrdinalIgnoreCase);
+						var buffer = FindElement(outputLine, "AutoSwitch");
+						if (buffer != null)
+							autoSwitch = buffer.Equals("Switch to more preferred network if possible", StringComparison.OrdinalIgnoreCase);
 
 						continue;
 					}
-					if (ssid == null)
+					if (ssid is null)
 					{
-						var ssidBuff = FindElement(outputLine, "SSID name");
-						if (ssidBuff != null)
-							ssid = ssidBuff.Trim('"');
+						var buffer = FindElement(outputLine, "SSID name");
+						if (buffer != null)
+							ssid = buffer.Trim('"');
 
 						continue;
 					}
-					if (networkType == default(NetworkType))
+					if (networkType == default)
 					{
 						networkType = ConvertToNetworkType(FindElement(outputLine, "Network type"));
 						continue;
 					}
-					if (authentication == null)
+					if (authentication is null)
 					{
 						authentication = FindElement(outputLine, "Authentication");
 						continue;
 					}
-					if (encryption == null)
+					if (encryption is null)
 					{
 						encryption = FindElement(outputLine, "Cipher");
 						break;
@@ -476,10 +475,10 @@ namespace Wifinian.Models.Wlan
 
 			if (!autoConnect.HasValue ||
 				!autoSwitch.HasValue ||
-				(ssid == null) ||
-				(networkType == default(NetworkType)) ||
-				(authentication == null) ||
-				(encryption == null))
+				(ssid is null) ||
+				(networkType == default) ||
+				(authentication is null) ||
+				(encryption is null))
 				return null;
 
 			//Debug.WriteLine("Profile: {0}, Interface: {1}, SSID: {2}, BSS: {3}, Authentication: {4}, Encryption: {5}, AutoConnect: {6}, AutoSwitch: {7}, Position: {8}",
@@ -513,7 +512,6 @@ namespace Wifinian.Models.Wlan
 		{
 			if (string.IsNullOrWhiteSpace(interfaceName))
 				throw new ArgumentNullException(nameof(interfaceName));
-
 			if (string.IsNullOrWhiteSpace(profileName))
 				throw new ArgumentNullException(nameof(profileName));
 
@@ -533,12 +531,10 @@ namespace Wifinian.Models.Wlan
 		{
 			if (string.IsNullOrWhiteSpace(interfaceName))
 				throw new ArgumentNullException(nameof(interfaceName));
-
 			if (string.IsNullOrWhiteSpace(profileName))
 				throw new ArgumentNullException(nameof(profileName));
-
 			if (position < 0)
-				throw new ArgumentOutOfRangeException(nameof(position));
+				throw new ArgumentOutOfRangeException(nameof(position), "The position must not be negative");
 
 			position++; // According to the error message, "Profile preference order starts with 1."
 
@@ -577,7 +573,6 @@ namespace Wifinian.Models.Wlan
 		{
 			if (string.IsNullOrWhiteSpace(interfaceName))
 				throw new ArgumentNullException(nameof(interfaceName));
-
 			if (string.IsNullOrWhiteSpace(profileName))
 				throw new ArgumentNullException(nameof(profileName));
 
@@ -613,11 +608,11 @@ namespace Wifinian.Models.Wlan
 			if (string.IsNullOrWhiteSpace(source))
 				return null;
 
-			var elementIndex = source.IndexOf(elementName, StringComparison.Ordinal);
+			int elementIndex = source.IndexOf(elementName, StringComparison.Ordinal);
 			if (elementIndex < 0)
 				return null;
 
-			var delimiterIndex = source.IndexOf(':');
+			int delimiterIndex = source.IndexOf(':');
 			if (delimiterIndex < elementIndex + elementName.Length)
 				return null;
 
@@ -641,17 +636,14 @@ namespace Wifinian.Models.Wlan
 		private static NetworkType ConvertToNetworkType(string source)
 		{
 			if (string.IsNullOrWhiteSpace(source))
-			{
-				return default(NetworkType);
-			}
+				return default;
+
 			if (source.Equals("Infrastructure", StringComparison.OrdinalIgnoreCase))
-			{
 				return NetworkType.Infrastructure;
-			}
+
 			if (source.Equals("Adhoc", StringComparison.OrdinalIgnoreCase))
-			{
 				return NetworkType.Adhoc;
-			}
+
 			return NetworkType.Any;
 		}
 
@@ -685,8 +677,8 @@ namespace Wifinian.Models.Wlan
 
 				var tcs = new TaskCompletionSource<bool>();
 
-				DataReceivedEventHandler received = (sender, e) => outputLines.Add(e.Data);
-				EventHandler exited = (sender, e) => tcs.SetResult(true);
+				void received(object sender, DataReceivedEventArgs e) => outputLines.Add(e.Data);
+				void exited(object sender, EventArgs e) => tcs.SetResult(true);
 
 				try
 				{

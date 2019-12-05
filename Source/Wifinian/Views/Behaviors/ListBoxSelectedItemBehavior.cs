@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Interactivity;
+using Microsoft.Xaml.Behaviors;
 
 namespace Wifinian.Views.Behaviors
 {
@@ -63,7 +63,7 @@ namespace Wifinian.Views.Behaviors
 					.ForEach(x => listBox.SelectedItems.Remove(x));
 			}
 
-			if ((listBox.SelectedIndex == -1) || (listBox.SelectedItem == null))
+			if ((listBox.SelectedIndex == -1) || (listBox.SelectedItem is null))
 				return;
 
 			var item = listBox.ItemContainerGenerator.ContainerFromItem(listBox.SelectedItem) as FrameworkElement;

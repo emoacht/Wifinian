@@ -56,7 +56,7 @@ namespace Wifinian.Models.Wlan
 
 		public Task<IEnumerable<ProfileItem>> GetProfilesAsync()
 		{
-			if (_sourceProfiles == null)
+			if (_sourceProfiles is null)
 				_sourceProfiles = PopulateProfiles().ToList();
 
 			_sourceProfiles
@@ -72,7 +72,7 @@ namespace Wifinian.Models.Wlan
 		public Task<bool> SetProfileOptionAsync(ProfileItem profileItem)
 		{
 			var targetProfile = _sourceProfiles.FirstOrDefault(x => x.Id == profileItem.Id);
-			if (targetProfile == null)
+			if (targetProfile is null)
 				return Task.FromResult(false);
 
 			targetProfile.IsAutoConnectEnabled = profileItem.IsAutoConnectEnabled;
@@ -93,7 +93,7 @@ namespace Wifinian.Models.Wlan
 				return Task.FromResult(false);
 
 			var targetProfile = targetProfiles.FirstOrDefault(x => x.Id == profileItem.Id);
-			if (targetProfile == null)
+			if (targetProfile is null)
 				return Task.FromResult(false);
 
 			if (targetProfile.Position == position)
@@ -112,7 +112,7 @@ namespace Wifinian.Models.Wlan
 		public Task<bool> RenameProfileAsync(ProfileItem profileItem, string profileName)
 		{
 			var targetProfile = _sourceProfiles.FirstOrDefault(x => x.Id == profileItem.Id);
-			if (targetProfile == null)
+			if (targetProfile is null)
 				return Task.FromResult(false);
 
 			var renamedProfile = new ProfileItem(
@@ -154,7 +154,7 @@ namespace Wifinian.Models.Wlan
 				.ToList();
 
 			var targetProfile = targetProfiles.FirstOrDefault(x => x.Id == profileItem.Id);
-			if (targetProfile == null)
+			if (targetProfile is null)
 				return Task.FromResult(false);
 
 			targetProfile.IsConnected = true;
@@ -169,7 +169,7 @@ namespace Wifinian.Models.Wlan
 		public Task<bool> DisconnectNetworkAsync(ProfileItem profileItem, TimeSpan timeout)
 		{
 			var targetProfile = _sourceProfiles.FirstOrDefault(x => x.Id == profileItem.Id);
-			if (targetProfile == null)
+			if (targetProfile is null)
 				return Task.FromResult(false);
 
 			targetProfile.IsConnected = false;

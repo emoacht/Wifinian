@@ -16,46 +16,91 @@
 		<SolidColorBrush x:Key="EdgeBrush" Color="{StaticResource EdgeColor}"/>
 		<SolidColorBrush x:Key="BackBrush" Color="{StaticResource BackColor}"/>
 
-		<sys:Double x:Key="OutlineStrokeThickness">16</sys:Double>
+		<sys:Double x:Key="OutlineStrokeThickness">20</sys:Double>
+
+		<PathGeometry x:Key="ArcPath">
+			<PathFigure IsClosed="True" StartPoint="0,100">
+				<ArcSegment Point="100,0"
+							Size="100,100"
+							IsLargeArc="False" SweepDirection="Clockwise"/>
+				<LineSegment Point="100,23"/>
+				<ArcSegment Point="23, 100"
+							Size="77,77"
+							IsLargeArc="False" SweepDirection="Counterclockwise"/>
+			</PathFigure>
+		</PathGeometry>
+
+		<PathGeometry x:Key="FanPath">
+			<PathFigure IsClosed="True" StartPoint="0,100">
+				<ArcSegment Point="100,0"
+							Size="100,100"
+							IsLargeArc="False" SweepDirection="Clockwise"/>
+				<LineSegment Point="100,100"/>
+			</PathFigure>
+		</PathGeometry>
+
+		<Style x:Key="PathStyleBack" TargetType="{x:Type Path}">
+			<Setter Property="Fill" Value="{StaticResource FanBrush}"/>
+			<Setter Property="Stroke" Value="{StaticResource EdgeBrush}"/>
+			<Setter Property="StrokeThickness" Value="{DynamicResource OutlineStrokeThickness}"/>
+			<Setter Property="Stretch" Value="Uniform"/>
+			<!--<Setter Property="Visibility" Value="Hidden"/>-->
+		</Style>
+		<Style x:Key="PathStyleFront" TargetType="{x:Type Path}" BasedOn="{StaticResource PathStyleBack}">
+			<Setter Property="StrokeThickness" Value="0"/>
+			<Setter Property="Visibility" Value="Visible"/>
+		</Style>
+
+		<Style x:Key="CanvasStyle" TargetType="{x:Type Canvas}">
+			<Setter Property="Background" Value="{x:Null}"/>
+			<!--<Setter Property="Background" Value="{StaticResource BackBrush}"/>-->
+		</Style>
 	</UserControl.Resources>
 
-	<Grid Background="{x:Null}">
-		<!--<Grid Background="{StaticResource BackBrush}"/>-->
+	<Canvas Style="{StaticResource CanvasStyle}">
+		<!-- Right -->
+		<Path Style="{StaticResource PathStyleBack}"
+			  Data="{StaticResource ArcPath}"
+			  Canvas.Left="130" Canvas.Top="98" Height="120" Width="120"/>
+		<Path Style="{StaticResource PathStyleFront}"
+			  Data="{StaticResource ArcPath}"
+			  Canvas.Left="140" Canvas.Top="108" Height="100" Width="100"/>
 
-		<Path x:Name="FanForm"
-			  Fill="{StaticResource FanBrush}"
-			  Stroke="{StaticResource EdgeBrush}"
-			  StrokeThickness="{DynamicResource OutlineStrokeThickness}">
-			<Path.Data>
-				<PathGeometry>
-					<PathFigureCollection>
-						<PathFigure IsClosed="True" StartPoint="18,128">
-							<ArcSegment Point="112,34"
-										Size="94,94"
-										IsLargeArc="False" SweepDirection="Clockwise"/>
-							<LineSegment Point="112,128"/>
-						</PathFigure>
+		<Path Style="{StaticResource PathStyleBack}"
+			  Data="{StaticResource FanPath}"
+			  Canvas.Left="184" Canvas.Top="152" Height="66" Width="66"/>
+		<Path Style="{StaticResource PathStyleFront}"
+			  Data="{StaticResource FanPath}"
+			  Canvas.Left="194" Canvas.Top="162" Height="46" Width="46"/>
 
-						<PathFigure IsClosed="True" StartPoint="154,80">
-							<ArcSegment Point="208,26"
-										Size="54,54"
-										IsLargeArc="False" SweepDirection="Clockwise"/>
-							<LineSegment Point="208,80"/>
-						</PathFigure>
+		<!-- Left Top -->
+		<Path Style="{StaticResource PathStyleBack}"
+			  Data="{StaticResource ArcPath}"
+			  Canvas.Left="40" Canvas.Top="6" Width="116" Height="116"/>
+		<Path Style="{StaticResource PathStyleFront}"
+			  Data="{StaticResource ArcPath}"
+			  Canvas.Left="50" Canvas.Top="16" Width="96" Height="96"/>
 
-						<PathFigure IsClosed="True" StartPoint="128,224">
-							<ArcSegment Point="240,112"
-										Size="112,112"
-										IsLargeArc="False" SweepDirection="Clockwise"/>
-							<LineSegment Point="240,224"/>
-						</PathFigure>
+		<Path Style="{StaticResource PathStyleBack}"
+			  Data="{StaticResource FanPath}"
+			  Canvas.Left="90" Canvas.Top="58" Height="64" Width="64"/>
+		<Path Style="{StaticResource PathStyleFront}"
+			  Data="{StaticResource FanPath}"
+			  Canvas.Left="100" Canvas.Top="68" Height="44" Width="44"/>
 
-					</PathFigureCollection>
-				</PathGeometry>
-			</Path.Data>
-		</Path>
+		<!-- Left Bottom -->
+		<Path Style="{StaticResource PathStyleBack}"
+			  Data="{StaticResource ArcPath}"
+			  Canvas.Left="6" Canvas.Top="134" Width="116" Height="116"/>
+		<Path Style="{StaticResource PathStyleFront}"
+			  Data="{StaticResource ArcPath}"
+			  Canvas.Left="16" Canvas.Top="144" Width="96" Height="96"/>
 
-		<Path Fill="{StaticResource FanBrush}"
-			  Data="{Binding ElementName=FanForm, Path=Data}"/>
-	</Grid>
+		<Path Style="{StaticResource PathStyleBack}"
+			  Data="{StaticResource FanPath}"
+			  Canvas.Left="58" Canvas.Top="186" Height="64" Width="64"/>
+		<Path Style="{StaticResource PathStyleFront}"
+			  Data="{StaticResource FanPath}"
+			  Canvas.Left="68" Canvas.Top="196" Height="44" Width="44"/>
+	</Canvas>
 </UserControl>

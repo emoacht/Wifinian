@@ -267,7 +267,7 @@
 
 	<!-- ProfileContentControl -->
 	<Style TargetType="{x:Type controls:ProfileContentControl}">
-		<Setter Property="Background" Value="{StaticResource Profile.Normal.Background}"/>
+		<Setter Property="Background" Value="{StaticResource Profile.Background.Normal}"/>
 		<Setter Property="Foreground" Value="{StaticResource App.Foreground}"/>
 		<Setter Property="Template">
 			<Setter.Value>
@@ -290,7 +290,7 @@
 									<Storyboard>
 										<ColorAnimation Storyboard.TargetName="border"
 														Storyboard.TargetProperty="(Control.Background).(SolidColorBrush.Color)"
-														To="{DynamicResource Profile.Normal.Selected.BackgroundColor}"
+														To="{DynamicResource Profile.Background.NormalSelectedColor}"
 														Duration="0:0:0.1"/>
 									</Storyboard>
 								</VisualState>
@@ -299,7 +299,7 @@
 									<Storyboard>
 										<ColorAnimation Storyboard.TargetName="border"
 														Storyboard.TargetProperty="(Control.Background).(SolidColorBrush.Color)"
-														To="{StaticResource Profile.Available.BackgroundColor}"
+														To="{StaticResource Profile.Background.AvailableColor}"
 														Duration="0:0:0.1"/>
 									</Storyboard>
 								</VisualState>
@@ -307,7 +307,7 @@
 									<Storyboard>
 										<ColorAnimation Storyboard.TargetName="border"
 														Storyboard.TargetProperty="(Control.Background).(SolidColorBrush.Color)"
-														To="{DynamicResource Profile.Available.Selected.BackgroundColor}"
+														To="{DynamicResource Profile.Background.AvailableSelectedColor}"
 														Duration="0:0:0.1"/>
 									</Storyboard>
 								</VisualState>
@@ -316,7 +316,7 @@
 									<Storyboard>
 										<ColorAnimation Storyboard.TargetName="border"
 														Storyboard.TargetProperty="(Control.Background).(SolidColorBrush.Color)"
-														To="{StaticResource Profile.Connected.BackgroundColor}"
+														To="{StaticResource Profile.Background.ConnectedColor}"
 														Duration="0:0:0.1"/>
 									</Storyboard>
 								</VisualState>
@@ -324,7 +324,7 @@
 									<Storyboard>
 										<ColorAnimation Storyboard.TargetName="border"
 														Storyboard.TargetProperty="(Control.Background).(SolidColorBrush.Color)"
-														To="{DynamicResource Profile.Connected.Selected.BackgroundColor}"
+														To="{DynamicResource Profile.Background.ConnectedSelectedColor}"
 														Duration="0:0:0.1"/>
 									</Storyboard>
 								</VisualState>
@@ -337,7 +337,7 @@
 	</Style>
 
 	<!-- SignalProgressBar -->
-	<Style x:Key="BarStyle" TargetType="{x:Type controls:SignalProgressBar}">
+	<Style x:Key="ArcStyle" TargetType="{x:Type controls:SignalProgressBar}">
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type controls:SignalProgressBar}">
@@ -414,9 +414,9 @@
 
 	<!-- SimpleToggleButton -->
 	<Style x:Key="MenuToggleButtonStyle" TargetType="{x:Type controls:SimpleToggleButton}">
-		<Setter Property="Background" Value="{StaticResource ToggleButton.Normal.Background}"/>
+		<Setter Property="Background" Value="{StaticResource ToggleButton.Background.Normal}"/>
 		<Setter Property="BorderThickness" Value="0"/>
-		<Setter Property="Foreground" Value="{StaticResource ToggleButton.Normal.Foreground}"/>
+		<Setter Property="Foreground" Value="{StaticResource ToggleButton.Foreground.Normal}"/>
 		<Setter Property="FontSize" Value="12"/>
 		<Setter Property="FontWeight" Value="SemiBold"/>
 		<Setter Property="Template">
@@ -467,7 +467,7 @@
 									<Storyboard>
 										<ColorAnimation Storyboard.TargetName="border"
 														Storyboard.TargetProperty="(Control.Background).(SolidColorBrush.Color)"
-														To="{StaticResource ToggleButton.Checked.BackgroundColor}"
+														To="{StaticResource ToggleButton.Background.CheckedColor}"
 														Duration="0:0:0.1"/>
 										<DoubleAnimation Storyboard.TargetName="border"
 														 Storyboard.TargetProperty="(Control.Background).(SolidColorBrush.Opacity)"
@@ -495,9 +495,9 @@
 
 	<Style x:Key="IconButtonStyle" TargetType="{x:Type controls:IconButton}">
 		<Setter Property="Background" Value="Transparent"/>
-		<Setter Property="BorderBrush" Value="{StaticResource Button.Normal.Foreground}"/>
+		<Setter Property="BorderBrush" Value="{StaticResource Button.Foreground}"/>
 		<Setter Property="BorderThickness" Value="2"/>
-		<Setter Property="Foreground" Value="{StaticResource Button.Normal.Foreground}"/>
+		<Setter Property="Foreground" Value="{StaticResource Button.Foreground}"/>
 		<Setter Property="FontSize" Value="13"/>
 		<Setter Property="FontWeight" Value="SemiBold"/>
 		<Setter Property="Template">
@@ -528,15 +528,15 @@
 									<Storyboard>
 										<DoubleAnimation Storyboard.TargetName="border"
 														 Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Opacity)"
-														 To="0.9"
+														 To="0.8"
 														 Duration="0:0:0.1"/>
 										<DoubleAnimation Storyboard.TargetName="icon"
 														 Storyboard.TargetProperty="(Shape.Stroke).(SolidColorBrush.Opacity)"
-														 To="0.9"
+														 To="0.8"
 														 Duration="0:0:0.1"/>
 										<DoubleAnimation Storyboard.TargetName="content"
 														 Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Opacity)"
-														 To="0.9"
+														 To="0.8"
 														 Duration="0:0:0.1"/>
 									</Storyboard>
 								</VisualState>

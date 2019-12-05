@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
-using System.Windows.Interactivity;
 using System.Windows.Media;
 using System.Windows.Threading;
+using Microsoft.Xaml.Behaviors;
 
 namespace VisualStateTest
 {
@@ -68,7 +68,7 @@ namespace VisualStateTest
 
 		private static IEnumerable<DependencyObject> GetDescendants(DependencyObject reference)
 		{
-			if (reference == null)
+			if (reference is null)
 				yield break;
 
 			var queue = new Queue<DependencyObject>();

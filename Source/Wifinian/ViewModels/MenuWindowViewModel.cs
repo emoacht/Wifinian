@@ -11,11 +11,11 @@ namespace Wifinian.ViewModels
 {
 	public class MenuWindowViewModel : DisposableBase
 	{
-		private readonly MainController _controller;
+		private readonly AppController _controller;
 
 		public ReactiveCommand CloseCommand => _controller?.CloseCommand;
 
-		internal MenuWindowViewModel(MainController controller)
+		internal MenuWindowViewModel(AppController controller)
 		{
 			this._controller = controller ?? throw new ArgumentNullException(nameof(controller));
 		}

@@ -71,12 +71,72 @@
             </summary>
             <remarks>This constructor is for P/Invoke.</remarks>
         </member>
+        <member name="T:ManagedNativeWifi.AuthenticationAlgorithm">
+            <summary>
+            Authentication algorithm
+            </summary>
+            <remarks>
+            Equivalent to DOT11_AUTH_ALGORITHM:
+            https://docs.microsoft.com/en-us/windows/win32/nativewifi/dot11-auth-algorithm
+            </remarks>
+        </member>
+        <member name="F:ManagedNativeWifi.AuthenticationAlgorithm.None">
+            <summary>
+            None (invalid value)
+            </summary>
+        </member>
+        <member name="F:ManagedNativeWifi.AuthenticationAlgorithm.Open">
+            <summary>
+            802.11 Open System authentication algorithm
+            </summary>
+        </member>
+        <member name="F:ManagedNativeWifi.AuthenticationAlgorithm.Shared">
+            <summary>
+            802.11 Shared Key authentication algorithm that uses pre-shared Wired Equivalent Privacy (WEP) key
+            </summary>
+        </member>
+        <member name="F:ManagedNativeWifi.AuthenticationAlgorithm.WPA">
+            <summary>
+            Wi-Fi Protected Access (WPA) algorithm
+            </summary>
+        </member>
+        <member name="F:ManagedNativeWifi.AuthenticationAlgorithm.WPA_PSK">
+            <summary>
+            WPA algorithm that uses pre-shared keys (PSK)
+            </summary>
+        </member>
+        <member name="F:ManagedNativeWifi.AuthenticationAlgorithm.WPA_NONE">
+            <summary>
+            Note supported
+            </summary>
+        </member>
+        <member name="F:ManagedNativeWifi.AuthenticationAlgorithm.RSNA">
+            <summary>
+            802.11i Robust Security Network Association (RSNA) algorithm (WPA2 is one such algorithm.)
+            </summary>
+        </member>
+        <member name="F:ManagedNativeWifi.AuthenticationAlgorithm.RSNA_PSK">
+            <summary>
+            802.11i RSNA algorithm that uses PSK
+            </summary>
+        </member>
+        <member name="F:ManagedNativeWifi.AuthenticationAlgorithm.IHV_START">
+            <summary>
+            Indicates the start of the range that specifies proprietary authentication algorithms developed by an independent hardware vendor (IHV).
+            </summary>
+        </member>
+        <member name="F:ManagedNativeWifi.AuthenticationAlgorithm.IHV_END">
+            <summary>
+            Indicates the end of the range that specifies proprietary authentication algorithms developed by an independent hardware vendor (IHV).
+            </summary>
+        </member>
         <member name="T:ManagedNativeWifi.AuthenticationMethod">
             <summary>
             Authentication method to be used to connect to wireless LAN
             </summary>
             <remarks>
-            https://msdn.microsoft.com/en-us/library/windows/desktop/ms706933.aspx
+            Equivalent to authentication element in profile XML:
+            https://docs.microsoft.com/en-us/windows/win32/nativewifi/wlan-profileschema-authentication-authencryption-element
             </remarks>
         </member>
         <member name="F:ManagedNativeWifi.AuthenticationMethod.None">
@@ -153,7 +213,17 @@
             Associated wireless profile name
             </summary>
         </member>
-        <member name="M:ManagedNativeWifi.AvailableNetworkPack.#ctor(ManagedNativeWifi.InterfaceInfo,ManagedNativeWifi.NetworkIdentifier,ManagedNativeWifi.BssType,System.Int32,System.Boolean,System.String)">
+        <member name="P:ManagedNativeWifi.AvailableNetworkPack.AuthenticationAlgorithm">
+            <summary>
+            Default authentication algorithm to be used to connect to this network for the first time
+            </summary>
+        </member>
+        <member name="P:ManagedNativeWifi.AvailableNetworkPack.CipherAlgorithm">
+            <summary>
+            Default cipher algorithm to be used to connect to this network
+            </summary>
+        </member>
+        <member name="M:ManagedNativeWifi.AvailableNetworkPack.#ctor(ManagedNativeWifi.InterfaceInfo,ManagedNativeWifi.NetworkIdentifier,ManagedNativeWifi.BssType,System.Int32,System.Boolean,System.String,ManagedNativeWifi.AuthenticationAlgorithm,ManagedNativeWifi.CipherAlgorithm)">
             <summary>
             Constructor
             </summary>
@@ -188,7 +258,7 @@
             Channel of associated BSS network which has the highest link quality
             </summary>
         </member>
-        <member name="M:ManagedNativeWifi.AvailableNetworkGroupPack.#ctor(ManagedNativeWifi.InterfaceInfo,ManagedNativeWifi.NetworkIdentifier,ManagedNativeWifi.BssType,System.Int32,System.Boolean,System.String,System.Collections.Generic.IEnumerable{ManagedNativeWifi.BssNetworkPack})">
+        <member name="M:ManagedNativeWifi.AvailableNetworkGroupPack.#ctor(ManagedNativeWifi.InterfaceInfo,ManagedNativeWifi.NetworkIdentifier,ManagedNativeWifi.BssType,System.Int32,System.Boolean,System.String,ManagedNativeWifi.AuthenticationAlgorithm,ManagedNativeWifi.CipherAlgorithm,System.Collections.Generic.IEnumerable{ManagedNativeWifi.BssNetworkPack})">
             <summary>
             Constructor
             </summary>
@@ -252,6 +322,12 @@
             <summary>
             BSS network type
             </summary>
+            <remarks>
+            Partly equivalent to DOT11_BSS_TYPE:
+            https://docs.microsoft.com/en-us/windows/win32/nativewifi/dot11-bss-type
+            Also equivalent to connectionType element in profile XML:
+            https://docs.microsoft.com/en-us/windows/win32/nativewifi/wlan-profileschema-connectiontype-wlanprofile-element
+            </remarks>
         </member>
         <member name="F:ManagedNativeWifi.BssType.None">
             <summary>
@@ -268,10 +344,89 @@
             Independent BSS (IBSS) network (Ad hoc network)
             </summary>
         </member>
+        <member name="M:ManagedNativeWifi.BssTypeConverter.TryConvert(ManagedNativeWifi.Win32.NativeMethod.DOT11_BSS_TYPE,ManagedNativeWifi.BssType@)">
+            <summary>
+            Converts from DOT11_BSS_TYPE value.
+            </summary>
+            <param name="source">DOT11_BSS_TYPE value</param>
+            <param name="bssType">BssType value</param>
+            <returns>True if successfully converts</returns>
+        </member>
+        <member name="M:ManagedNativeWifi.BssTypeConverter.TryParse(System.String,ManagedNativeWifi.BssType@)">
+            <summary>
+            Converts from connectionType element in profile XML.
+            </summary>
+            <param name="source">connectionType element</param>
+            <param name="bssType">BssType value</param>
+            <returns>True if successfully converts</returns>
+        </member>
+        <member name="T:ManagedNativeWifi.CipherAlgorithm">
+            <summary>
+            Cipher algorithm for data encryption and decryption
+            </summary>
+            <remarks>
+            Equivalent to DOT11_CIPHER_ALGORITHM:
+            https://docs.microsoft.com/en-us/windows/win32/nativewifi/dot11-cipher-algorithm
+            </remarks>
+        </member>
+        <member name="F:ManagedNativeWifi.CipherAlgorithm.None">
+            <summary>
+            No cipher algorithm is enabled or supported.
+            </summary>
+        </member>
+        <member name="F:ManagedNativeWifi.CipherAlgorithm.WEP">
+            <summary>
+            Wired Equivalent Privacy (WEP) algorithm with a cipher key of any length
+            </summary>
+        </member>
+        <member name="F:ManagedNativeWifi.CipherAlgorithm.WEP40">
+            <summary>
+            WEP algorithm with a 40-bit cipher key
+            </summary>
+        </member>
+        <member name="F:ManagedNativeWifi.CipherAlgorithm.WEP104">
+            <summary>
+            WEP algorithm with a 104-bit cipher key
+            </summary>
+        </member>
+        <member name="F:ManagedNativeWifi.CipherAlgorithm.TKIP">
+            <summary>
+            Temporal Key Integrity Protocol (TKIP) algorithm
+            </summary>
+        </member>
+        <member name="F:ManagedNativeWifi.CipherAlgorithm.CCMP">
+            <summary>
+            AES-CCMP algorithm
+            </summary>
+        </member>
+        <member name="F:ManagedNativeWifi.CipherAlgorithm.WPA_USE_GROUP">
+            <summary>
+            Wi-Fi Protected Access (WPA) Use Group Key cipher suite
+            </summary>
+        </member>
+        <member name="F:ManagedNativeWifi.CipherAlgorithm.RSN_USE_GROUP">
+            <summary>
+            Robust Security Network (RSN) Use Group Key cipher suite (not used)
+            </summary>
+        </member>
+        <member name="F:ManagedNativeWifi.CipherAlgorithm.IHV_START">
+            <summary>
+            Indicates the start of the range that specifies proprietary cipher algorithms developed by an independent hardware vendor (IHV).
+            </summary>
+        </member>
+        <member name="F:ManagedNativeWifi.CipherAlgorithm.IHV_END">
+            <summary>
+            Indicates the end of the range that specifies proprietary cipher algorithms developed by an independent hardware vendor (IHV).
+            </summary>
+        </member>
         <member name="T:ManagedNativeWifi.ConnectionMode">
             <summary>
             Connection mode
             </summary>
+            <remarks>
+            Equivalent to WLAN_CONNECTION_MODE:
+            https://docs.microsoft.com/en-us/windows/win32/api/wlanapi/ne-wlanapi-wlan_connection_mode
+            </remarks>
         </member>
         <member name="F:ManagedNativeWifi.ConnectionMode.Invalid">
             <summary>
@@ -308,7 +463,8 @@
             Data encryption type to be used to connect to wireless LAN
             </summary>
             <remarks>
-            https://msdn.microsoft.com/en-us/library/windows/desktop/ms706969.aspx
+            Equivalent to encryption element in profile XML:
+            https://docs.microsoft.com/en-us/windows/win32/nativewifi/wlan-profileschema-encryption-authencryption-element
             </remarks>
         </member>
         <member name="F:ManagedNativeWifi.EncryptionType.None">
@@ -390,7 +546,10 @@
             <summary>
             Wireless interface state
             </summary>
-            <remarks>Equivalent to WLAN_INTERFACE_STATE</remarks>
+            <remarks>
+            Equivalent to WLAN_INTERFACE_STATE:
+            https://docs.microsoft.com/en-us/windows/win32/api/wlanapi/ne-wlanapi-wlan_interface_state
+            </remarks>
         </member>
         <member name="F:ManagedNativeWifi.InterfaceState.NotReady">
             <summary>
@@ -533,7 +692,7 @@
             <remarks>
             If the content of the profile XML is not valid, a Win32Exception will be thrown.
             In such case, check the reason code in the message and see
-            https://msdn.microsoft.com/en-us/library/windows/desktop/ms707394.aspx
+            https://docs.microsoft.com/en-us/windows/win32/nativewifi/wlan-reason-code
             https://technet.microsoft.com/en-us/library/3ed3d027-5ae8-4cb0-ade5-0a7c446cd4f7#BKMK_AppndxE
             </remarks>
         </member>
@@ -806,7 +965,7 @@
             <summary>
             Identifier of wireless LAN
             </summary>
-            <remarks>This class is immutable.</remarks>
+            <remarks>This class is designed as immutable.</remarks>
         </member>
         <member name="M:ManagedNativeWifi.NetworkIdentifier.#ctor(System.Byte[],System.String)">
             <summary>
@@ -829,6 +988,10 @@
             <summary>
             802.11 PHY and media type
             </summary>
+            <remarks>
+            Equivalent to DOT11_PHY_TYPE:
+            https://docs.microsoft.com/en-us/windows/win32/nativewifi/dot11-phy-type
+            </remarks>
         </member>
         <member name="F:ManagedNativeWifi.PhyType.Unknown">
             <summary>
@@ -898,7 +1061,7 @@
             </summary>
             <remarks>
             The elements of profile XML are defined as:
-            https://msdn.microsoft.com/en-us/library/windows/desktop/ms707381.aspx
+            https://docs.microsoft.com/en-us/windows/win32/nativewifi/wlan-profileschema-wlanprofile-element
             </remarks>
         </member>
         <member name="F:ManagedNativeWifi.ProfileDocument.Namespace">

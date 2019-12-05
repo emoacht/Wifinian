@@ -39,10 +39,12 @@ namespace IconImage
 			InitializeComponent();
 		}
 
+		private void Save(object sender, RoutedEventArgs e) => SaveImage();
+
 		private string _fileName = "Icon.png";
 		private string _folderPath;
 
-		public void SaveImage()
+		private void SaveImage()
 		{
 			var sfd = new SaveFileDialog
 			{

@@ -5,13 +5,13 @@
 		Title="VisualState Test"
 		Height="200" Width="200">
 	<Window.Resources>
-		<SolidColorBrush x:Key="ToggleButton.Normal.Background" Color="Orchid" Opacity="0.6"/>
-		<Color x:Key="ToggleButton.Selected.BackgroundColor">Gold</Color>
+		<SolidColorBrush x:Key="ToggleButton.Background.Normal" Color="Orchid" Opacity="0.6"/>
+		<Color x:Key="ToggleButton.Background.SelectedColor">Gold</Color>
 
 		<ControlTemplate x:Key="ToggleButtonTemplate" TargetType="{x:Type ToggleButton}">
 			<Grid>
 				<Border x:Name="border"
-						Background="{StaticResource ToggleButton.Normal.Background}"
+						Background="{StaticResource ToggleButton.Background.Normal}"
 						BorderThickness="1"
 						BorderBrush="Gray">
 					<ContentPresenter Margin="{TemplateBinding Padding}"
@@ -46,7 +46,7 @@
 							<Storyboard>
 								<ColorAnimation Storyboard.TargetName="border"
 												Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)"
-												To="{StaticResource ToggleButton.Selected.BackgroundColor}"
+												To="{StaticResource ToggleButton.Background.SelectedColor}"
 												Duration="0:0:0.1"/>
 							</Storyboard>
 						</VisualState>

@@ -29,7 +29,7 @@ namespace Wifinian.Common
 
 		protected virtual bool SetPropertyValue<T>(ref T storage, T value, Func<T, T> normalize, [CallerMemberName] string propertyName = null)
 		{
-			if (normalize == null)
+			if (normalize is null)
 				throw new ArgumentNullException(nameof(normalize));
 
 			return SetPropertyValue(ref storage, normalize.Invoke(value), propertyName);

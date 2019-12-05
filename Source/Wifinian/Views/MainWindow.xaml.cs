@@ -30,7 +30,7 @@ namespace Wifinian.Views
 
 		protected CompositeDisposable Subscription { get; } = new CompositeDisposable();
 
-		internal MainWindow(MainController controller)
+		internal MainWindow(AppController controller)
 		{
 			InitializeComponent();
 
@@ -43,7 +43,6 @@ namespace Wifinian.Views
 			#region Drag
 
 			Observable.FromEventPattern<MouseButtonEventHandler, MouseButtonEventArgs>(
-				h => h.Invoke,
 				h => this.MouseLeftButtonDown += h,
 				h => this.MouseLeftButtonDown -= h)
 				.Subscribe(x =>
@@ -60,7 +59,7 @@ namespace Wifinian.Views
 		{
 			base.OnSourceInitialized(e);
 
-			WindowEffect.EnableBackgroundBlur(this);
+			WindowEffect.EnableBackgroundTranslucency(this);
 
 			#region Size
 
@@ -68,7 +67,6 @@ namespace Wifinian.Views
 			RestoreWindowSize();
 
 			Observable.FromEventPattern<SizeChangedEventHandler, SizeChangedEventArgs>(
-				h => h.Invoke,
 				h => this.SizeChanged += h,
 				h => this.SizeChanged -= h)
 				.Subscribe(x => SaveWindowSize(x.EventArgs.NewSize))
@@ -130,12 +128,9 @@ namespace Wifinian.Views
 				(windowSize.Height < this.MinHeight))
 				return;
 
-			this.Width = OsVersion.Is10Threshold1OrNewer
-				? windowSize.Width
-				: windowSize.Width * _mover.Dpi.DpiScaleX;
-			this.Height = OsVersion.Is10Threshold1OrNewer
-				? windowSize.Height
-				: windowSize.Height * _mover.Dpi.DpiScaleY;
+			(this.Width, this.Height) = OsVersion.Is10Threshold1OrNewer
+				? (windowSize.Width, windowSize.Height)
+				: (windowSize.Width * _mover.Dpi.DpiScaleX, windowSize.Height * _mover.Dpi.DpiScaleY);
 		}
 
 		private void SaveWindowSize(Size windowSize)
@@ -151,34 +146,26 @@ namespace Wifinian.Views
 		{
 			var borderWidth = 4D * _mover.Dpi.DpiScaleX;
 
-			switch (_mover.PivotAlignment)
+			ResizeBorderThickness = _mover.PivotAlignment switch
 			{
-				case PivotAlignment.TopLeft:
-					ResizeBorderThickness = new Thickness(0, 0, borderWidth, borderWidth);
-					break;
-				case PivotAlignment.TopRight:
-					ResizeBorderThickness = new Thickness(borderWidth, 0, 0, borderWidth);
-					break;
-				case PivotAlignment.BottomRight:
-					ResizeBorderThickness = new Thickness(borderWidth, borderWidth, 0, 0);
-					break;
-				case PivotAlignment.BottomLeft:
-					ResizeBorderThickness = new Thickness(0, borderWidth, borderWidth, 0);
-					break;
-				default:
-					ResizeBorderThickness = new Thickness(borderWidth);
-					break;
-			}
+				PivotAlignment.TopLeft => new Thickness(0, 0, borderWidth, borderWidth),
+				PivotAlignment.TopRight => new Thickness(borderWidth, 0, 0, borderWidth),
+				PivotAlignment.BottomRight => new Thickness(borderWidth, borderWidth, 0, 0),
+				PivotAlignment.BottomLeft => new Thickness(0, borderWidth, borderWidth, 0),
+				_ => new Thickness(borderWidth),
+			};
 		}
 
 		#endregion
 
 		#region Show/Hide
 
+		public bool IsForeground => _mover.IsForeground();
+
 		public bool CanBeShown => (_preventionTime < DateTimeOffset.Now);
 		private DateTimeOffset _preventionTime;
 
-		protected override async void OnDeactivated(EventArgs e)
+		protected override void OnDeactivated(EventArgs e)
 		{
 			base.OnDeactivated(e);
 
@@ -191,6 +178,11 @@ namespace Wifinian.Views
 			// Set time to prevent this window from being shown unintentionally. 
 			_preventionTime = DateTimeOffset.Now + TimeSpan.FromSeconds(0.2);
 
+			ClearHide();
+		}
+
+		public async void ClearHide()
+		{
 			// Clear focus.
 			FocusManager.SetFocusedElement(this, null);
 

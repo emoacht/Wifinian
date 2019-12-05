@@ -52,7 +52,7 @@
         </member>
         <member name="T:ScreenFrame.Movers.WindowMover">
             <summary>
-            Window mover
+            Mover of <see cref="T:System.Windows.Window"/>
             </summary>
         </member>
         <member name="F:ScreenFrame.Movers.WindowMover._window">
@@ -97,9 +97,45 @@
             Handles DPI changed event.
             </summary>
         </member>
+        <member name="M:ScreenFrame.Movers.WindowMover.HandleDisplayChange(System.IntPtr,System.Int32,System.IntPtr,System.IntPtr,System.Boolean@)">
+            <summary>
+            Handles display change event.
+            </summary>
+        </member>
+        <member name="E:ScreenFrame.Movers.WindowMover.AppActivated">
+            <summary>
+            Occurs when the application to which the window belongs is activated.
+            </summary>
+        </member>
+        <member name="E:ScreenFrame.Movers.WindowMover.AppDeactivated">
+            <summary>
+            Occurs when the application to which the window belongs is deactivated. 
+            </summary>
+        </member>
+        <member name="M:ScreenFrame.Movers.WindowMover.HandleActivateApp(System.IntPtr,System.Int32,System.IntPtr,System.IntPtr,System.Boolean@)">
+            <summary>
+            Handles application activated/deactivated event.
+            </summary>
+        </member>
+        <member name="E:ScreenFrame.Movers.WindowMover.EscapeKeyDown">
+            <summary>
+            Occurs when the escape key is pressed.
+            </summary>
+        </member>
+        <member name="M:ScreenFrame.Movers.WindowMover.HandleKeyDown(System.IntPtr,System.Int32,System.IntPtr,System.IntPtr,System.Boolean@)">
+            <summary>
+            Handles key pressed event.
+            </summary>
+        </member>
+        <member name="M:ScreenFrame.Movers.WindowMover.IsForeground">
+            <summary>
+            Whether the window is foreground window
+            </summary>
+            <returns>True if foreground</returns>
+        </member>
         <member name="T:ScreenFrame.Movers.BasicWindowMover">
             <summary>
-            Window mover which implements basic functions
+            Mover of <see cref="T:System.Windows.Window"/> which implements basic functions
             </summary>
         </member>
         <member name="M:ScreenFrame.Movers.BasicWindowMover.#ctor(System.Windows.Window)">
@@ -123,28 +159,33 @@
             Handles window position changed event.
             </summary>
         </member>
-        <member name="M:ScreenFrame.Movers.BasicWindowMover.TryGetAdjacentLocation(System.Double,System.Double,System.Windows.Point@)">
+        <member name="M:ScreenFrame.Movers.BasicWindowMover.HandleDisplayChange(System.IntPtr,System.Int32,System.IntPtr,System.IntPtr,System.Boolean@)">
             <summary>
-            Tries to get the adjacent location using specified window width and height.
+            Handles Display change event.
             </summary>
-            <param name="windowWidth">Window width</param>
-            <param name="windowHeight">Window height</param>
-            <param name="location">Location of window</param>
-            <returns>True if succeeded</returns>
         </member>
-        <member name="M:ScreenFrame.Movers.BasicWindowMover.TryGetAdjustedPosition(System.Double,System.Double,System.Windows.Point,System.Windows.Rect@)">
+        <member name="M:ScreenFrame.Movers.BasicWindowMover.TryGetAdjacentLocation(System.Double,System.Double,System.Windows.Rect@)">
             <summary>
-            Tries to get the adjusted position contained in the monitor using specified window location.
+            Attempts to get the adjacent location using specified window width and height.
             </summary>
             <param name="windowWidth">Window width</param>
             <param name="windowHeight">Window height</param>
             <param name="location">Location of window</param>
-            <param name="position">Position of window</param>
-            <returns>True if succeeded</returns>
+            <returns>True if successfully gets</returns>
+        </member>
+        <member name="M:ScreenFrame.Movers.BasicWindowMover.TryConfirmLocation(System.Windows.Rect)">
+            <summary>
+            Attempts to confirm that a specified location is not completely outside of monitors.
+            </summary>
+            <param name="location">Location of window</param>
+            <returns>True if successfully confirms</returns>
+            <remarks>
+            The specified location and the current location are not necessarily in the same monitor.
+            </remarks>
         </member>
         <member name="T:ScreenFrame.Movers.FloatWindowMover">
             <summary>
-            Window mover which implements functions for float window
+            Mover of <see cref="T:System.Windows.Window"/> which implements functions for float window
             </summary>
         </member>
         <member name="M:ScreenFrame.Movers.FloatWindowMover.#ctor(System.Windows.Window,System.Windows.Point)">
@@ -159,27 +200,27 @@
             Alignment of pivot
             </summary>
         </member>
-        <member name="M:ScreenFrame.Movers.FloatWindowMover.TryGetAdjacentLocation(System.Double,System.Double,System.Windows.Point@)">
+        <member name="M:ScreenFrame.Movers.FloatWindowMover.TryGetAdjacentLocation(System.Double,System.Double,System.Windows.Rect@)">
             <summary>
-            Tries to get the adjacent location using specified window width and height.
+            Attempts to get the adjacent location using specified window width and height.
             </summary>
             <param name="windowWidth">Window width</param>
             <param name="windowHeight">Window height</param>
             <param name="location">Location of window</param>
-            <returns>True if succeeded</returns>
+            <returns>True if successfully gets</returns>
         </member>
-        <member name="M:ScreenFrame.Movers.FloatWindowMover.TryGetAdjacentLocationToPivot(System.Double,System.Double,System.Windows.Point@)">
+        <member name="M:ScreenFrame.Movers.FloatWindowMover.TryGetAdjacentLocationToPivot(System.Double,System.Double,System.Windows.Rect@)">
             <summary>
-            Tries to get the adjacent location to pivot point using specified window width and height.
+            Attempts to get the adjacent location to pivot point using specified window width and height.
             </summary>
             <param name="windowWidth">Window width</param>
             <param name="windowHeight">Window height</param>
             <param name="location">Location of window</param>
-            <returns>True if succeeded</returns>
+            <returns>True if successfully gets</returns>
         </member>
         <member name="T:ScreenFrame.Movers.StickWindowMover">
             <summary>
-            Window mover which implements functions for stick window
+            Mover of <see cref="T:System.Windows.Window"/> which implements functions for stick window
             </summary>
         </member>
         <member name="M:ScreenFrame.Movers.StickWindowMover.#ctor(System.Windows.Window,System.Windows.Forms.NotifyIcon)">
@@ -194,27 +235,42 @@
             Alignment of pivot
             </summary>
         </member>
-        <member name="M:ScreenFrame.Movers.StickWindowMover.TryGetAdjacentLocation(System.Double,System.Double,System.Windows.Point@)">
+        <member name="M:ScreenFrame.Movers.StickWindowMover.TryGetAdjacentLocation(System.Double,System.Double,System.Windows.Rect@)">
             <summary>
-            Tries to get the adjacent location using specified window width and height.
+            Attempts to get the adjacent location using specified window width and height.
             </summary>
             <param name="windowWidth">Window width</param>
             <param name="windowHeight">Window height</param>
             <param name="location">Location of window</param>
-            <returns>True if succeeded</returns>
+            <returns>True if successfully gets</returns>
         </member>
-        <member name="M:ScreenFrame.Movers.StickWindowMover.TryGetAdjacentLocationToTaskbar(System.Double,System.Double,System.Windows.Point@)">
+        <member name="F:ScreenFrame.Movers.StickWindowMover.IconPlacement.Unknown">
             <summary>
-            Tries to get the adjacent location to NotifyIcon using specified window width and height.
+            The location of NotifyIcon is unknown.
+            </summary>
+        </member>
+        <member name="F:ScreenFrame.Movers.StickWindowMover.IconPlacement.InTaskbar">
+            <summary>
+            NotifyIcon locates in the taskbar.
+            </summary>
+        </member>
+        <member name="F:ScreenFrame.Movers.StickWindowMover.IconPlacement.InOverflowArea">
+            <summary>
+            NotifyIcon locates in the notification overflow area.
+            </summary>
+        </member>
+        <member name="M:ScreenFrame.Movers.StickWindowMover.TryGetAdjacentLocationToTaskbar(System.Double,System.Double,System.Windows.Rect@)">
+            <summary>
+            Attempts to get the adjacent location to NotifyIcon using specified window width and height.
             </summary>
             <param name="windowWidth">Window width</param>
             <param name="windowHeight">Window height</param>
             <param name="location">Location of window</param>
-            <returns>True if succeeded</returns>
+            <returns>True if successfully gets</returns>
         </member>
         <member name="T:ScreenFrame.Movers.SwitchWindowMover">
             <summary>
-            Window mover which implements functions for switch window
+            Mover of <see cref="T:System.Windows.Window"/> which implements functions for switch window
             </summary>
         </member>
         <member name="P:ScreenFrame.Movers.SwitchWindowMover.IsDeparted">
@@ -249,24 +305,45 @@
             Handles window messages.
             </summary>
         </member>
-        <member name="M:ScreenFrame.Movers.SwitchWindowMover.TryGetAdjacentLocation(System.Double,System.Double,System.Windows.Point@)">
+        <member name="M:ScreenFrame.Movers.SwitchWindowMover.TryGetAdjacentLocation(System.Double,System.Double,System.Windows.Rect@)">
             <summary>
-            Tries to get the adjacent location using specified window width and height.
+            Attempts to get the adjacent location using specified window width and height.
             </summary>
             <param name="windowWidth">Window width</param>
             <param name="windowHeight">Window height</param>
             <param name="location">Location of window</param>
-            <returns>True if succeeded</returns>
+            <returns>True if successfully gets</returns>
         </member>
         <member name="T:ScreenFrame.NotifyIconContainer">
             <summary>
-            Container of NotifyIcon
+            Container of <see cref="T:System.Windows.Forms.NotifyIcon"/>
             </summary>
+        </member>
+        <member name="T:ScreenFrame.NotifyIconContainer.RefAction`1">
+            <summary>
+            Encapsulates a method that has a single ref parameter and does not return a value.
+            </summary>
+            <typeparam name="T">The parameter of the method that this delegate encapsulates</typeparam>
+            <param name="obj">The method that this delegate encapsulates</param>
         </member>
         <member name="P:ScreenFrame.NotifyIconContainer.NotifyIcon">
             <summary>
             NotifyIcon instance
             </summary>
+        </member>
+        <member name="P:ScreenFrame.NotifyIconContainer.NotifyIconHandle">
+            <summary>
+            NotifyIcon window handle (available only after ShowIcon method is called)
+            </summary>
+        </member>
+        <member name="P:ScreenFrame.NotifyIconContainer.Handlers">
+            <summary>
+            Windows message handlers
+            </summary>
+            <remarks>
+            Key: ID number for windows message
+            Value: Action to be called when the specified windows message is sent to NotifyIcon
+            </remarks>
         </member>
         <member name="M:ScreenFrame.NotifyIconContainer.#ctor">
             <summary>
@@ -292,11 +369,17 @@
             <param name="icon">Icon for NotifyIcon</param>
             <param name="iconText">Text for NotifyIcon</param>
         </member>
+        <member name="M:ScreenFrame.NotifyIconContainer.GetIconRect">
+            <summary>
+            Gets the rectangle of NotifyIcon.
+            </summary>
+            <returns>Rectangle of NotifyIcon</returns>
+        </member>
         <member name="M:ScreenFrame.NotifyIconContainer.WndProc(System.Windows.Forms.Message@)">
             <summary>
             Processes windows message sent to NotifyIcon.
             </summary>
-            <param name="m">Message</param>
+            <param name="m">Windows message</param>
         </member>
         <member name="M:ScreenFrame.NotifyIconContainer.OnDpiChanged(System.Windows.DpiScale,System.Windows.DpiScale)">
             <summary>
@@ -330,24 +413,24 @@
             Sets the window of a specified NotifyIcon into foreground.
             </summary>
             <param name="notifyIcon">NotifyIcon</param>
-            <returns>True if succeeded</returns>
+            <returns>True if successfully sets</returns>
         </member>
         <member name="M:ScreenFrame.NotifyIconHelper.TryGetNotifyIconClickedPoint(System.Windows.Forms.NotifyIcon,System.Windows.Point@)">
             <summary>
-             Tries to get the point where a specified NotifyIcon is clicked.
+            Attempts to get the point where a specified NotifyIcon is clicked.
             </summary>
             <param name="notifyIcon">NotifyIcon</param>
             <param name="point">Clicked point</param>
-            <returns>True if succeeded</returns>
+            <returns>True if successfully gets</returns>
             <remarks>MouseEventArgs.Location property of MouseClick event does not contain data.</remarks>
         </member>
         <member name="M:ScreenFrame.NotifyIconHelper.TryGetNotifyIconRect(System.Windows.Forms.NotifyIcon,System.Windows.Rect@)">
             <summary>
-            Tries to get the rectangle of a specified NotifyIcon.
+            Attempts to get the rectangle of a specified NotifyIcon.
             </summary>
             <param name="notifyIcon">NotifyIcon</param>
             <param name="iconRect">Rectangle of the NotifyIcon</param>
-            <returns>True if succeeded</returns>
+            <returns>True if successfully gets</returns>
             <remarks>
             The idea to get the rectangle of a NotifyIcon is derived from:
             https://github.com/rzhw/SuperNotifyIcon
@@ -454,6 +537,24 @@
             </summary>
             <param name="lParam">lParam value</param>
             <returns>Rectangle</returns>
+        </member>
+        <member name="M:ScreenFrame.VisualTreeHelperAddition.TryGetAncestor``1(System.Windows.DependencyObject,``0@)">
+            <summary>
+            Attempts to get the first ancestor visual of a specified visual.
+            </summary>
+            <typeparam name="T">Type of ancestor visual</typeparam>
+            <param name="reference">Descendant visual</param>
+            <param name="ancestor">Ancestor visual</param>
+            <returns>True if successfully gets</returns>
+        </member>
+        <member name="M:ScreenFrame.VisualTreeHelperAddition.TryGetDescendant``1(System.Windows.DependencyObject,``0@)">
+            <summary>
+            Attempts to get the first descendant visual of a specified visual.
+            </summary>
+            <typeparam name="T">Type of descendant visual</typeparam>
+            <param name="reference">Ancestor visual</param>
+            <param name="descendant">Descendant visual</param>
+            <returns>True if successfully gets</returns>
         </member>
         <member name="F:ScreenFrame.WindowHelper.MONITOR_DEFAULTTO.MONITOR_DEFAULTTONULL">
             <summary>

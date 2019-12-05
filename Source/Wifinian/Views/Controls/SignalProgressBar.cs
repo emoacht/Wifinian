@@ -54,11 +54,11 @@ namespace Wifinian.Views.Controls
 
 		private void RenderLevel()
 		{
-			if ((_levelOne == null) ||
-				(_levelTwo == null) ||
-				(_levelThree == null) ||
-				(_levelFour == null) ||
-				(_levelFive == null))
+			if ((_levelOne is null) ||
+				(_levelTwo is null) ||
+				(_levelThree is null) ||
+				(_levelFour is null) ||
+				(_levelFive is null))
 				return;
 
 			var percentage = this.Value * 100D / this.Maximum;

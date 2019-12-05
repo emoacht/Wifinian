@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Interactivity;
+using Microsoft.Xaml.Behaviors;
 
 namespace Wifinian.Views.Behaviors
 {
@@ -72,11 +72,11 @@ namespace Wifinian.Views.Behaviors
 		/// </summary>
 		private void Center()
 		{
-			if (Target == null)
+			if (Target is null)
 				return;
 
-			var targetLocation = Target.PointToScreen(default(Point));
-			var currentLocation = this.AssociatedObject.PointToScreen(default(Point));
+			var targetLocation = Target.PointToScreen(default);
+			var currentLocation = this.AssociatedObject.PointToScreen(default);
 
 			var desiredLocationX = targetLocation.X + (Target.ActualWidth - this.AssociatedObject.ActualWidth) / 2D;
 			var desiredLocationY = targetLocation.Y + (Target.ActualHeight - this.AssociatedObject.ActualHeight) / 2D;

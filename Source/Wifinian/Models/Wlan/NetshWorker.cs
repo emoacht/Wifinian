@@ -90,38 +90,27 @@ namespace Wifinian.Models.Wlan
 
 		private static AuthenticationMethod ConvertToAuthenticationMethod(string authenticationString)
 		{
-			switch (authenticationString)
+			return authenticationString switch
 			{
-				case "Open":
-					return AuthenticationMethod.Open;
-				case "Shared":
-					return AuthenticationMethod.Shared;
-				case "WPA-Enterprise":
-					return AuthenticationMethod.WPA_Enterprise;
-				case "WPA-Personal":
-					return AuthenticationMethod.WPA_Personal;
-				case "WPA2-Enterprise":
-					return AuthenticationMethod.WPA2_Enterprise;
-				case "WPA2-Personal":
-					return AuthenticationMethod.WPA2_Personal;
-				default:
-					return AuthenticationMethod.None;
-			}
+				"Open" => AuthenticationMethod.Open,
+				"Shared" => AuthenticationMethod.Shared,
+				"WPA-Enterprise" => AuthenticationMethod.WPA_Enterprise,
+				"WPA-Personal" => AuthenticationMethod.WPA_Personal,
+				"WPA2-Enterprise" => AuthenticationMethod.WPA2_Enterprise,
+				"WPA2-Personal" => AuthenticationMethod.WPA2_Personal,
+				_ => AuthenticationMethod.None,
+			};
 		}
 
 		private static EncryptionType ConvertToEncryptionType(string encryptionString)
 		{
-			switch (encryptionString)
+			return encryptionString switch
 			{
-				case "WEP":
-					return EncryptionType.WEP;
-				case "TKIP":
-					return EncryptionType.TKIP;
-				case "CCMP":
-					return EncryptionType.AES;
-				default: // none
-					return EncryptionType.None;
-			}
+				"WEP" => EncryptionType.WEP,
+				"TKIP" => EncryptionType.TKIP,
+				"CCMP" => EncryptionType.AES,
+				_ => EncryptionType.None,
+			};
 		}
 
 		#endregion
@@ -144,7 +133,7 @@ namespace Wifinian.Models.Wlan
 			var item = profileItem ?? throw new ArgumentNullException(nameof(profileItem));
 
 			if (position < 0)
-				throw new ArgumentOutOfRangeException(nameof(position));
+				throw new ArgumentOutOfRangeException(nameof(position), "The position must not be negative.");
 
 			if (!await Netsh.SetProfilePositionAsync(item.InterfaceName, item.Name, position))
 				return false;

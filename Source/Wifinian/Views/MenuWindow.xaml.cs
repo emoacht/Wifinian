@@ -22,25 +22,33 @@ namespace Wifinian.Views
 		private readonly FloatWindowMover _mover;
 		private MenuWindowViewModel ViewModel => (MenuWindowViewModel)this.DataContext;
 
-		internal MenuWindow(MainController controller, Point pivot)
+		internal MenuWindow(AppController controller, Point pivot)
 		{
 			InitializeComponent();
-			
+
 			this.DataContext = new MenuWindowViewModel(controller);
 
 			_mover = new FloatWindowMover(this, pivot);
+			_mover.AppDeactivated += OnCloseTriggered;
+			_mover.EscapeKeyDown += OnCloseTriggered;
 		}
 
 		protected override void OnSourceInitialized(EventArgs e)
 		{
 			base.OnSourceInitialized(e);
 
-			WindowEffect.EnableBackgroundBlur(this);
+			WindowEffect.EnableBackgroundTranslucency(this);
 		}
 
 		#region Close
 
 		private bool _isClosing = false;
+
+		private void OnCloseTriggered(object sender, EventArgs e)
+		{
+			if (!_isClosing && this.IsLoaded)
+				this.Close();
+		}
 
 		protected override void OnDeactivated(EventArgs e)
 		{

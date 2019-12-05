@@ -6,8 +6,8 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Interactivity;
 using System.Windows.Interop;
+using Microsoft.Xaml.Behaviors;
 
 namespace Wifinian.Views.Behaviors
 {

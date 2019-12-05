@@ -17,7 +17,7 @@ namespace Wifinian.ViewModels
 {
 	public class MainWindowViewModel : DisposableBase
 	{
-		private readonly MainController _controller;
+		private readonly AppController _controller;
 
 		public ReadOnlyReactiveCollection<ProfileItemViewModel> Profiles { get; }
 
@@ -25,7 +25,7 @@ namespace Wifinian.ViewModels
 		{
 			get
 			{
-				if (_profilesView == null)
+				if (_profilesView is null)
 				{
 					_profilesView = new ListCollectionView(Profiles);
 					_profilesView.SortDescriptions.Add(new SortDescription(nameof(ProfileItemViewModel.InterfaceDescription), ListSortDirection.Ascending));
@@ -40,7 +40,7 @@ namespace Wifinian.ViewModels
 
 		public ReactiveProperty<bool> RushesRescan => _controller.RushesRescan;
 		public ReactiveProperty<bool> EngagesPriority => _controller.EngagesPriority;
-		public ReactiveProperty<bool> ReordersPriority { get; }
+		public ReactiveProperty<bool> OrganizesPriority { get; }
 
 		public ReadOnlyReactiveProperty<bool> IsUpdating { get; }
 		public ReadOnlyReactiveProperty<bool> CanDelete { get; }
@@ -50,7 +50,7 @@ namespace Wifinian.ViewModels
 		public ReactiveCommand MoveDownCommand { get; }
 		public ReactiveCommand DeleteCommand { get; }
 
-		internal MainWindowViewModel(MainController controller)
+		internal MainWindowViewModel(AppController controller)
 		{
 			this._controller = controller ?? throw new ArgumentNullException(nameof(controller));
 
@@ -64,7 +64,7 @@ namespace Wifinian.ViewModels
 				.Subscribe(_ => ProfilesView.Refresh()) // ListCollectionView.Refresh method seems not thread-safe.
 				.AddTo(this.Subscription);
 
-			ReordersPriority = new ReactiveProperty<bool>()
+			OrganizesPriority = new ReactiveProperty<bool>()
 				.AddTo(this.Subscription);
 
 			IsUpdating = _controller.IsUpdating
