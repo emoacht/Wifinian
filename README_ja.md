@@ -6,7 +6,7 @@ Wi-Fi接続にもっとコントロールを!
 
 WifinianはWi-Fi接続をユーザーが積極的にコントロールできるWindowsデスクトップツールです。
 
-![Screenshot on Windows 10](Images/Screenshot.png)<br>
+![Screenshot](Images/Screenshot_main.png)<br>
 (DPI: 200%)
 
 機能:
@@ -15,12 +15,15 @@ WifinianはWi-Fi接続をユーザーが積極的にコントロールできるW
  * 無線プロファイルの自動接続（Auto Connect）と自動切換（Auto Switch）設定の変更
  * __Rush__ - 短い間隔での無線ネットワークの再スキャンの実行（数字は間隔（秒）を示す。）
  * __Engage__ - 無線プロファイルの電波強度、順番、自動切換の設定に応じた自動接続の実行（数字は電波強度（％）の閾値を示す。）
- * __Reorder__ - 無線プロファイルの順番（優先度）の変更
+ * __Organize__ - 無線プロファイルの順番（優先度）の変更、無線プロファイルの削除
+
+![Screenshot](Images/Screenshot_organize.png)<br>
+(DPI: 100%)
 
 ## 動作条件
 
  * Windows 7以降
- * .NET Framework 4.6.2
+ * .NET Framework 4.8
 
 ## ダウンロード
 
@@ -28,7 +31,7 @@ WifinianはWi-Fi接続をユーザーが積極的にコントロールできるW
 [Wifinian](https://www.microsoft.com/store/apps/9pngfqps4flh) (Windows ストア)
 
  * その他:<br>
-:floppy_disk: [インストーラー](https://github.com/emoacht/Wifinian/releases/download/2.2.0-Installer/WifinianInstaller220.zip) | :floppy_disk: [実行ファイル](https://github.com/emoacht/Wifinian/releases/download/2.2.0-Executables/Wifinian220.zip)
+:floppy_disk: [インストーラー](https://github.com/emoacht/Wifinian/releases/download/2.3.0-Installer/WifinianInstaller230.zip) | :floppy_disk: [実行ファイル](https://github.com/emoacht/Wifinian/releases/download/2.3.0-Executables/Wifinian230.zip)
 
 ## インストール/アンインストール
 
@@ -53,15 +56,17 @@ WifinianはWi-Fi接続をユーザーが積極的にコントロールできるW
 
  - [Reactive Extensions][1]
  - [Reactive Property][2]
- - [Managed Native Wifi][3]
- - [Monitorian/ScreenFrame][4]
- - [Monitorian/StartupAgency][4]
- - [Monitorian/StartupBridge][4]
+ - [XamlBehaviors for WPF][3]
+ - [Managed Native Wifi][4]
+ - [Monitorian/ScreenFrame][5]
+ - [Monitorian/StartupAgency][5]
+ - [Monitorian/StartupBridge][5]
 
 [1]: https://github.com/Reactive-Extensions/Rx.NET
 [2]: https://github.com/runceel/ReactiveProperty
-[3]: https://github.com/emoacht/ManagedNativeWifi
-[4]: https://github.com/emoacht/Monitorian
+[3]: https://github.com/microsoft/XamlBehaviorsWpf
+[4]: https://github.com/emoacht/ManagedNativeWifi
+[5]: https://github.com/emoacht/Monitorian
 
 ## ライセンス
 

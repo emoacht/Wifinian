@@ -1,5 +1,9 @@
 ﻿## History
 
+Ver 2.3.0 2019-12-6
+
+ - Change function name to Organize
+
 Ver 2.2.0 2018-9-2
 
  - Add function to show frequency band and channel of wireless LAN

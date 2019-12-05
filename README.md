@@ -6,7 +6,7 @@ More control over Wi-Fi connections!
 
 Wifinian is a Windows desktop tool to enable user to actively control Wi-Fi connections.
 
-![Screenshot on Windows 10](Images/Screenshot.png)<br>
+![Screenshot](Images/Screenshot_main.png)<br>
 (DPI: 200%)
 
 Functions:
@@ -15,12 +15,15 @@ Functions:
  * Change automatic connection (Auto Connect) or automatic switch (Auto Switch) settings of a wireless profile
  * __Rush__ - Perform rescan of wireless networks in short intervals (The number indicates interval (sec).)
  * __Engage__ - Execute automatic connection depending on signal strength, order and automatic switch setting of wireless profiles (The number indicates threshold of signal strength (%).)
- * __Reorder__ - Change the order (priority) of wireless profiles
+ * __Organize__ - Change the order (priority) of wireless profiles, delete a wireless profile
+
+![Screenshot](Images/Screenshot_organize.png)<br>
+(DPI: 100%)
 
 ## Requirements
 
  * Windows 7 or newer
- * .NET Framework 4.6.2
+ * .NET Framework 4.8
 
 ## Download
 
@@ -28,7 +31,7 @@ Functions:
 [Wifinian](https://www.microsoft.com/store/apps/9pngfqps4flh) (Windows Store)
 
  * Other:<br>
-:floppy_disk: [Installer](https://github.com/emoacht/Wifinian/releases/download/2.2.0-Installer/WifinianInstaller220.zip) | :floppy_disk: [Executables](https://github.com/emoacht/Wifinian/releases/download/2.2.0-Executables/Wifinian220.zip)
+:floppy_disk: [Installer](https://github.com/emoacht/Wifinian/releases/download/2.3.0-Installer/WifinianInstaller230.zip) | :floppy_disk: [Executables](https://github.com/emoacht/Wifinian/releases/download/2.3.0-Executables/Wifinian230.zip)
 
 ## Install/Uninstall
 
@@ -53,15 +56,17 @@ When you use only executables, please note the following:
 
  - [Reactive Extensions][1]
  - [Reactive Property][2]
- - [Managed Native Wifi][3]
- - [Monitorian/ScreenFrame][4]
- - [Monitorian/StartupAgency][4]
- - [Monitorian/StartupBridge][4]
+ - [XamlBehaviors for WPF][3]
+ - [Managed Native Wifi][4]
+ - [Monitorian/ScreenFrame][5]
+ - [Monitorian/StartupAgency][5]
+ - [Monitorian/StartupBridge][5]
 
 [1]: https://github.com/Reactive-Extensions/Rx.NET
 [2]: https://github.com/runceel/ReactiveProperty
-[3]: https://github.com/emoacht/ManagedNativeWifi
-[4]: https://github.com/emoacht/Monitorian
+[3]: https://github.com/microsoft/XamlBehaviorsWpf
+[4]: https://github.com/emoacht/ManagedNativeWifi
+[5]: https://github.com/emoacht/Monitorian
 
 ## License
 
