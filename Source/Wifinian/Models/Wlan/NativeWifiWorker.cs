@@ -139,7 +139,7 @@ namespace Wifinian.Models.Wlan
 			var item = profileItem ?? throw new ArgumentNullException(nameof(profileItem));
 
 			if (position < 0)
-				throw new ArgumentOutOfRangeException(nameof(position), "The position must not be negative.");
+				throw new ArgumentOutOfRangeException(nameof(position), position, "The position must not be negative.");
 
 			if (!IsWorkable)
 				return Task.FromResult(false);
