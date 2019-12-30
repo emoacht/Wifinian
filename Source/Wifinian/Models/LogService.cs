@@ -21,12 +21,14 @@ namespace Wifinian.Models
 		/// <summary>
 		/// Records operation log to AppData.
 		/// </summary>
-		/// <param name="log">Log</param>
-		/// <remarks>A log file of previous dates will be overridden.</remarks>
-		public static void RecordOperation(string log)
+		/// <param name="content">Content</param>
+		/// <remarks>
+		/// A log file of previous dates will be overridden.
+		/// </remarks>
+		public static void RecordOperation(string content)
 		{
-			var content = ComposeHeader() + Environment.NewLine
-				+ log + Environment.NewLine + Environment.NewLine;
+			content = ComposeHeader() + Environment.NewLine
+				+ content + Environment.NewLine + Environment.NewLine;
 
 			RecordToAppData(OperationFileName, content);
 		}
@@ -35,7 +37,10 @@ namespace Wifinian.Models
 		/// Records exception log to AppData and Desktop.
 		/// </summary>
 		/// <param name="exception">Exception</param>
-		/// <remarks>A log file of previous dates will be overridden.</remarks>
+		/// <remarks>
+		/// The log file will be appended with new content as long as one day has not yet passed
+		/// since last write. Otherwise, the log file will be overwritten.
+		/// </remarks>
 		public static void RecordException(Exception exception)
 		{
 			var content = ComposeHeader() + Environment.NewLine
@@ -51,12 +56,12 @@ namespace Wifinian.Models
 				MessageBoxResult.Yes) != MessageBoxResult.Yes)
 				return;
 
-			RecordToDesktop(ExceptionFileName, content, true);
+			RecordToDesktop(ExceptionFileName, content, 10);
 		}
 
 		#region Helper
 
-		private static void RecordToAppData(string fileName, string content)
+		private static void RecordToAppData(string fileName, string content, int maxCount = 1)
 		{
 			try
 			{
@@ -66,7 +71,7 @@ namespace Wifinian.Models
 					FolderService.AppDataFolderPath,
 					fileName);
 
-				UpdateText(appDataFilePath, content);
+				UpdateText(appDataFilePath, content, maxCount);
 			}
 			catch (Exception ex)
 			{
@@ -75,7 +80,7 @@ namespace Wifinian.Models
 			}
 		}
 
-		private static void RecordToDesktop(string fileName, string content, bool update)
+		private static void RecordToDesktop(string fileName, string content, int maxCount = 1)
 		{
 			try
 			{
@@ -83,14 +88,7 @@ namespace Wifinian.Models
 					Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory),
 					fileName);
 
-				if (update)
-				{
-					UpdateText(desktopFilePath, content);
-				}
-				else
-				{
-					SaveText(desktopFilePath, content);
-				}
+				UpdateText(desktopFilePath, content, maxCount);
 			}
 			catch (Exception ex)
 			{
@@ -105,41 +103,49 @@ namespace Wifinian.Models
 				sw.Write(content);
 		}
 
-		private const int MaxSectionCount = 100;
-
-		private static void UpdateText(string filePath, string newContent)
+		private static void UpdateText(string filePath, string newContent, int maxCount)
 		{
 			string oldContent = null;
 
-			if (File.Exists(filePath) && (File.GetLastWriteTime(filePath) > DateTime.Now.AddDays(-1)))
+			if ((1 < maxCount) && File.Exists(filePath) && (File.GetLastWriteTime(filePath) > DateTime.Now.AddDays(-1)))
 			{
 				using (var sr = new StreamReader(filePath, Encoding.UTF8))
 					oldContent = sr.ReadToEnd();
 
-				oldContent = string.Join(Environment.NewLine, EnumerateLastLines(oldContent, HeaderStart, MaxSectionCount - 1).Reverse());
+				oldContent = TruncateSections(oldContent, HeaderStart, maxCount - 1);
 			}
 
 			SaveText(filePath, oldContent + newContent);
 		}
 
-		private static IEnumerable<string> EnumerateLastLines(string source, string sectionHeader, int sectionCount)
+		private static string TruncateSections(string source, string sectionHeader, int sectionCount)
 		{
+			if (string.IsNullOrEmpty(sectionHeader))
+				throw new ArgumentNullException(nameof(sectionHeader));
+			if (sectionCount <= 0)
+				throw new ArgumentOutOfRangeException(nameof(sectionCount), sectionCount, "The count must be greater than 0.");
+
 			if (string.IsNullOrEmpty(source))
-				yield break;
+				return string.Empty;
 
-			var lines = source.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
-			int count = 0;
+			var separator = Environment.NewLine + sectionHeader;
+			int foundIndex = source.Length - 1;
+			int startIndex = 0;
 
-			foreach (var line in lines.Reverse())
+			for (int i = sectionCount; i > 0; i--)
 			{
-				yield return line;
-
-				if (!line.StartsWith(sectionHeader))
-					continue;
-
-				if (++count >= sectionCount)
-					yield break;
+				foundIndex = source.LastIndexOf(separator, foundIndex, StringComparison.Ordinal);
+				if (foundIndex < 0)
+				{
+					if (source.StartsWith(sectionHeader, StringComparison.Ordinal))
+					{
+						startIndex = 0;
+					}
+					break;
+				}
+				startIndex = foundIndex + Environment.NewLine.Length;
 			}
+			return source.Substring(startIndex);
 		}
 
 		#endregion
