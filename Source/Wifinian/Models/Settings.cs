@@ -60,6 +60,13 @@ namespace Wifinian.Models
 			return (buffer <= max) ? buffer : min;
 		}
 
+		public bool EngagesPriority
+		{
+			get => _engagesPriority;
+			set => SetPropertyValue(ref _engagesPriority, value);
+		}
+		private bool _engagesPriority;
+
 		public Size MainWindowSize
 		{
 			get => _mainWindowSize;

@@ -76,7 +76,7 @@ namespace Wifinian
 			RushesRescan = new ReactiveProperty<bool>()
 				.AddTo(this.Subscription);
 
-			EngagesPriority = new ReactiveProperty<bool>()
+			EngagesPriority = Settings.Current.ToReactivePropertyAsSynchronized(x => x.EngagesPriority)
 				.AddTo(this.Subscription);
 			EngagesPriority
 				.Subscribe(_ => SetNotifyIconText())
