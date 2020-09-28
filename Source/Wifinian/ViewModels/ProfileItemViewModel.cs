@@ -62,7 +62,7 @@ namespace Wifinian.ViewModels
 			Name = profileItem.Name;
 			InterfaceId = profileItem.InterfaceId;
 			InterfaceDescription = profileItem.InterfaceDescription;
-			Authentication = profileItem.Authentication.ToString().Replace("_", "-");
+			Authentication = profileItem.AuthenticationString.Replace("_", "-");
 			Encryption = profileItem.Encryption.ToString();
 			CanSetOptions = profileItem.CanSetOptions;
 

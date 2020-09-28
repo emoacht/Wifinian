@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 using ManagedNativeWifi;
@@ -15,8 +16,20 @@ namespace Wifinian.Models.Wlan
 		private ProfileDocument _document;
 
 		public BssType BssType => _document.BssType;
-		public override AuthenticationMethod Authentication => _document.Authentication;
-		public override EncryptionType Encryption => _document.Encryption;
+
+		public override string AuthenticationString
+		{
+			get
+			{
+				if (Authentication == default)
+				{
+					var match = Regex.Match(_document.Xml, @"<authentication>(?<value>.+)</authentication>");
+					if (match.Success)
+						return match.Groups["value"].Value;
+				}
+				return base.AuthenticationString;
+			}
+		}
 
 		public override bool CanSetOptions =>
 			(ProfileType != ProfileType.GroupPolicy) && (BssType == BssType.Infrastructure);
@@ -69,8 +82,8 @@ namespace Wifinian.Models.Wlan
 				interfaceId: interfaceId,
 				interfaceName: null,
 				interfaceDescription: interfaceDescription,
-				authentication: default,
-				encryption: default,
+				authentication: document.Authentication,
+				encryption: document.Encryption,
 				isAutoConnectEnabled: false,
 				isAutoSwitchEnabled: false,
 				position: position,

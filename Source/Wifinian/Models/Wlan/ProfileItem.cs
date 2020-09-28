@@ -44,6 +44,11 @@ namespace Wifinian.Models.Wlan
 		public virtual AuthenticationMethod Authentication { get; }
 
 		/// <summary>
+		/// Authentication method in string
+		/// </summary>
+		public virtual string AuthenticationString => Authentication.ToString();
+
+		/// <summary>
 		/// Encryption type (TKIP, AES ...) of associated wireless LAN
 		/// </summary>
 		public virtual EncryptionType Encryption { get; }
