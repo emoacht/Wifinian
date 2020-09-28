@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-  <Product Id="*" Name="Wifinian" Manufacturer="emoacht" Version="2.3.0"
+  <Product Id="*" Name="Wifinian" Manufacturer="emoacht" Version="2.4.0"
            Language="1033" Codepage="1252" UpgradeCode="{A8357D71-600C-462A-AEEE-BF1B988DD2E4}">
     <Package Id="*" InstallerVersion="500" Compressed="yes"
              InstallScope="perMachine"  InstallPrivileges="elevated"
