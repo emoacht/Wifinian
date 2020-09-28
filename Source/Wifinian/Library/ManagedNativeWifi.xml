@@ -80,9 +80,9 @@
             https://docs.microsoft.com/en-us/windows/win32/nativewifi/dot11-auth-algorithm
             </remarks>
         </member>
-        <member name="F:ManagedNativeWifi.AuthenticationAlgorithm.None">
+        <member name="F:ManagedNativeWifi.AuthenticationAlgorithm.Unknown">
             <summary>
-            None (invalid value)
+            Unknown (invalid value)
             </summary>
         </member>
         <member name="F:ManagedNativeWifi.AuthenticationAlgorithm.Open">
@@ -137,11 +137,13 @@
             <remarks>
             Equivalent to authentication element in profile XML:
             https://docs.microsoft.com/en-us/windows/win32/nativewifi/wlan-profileschema-authentication-authencryption-element
+            WPA3 values are found in:
+            https://docs.microsoft.com/en-us/uwp/api/windows.networking.connectivity.networkauthenticationtype
             </remarks>
         </member>
-        <member name="F:ManagedNativeWifi.AuthenticationMethod.None">
+        <member name="F:ManagedNativeWifi.AuthenticationMethod.Unknown">
             <summary>
-            None (invalid value)
+            Unknown (invalid value)
             </summary>
         </member>
         <member name="F:ManagedNativeWifi.AuthenticationMethod.Open">
@@ -177,6 +179,18 @@
             WPA2-Personal 802.11 authentication
             </summary>
             <remarks>WPA2PSK in profile XML</remarks>
+        </member>
+        <member name="F:ManagedNativeWifi.AuthenticationMethod.WPA3_Enterprise">
+            <summary>
+            WPA3-Enterprise 802.11 authentication
+            </summary>
+            <remarks>WPA3 in profile XML</remarks>
+        </member>
+        <member name="F:ManagedNativeWifi.AuthenticationMethod.WPA3_Personal">
+            <summary>
+            WPA3-Personal 802.11 authentication
+            </summary>
+            <remarks>WPA3SAE in profile XML</remarks>
         </member>
         <member name="T:ManagedNativeWifi.AvailableNetworkPack">
             <summary>
@@ -722,13 +736,14 @@
             <param name="profileName">Profile name</param>
             <returns>True if successfully deleted. False if failed.</returns>
         </member>
-        <member name="M:ManagedNativeWifi.NativeWifi.ConnectNetwork(System.Guid,System.String,ManagedNativeWifi.BssType)">
+        <member name="M:ManagedNativeWifi.NativeWifi.ConnectNetwork(System.Guid,System.String,ManagedNativeWifi.BssType,System.Net.NetworkInformation.PhysicalAddress)">
             <summary>
             Attempts to connect to the wireless LAN associated to a specified wireless profile.
             </summary>
             <param name="interfaceId">Interface ID</param>
             <param name="profileName">Profile name</param>
             <param name="bssType">BSS network type</param>
+            <param name="bssid">BSSID of the network</param>
             <returns>True if successfully requested the connection. False if failed.</returns>
         </member>
         <member name="M:ManagedNativeWifi.NativeWifi.ConnectNetworkAsync(System.Guid,System.String,ManagedNativeWifi.BssType,System.TimeSpan)">
@@ -748,6 +763,18 @@
             <param name="interfaceId">Interface ID</param>
             <param name="profileName">Profile name</param>
             <param name="bssType">BSS network type</param>
+            <param name="timeout">Timeout duration</param>
+            <param name="cancellationToken">Cancellation token</param>
+            <returns>True if successfully connected. False if failed or timed out.</returns>
+        </member>
+        <member name="M:ManagedNativeWifi.NativeWifi.ConnectNetworkAsync(System.Guid,System.String,ManagedNativeWifi.BssType,System.Net.NetworkInformation.PhysicalAddress,System.TimeSpan,System.Threading.CancellationToken)">
+            <summary>
+            Asynchronously attempts to connect to the wireless LAN associated to a specified wireless profile.
+            </summary>
+            <param name="interfaceId">Interface ID</param>
+            <param name="profileName">Profile name</param>
+            <param name="bssType">BSS network type</param>
+            <param name="bssid">BSSID of the network</param>
             <param name="timeout">Timeout duration</param>
             <param name="cancellationToken">Cancellation token</param>
             <returns>True if successfully connected. False if failed or timed out.</returns>
