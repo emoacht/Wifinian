@@ -98,7 +98,9 @@ namespace Wifinian.Models.Wlan
 				"WPA-Personal" => AuthenticationMethod.WPA_Personal,
 				"WPA2-Enterprise" => AuthenticationMethod.WPA2_Enterprise,
 				"WPA2-Personal" => AuthenticationMethod.WPA2_Personal,
-				_ => AuthenticationMethod.None,
+				"WPA3-Enterprise" => AuthenticationMethod.WPA3_Enterprise,
+				"WPA3-Personal" => AuthenticationMethod.WPA3_Personal,
+				_ => default,
 			};
 		}
 
@@ -109,7 +111,7 @@ namespace Wifinian.Models.Wlan
 				"WEP" => EncryptionType.WEP,
 				"TKIP" => EncryptionType.TKIP,
 				"CCMP" => EncryptionType.AES,
-				_ => EncryptionType.None,
+				_ => default,
 			};
 		}
 
