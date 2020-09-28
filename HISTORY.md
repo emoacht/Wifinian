@@ -1,5 +1,10 @@
 ﻿## History
 
+Ver 2.4.0 2020-9-28
+
+ - Adapt WPA3
+ - Change to save Engage state
+
 Ver 2.3.0 2019-12-6
 
  - Change function name to Organize
