@@ -1,6 +1,6 @@
 ﻿## History
 
-Ver 2.4.0 2020-9-28
+Ver 2.4.1 2020-9-29
 
  - Adapt WPA3
  - Change to save Engage state
