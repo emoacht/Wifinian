@@ -120,6 +120,21 @@
             802.11i RSNA algorithm that uses PSK
             </summary>
         </member>
+        <member name="F:ManagedNativeWifi.AuthenticationAlgorithm.WPA3">
+            <summary>
+            WPA3 algorithm
+            </summary>
+        </member>
+        <member name="F:ManagedNativeWifi.AuthenticationAlgorithm.WPA3_SAE">
+            <summary>
+            WPA3 Simultaneous Authentication of Equals (SAE）algorithm
+            </summary>
+        </member>
+        <member name="F:ManagedNativeWifi.AuthenticationAlgorithm.OWE">
+            <summary>
+            Opportunistic Wireless Encryption (OWE) algorithm
+            </summary>
+        </member>
         <member name="F:ManagedNativeWifi.AuthenticationAlgorithm.IHV_START">
             <summary>
             Indicates the start of the range that specifies proprietary authentication algorithms developed by an independent hardware vendor (IHV).
