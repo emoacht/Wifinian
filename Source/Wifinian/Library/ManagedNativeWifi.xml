@@ -845,12 +845,12 @@
             If the user is not logged on as a member of Administrators group.
             </exception>
         </member>
-        <member name="M:ManagedNativeWifi.NativeWifi.GetInterfaceAutoConfig(System.Guid)">
+        <member name="M:ManagedNativeWifi.NativeWifi.IsInterfaceAutoConfig(System.Guid)">
             <summary>
-            Gets information on whether automatic configuration is enabled for a specified wireless interface.
+            Checks if automatic configuration of a specified wireless interface is enabled.
             </summary>
             <param name="interfaceId">Interface ID</param>
-            <returns>True if enabled. False if disabled or failed to get information.</returns>
+            <returns>True if enabled. False if disabled or failed to check.</returns>
         </member>
         <member name="M:ManagedNativeWifi.NativeWifi.TryDetectBandChannel(System.UInt32,System.Single@,System.Int32@)">
             <summary>
@@ -951,6 +951,11 @@
         <member name="M:ManagedNativeWifi.NativeWifiPlayer.EnumerateBssNetworks">
             <summary>
             Enumerates wireless LAN information on BSS networks.
+            </summary>
+        </member>
+        <member name="M:ManagedNativeWifi.NativeWifiPlayer.EnumerateProfileNames">
+            <summary>
+            Enumerates wireless profile names in preference order.
             </summary>
         </member>
         <member name="M:ManagedNativeWifi.NativeWifiPlayer.EnumerateProfiles">
