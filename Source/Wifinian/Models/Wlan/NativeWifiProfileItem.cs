@@ -39,12 +39,10 @@ namespace Wifinian.Models.Wlan
 			get => _document.IsAutoConnectEnabled;
 			set
 			{
-				if ((_document is null) || /* The base class's constructor may access before _document is filled. */
-					(_document.IsAutoConnectEnabled == value))
+				if (_document is null) // The base class's constructor may access before _document is filled.
 					return;
 
-				_document.IsAutoConnectEnabled = value;
-				RaisePropertyChanged();
+				SetPropertyValue((get: () => _document.IsAutoConnectEnabled, set: v => _document.IsAutoConnectEnabled = v), value);
 			}
 		}
 
@@ -53,12 +51,10 @@ namespace Wifinian.Models.Wlan
 			get => _document.IsAutoSwitchEnabled;
 			set
 			{
-				if ((_document is null) || /* The base class's constructor may access before _document is filled. */
-					(_document.IsAutoSwitchEnabled == value))
+				if (_document is null) // The base class's constructor may access before _document is filled.
 					return;
 
-				_document.IsAutoSwitchEnabled = value;
-				RaisePropertyChanged();
+				SetPropertyValue((get: () => _document.IsAutoSwitchEnabled, set: v => _document.IsAutoSwitchEnabled = v), value);
 			}
 		}
 
