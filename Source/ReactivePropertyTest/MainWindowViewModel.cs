@@ -42,7 +42,7 @@ namespace ReactivePropertyTest
 				return;
 
 			var member = Members.FirstOrDefault(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
-			if (member != null)
+			if (member is not null)
 				Members.Remove(member);
 		}
 
@@ -139,14 +139,14 @@ namespace ReactivePropertyTest
 						case NotifyCollectionChangedAction.Add:
 						case NotifyCollectionChangedAction.Remove:
 						case NotifyCollectionChangedAction.Replace:
-							if (x.OldItems != null)
+							if (x.OldItems is not null)
 							{
 								foreach (var instance in x.OldItems.Cast<MemberViewModel>())
 								{
 									membersSelected.Remove(instance);
 								}
 							}
-							if (x.NewItems != null)
+							if (x.NewItems is not null)
 							{
 								foreach (var instance in x.NewItems.Cast<MemberViewModel>())
 								{

@@ -41,8 +41,8 @@ namespace Wifinian.Views.Controls
 			base.OnApplyTemplate();
 
 			var movingDuration = this.TryFindResource("MovingDuration");
-			if (movingDuration is Duration)
-				_duration = ((Duration)movingDuration).TimeSpan;
+			if (movingDuration is Duration buffer)
+				_duration = buffer.TimeSpan;
 		}
 
 		private object _blocker = new object();

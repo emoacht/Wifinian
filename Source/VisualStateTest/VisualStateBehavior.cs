@@ -45,7 +45,7 @@ namespace VisualStateTest
 		private static void CheckVisualState(FrameworkElement element)
 		{
 			var groups = GetVisualStateGroups(element);
-			if (groups != null)
+			if (groups is not null)
 			{
 				foreach (var group in groups)
 					Debug.WriteLine($"Element: {element.Name} -> Group: {group.Name} -> State: {group.CurrentState?.Name}");
@@ -60,7 +60,7 @@ namespace VisualStateTest
 			foreach (var descendant in GetDescendants(element).OfType<FrameworkElement>())
 			{
 				var groups = VisualStateManager.GetVisualStateGroups(descendant)?.Cast<VisualStateGroup>();
-				if (groups != null)
+				if (groups is not null)
 					return groups;
 			}
 			return null;

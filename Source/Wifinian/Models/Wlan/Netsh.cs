@@ -269,7 +269,7 @@ namespace Wifinian.Models.Wlan
 				try
 				{
 					var buffer = FindElement(outputLine, "Interface name");
-					if (buffer != null)
+					if (buffer is not null)
 					{
 						interfaceName = buffer;
 					}
@@ -367,7 +367,7 @@ namespace Wifinian.Models.Wlan
 			var shortProfiles = EnumerateShortProfiles(outputLines);
 
 			return (await Task.WhenAll(shortProfiles.Select(async x => await GetProfileAsync(x.InterfaceName, x.Name, x.Position))))
-				.Where(x => x != null);
+				.Where(x => x is not null);
 		}
 
 		private static IEnumerable<ShortProfilePack> EnumerateShortProfiles(IEnumerable<string> outputLines)
@@ -428,7 +428,7 @@ namespace Wifinian.Models.Wlan
 					if (!autoConnect.HasValue)
 					{
 						var buffer = FindElement(outputLine, "Connection mode");
-						if (buffer != null)
+						if (buffer is not null)
 							autoConnect = buffer.Equals("Connect automatically", StringComparison.OrdinalIgnoreCase);
 
 						continue;
@@ -436,7 +436,7 @@ namespace Wifinian.Models.Wlan
 					if (!autoSwitch.HasValue)
 					{
 						var buffer = FindElement(outputLine, "AutoSwitch");
-						if (buffer != null)
+						if (buffer is not null)
 							autoSwitch = buffer.Equals("Switch to more preferred network if possible", StringComparison.OrdinalIgnoreCase);
 
 						continue;
@@ -444,7 +444,7 @@ namespace Wifinian.Models.Wlan
 					if (ssid is null)
 					{
 						var buffer = FindElement(outputLine, "SSID name");
-						if (buffer != null)
+						if (buffer is not null)
 							ssid = buffer.Trim('"');
 
 						continue;
