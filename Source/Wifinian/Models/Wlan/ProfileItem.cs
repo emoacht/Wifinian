@@ -84,7 +84,7 @@ namespace Wifinian.Models.Wlan
 		public int Position
 		{
 			get => _position;
-			set => SetPropertyValue(ref _position, value, x => Max(x, 0));
+			set => SetPropertyValue(ref _position, value, normalize: v => Max(v, 0));
 		}
 		private int _position;
 

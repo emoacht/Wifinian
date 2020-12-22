@@ -315,7 +315,7 @@ namespace Wifinian
 						.Where(x => x.IsAutoSwitchEnabled && (Settings.Current.SignalThreshold <= x.Signal))
 						.OrderBy(x => x.Position)
 						.FirstOrDefault())
-					.Where(x => (x != null) && !x.IsConnected)
+					.Where(x => (x is not null) && !x.IsConnected)
 					.ToArray();
 
 				if (targetProfiles.Length > 0)
@@ -452,7 +452,7 @@ namespace Wifinian
 		}
 
 		private bool TryGetTargetProfile(out ProfileItem targetProfile) =>
-			((targetProfile = Profiles.FirstOrDefault(x => x.IsTarget)) != null);
+			((targetProfile = Profiles.FirstOrDefault(x => x.IsTarget)) is not null);
 
 		private int _workCount = 0;
 

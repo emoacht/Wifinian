@@ -58,17 +58,17 @@
         </member>
         <member name="M:StartupAgency.Worker.IStartupWorker.IsStartedOnSignIn">
             <summary>
-            Whether caller instance is presumed to have started on sign in
+            Determines whether caller instance is presumed to have started on sign in.
             </summary>
         </member>
         <member name="M:StartupAgency.Worker.IStartupWorker.CanRegister">
             <summary>
-            Whether caller instance can be registered in startup
+            Determines whether caller instance can be registered in startup.
             </summary>
         </member>
         <member name="M:StartupAgency.Worker.IStartupWorker.IsRegistered">
             <summary>
-            Whether caller instance is registered in startup
+            Determines whether caller instance is registered in startup.
             </summary>
         </member>
         <member name="M:StartupAgency.Worker.IStartupWorker.Register">
@@ -115,7 +115,7 @@
             Startup agent
             </summary>
         </member>
-        <member name="M:StartupAgency.StartupAgent.Start(System.String,System.String,System.Collections.Generic.IReadOnlyCollection{System.String})">
+        <member name="M:StartupAgency.StartupAgent.Start(System.String,System.String,System.Collections.Generic.IReadOnlyList{System.String})">
             <summary>
             Starts.
             </summary>
@@ -159,25 +159,25 @@
         </member>
         <member name="M:StartupAgency.StartupAgent.IsWindowShowExpected">
             <summary>
-            Whether caller instance is expected to show its window
+            Determines whether caller instance is expected to show its window.
             </summary>
             <returns>True if expected to be show its window</returns>
         </member>
         <member name="M:StartupAgency.StartupAgent.IsStartedOnSignIn">
             <summary>
-            Whether caller instance is presumed to have started on sign in
+            Determines whether caller instance is presumed to have started on sign in.
             </summary>
             <returns>True if presumed to have started on sign in</returns>
         </member>
         <member name="M:StartupAgency.StartupAgent.CanRegister">
             <summary>
-            Whether caller instance can be registered in startup
+            Determines whether caller instance can be registered in startup.
             </summary>
             <returns>True if can be registered</returns>
         </member>
         <member name="M:StartupAgency.StartupAgent.IsRegistered">
             <summary>
-            Whether caller instance has been registered in startup
+            Determines whether caller instance has been registered in startup.
             </summary>
             <returns>True if has been already registered</returns>
         </member>

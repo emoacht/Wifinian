@@ -45,6 +45,16 @@ namespace Wifinian.Common
 			return true;
 		}
 
+		protected virtual bool SetPropertyValue<T>((Func<T> get, Action<T> set) accessor, T value, [CallerMemberName] string propertyName = null)
+		{
+			if (EqualityComparer<T>.Default.Equals(accessor.get.Invoke(), value))
+				return false;
+
+			accessor.set.Invoke(value);
+			RaisePropertyChanged(propertyName);
+			return true;
+		}
+
 		protected virtual void RaisePropertyChanged([CallerMemberName] string propertyName = null) =>
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 	}

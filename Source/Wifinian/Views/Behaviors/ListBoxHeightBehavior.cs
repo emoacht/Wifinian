@@ -46,7 +46,7 @@ namespace Wifinian.Views.Behaviors
 
 			this.AssociatedObject.Loaded -= OnLoaded;
 
-			if (_scrollHost != null)
+			if (_scrollHost is not null)
 				_scrollHost.ScrollChanged -= OnScrollChanged;
 		}
 

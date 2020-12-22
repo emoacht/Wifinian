@@ -27,7 +27,7 @@ namespace Wifinian.Models.Wlan
 			}
 		}
 
-		public bool IsWorkable => (_player != null);
+		public bool IsWorkable => (_player is not null);
 
 		#region Dispose
 
@@ -125,7 +125,7 @@ namespace Wifinian.Models.Wlan
 
 		public Task<bool> SetProfileOptionAsync(ProfileItem profileItem)
 		{
-			if (!(profileItem is NativeWifiProfileItem item))
+			if (profileItem is not NativeWifiProfileItem item)
 				throw new ArgumentException(nameof(profileItem));
 
 			if (!IsWorkable)
@@ -176,7 +176,7 @@ namespace Wifinian.Models.Wlan
 
 		public Task<bool> ConnectNetworkAsync(ProfileItem profileItem, TimeSpan timeout)
 		{
-			if (!(profileItem is NativeWifiProfileItem item))
+			if (profileItem is not NativeWifiProfileItem item)
 				throw new ArgumentException(nameof(profileItem));
 
 			if (!IsWorkable)

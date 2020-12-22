@@ -28,7 +28,7 @@ namespace Wifinian.Helper
 			get => _h;
 			set
 			{
-				if ((value < 0F) || (360F <= value))
+				if (value is (< 0F or >= 360F))
 					throw new ArgumentOutOfRangeException(nameof(value), value, "The range of hue: 0.0 <= value < 360.0");
 
 				_h = value;
@@ -44,7 +44,7 @@ namespace Wifinian.Helper
 			get => _s;
 			set
 			{
-				if ((value < 0F) || (1F < value))
+				if (value is (< 0F or > 1F))
 					throw new ArgumentOutOfRangeException(nameof(value), value, "The range of saturation: 0.0 <= value <= 1.0");
 
 				_s = value;
@@ -60,7 +60,7 @@ namespace Wifinian.Helper
 			get => _b;
 			set
 			{
-				if ((value < 0F) || (1F < value))
+				if (value is (< 0F or > 1F))
 					throw new ArgumentOutOfRangeException(nameof(value), value, "The range of brightness: 0.0 <= value <= 1.0");
 
 				_b = value;

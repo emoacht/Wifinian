@@ -45,14 +45,14 @@ namespace ReactivePropertyTest
 						case NotifyCollectionChangedAction.Add:
 						case NotifyCollectionChangedAction.Remove:
 						case NotifyCollectionChangedAction.Replace:
-							if (x.OldItems != null)
+							if (x.OldItems is not null)
 							{
 								foreach (var instance in x.OldItems.Cast<TElement>())
 								{
 									instanceCache.Remove(instance);
 								}
 							}
-							if (x.NewItems != null)
+							if (x.NewItems is not null)
 							{
 								// This route is not really necessary because if the element value of
 								// IObservable<bool> is true, ObserveElementObservableProperty method
@@ -115,14 +115,14 @@ namespace ReactivePropertyTest
 						case NotifyCollectionChangedAction.Add:
 						case NotifyCollectionChangedAction.Remove:
 						case NotifyCollectionChangedAction.Replace:
-							if (x.OldItems != null)
+							if (x.OldItems is not null)
 							{
 								foreach (var instance in x.OldItems.Cast<TElement>())
 								{
 									instanceCache.Remove(instance);
 								}
 							}
-							if (x.NewItems != null)
+							if (x.NewItems is not null)
 							{
 								// This route is not really necessary because if the return value of
 								// Func<TProperty, bool> is true, ObserveElementObservableProperty method

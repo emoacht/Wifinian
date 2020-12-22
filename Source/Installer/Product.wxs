@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-  <Product Id="*" Name="Wifinian" Manufacturer="emoacht" Version="2.4.1"
+  <Product Id="*" Name="Wifinian" Manufacturer="emoacht" Version="2.5.0"
            Language="1033" Codepage="1252" UpgradeCode="{A8357D71-600C-462A-AEEE-BF1B988DD2E4}">
     <Package Id="*" InstallerVersion="500" Compressed="yes"
              InstallScope="perMachine"  InstallPrivileges="elevated"
@@ -47,9 +47,9 @@
         <File Id="RpLibrary"
               Source="$(var.Wifinian.TargetDir)" Name="ReactiveProperty.dll" KeyPath="yes"/>
       </Component>
-      <Component Id="RpPlatformLibrary" Guid="{4EBEE85A-C063-43BF-B3C8-CE68787D5F63}">
-        <File Id="RpPlatformLibrary"
-              Source="$(var.Wifinian.TargetDir)" Name="ReactiveProperty.NET46.dll" KeyPath="yes"/>
+      <Component Id="RpCoreLibrary" Guid="{4EBEE85A-C063-43BF-B3C8-CE68787D5F63}">
+        <File Id="RpCoreLibrary"
+              Source="$(var.Wifinian.TargetDir)" Name="ReactiveProperty.Core.dll" KeyPath="yes"/>
       </Component>
 
       <Component Id="RxLibrary" Guid="{D47B9C0B-A1C4-40D8-8932-22C863EB5DC2}">
@@ -151,7 +151,7 @@
       <ComponentRef Id="MainExecutableConfig"/>
       <ComponentRef Id="BehaviorsLibrary"/>
       <ComponentRef Id="RpLibrary"/>
-      <ComponentRef Id="RpPlatformLibrary"/>
+      <ComponentRef Id="RpCoreLibrary"/>
       <ComponentRef Id="RxLibrary"/>
       <ComponentRef Id="RxCoreLibrary"/>
       <ComponentRef Id="RxInterfacesLibrary"/>

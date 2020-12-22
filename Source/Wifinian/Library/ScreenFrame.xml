@@ -129,7 +129,7 @@
         </member>
         <member name="M:ScreenFrame.Movers.WindowMover.IsForeground">
             <summary>
-            Whether the window is foreground window
+            Determines whether the window is foreground window.
             </summary>
             <returns>True if foreground</returns>
         </member>
