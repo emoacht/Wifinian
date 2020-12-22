@@ -1,5 +1,9 @@
 ﻿## History
 
+Ver 2.5 2020-12-22
+
+- Improve codes
+
 Ver 2.4 2020-9-29
 
  - Adapt WPA3
