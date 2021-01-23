@@ -26,14 +26,7 @@ namespace Wifinian.ViewModels
 
 		public bool IsRegistered
 		{
-			get
-			{
-				if (!_isRegistered.HasValue)
-				{
-					_isRegistered = _controller.StartupAgent.IsRegistered();
-				}
-				return _isRegistered.Value;
-			}
+			get => _isRegistered ??= _controller.StartupAgent.IsRegistered();
 			set
 			{
 				if (_isRegistered == value)

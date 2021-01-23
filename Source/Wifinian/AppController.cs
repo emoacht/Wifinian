@@ -215,7 +215,7 @@ namespace Wifinian
 			if (!window.CanBeShown)
 				return;
 
-			if ((window.Visibility == Visibility.Visible) && window.IsForeground)
+			if (window is { Visibility: Visibility.Visible, IsForeground: true })
 				return;
 
 			window.Show();

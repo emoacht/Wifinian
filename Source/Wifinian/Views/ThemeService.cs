@@ -23,26 +23,17 @@ namespace Wifinian.Views
 		{
 			const float factor = 1.08F;
 
-			AdjustResourceColor(resources, NormalKey, NormalSelectedKey, factor);
-			AdjustResourceColor(resources, AvailableKey, AvailableSelectedKey, factor);
-			AdjustResourceColor(resources, ConnectedKey, ConnectedSelectedKey, factor);
-		}
+			AdjustResourceColor(NormalKey, NormalSelectedKey);
+			AdjustResourceColor(AvailableKey, AvailableSelectedKey);
+			AdjustResourceColor(ConnectedKey, ConnectedSelectedKey);
 
-		private static void AdjustResourceColor(ResourceDictionary resources, string sourceKey, string targetKey, float factor)
-		{
-			if (!resources.Contains(sourceKey))
-				return;
-
-			var sourceColor = (Color)resources[sourceKey];
-			var targetColor = sourceColor.ToBrightened(factor);
-
-			if (resources.Contains(targetKey))
+			void AdjustResourceColor(string sourceKey, string targetKey)
 			{
-				resources[targetKey] = targetColor;
-			}
-			else
-			{
-				resources.Add(targetKey, targetColor);
+				if (resources.Contains(sourceKey))
+				{
+					var sourceColor = (Color)resources[sourceKey];
+					resources[targetKey] = sourceColor.ToBrightened(factor);
+				}
 			}
 		}
 	}
