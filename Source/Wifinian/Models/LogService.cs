@@ -43,6 +43,9 @@ namespace Wifinian.Models
 		/// </remarks>
 		public static void RecordException(Exception exception)
 		{
+			if (exception is null)
+				throw new ArgumentNullException(nameof(exception));
+
 			var content = ComposeHeader() + Environment.NewLine
 				+ exception.ToString() + Environment.NewLine + Environment.NewLine;
 
@@ -61,7 +64,7 @@ namespace Wifinian.Models
 
 		#region Helper
 
-		private static void RecordToAppData(string fileName, string content, int maxCount = 1)
+		private static void RecordToAppData(string fileName, string content, int capacity = 1)
 		{
 			try
 			{
@@ -71,7 +74,7 @@ namespace Wifinian.Models
 					AppDataService.FolderPath,
 					fileName);
 
-				UpdateText(appDataFilePath, content, maxCount);
+				UpdateText(appDataFilePath, content, capacity);
 			}
 			catch (Exception ex)
 			{
@@ -80,7 +83,7 @@ namespace Wifinian.Models
 			}
 		}
 
-		private static void RecordToDesktop(string fileName, string content, int maxCount = 1)
+		private static void RecordToDesktop(string fileName, string content, int capacity = 1)
 		{
 			try
 			{
@@ -88,7 +91,7 @@ namespace Wifinian.Models
 					Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory),
 					fileName);
 
-				UpdateText(desktopFilePath, content, maxCount);
+				UpdateText(desktopFilePath, content, capacity);
 			}
 			catch (Exception ex)
 			{
@@ -103,16 +106,16 @@ namespace Wifinian.Models
 				sw.Write(content);
 		}
 
-		private static void UpdateText(string filePath, string newContent, int maxCount)
+		private static void UpdateText(string filePath, string newContent, int capacity)
 		{
 			string oldContent = null;
 
-			if ((1 < maxCount) && File.Exists(filePath) && (File.GetLastWriteTime(filePath) > DateTime.Now.AddDays(-1)))
+			if ((1 < capacity) && File.Exists(filePath) && (File.GetLastWriteTime(filePath) > DateTime.Now.AddDays(-1)))
 			{
 				using (var sr = new StreamReader(filePath, Encoding.UTF8))
 					oldContent = sr.ReadToEnd();
 
-				oldContent = TruncateSections(oldContent, HeaderStart, maxCount - 1);
+				oldContent = TruncateSections(oldContent, HeaderStart, capacity - 1);
 			}
 
 			SaveText(filePath, oldContent + newContent);
