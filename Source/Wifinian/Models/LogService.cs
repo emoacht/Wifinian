@@ -65,10 +65,10 @@ namespace Wifinian.Models
 		{
 			try
 			{
-				FolderService.AssureAppDataFolder();
+				AppDataService.AssureFolder();
 
 				var appDataFilePath = Path.Combine(
-					FolderService.AppDataFolderPath,
+					AppDataService.FolderPath,
 					fileName);
 
 				UpdateText(appDataFilePath, content, maxCount);

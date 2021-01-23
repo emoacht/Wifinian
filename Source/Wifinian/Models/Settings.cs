@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Xml.Serialization;
 using Reactive.Bindings.Extensions;
 
 using Wifinian.Common;
@@ -89,26 +86,12 @@ namespace Wifinian.Models
 		#region Load/Save
 
 		private const string SettingsFileName = "settings.xml";
-		private static readonly string _settingsFilePath = Path.Combine(FolderService.AppDataFolderPath, SettingsFileName);
 
 		private static void Load<T>(T instance) where T : class
 		{
-			var fileInfo = new FileInfo(_settingsFilePath);
-			if (!fileInfo.Exists || (fileInfo.Length == 0))
-				return;
-
 			try
 			{
-				using (var fs = new FileStream(_settingsFilePath, FileMode.Open, FileAccess.Read))
-				{
-					var serializer = new XmlSerializer(typeof(T));
-					var loaded = (T)serializer.Deserialize(fs);
-
-					typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
-						.Where(x => x.CanWrite)
-						.ToList()
-						.ForEach(x => x.SetValue(instance, x.GetValue(loaded)));
-				}
+				AppDataService.Load(instance, SettingsFileName);
 			}
 			catch (Exception ex)
 			{
@@ -121,13 +104,7 @@ namespace Wifinian.Models
 		{
 			try
 			{
-				FolderService.AssureAppDataFolder();
-
-				using (var fs = new FileStream(_settingsFilePath, FileMode.Create, FileAccess.Write))
-				{
-					var serializer = new XmlSerializer(typeof(T));
-					serializer.Serialize(fs, instance);
-				}
+				AppDataService.Save(instance, SettingsFileName);
 			}
 			catch (Exception ex)
 			{

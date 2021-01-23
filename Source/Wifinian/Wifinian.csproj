@@ -140,7 +140,7 @@
     <Compile Include="Models\Wlan\Netsh.cs" />
     <Compile Include="Models\Wlan\NetshWorker.cs" />
     <Compile Include="Models\Wlan\ProfileItem.cs" />
-    <Compile Include="Models\FolderService.cs" />
+    <Compile Include="Models\AppDataService.cs" />
     <Compile Include="Models\LanguageService.cs" />
     <Compile Include="Models\LogService.cs" />
     <Compile Include="Models\ProductInfo.cs" />
