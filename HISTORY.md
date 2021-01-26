@@ -1,6 +1,6 @@
 ﻿## History
 
-Ver 2.5 2020-12-22
+Ver 2.6 2021-1-25
 
 - Improve codes
 
