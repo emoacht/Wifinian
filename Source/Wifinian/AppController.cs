@@ -166,7 +166,7 @@ namespace Wifinian
 			if (!StartupAgent.IsStartedOnSignIn())
 				_current.MainWindow.Show();
 
-			StartupAgent.Requested += OnMainWindowShowRequested;
+			StartupAgent.HandleRequestAsync = HandleRequestAsync;
 
 			Observable.FromEventPattern(
 				h => _current.MainWindow.Activated += h,
@@ -198,6 +198,12 @@ namespace Wifinian
 		}
 
 		#endregion
+
+		protected Task<string> HandleRequestAsync(IReadOnlyCollection<string> args)
+		{
+			OnMainWindowShowRequested(null, EventArgs.Empty);
+			return Task.FromResult<string>(null);
+		}
 
 		private void OnMainWindowShowRequested(object sender, EventArgs e)
 		{
