@@ -32,7 +32,7 @@ Functions:
 [Wifinian](https://www.microsoft.com/store/apps/9pngfqps4flh) (Windows Store)
 
  * Other:<br>
-:floppy_disk: [Installer](https://github.com/emoacht/Wifinian/releases/download/2.6.0-Installer/WifinianInstaller260.zip) | :floppy_disk: [Executables](https://github.com/emoacht/Wifinian/releases/download/2.6.0-Executables/Wifinian260.zip)
+:floppy_disk: [Installer](https://github.com/emoacht/Wifinian/releases/download/2.7.0-Installer/WifinianInstaller270.zip)
 
 ## Install/Uninstall
 

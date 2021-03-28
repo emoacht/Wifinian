@@ -1,5 +1,9 @@
 ﻿## History
 
+Ver 2.7 2021-3-28
+
+- Update libraries
+
 Ver 2.6 2021-1-25
 
 - Improve codes
