@@ -166,7 +166,7 @@ namespace Wifinian
 			if (!StartupAgent.IsStartedOnSignIn())
 				_current.MainWindow.Show();
 
-			StartupAgent.Requested += OnMainWindowShowRequested;
+			StartupAgent.HandleRequestAsync = HandleRequestAsync;
 
 			Observable.FromEventPattern(
 				h => _current.MainWindow.Activated += h,
@@ -199,6 +199,12 @@ namespace Wifinian
 
 		#endregion
 
+		protected Task<string> HandleRequestAsync(IReadOnlyCollection<string> args)
+		{
+			OnMainWindowShowRequested(null, EventArgs.Empty);
+			return Task.FromResult<string>(null);
+		}
+
 		private void OnMainWindowShowRequested(object sender, EventArgs e)
 		{
 			_current.Dispatcher.Invoke(() => ShowMainWindow());
@@ -212,10 +218,7 @@ namespace Wifinian
 		private void ShowMainWindow()
 		{
 			var window = (MainWindow)_current.MainWindow;
-			if (!window.CanBeShown)
-				return;
-
-			if (window is { Visibility: Visibility.Visible, IsForeground: true })
+			if (window is { CanBeShown: false } or { Visibility: Visibility.Visible, IsForeground: true })
 				return;
 
 			window.Show();

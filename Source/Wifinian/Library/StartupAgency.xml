@@ -86,29 +86,20 @@
             Registry worker
             </summary>
         </member>
-        <member name="M:StartupAgency.RemotingHolder.Create(System.String,System.String[])">
+        <member name="M:StartupAgency.PipeHolder.Create(System.String[])">
             <summary>
-            Creates <see cref="T:System.Threading.Semaphore"/> to start remoting.
+            Creates <see cref="T:System.Threading.Semaphore"/> to start named pipes.
             </summary>
-            <param name="name">Name</param>
             <param name="args">Arguments to another instance</param>
             <returns>
             <para>success: True if no other instance exists and this instance successfully creates</para>
             <para>response: Response from another instance if that instance exists and returns an response</para>
             </returns>
         </member>
-        <member name="M:StartupAgency.RemotingHolder.Release">
+        <member name="M:StartupAgency.PipeHolder.Release">
             <summary>
-            Releases <see cref="T:System.Threading.Semaphore"/> to end remoting.
+            Releases <see cref="T:System.Threading.Semaphore"/> to stop named pipes.
             </summary>
-        </member>
-        <member name="M:StartupAgency.RemotingSpace.Request(System.String[])">
-            <summary>
-            Requests the instance which instantiated this object to take an action.
-            </summary>
-            <param name="args">Arguments to that instance</param>
-            <returns>Response from that instance</returns>
-            <remarks>This method is to be called by an instance other than that instance.</remarks>
         </member>
         <member name="T:StartupAgency.StartupAgent">
             <summary>
@@ -143,12 +134,12 @@
             Whether this assembly is packaged in AppX package
             </summary>
         </member>
-        <member name="E:StartupAgency.StartupAgent.Requested">
+        <member name="P:StartupAgency.StartupAgent.HandleRequestAsync">
             <summary>
-            Occurs when this instance is requested to take an action by another instance.
+            Delegate to asynchronously handle the arguments from another instance
             </summary>
             <remarks>
-            This event will be raised by a thread other than that instantiated this object.
+            This delegate will be called by a thread other than that instantiated this object.
             Accordingly, the appropriate use of dispatcher is required.
             </remarks>
         </member>
@@ -191,31 +182,6 @@
             <summary>
             Unregisters caller instance from startup.
             </summary>
-        </member>
-        <member name="T:StartupAgency.StartupRequestEventArgs">
-            <summary>
-            Startup event data
-            </summary>
-        </member>
-        <member name="P:StartupAgency.StartupRequestEventArgs.Args">
-            <summary>
-            Arguments (immutable)
-            </summary>
-        </member>
-        <member name="P:StartupAgency.StartupRequestEventArgs.Response">
-            <summary>
-            Response (mutable)
-            </summary>
-            <remarks>
-            This property is mutable so that an instance which responds to this event can store its response
-            and then another instance which raises this event can make use of the response.
-            </remarks>
-        </member>
-        <member name="M:StartupAgency.StartupRequestEventArgs.#ctor(System.String[])">
-            <summary>
-            Constructor
-            </summary>
-            <param name="args">Arguments</param>
         </member>
     </members>
 </doc>

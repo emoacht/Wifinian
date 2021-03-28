@@ -4,6 +4,11 @@
         <name>ScreenFrame</name>
     </assembly>
     <members>
+        <member name="T:ScreenFrame.Helper.CultureInfoAddition">
+            <summary>
+            Additional methods for <see cref="T:System.Globalization.CultureInfo"/>
+            </summary>
+        </member>
         <member name="T:ScreenFrame.Helper.DpiScaleExtension">
             <summary>
             Extension methods for <see cref="T:System.Windows.DpiScale"/>
@@ -173,7 +178,7 @@
             <param name="location">Location of window</param>
             <returns>True if successfully gets</returns>
         </member>
-        <member name="M:ScreenFrame.Movers.BasicWindowMover.TryConfirmLocation(System.Windows.Rect)">
+        <member name="M:ScreenFrame.Movers.BasicWindowMover.TryConfirmLocation(System.Windows.Rect@)">
             <summary>
             Attempts to confirm that a specified location is not completely outside of monitors.
             </summary>

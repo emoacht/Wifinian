@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-  <Product Id="*" Name="Wifinian" Manufacturer="emoacht" Version="2.6.1"
+  <Product Id="*" Name="Wifinian" Manufacturer="emoacht" Version="2.7.0"
            Language="1033" Codepage="1252" UpgradeCode="{A8357D71-600C-462A-AEEE-BF1B988DD2E4}">
     <Package Id="*" InstallerVersion="500" Compressed="yes"
              InstallScope="perMachine"  InstallPrivileges="elevated"
@@ -11,6 +11,19 @@
     <Media Id="1" Cabinet="source.cab" EmbedCab="yes"/>
 
     <Property Id="VEM" Value="yes"/>
+
+    <!-- UI -->
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR"/>
+    <UI>
+      <UIRef Id="WixUI_InstallDir"/>
+      <UIRef Id="WixUI_ErrorProgressText"/>
+
+      <!-- Skip License Agreement Dialog -->
+      <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="InstallDirDlg" Order="2">1</Publish>
+      <Publish Dialog="InstallDirDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg" Order="2">1</Publish>
+    </UI>
+    <WixVariable Id="WixUIBannerBmp" Value="Resources\banner.png"/>
+    <WixVariable Id="WixUIDialogBmp" Value="Resources\dialog.png"/>
 
     <Directory Id="TARGETDIR" Name="SourceDir">
       <!-- Program Files -->

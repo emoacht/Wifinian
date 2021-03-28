@@ -9,9 +9,9 @@
             Accessor to <see cref="P:Windows.Storage.ApplicationData.LocalSettings"/> or <see cref="P:Windows.Storage.ApplicationData.RoamingSettings"/>
             </summary>
             <remarks>
-            Usable data types are shown at:
+            Data types that can be stored/retrieved are shown at:
             https://docs.microsoft.com/en-us/windows/uwp/design/app-settings/store-and-retrieve-app-data#types-of-app-data
-            plus byte[] and Enum.
+            byte[] and Enum are also usable.
             </remarks>
         </member>
         <member name="T:StartupBridge.PlatformInfo">
@@ -43,8 +43,8 @@
             StartupTask broker
             </summary>
             <remarks>
-            This class wraps <see cref="T:Windows.ApplicationModel.StartupTask"/> class which is only available
-            on Windows 10 (Redstone 1, 1607 = version 10.0.14393.0) or newer.
+            This class wraps <see cref="T:Windows.ApplicationModel.StartupTask"/> which is only available
+            on Windows 10 (version 10.0.14393.0) or newer.
             </remarks>
         </member>
         <member name="M:StartupBridge.StartupTaskBroker.CanEnable(System.String)">
