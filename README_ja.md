@@ -36,7 +36,13 @@ WifinianはWi-Fi接続をユーザーが積極的にコントロールできるW
 
 ## インストール/アンインストール
 
-実行ファイルだけを使うときは、以下に留意してください。
+実行ファイルを自分で配置したい場合には、インストーラーのファイル（.msi）から実行ファイルを次のコマンドで抽出できます。
+
+```
+msiexec /a [source msi file path] targetdir=[destination folder path (absolute path)] /qn
+```
+
+この場合、以下に留意してください。
 
  - 設定ファイルは次の場所に作成されます: `[system drive]\Users\[user name]\AppData\Local\Wifinian\`
  - [サインイン時に起動する]にチェックしたときは、レジストリ値が次の位置に追加されます: `HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run`

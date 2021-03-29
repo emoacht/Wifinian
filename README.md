@@ -36,7 +36,13 @@ Functions:
 
 ## Install/Uninstall
 
-When you use only executables, please note the following:
+If you wish to place executable files on your own, you can extract them from installer file (.msi) by the following command:
+
+```
+msiexec /a [source msi file path] targetdir=[destination folder path (absolute path)] /qn
+```
+
+In such case, please note the following:
 
  - The settings file will be created at: `[system drive]\Users\[user name]\AppData\Local\Wifinian\`
  - When you check [Start on sign in], a registry value will be added to: `HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run`
