@@ -1,5 +1,9 @@
 ﻿## History
 
+Ver 2.8 2021-3-30
+
+- Modify handling of invalid information
+
 Ver 2.7 2021-3-28
 
 - Update libraries
