@@ -4,73 +4,6 @@
         <name>ManagedNativeWifi</name>
     </assembly>
     <members>
-        <member name="T:ManagedNativeWifi.Common.DisposableContainer`1">
-            <summary>
-            Container of disposable object
-            </summary>
-            <typeparam name="T">Disposable object type</typeparam>
-            <remarks>
-            If a disposable object is given as content when this container is instantiated,
-            the content object will not be disposed when this container is disposed.
-            In contrast, if no disposable object is given (if it is default, in the case of class, null)
-            as content when this container is instantiated, a new disposable object is instantiated
-            instead and the content object will be disposed when this container is disposed.
-            </remarks>
-        </member>
-        <member name="M:ManagedNativeWifi.Win32.NativeMethod.DOT11_SSID.ToBytes">
-            <summary>
-            Returns the byte array of SSID.
-            </summary>
-            <returns>Byte array</returns>
-        </member>
-        <member name="M:ManagedNativeWifi.Win32.NativeMethod.DOT11_SSID.ToString">
-            <summary>
-            Returns the UTF-8 string representation of SSID
-            </summary>
-            <returns>UTF-8 string if successfully converted the byte array of SSID. Null if failed.</returns>
-        </member>
-        <member name="M:ManagedNativeWifi.Win32.NativeMethod.DOT11_MAC_ADDRESS.ToBytes">
-            <summary>
-            Returns the byte array of MAC address
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:ManagedNativeWifi.Win32.NativeMethod.DOT11_MAC_ADDRESS.ToString">
-            <summary>
-            Returns the hexadecimal string representation of MAC address delimited by colon.
-            </summary>
-            <returns>Hexadecimal string</returns>
-        </member>
-        <member name="F:ManagedNativeWifi.Win32.NativeMethod.DOT11_BSS_TYPE.dot11_BSS_type_infrastructure">
-            <summary>
-            Infrastructure BSS network
-            </summary>
-        </member>
-        <member name="F:ManagedNativeWifi.Win32.NativeMethod.DOT11_BSS_TYPE.dot11_BSS_type_independent">
-            <summary>
-            Independent BSS (IBSS) network
-            </summary>
-        </member>
-        <member name="F:ManagedNativeWifi.Win32.NativeMethod.DOT11_BSS_TYPE.dot11_BSS_type_any">
-            <summary>
-            Either infrastructure or IBSS network
-            </summary>
-        </member>
-        <member name="T:ManagedNativeWifi.Win32.SafeClientHandle">
-            <summary>
-            Wrapper class only for handle taken by WlanOpenHandle function in Native Wifi API
-            </summary>
-            <remarks>
-            This implementation is based on:
-            http://referencesource.microsoft.com/#mscorlib/system/runtime/interopservices/safehandle.cs
-            </remarks>
-        </member>
-        <member name="M:ManagedNativeWifi.Win32.SafeClientHandle.#ctor">
-            <summary>
-            Default constructor
-            </summary>
-            <remarks>This constructor is for P/Invoke.</remarks>
-        </member>
         <member name="T:ManagedNativeWifi.AuthenticationAlgorithm">
             <summary>
             Authentication algorithm
@@ -447,6 +380,19 @@
             <summary>
             Indicates the end of the range that specifies proprietary cipher algorithms developed by an independent hardware vendor (IHV).
             </summary>
+        </member>
+        <member name="T:ManagedNativeWifi.Common.DisposableContainer`1">
+            <summary>
+            Container of disposable object
+            </summary>
+            <typeparam name="T">Disposable object type</typeparam>
+            <remarks>
+            If a disposable object is given as content when this container is instantiated,
+            the content object will not be disposed when this container is disposed.
+            In contrast, if no disposable object is given (if it is default, in the case of class, null)
+            as content when this container is instantiated, a new disposable object is instantiated
+            instead and the content object will be disposed when this container is disposed.
+            </remarks>
         </member>
         <member name="T:ManagedNativeWifi.ConnectionMode">
             <summary>
@@ -1378,6 +1324,60 @@
             <summary>
             Constructor
             </summary>
+        </member>
+        <member name="M:ManagedNativeWifi.Win32.NativeMethod.DOT11_SSID.ToBytes">
+            <summary>
+            Returns the byte array of SSID.
+            </summary>
+            <returns>Byte array</returns>
+        </member>
+        <member name="M:ManagedNativeWifi.Win32.NativeMethod.DOT11_SSID.ToString">
+            <summary>
+            Returns the UTF-8 string representation of SSID
+            </summary>
+            <returns>UTF-8 string if successfully converted the byte array of SSID. Null if failed.</returns>
+        </member>
+        <member name="M:ManagedNativeWifi.Win32.NativeMethod.DOT11_MAC_ADDRESS.ToBytes">
+            <summary>
+            Returns the byte array of MAC address
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ManagedNativeWifi.Win32.NativeMethod.DOT11_MAC_ADDRESS.ToString">
+            <summary>
+            Returns the hexadecimal string representation of MAC address delimited by colon.
+            </summary>
+            <returns>Hexadecimal string</returns>
+        </member>
+        <member name="F:ManagedNativeWifi.Win32.NativeMethod.DOT11_BSS_TYPE.dot11_BSS_type_infrastructure">
+            <summary>
+            Infrastructure BSS network
+            </summary>
+        </member>
+        <member name="F:ManagedNativeWifi.Win32.NativeMethod.DOT11_BSS_TYPE.dot11_BSS_type_independent">
+            <summary>
+            Independent BSS (IBSS) network
+            </summary>
+        </member>
+        <member name="F:ManagedNativeWifi.Win32.NativeMethod.DOT11_BSS_TYPE.dot11_BSS_type_any">
+            <summary>
+            Either infrastructure or IBSS network
+            </summary>
+        </member>
+        <member name="T:ManagedNativeWifi.Win32.SafeClientHandle">
+            <summary>
+            Wrapper class only for handle taken by WlanOpenHandle function in Native Wifi API
+            </summary>
+            <remarks>
+            This implementation is based on:
+            http://referencesource.microsoft.com/#mscorlib/system/runtime/interopservices/safehandle.cs
+            </remarks>
+        </member>
+        <member name="M:ManagedNativeWifi.Win32.SafeClientHandle.#ctor">
+            <summary>
+            Default constructor
+            </summary>
+            <remarks>This constructor is for P/Invoke.</remarks>
         </member>
     </members>
 </doc>
