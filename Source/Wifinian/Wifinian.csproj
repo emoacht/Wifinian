@@ -42,9 +42,8 @@
     <ApplicationIcon>Resources\Icons\AppIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ManagedNativeWifi, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Library\ManagedNativeWifi.dll</HintPath>
+    <Reference Include="ManagedNativeWifi, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ManagedNativeWifi.2.1.0\lib\net452\ManagedNativeWifi.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -216,9 +215,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Library\ManagedNativeWifi.dll" />
-    <Content Include="Library\ManagedNativeWifi.pdb" />
-    <Resource Include="Library\ManagedNativeWifi.xml" />
     <Content Include="Library\ScreenFrame.dll" />
     <Content Include="Library\ScreenFrame.pdb" />
     <Resource Include="Library\ScreenFrame.xml" />
