@@ -1,0 +1,7 @@
+ProjectSite=https://github.com/emoacht/Wifinian/blob/master/README.md
+License=https://github.com/emoacht/Wifinian/blob/master/LICENSE.txt
+StartSignIn=Beim Anmelden starten
+ShowAvailable=Nur verfügbare Netzwerke anzeigen
+Close=Schließen
+NotWorkable=Konnte keine Informationen zu den WiFi-Verbindungen abrufen.
+RecordException=Es ist ein unerwartetes Problem aufgetreten. Soll das Fehlerprotokoll auf dem Desktop gespeichert werden?
