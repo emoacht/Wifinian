@@ -14,6 +14,7 @@ namespace Wifinian.Models
 		public static string ProjectSite => GetContentValue(fallback: Properties.Resources.ProjectSite);
 		public static string License => GetContentValue();
 		public static string StartSignIn => GetContentValue();
+		public static string ShowAvailable => GetContentValue();
 		public static string Close => GetContentValue();
 		public static string NotWorkable => GetContentValue();
 		public static string RecordException => GetContentValue();

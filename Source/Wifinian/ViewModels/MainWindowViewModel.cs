@@ -12,6 +12,7 @@ using Reactive.Bindings.Extensions;
 using Reactive.Bindings.Helpers;
 
 using Wifinian.Common;
+using Wifinian.Models;
 
 namespace Wifinian.ViewModels
 {
@@ -30,17 +31,44 @@ namespace Wifinian.ViewModels
 					_profilesView = new ListCollectionView(Profiles);
 					_profilesView.SortDescriptions.Add(new SortDescription(nameof(ProfileItemViewModel.InterfaceDescription), ListSortDirection.Ascending));
 					_profilesView.SortDescriptions.Add(new SortDescription($"{nameof(ProfileItemViewModel.Position)}.{nameof(IReactiveProperty.Value)}", ListSortDirection.Ascending));
+
+					ManageFilter();
 				}
 				return _profilesView;
 			}
 		}
 		private ListCollectionView _profilesView;
 
+		private void ManageFilter()
+		{
+			if (_profilesView is null)
+				return;
+
+			var propertyString = $"{nameof(ProfileItemViewModel.IsAvailable)}.{nameof(IReactiveProperty.Value)}";
+
+			if (Settings.Current.ShowsAvailable)
+			{
+				if (_profilesView.Filter is null)
+				{
+					_profilesView.Filter = x => ((ProfileItemViewModel)x).IsAvailable.Value;
+					_profilesView.IsLiveFiltering = true;
+					_profilesView.LiveFilteringProperties.Add(propertyString);
+				}
+			}
+			else if (_profilesView.Filter is not null)
+			{
+				_profilesView.Filter = null;
+				_profilesView.IsLiveFiltering = false;
+				_profilesView.LiveFilteringProperties.Remove(propertyString);
+			}
+		}
+
 		public bool IsWorkable => _controller.IsWorkable;
 
 		public ReactiveProperty<bool> RushesRescan => _controller.RushesRescan;
 		public ReactiveProperty<bool> EngagesPriority => _controller.EngagesPriority;
 		public ReactiveProperty<bool> OrganizesPriority { get; }
+		public ReactiveProperty<bool> ShowsAvailable { get; }
 
 		public ReadOnlyReactiveProperty<bool> IsUpdating { get; }
 		public ReadOnlyReactiveProperty<bool> CanDelete { get; }
@@ -65,6 +93,12 @@ namespace Wifinian.ViewModels
 				.AddTo(this.Subscription);
 
 			OrganizesPriority = new ReactiveProperty<bool>()
+				.AddTo(this.Subscription);
+
+			ShowsAvailable = Settings.Current.ToReactivePropertyAsSynchronized(x => x.ShowsAvailable)
+				.AddTo(this.Subscription);
+			ShowsAvailable
+				.Subscribe(_ => ManageFilter())
 				.AddTo(this.Subscription);
 
 			IsUpdating = _controller.IsUpdating

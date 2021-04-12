@@ -51,6 +51,14 @@
 							  Visibility="{Binding CanRegister, Mode=OneTime, Converter={StaticResource BooleanToVisibilityConverterKey}}"/>
 			</ContentControl>
 
+			<ContentControl Style="{StaticResource MenuItemStyle}">
+				<ToggleButton Padding="8,4"
+							  Style="{StaticResource CheckButtonItemStyle}"
+							  FontSize="13"
+							  Content="{x:Static models:LanguageService.ShowAvailable}"
+							  IsChecked="{Binding Source={x:Static models:Settings.Current}, Path=ShowsAvailable, Mode=TwoWay}"/>
+			</ContentControl>
+			
 			<Separator Style="{StaticResource MenuSeparatorStyle}"/>
 
 			<!-- Close -->

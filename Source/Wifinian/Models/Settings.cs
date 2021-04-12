@@ -64,6 +64,13 @@ namespace Wifinian.Models
 		}
 		private bool _engagesPriority;
 
+		public bool ShowsAvailable
+		{
+			get => _showsAvailable;
+			set => SetPropertyValue(ref _showsAvailable, value);
+		}
+		private bool _showsAvailable;
+
 		public Size MainWindowSize
 		{
 			get => _mainWindowSize;
