@@ -1,5 +1,9 @@
 ﻿## History
 
+Ver 2.9 2021-4-12
+
+- Add function to show available networks only
+
 Ver 2.8 2021-3-30
 
 - Modify handling of invalid information
