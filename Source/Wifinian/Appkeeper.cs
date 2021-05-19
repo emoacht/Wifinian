@@ -40,7 +40,7 @@ namespace Wifinian
 				h => AppDomain.CurrentDomain.UnhandledException -= h)
 				.Select(x => (Exception)x.EventArgs.ExceptionObject);
 			Observable.Merge(dispatcherUnhandled, taskUnobserved, appDomainUnhandled)
-				.Subscribe(x => LogService.RecordException(x))
+				.Subscribe(x => Logger.RecordException(x))
 				.AddTo(this.Subscription);
 
 			#endregion
