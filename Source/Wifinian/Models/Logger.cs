@@ -10,7 +10,7 @@ using System.Windows.Threading;
 
 namespace Wifinian.Models
 {
-	internal class LogService
+	internal class Logger
 	{
 		private const string OperationFileName = "operation.log";
 		private const string ExceptionFileName = "exception.log";
