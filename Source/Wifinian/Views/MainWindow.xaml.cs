@@ -128,14 +128,14 @@ namespace Wifinian.Views
 				(windowSize.Height < this.MinHeight))
 				return;
 
-			(this.Width, this.Height) = OsVersion.Is10Threshold1OrNewer
+			(this.Width, this.Height) = OsVersion.Is10OrGreater
 				? (windowSize.Width, windowSize.Height)
 				: (windowSize.Width * _mover.Dpi.DpiScaleX, windowSize.Height * _mover.Dpi.DpiScaleY);
 		}
 
 		private void SaveWindowSize(Size windowSize)
 		{
-			Settings.Current.MainWindowSize = OsVersion.Is10Threshold1OrNewer
+			Settings.Current.MainWindowSize = OsVersion.Is10OrGreater
 				? windowSize
 				: new Size(
 					windowSize.Width / _mover.Dpi.DpiScaleX,
