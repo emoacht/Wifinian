@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-  <Product Id="*" Name="Wifinian" Manufacturer="emoacht" Version="2.9.0"
+  <Product Id="*" Name="Wifinian" Manufacturer="emoacht" Version="3.0.0"
            Language="1033" Codepage="1252" UpgradeCode="{A8357D71-600C-462A-AEEE-BF1B988DD2E4}">
     <Package Id="*" InstallerVersion="500" Compressed="yes"
              InstallScope="perMachine"  InstallPrivileges="elevated"
@@ -121,10 +121,6 @@
         <File Id="AgencyLibrary"
               Source="$(var.Wifinian.TargetDir)" Name="StartupAgency.dll" KeyPath="yes"/>
       </Component>
-      <Component Id="BridgeLibrary" Guid="{44985F46-8974-48CF-B4EA-F33446826B8C}">
-        <File Id="BridgeLibrary"
-              Source="$(var.Wifinian.TargetDir)" Name="StartupBridge.dll" KeyPath="yes"/>
-      </Component>
 
       <Component Id="VisualManifest" Guid="{4DD773D0-D642-40DC-9576-D535D0AF89EB}">
         <Condition><![CDATA[VEM = "yes"]]></Condition>
@@ -178,7 +174,6 @@
       <ComponentRef Id="WifiLibrary"/>
       <ComponentRef Id="FrameLibrary"/>
       <ComponentRef Id="AgencyLibrary"/>
-      <ComponentRef Id="BridgeLibrary"/>
       <ComponentRef Id="VisualManifest"/>
       <ComponentRef Id="ApplicationShortcut"/>
       <ComponentRef Id="ApplicationWorkingFolder"/>

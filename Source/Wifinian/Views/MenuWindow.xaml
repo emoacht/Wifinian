@@ -7,8 +7,8 @@
 		ResizeMode="NoResize" SizeToContent="WidthAndHeight"
 		ShowInTaskbar="False" Topmost="True"
 		AllowsTransparency="True" WindowStyle="None"
-		Background="{StaticResource App.Background.Difference}">
-	<Grid Background="{StaticResource App.Background}">
+		Background="{StaticResource App.Background.Plain}">
+	<Grid>
 		<StackPanel Margin="0,4,0,4">
 			<TextBlock HorizontalAlignment="Left"
 					   Padding="8,2,8,2"
