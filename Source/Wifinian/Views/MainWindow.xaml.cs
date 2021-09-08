@@ -34,11 +34,13 @@ namespace Wifinian.Views
 		{
 			InitializeComponent();
 
-			ThemeService.AdjustResourceColors(Application.Current.Resources);
-
 			this.DataContext = new MainWindowViewModel(controller);
 
 			_mover = new SwitchWindowMover(this, controller.NotifyIconContainer.NotifyIcon);
+			if (OsVersion.Is11OrGreater)
+				_mover.KeepsDistance = true;
+
+			controller.WindowPainter.Add(this);
 
 			#region Drag
 
@@ -58,8 +60,6 @@ namespace Wifinian.Views
 		protected override void OnSourceInitialized(EventArgs e)
 		{
 			base.OnSourceInitialized(e);
-
-			WindowEffect.EnableBackgroundTranslucency(this);
 
 			#region Size
 

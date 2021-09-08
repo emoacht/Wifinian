@@ -6,21 +6,23 @@
 
 	<SolidColorBrush x:Key="App.Foreground" Color="{StaticResource App.ForegroundColor}"/>
 	<SolidColorBrush x:Key="App.Foreground.Shadow" Color="{StaticResource App.ShadowColor}"/>
-	<SolidColorBrush x:Key="App.Background" Color="#CC171717"/>
-	<SolidColorBrush x:Key="App.Background.Difference" Color="#FF424242"/>
-	<SolidColorBrush x:Key="App.Background.Hidden" Color="Black" Opacity="0.4"/>
 
-	<Color x:Key="Profile.Background.NormalColor">#CC171717</Color>
-	<Color x:Key="Profile.Background.NormalSelectedColor">Transparent</Color>
-	<Color x:Key="Profile.Background.AvailableColor">#CC0A4394</Color>
+	<SolidColorBrush x:Key="App.Background.Plain" Color="#FF424242"/>
+	<SolidColorBrush x:Key="App.Background.Translucent" Color="#CC171717"/>
+	<SolidColorBrush x:Key="App.Background.Hidden" Color="Black" Opacity="0.4"/>
+	<SolidColorBrush x:Key="App.Background.Attention" Color="Firebrick"/>
+
+	<Color x:Key="Profile.Background.NormalColor">#02FFFFFF</Color>
+	<Color x:Key="Profile.Background.NormalSelectedColor">#10FFFFFF</Color>
+	<!--<Color x:Key="Profile.Background.AvailableColor">#CC0A4394</Color>-->
+	<Color x:Key="Profile.Background.AvailableColor">#FF3B69A9</Color>
 	<Color x:Key="Profile.Background.AvailableSelectedColor">Transparent</Color>
-	<Color x:Key="Profile.Background.ConnectedColor">#CC3079BD</Color>
+	<!--<Color x:Key="Profile.Background.ConnectedColor">#CC3079BD</Color>-->
+	<Color x:Key="Profile.Background.ConnectedColor">#FF5994CA</Color>
 	<Color x:Key="Profile.Background.ConnectedSelectedColor">Transparent</Color>
 
 	<SolidColorBrush x:Key="Profile.Background.Normal" Color="{StaticResource Profile.Background.NormalColor}"/>
 
-	<Color x:Key="ScrollBar.Background.NormalColor">#CC171717</Color>
-	<Color x:Key="ScrollBar.Background.MouseOverColor">#CC171717</Color>
 	<Color x:Key="ScrollBar.Thumb.NormalColor">#33BCBCBC</Color>
 	<Color x:Key="ScrollBar.Thumb.MouseOverColor">#33EFEFEF</Color>
 
