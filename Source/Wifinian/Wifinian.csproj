@@ -1,167 +1,167 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{056EF371-BF6B-42C3-82B7-A113CAFA5718}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Wifinian</RootNamespace>
-    <AssemblyName>Wifinian</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <WarningLevel>4</WarningLevel>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationIcon>Resources\Icons\AppIcon.ico</ApplicationIcon>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="ScreenFrame, Version=1.3.6.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Library\ScreenFrame.dll</HintPath>
-    </Reference>
-    <Reference Include="StartupAgency, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Library\StartupAgency.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Windows" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xaml">
-      <RequiredTargetFramework>4.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="WindowsBase" />
-  </ItemGroup>
-  <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="AppController.cs" />
-    <Compile Include="AppKeeper.cs" />
-    <Compile Include="Common\BindableBase.cs" />
-    <Compile Include="Common\DisposableBase.cs" />
-    <Compile Include="Helper\ColorExtension.cs" />
-    <Compile Include="Helper\HsbColor.cs" />
-    <Compile Include="Helper\OsVersion.cs" />
-    <Compile Include="Models\Wlan\IWlanWorker.cs" />
-    <Compile Include="Models\Wlan\MockWorker.cs" />
-    <Compile Include="Models\Wlan\NativeWifiProfileItem.cs" />
-    <Compile Include="Models\Wlan\NativeWifiWorker.cs" />
-    <Compile Include="Models\Wlan\Netsh.cs" />
-    <Compile Include="Models\Wlan\NetshWorker.cs" />
-    <Compile Include="Models\Wlan\ProfileItem.cs" />
-    <Compile Include="Models\AppDataService.cs" />
-    <Compile Include="Models\LanguageService.cs" />
-    <Compile Include="Models\Logger.cs" />
-    <Compile Include="Models\ProductInfo.cs" />
-    <Compile Include="Models\Settings.cs" />
-    <Compile Include="ViewModels\MainWindowViewModel.cs" />
-    <Compile Include="ViewModels\MenuWindowViewModel.cs" />
-    <Compile Include="ViewModels\ProfileItemViewModel.cs" />
-    <Compile Include="Views\Behaviors\FrameworkElementCenterBehavior.cs" />
-    <Compile Include="Views\Behaviors\ListBoxHeightBehavior.cs" />
-    <Compile Include="Views\Behaviors\ListBoxSelectedItemBehavior.cs" />
-    <Compile Include="Views\Behaviors\WindowMaximizeBoxBehavior.cs" />
-    <Compile Include="Views\Controls\IconButton.cs" />
-    <Compile Include="Views\Controls\MovingButton.cs" />
-    <Compile Include="Views\Controls\MovingControl.cs" />
-    <Compile Include="Views\Controls\ProfileContentControl.cs" />
-    <Compile Include="Views\Controls\SignalProgressBar.cs" />
-    <Compile Include="Views\Controls\SimpleToggleButton.cs" />
-    <Compile Include="Views\Controls\SwitchTextBox.cs" />
-    <Compile Include="Views\Converters\BooleanInverseConverter.cs" />
-    <Compile Include="Views\Converters\VisibilityInverseConverter.cs" />
-    <Compile Include="Views\ThemeService.cs" />
-    <Compile Include="Views\WindowEffect.cs" />
-    <Compile Include="Views\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Views\MenuWindow.xaml.cs">
-      <DependentUpon>MenuWindow.xaml</DependentUpon>
-    </Compile>
-    <Page Include="Views\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\MenuWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Styles\CommonControls.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Styles\CustomControls.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Styles\CustomTheme.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <None Include="app.manifest">
-      <SubType>Designer</SubType>
-    </None>
-    <AppDesigner Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
+	<Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+	<PropertyGroup>
+		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+		<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+		<ProjectGuid>{056EF371-BF6B-42C3-82B7-A113CAFA5718}</ProjectGuid>
+		<OutputType>WinExe</OutputType>
+		<AppDesignerFolder>Properties</AppDesignerFolder>
+		<RootNamespace>Wifinian</RootNamespace>
+		<AssemblyName>Wifinian</AssemblyName>
+		<TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+		<FileAlignment>512</FileAlignment>
+		<ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+		<WarningLevel>4</WarningLevel>
+		<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+		<TargetFrameworkProfile />
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+		<PlatformTarget>AnyCPU</PlatformTarget>
+		<DebugSymbols>true</DebugSymbols>
+		<DebugType>full</DebugType>
+		<Optimize>false</Optimize>
+		<OutputPath>bin\Debug\</OutputPath>
+		<DefineConstants>DEBUG;TRACE</DefineConstants>
+		<ErrorReport>prompt</ErrorReport>
+		<WarningLevel>4</WarningLevel>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+		<PlatformTarget>AnyCPU</PlatformTarget>
+		<DebugType>pdbonly</DebugType>
+		<Optimize>true</Optimize>
+		<OutputPath>bin\Release\</OutputPath>
+		<DefineConstants>TRACE</DefineConstants>
+		<ErrorReport>prompt</ErrorReport>
+		<WarningLevel>4</WarningLevel>
+	</PropertyGroup>
+	<PropertyGroup>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
+	</PropertyGroup>
+	<PropertyGroup>
+		<ApplicationIcon>Resources\Icons\AppIcon.ico</ApplicationIcon>
+	</PropertyGroup>
+	<ItemGroup>
+		<Reference Include="Microsoft.CSharp" />
+		<Reference Include="PresentationCore" />
+		<Reference Include="PresentationFramework" />
+		<Reference Include="ScreenFrame, Version=1.3.6.0, Culture=neutral, processorArchitecture=MSIL">
+			<SpecificVersion>False</SpecificVersion>
+			<HintPath>Library\ScreenFrame.dll</HintPath>
+		</Reference>
+		<Reference Include="StartupAgency, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+			<SpecificVersion>False</SpecificVersion>
+			<HintPath>Library\StartupAgency.dll</HintPath>
+		</Reference>
+		<Reference Include="System" />
+		<Reference Include="System.ComponentModel.DataAnnotations" />
+		<Reference Include="System.Configuration" />
+		<Reference Include="System.Core" />
+		<Reference Include="System.Data" />
+		<Reference Include="System.Drawing" />
+		<Reference Include="System.Runtime.Serialization" />
+		<Reference Include="System.Windows" />
+		<Reference Include="System.Windows.Forms" />
+		<Reference Include="System.Xaml">
+			<RequiredTargetFramework>4.0</RequiredTargetFramework>
+		</Reference>
+		<Reference Include="System.Xml" />
+		<Reference Include="System.Xml.Linq" />
+		<Reference Include="WindowsBase" />
+	</ItemGroup>
+	<ItemGroup>
+		<ApplicationDefinition Include="App.xaml">
+			<Generator>MSBuild:Compile</Generator>
+			<SubType>Designer</SubType>
+		</ApplicationDefinition>
+		<Compile Include="Properties\Resources.Designer.cs">
+			<AutoGen>True</AutoGen>
+			<DesignTime>True</DesignTime>
+			<DependentUpon>Resources.resx</DependentUpon>
+		</Compile>
+		<Compile Include="App.xaml.cs">
+			<DependentUpon>App.xaml</DependentUpon>
+			<SubType>Code</SubType>
+		</Compile>
+		<Compile Include="AppController.cs" />
+		<Compile Include="AppKeeper.cs" />
+		<Compile Include="Common\BindableBase.cs" />
+		<Compile Include="Common\DisposableBase.cs" />
+		<Compile Include="Helper\ColorExtension.cs" />
+		<Compile Include="Helper\HsbColor.cs" />
+		<Compile Include="Helper\OsVersion.cs" />
+		<Compile Include="Models\Wlan\IWlanWorker.cs" />
+		<Compile Include="Models\Wlan\MockWorker.cs" />
+		<Compile Include="Models\Wlan\NativeWifiProfileItem.cs" />
+		<Compile Include="Models\Wlan\NativeWifiWorker.cs" />
+		<Compile Include="Models\Wlan\Netsh.cs" />
+		<Compile Include="Models\Wlan\NetshWorker.cs" />
+		<Compile Include="Models\Wlan\ProfileItem.cs" />
+		<Compile Include="Models\AppDataService.cs" />
+		<Compile Include="Models\LanguageService.cs" />
+		<Compile Include="Models\Logger.cs" />
+		<Compile Include="Models\ProductInfo.cs" />
+		<Compile Include="Models\Settings.cs" />
+		<Compile Include="ViewModels\MainWindowViewModel.cs" />
+		<Compile Include="ViewModels\MenuWindowViewModel.cs" />
+		<Compile Include="ViewModels\ProfileItemViewModel.cs" />
+		<Compile Include="Views\Behaviors\FrameworkElementCenterBehavior.cs" />
+		<Compile Include="Views\Behaviors\ListBoxHeightBehavior.cs" />
+		<Compile Include="Views\Behaviors\ListBoxSelectedItemBehavior.cs" />
+		<Compile Include="Views\Behaviors\WindowMaximizeBoxBehavior.cs" />
+		<Compile Include="Views\Controls\IconButton.cs" />
+		<Compile Include="Views\Controls\MovingButton.cs" />
+		<Compile Include="Views\Controls\MovingControl.cs" />
+		<Compile Include="Views\Controls\ProfileContentControl.cs" />
+		<Compile Include="Views\Controls\SignalProgressBar.cs" />
+		<Compile Include="Views\Controls\SimpleToggleButton.cs" />
+		<Compile Include="Views\Controls\SwitchTextBox.cs" />
+		<Compile Include="Views\Converters\BooleanInverseConverter.cs" />
+		<Compile Include="Views\Converters\VisibilityInverseConverter.cs" />
+		<Compile Include="Views\ThemeService.cs" />
+		<Compile Include="Views\WindowEffect.cs" />
+		<Compile Include="Views\MainWindow.xaml.cs">
+			<DependentUpon>MainWindow.xaml</DependentUpon>
+			<SubType>Code</SubType>
+		</Compile>
+		<Compile Include="Views\MenuWindow.xaml.cs">
+			<DependentUpon>MenuWindow.xaml</DependentUpon>
+		</Compile>
+		<Page Include="Views\MainWindow.xaml">
+			<Generator>MSBuild:Compile</Generator>
+			<SubType>Designer</SubType>
+		</Page>
+		<Page Include="Views\MenuWindow.xaml">
+			<SubType>Designer</SubType>
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+		<Page Include="Views\Styles\CommonControls.xaml">
+			<SubType>Designer</SubType>
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+		<Page Include="Views\Styles\CustomControls.xaml">
+			<SubType>Designer</SubType>
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+		<Page Include="Views\Styles\CustomTheme.xaml">
+			<SubType>Designer</SubType>
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Include="Properties\AssemblyInfo.cs">
+			<SubType>Code</SubType>
+		</Compile>
+		<None Include="app.manifest">
+			<SubType>Designer</SubType>
+		</None>
+		<AppDesigner Include="Properties\" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="App.config">
+			<SubType>Designer</SubType>
+		</None>
+	</ItemGroup>
   <ItemGroup>
     <Content Include="Library\ScreenFrame.dll" />
     <Content Include="Library\ScreenFrame.pdb" />
@@ -169,9 +169,6 @@
     <Content Include="Library\StartupAgency.dll" />
     <Content Include="Library\StartupAgency.pdb" />
     <Resource Include="Library\StartupAgency.xml" />
-    <Content Include="Library\StartupBridge.dll" />
-    <Content Include="Library\StartupBridge.pdb" />
-    <Resource Include="Library\StartupBridge.xml" />
     <None Include="Wifinian.VisualElementsManifest.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

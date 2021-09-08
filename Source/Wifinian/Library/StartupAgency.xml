@@ -4,46 +4,100 @@
         <name>StartupAgency</name>
     </assembly>
     <members>
+        <member name="T:StartupAgency.Bridge.StartupData">
+            <summary>
+            Startup data
+            </summary>
+        </member>
+        <member name="P:StartupAgency.Bridge.StartupData.LastStartTime">
+            <summary>
+            Last start time of application
+            </summary>
+            <remarks>
+            The underlying value of this property will be updated when accessed the first time after
+            system boot.
+            </remarks>
+        </member>
+        <member name="T:StartupAgency.Bridge.StartupTaskBroker">
+            <summary>
+            StartupTask broker
+            </summary>
+            <remarks>
+            This class wraps <see cref="T:Windows.ApplicationModel.StartupTask"/> which is only available
+            on Windows 10 (version 10.0.14393.0) or newer.
+            </remarks>
+        </member>
+        <member name="M:StartupAgency.Bridge.StartupTaskBroker.CanEnable(System.String)">
+            <summary>
+            Determines whether the startup task for a specified AppX package can be enabled.
+            </summary>
+            <param name="taskId">Startup task ID</param>
+            <returns>True if the startup task can be enabled</returns>
+        </member>
+        <member name="M:StartupAgency.Bridge.StartupTaskBroker.IsEnabled(System.String)">
+            <summary>
+            Determines whether the startup task for a specified AppX package has been enabled.
+            </summary>
+            <param name="taskId">Startup task ID</param>
+            <returns>True if the startup task has been enabled</returns>
+        </member>
+        <member name="M:StartupAgency.Bridge.StartupTaskBroker.Enable(System.String)">
+            <summary>
+            Enables the startup task for a specified AppX package.
+            </summary>
+            <param name="taskId">Startup task ID</param>
+            <returns>True if the startup task is enabled</returns>
+        </member>
+        <member name="M:StartupAgency.Bridge.StartupTaskBroker.Disable(System.String)">
+            <summary>
+            Disables the startup task for a specified AppX package.
+            </summary>
+            <param name="taskId">Startup task ID</param>
+        </member>
         <member name="T:StartupAgency.Helper.OsVersion">
             <summary>
             OS version information
             </summary>
         </member>
-        <member name="P:StartupAgency.Helper.OsVersion.IsVistaOrNewer">
+        <member name="P:StartupAgency.Helper.OsVersion.Is7OrGreater">
             <summary>
-            Whether OS is Windows Vista or newer
+            Whether OS is Windows 7 (6.1) or greater
             </summary>
-            <remarks>Windows Vista = version 6.0</remarks>
         </member>
-        <member name="P:StartupAgency.Helper.OsVersion.Is8OrNewer">
+        <member name="P:StartupAgency.Helper.OsVersion.Is8OrGreater">
             <summary>
-            Whether OS is Windows 8 or newer
+            Whether OS is Windows 8 (6.2) or greater
             </summary>
-            <remarks>Windows 8 = version 6.2</remarks>
         </member>
-        <member name="P:StartupAgency.Helper.OsVersion.Is81OrNewer">
+        <member name="P:StartupAgency.Helper.OsVersion.Is8Point1OrGreater">
             <summary>
-            Whether OS is Windows 8.1 or newer
+            Whether OS is Windows 8.1 (6.3) or greater
             </summary>
-            <remarks>Windows 8.1 = version 6.3</remarks>
         </member>
-        <member name="P:StartupAgency.Helper.OsVersion.Is10Threshold1OrNewer">
+        <member name="P:StartupAgency.Helper.OsVersion.Is10OrGreater">
             <summary>
-            Whether OS is Windows 10 (Threshold 1) or newer
+            Whether OS is Windows 10 (10.0.10240) or greater
             </summary>
-            <remarks>Windows 10 (Threshold 1) = version 10.0.10240</remarks>
         </member>
-        <member name="P:StartupAgency.Helper.OsVersion.Is10Redstone1OrNewer">
+        <member name="P:StartupAgency.Helper.OsVersion.Is10Build14393OrGreater">
             <summary>
-            Whether OS is Windows 10 (Redstone 1) or newer
+            Whether OS is Windows 10 (10.0.14393) or greater
             </summary>
-            <remarks>Windows 10 (Redstone 1) = version 10.0.14393</remarks>
         </member>
-        <member name="P:StartupAgency.Helper.OsVersion.Is10Redstone3OrNewer">
+        <member name="P:StartupAgency.Helper.OsVersion.Is11OrGreater">
             <summary>
-            Whether OS is Windows 10 (Redstone 3) or newer
+            Whether OS is Windows 11 (10.0.22000) or greater
             </summary>
-            <remarks>Windows 10 (Redstone 3) = version 10.0.16299</remarks>
+        </member>
+        <member name="T:StartupAgency.Storage.SettingsAccessor">
+            <summary>
+            Accessor to <see cref="P:Windows.Storage.ApplicationData.LocalSettings"/> or <see cref="P:Windows.Storage.ApplicationData.RoamingSettings"/>
+            </summary>
+            <remarks>
+            Data types that can be stored/retrieved are shown at:
+            https://docs.microsoft.com/en-us/windows/uwp/design/app-settings/store-and-retrieve-app-data#types-of-app-data
+            byte[] and Enum are also usable.
+            </remarks>
         </member>
         <member name="T:StartupAgency.Worker.BridgeWorker">
             <summary>
@@ -99,6 +153,16 @@
         <member name="M:StartupAgency.PipeHolder.Release">
             <summary>
             Releases <see cref="T:System.Threading.Semaphore"/> to stop named pipes.
+            </summary>
+        </member>
+        <member name="T:StartupAgency.PlatformInfo">
+            <summary>
+            Platform information
+            </summary>
+        </member>
+        <member name="P:StartupAgency.PlatformInfo.IsPackaged">
+            <summary>
+            Whether this assembly is packaged in AppX package
             </summary>
         </member>
         <member name="T:StartupAgency.StartupAgent">
