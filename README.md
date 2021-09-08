@@ -32,7 +32,7 @@ Functions:
 [Wifinian](https://www.microsoft.com/store/apps/9pngfqps4flh) (Windows Store)
 
  * Other:<br>
-:floppy_disk: [Installer](https://github.com/emoacht/Wifinian/releases/download/2.9.0-Installer/WifinianInstaller290.zip)
+:floppy_disk: [Installer](https://github.com/emoacht/Wifinian/releases/download/3.0.0-Installer/WifinianInstaller300.zip)
 
 ## Install/Uninstall
 
@@ -67,7 +67,6 @@ In such case, please note the following:
  - [Managed Native Wifi][4]
  - [Monitorian/ScreenFrame][5]
  - [Monitorian/StartupAgency][5]
- - [Monitorian/StartupBridge][5]
 
 [1]: https://github.com/Reactive-Extensions/Rx.NET
 [2]: https://github.com/runceel/ReactiveProperty

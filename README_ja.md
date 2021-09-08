@@ -32,7 +32,7 @@ WifinianはWi-Fi接続をユーザーが積極的にコントロールできるW
 [Wifinian](https://www.microsoft.com/store/apps/9pngfqps4flh) (Windows ストア)
 
  * その他:<br>
-:floppy_disk: [インストーラー](https://github.com/emoacht/Wifinian/releases/download/2.9.0-Installer/WifinianInstaller290.zip)
+:floppy_disk: [インストーラー](https://github.com/emoacht/Wifinian/releases/download/3.0.0-Installer/WifinianInstaller300.zip)
 
 ## インストール/アンインストール
 
@@ -67,7 +67,6 @@ msiexec /a [source msi file path] targetdir=[destination folder path (absolute p
  - [Managed Native Wifi][4]
  - [Monitorian/ScreenFrame][5]
  - [Monitorian/StartupAgency][5]
- - [Monitorian/StartupBridge][5]
 
 [1]: https://github.com/Reactive-Extensions/Rx.NET
 [2]: https://github.com/runceel/ReactiveProperty

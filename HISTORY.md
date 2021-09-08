@@ -1,5 +1,10 @@
 ﻿## History
 
+Ver 3.0 2021-9-9
+
+- Change UI
+- Make rounded corners default on Windows 11
+
 Ver 2.9 2021-4-12
 
 - Add function to show available networks only
