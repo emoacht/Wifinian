@@ -32,7 +32,7 @@ WifinianはWi-Fi接続をユーザーが積極的にコントロールできるW
 [Wifinian](https://www.microsoft.com/store/apps/9pngfqps4flh) (Windows ストア)
 
  * その他:<br>
-:floppy_disk: [インストーラー](https://github.com/emoacht/Wifinian/releases/download/3.0.0-Installer/WifinianInstaller300.zip)
+:floppy_disk: [インストーラー](https://github.com/emoacht/Wifinian/releases/download/3.0.1-Installer/WifinianInstaller301.zip)
 
 ## インストール/アンインストール
 
