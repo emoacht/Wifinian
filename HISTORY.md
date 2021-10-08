@@ -2,24 +2,24 @@
 
 Ver 3.0 2021-9-9
 
-- Change UI
-- Make rounded corners default on Windows 11
+ - Change UI
+ - Make rounded corners default on Windows 11
 
 Ver 2.9 2021-4-12
 
-- Add function to show available networks only
+ - Add function to show available networks only
 
 Ver 2.8 2021-3-30
 
-- Modify handling of invalid information
+ - Modify handling of invalid information
 
 Ver 2.7 2021-3-28
 
-- Update libraries
+ - Update libraries
 
 Ver 2.6 2021-1-25
 
-- Improve codes
+ - Improve codes
 
 Ver 2.4 2020-9-29
 
