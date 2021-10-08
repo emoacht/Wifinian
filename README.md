@@ -28,8 +28,14 @@ Functions:
 
 ## Download
 
- * Windows 10 Anniversary Update (1607) or newer:<br>
-[Wifinian](https://www.microsoft.com/store/apps/9pngfqps4flh) (Windows Store)
+ * Microsoft Store (Windows 10 (1607) or newer):<br>
+   [Wifinian](https://www.microsoft.com/store/apps/9pngfqps4flh)<br>
+   <a href='//www.microsoft.com/store/apps/9pngfqps4flh?cid=storebadge&ocid=badge'><img src='https://developer.microsoft.com/store/badges/images/English_get-it-from-MS.png' alt='Wifinian' width='142px' height='52px'/></a>
+
+ * Winget (a.k.a. [Windows Package Manager](https://docs.microsoft.com/en-us/windows/package-manager), App Installer):
+   ```
+   winget install Wifinian
+   ```
 
  * Other:<br>
 :floppy_disk: [Installer](https://github.com/emoacht/Wifinian/releases/download/3.0.1-Installer/WifinianInstaller301.zip)
