@@ -114,7 +114,7 @@ namespace Wifinian.Models.Wlan
 				position: x.Position,
 				isRadioOn: x.IsRadioOn,
 				isConnected: x.IsConnected,
-				signal: x.SignalQuality,
+				signal: ((x.SignalQuality is >= 0 and <= 100) ? x.SignalQuality : x.LinkQuality),
 				band: x.Band,
 				channel: x.Channel));
 		}

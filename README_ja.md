@@ -28,11 +28,17 @@ WifinianはWi-Fi接続をユーザーが積極的にコントロールできるW
 
 ## ダウンロード
 
- * Windows 10 Anniversary Update (1607) 以降:<br>
-[Wifinian](https://www.microsoft.com/store/apps/9pngfqps4flh) (Windows ストア)
+ * Microsoft ストア (Windows 10 (1607) 以降):<br>
+   [Wifinian](https://www.microsoft.com/store/apps/9pngfqps4flh)<br>
+   <a href='//www.microsoft.com/store/apps/9pngfqps4flh?cid=storebadge&ocid=badge'><img src='https://developer.microsoft.com/store/badges/images/English_get-it-from-MS.png' alt='Wifinian' width='142px' height='52px'/></a>
+
+ * Winget (a.k.a. [Windows Package Manager](https://docs.microsoft.com/en-us/windows/package-manager), アプリインストーラー):
+   ```
+   winget install Wifinian
+   ```
 
  * その他:<br>
-:floppy_disk: [インストーラー](https://github.com/emoacht/Wifinian/releases/download/2.9.0-Installer/WifinianInstaller290.zip)
+:floppy_disk: [インストーラー](https://github.com/emoacht/Wifinian/releases/download/3.1.0-Installer/WifinianInstaller310.zip)
 
 ## インストール/アンインストール
 
@@ -67,7 +73,6 @@ msiexec /a [source msi file path] targetdir=[destination folder path (absolute p
  - [Managed Native Wifi][4]
  - [Monitorian/ScreenFrame][5]
  - [Monitorian/StartupAgency][5]
- - [Monitorian/StartupBridge][5]
 
 [1]: https://github.com/Reactive-Extensions/Rx.NET
 [2]: https://github.com/runceel/ReactiveProperty

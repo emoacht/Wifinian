@@ -19,41 +19,284 @@
             OS version information
             </summary>
         </member>
-        <member name="P:ScreenFrame.Helper.OsVersion.IsVistaOrNewer">
+        <member name="P:ScreenFrame.Helper.OsVersion.Is7OrGreater">
             <summary>
-            Whether OS is Windows Vista or newer
+            Whether OS is Windows 7 (6.1) or greater
             </summary>
-            <remarks>Windows Vista = version 6.0</remarks>
         </member>
-        <member name="P:ScreenFrame.Helper.OsVersion.Is8OrNewer">
+        <member name="P:ScreenFrame.Helper.OsVersion.Is8OrGreater">
             <summary>
-            Whether OS is Windows 8 or newer
+            Whether OS is Windows 8 (6.2) or greater
             </summary>
-            <remarks>Windows 8 = version 6.2</remarks>
         </member>
-        <member name="P:ScreenFrame.Helper.OsVersion.Is81OrNewer">
+        <member name="P:ScreenFrame.Helper.OsVersion.Is8Point1OrGreater">
             <summary>
-            Whether OS is Windows 8.1 or newer
+            Whether OS is Windows 8.1 (6.3) or greater
             </summary>
-            <remarks>Windows 8.1 = version 6.3</remarks>
         </member>
-        <member name="P:ScreenFrame.Helper.OsVersion.Is10Threshold1OrNewer">
+        <member name="P:ScreenFrame.Helper.OsVersion.Is10OrGreater">
             <summary>
-            Whether OS is Windows 10 (Threshold 1) or newer
+            Whether OS is Windows 10 (10.0.10240) or greater
             </summary>
-            <remarks>Windows 10 (Threshold 1) = version 10.0.10240</remarks>
         </member>
-        <member name="P:ScreenFrame.Helper.OsVersion.Is10Redstone1OrNewer">
+        <member name="P:ScreenFrame.Helper.OsVersion.Is10Build14393OrGreater">
             <summary>
-            Whether OS is Windows 10 (Redstone 1) or newer
+            Whether OS is Windows 10 (10.0.14393) or greater
             </summary>
-            <remarks>Windows 10 (Redstone 1) = version 10.0.14393</remarks>
         </member>
-        <member name="P:ScreenFrame.Helper.OsVersion.Is10Redstone3OrNewer">
+        <member name="P:ScreenFrame.Helper.OsVersion.Is11OrGreater">
             <summary>
-            Whether OS is Windows 10 (Redstone 3) or newer
+            Whether OS is Windows 11 (10.0.22000) or greater
             </summary>
-            <remarks>Windows 10 (Redstone 3) = version 10.0.16299</remarks>
+        </member>
+        <member name="T:ScreenFrame.Movers.BasicWindowMover">
+            <summary>
+            Mover of <see cref="T:System.Windows.Window"/> which implements basic functions
+            </summary>
+        </member>
+        <member name="M:ScreenFrame.Movers.BasicWindowMover.#ctor(System.Windows.Window)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="window">Window to be moved</param>
+        </member>
+        <member name="P:ScreenFrame.Movers.BasicWindowMover.PivotAlignment">
+            <summary>
+            Alignment of pivot
+            </summary>
+        </member>
+        <member name="M:ScreenFrame.Movers.BasicWindowMover.HandleWindowPosChanging(System.IntPtr,System.Int32,System.IntPtr,System.IntPtr,System.Boolean@)">
+            <summary>
+            Handles window position changing event.
+            </summary>
+        </member>
+        <member name="M:ScreenFrame.Movers.BasicWindowMover.HandleWindowPosChanged(System.IntPtr,System.Int32,System.IntPtr,System.IntPtr,System.Boolean@)">
+            <summary>
+            Handles window position changed event.
+            </summary>
+        </member>
+        <member name="M:ScreenFrame.Movers.BasicWindowMover.HandleDisplayChange(System.IntPtr,System.Int32,System.IntPtr,System.IntPtr,System.Boolean@)">
+            <summary>
+            Handles Display change event.
+            </summary>
+        </member>
+        <member name="M:ScreenFrame.Movers.BasicWindowMover.GetDpi">
+            <summary>
+            Gets Per-Monitor DPI of the monitor.
+            </summary>
+            <returns>DPI information</returns>
+        </member>
+        <member name="M:ScreenFrame.Movers.BasicWindowMover.TryGetAdjacentLocation(System.Double,System.Double,System.Windows.Rect@)">
+            <summary>
+            Attempts to get the adjacent location using specified window width and height.
+            </summary>
+            <param name="windowWidth">Window width</param>
+            <param name="windowHeight">Window height</param>
+            <param name="location">Location of window</param>
+            <returns>True if successfully gets</returns>
+        </member>
+        <member name="M:ScreenFrame.Movers.BasicWindowMover.TryConfirmLocation(System.Windows.Rect@)">
+            <summary>
+            Attempts to confirm that a specified location is not completely outside of monitors.
+            </summary>
+            <param name="location">Location of window</param>
+            <returns>True if successfully confirms</returns>
+            <remarks>
+            The specified location and the current location are not necessarily in the same monitor.
+            </remarks>
+        </member>
+        <member name="T:ScreenFrame.Movers.FloatWindowMover">
+            <summary>
+            Mover of <see cref="T:System.Windows.Window"/> which implements functions for float window
+            </summary>
+        </member>
+        <member name="M:ScreenFrame.Movers.FloatWindowMover.#ctor(System.Windows.Window,System.Windows.Point)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="window">Window to be moved</param>
+            <param name="pivot">Pivot point to be referred</param>
+        </member>
+        <member name="P:ScreenFrame.Movers.FloatWindowMover.PivotAlignment">
+            <summary>
+            Alignment of pivot
+            </summary>
+        </member>
+        <member name="M:ScreenFrame.Movers.FloatWindowMover.GetDpi">
+            <summary>
+            Gets Per-Monitor DPI of the monitor.
+            </summary>
+            <returns>DPI information</returns>
+        </member>
+        <member name="M:ScreenFrame.Movers.FloatWindowMover.TryGetAdjacentLocation(System.Double,System.Double,System.Windows.Rect@)">
+            <summary>
+            Attempts to get the adjacent location using specified window width and height.
+            </summary>
+            <param name="windowWidth">Window width</param>
+            <param name="windowHeight">Window height</param>
+            <param name="location">Location of window</param>
+            <returns>True if successfully gets</returns>
+        </member>
+        <member name="M:ScreenFrame.Movers.FloatWindowMover.TryGetAdjacentLocationToPivot(System.Double,System.Double,System.Windows.Rect@)">
+            <summary>
+            Attempts to get the adjacent location to pivot point using specified window width and height.
+            </summary>
+            <param name="windowWidth">Window width</param>
+            <param name="windowHeight">Window height</param>
+            <param name="location">Location of window</param>
+            <returns>True if successfully gets</returns>
+        </member>
+        <member name="T:ScreenFrame.Movers.PopupWindowMover">
+            <summary>
+            Mover of <see cref="T:System.Windows.Window"/> which implements functions for popup window
+            </summary>
+        </member>
+        <member name="M:ScreenFrame.Movers.PopupWindowMover.#ctor(System.Windows.Window,System.Windows.Point)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="window">Window to be moved</param>
+            <param name="pivot">Pivot point to be referred</param>
+        </member>
+        <member name="P:ScreenFrame.Movers.PopupWindowMover.PivotAlignment">
+            <summary>
+            Alignment of pivot
+            </summary>
+        </member>
+        <member name="P:ScreenFrame.Movers.PopupWindowMover.IsCentered">
+            <summary>
+            Whether to make window centered at pivot
+            </summary>
+        </member>
+        <member name="M:ScreenFrame.Movers.PopupWindowMover.GetDpi">
+            <summary>
+            Gets Per-Monitor DPI of the monitor.
+            </summary>
+            <returns>DPI information</returns>
+        </member>
+        <member name="M:ScreenFrame.Movers.PopupWindowMover.TryGetAdjacentLocation(System.Double,System.Double,System.Windows.Rect@)">
+            <summary>
+            Attempts to get the adjacent location using specified window width and height.
+            </summary>
+            <param name="windowWidth">Window width</param>
+            <param name="windowHeight">Window height</param>
+            <param name="location">Location of window</param>
+            <returns>True if successfully gets</returns>
+        </member>
+        <member name="M:ScreenFrame.Movers.PopupWindowMover.TryGetAdjacentLocationToPivot(System.Double,System.Double,System.Windows.Rect@)">
+            <summary>
+            Attempts to get the adjacent location to pivot point using specified window width and height.
+            </summary>
+            <param name="windowWidth">Window width</param>
+            <param name="windowHeight">Window height</param>
+            <param name="location">Location of window</param>
+            <returns>True if successfully gets</returns>
+        </member>
+        <member name="T:ScreenFrame.Movers.StickWindowMover">
+            <summary>
+            Mover of <see cref="T:System.Windows.Window"/> which implements functions for stick window
+            </summary>
+        </member>
+        <member name="M:ScreenFrame.Movers.StickWindowMover.#ctor(System.Windows.Window,System.Windows.Forms.NotifyIcon)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="window">Window to be moved</param>
+            <param name="notifyIcon">NotifyIcon to be referred</param>
+        </member>
+        <member name="P:ScreenFrame.Movers.StickWindowMover.PivotAlignment">
+            <summary>
+            Alignment of pivot
+            </summary>
+        </member>
+        <member name="M:ScreenFrame.Movers.StickWindowMover.TryGetAdjacentLocation(System.Double,System.Double,System.Windows.Rect@)">
+            <summary>
+            Attempts to get the adjacent location using specified window width and height.
+            </summary>
+            <param name="windowWidth">Window width</param>
+            <param name="windowHeight">Window height</param>
+            <param name="location">Location of window</param>
+            <returns>True if successfully gets</returns>
+        </member>
+        <member name="F:ScreenFrame.Movers.StickWindowMover.IconPlacement.Unknown">
+            <summary>
+            The location of NotifyIcon is unknown.
+            </summary>
+        </member>
+        <member name="F:ScreenFrame.Movers.StickWindowMover.IconPlacement.InTaskbar">
+            <summary>
+            NotifyIcon locates in the taskbar.
+            </summary>
+        </member>
+        <member name="F:ScreenFrame.Movers.StickWindowMover.IconPlacement.InOverflowArea">
+            <summary>
+            NotifyIcon locates in the notification overflow area.
+            </summary>
+        </member>
+        <member name="P:ScreenFrame.Movers.StickWindowMover.KeepsDistance">
+            <summary>
+            Whether to keep distance from the taskbar or the notification overflow area
+            </summary>
+        </member>
+        <member name="P:ScreenFrame.Movers.StickWindowMover.Distance">
+            <summary>
+            Distance from the taskbar or the notification overflow area
+            </summary>
+        </member>
+        <member name="M:ScreenFrame.Movers.StickWindowMover.TryGetAdjacentLocationToTaskbar(System.Double,System.Double,System.Windows.Rect@)">
+            <summary>
+            Attempts to get the adjacent location to NotifyIcon using specified window width and height.
+            </summary>
+            <param name="windowWidth">Window width</param>
+            <param name="windowHeight">Window height</param>
+            <param name="location">Location of window</param>
+            <returns>True if successfully gets</returns>
+        </member>
+        <member name="T:ScreenFrame.Movers.SwitchWindowMover">
+            <summary>
+            Mover of <see cref="T:System.Windows.Window"/> which implements functions for switch window
+            </summary>
+        </member>
+        <member name="P:ScreenFrame.Movers.SwitchWindowMover.IsDeparted">
+            <summary>
+            Whether the window is departed from taskbar
+            </summary>
+        </member>
+        <member name="E:ScreenFrame.Movers.SwitchWindowMover.IsDepartedChanged">
+            <summary>
+            Occurs when IsDeparted is changed.
+            </summary>
+        </member>
+        <member name="P:ScreenFrame.Movers.SwitchWindowMover.DepartureInterval">
+            <summary>
+            Time interval before departure
+            </summary>
+        </member>
+        <member name="M:ScreenFrame.Movers.SwitchWindowMover.#ctor(System.Windows.Window,System.Windows.Forms.NotifyIcon)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="window">Window to be moved</param>
+            <param name="notifyIcon">NotifyIcon to be referred</param>
+        </member>
+        <member name="P:ScreenFrame.Movers.SwitchWindowMover.PivotAlignment">
+            <summary>
+            Alignment of pivot
+            </summary>
+        </member>
+        <member name="M:ScreenFrame.Movers.SwitchWindowMover.WndProc(System.IntPtr,System.Int32,System.IntPtr,System.IntPtr,System.Boolean@)">
+            <summary>
+            Handles window messages.
+            </summary>
+        </member>
+        <member name="M:ScreenFrame.Movers.SwitchWindowMover.TryGetAdjacentLocation(System.Double,System.Double,System.Windows.Rect@)">
+            <summary>
+            Attempts to get the adjacent location using specified window width and height.
+            </summary>
+            <param name="windowWidth">Window width</param>
+            <param name="windowHeight">Window height</param>
+            <param name="location">Location of window</param>
+            <returns>True if successfully gets</returns>
         </member>
         <member name="T:ScreenFrame.Movers.WindowMover">
             <summary>
@@ -138,186 +381,197 @@
             </summary>
             <returns>True if foreground</returns>
         </member>
-        <member name="T:ScreenFrame.Movers.BasicWindowMover">
+        <member name="T:ScreenFrame.Painter.ThemeInfo">
             <summary>
-            Mover of <see cref="T:System.Windows.Window"/> which implements basic functions
+            Windows themes information
             </summary>
         </member>
-        <member name="M:ScreenFrame.Movers.BasicWindowMover.#ctor(System.Windows.Window)">
+        <member name="M:ScreenFrame.Painter.ThemeInfo.GetWindowsTheme">
             <summary>
-            Constructor
+            Gets the color theme for Windows.
             </summary>
-            <param name="window">Window to be moved</param>
+            <returns>Color theme</returns>
         </member>
-        <member name="P:ScreenFrame.Movers.BasicWindowMover.PivotAlignment">
+        <member name="M:ScreenFrame.Painter.ThemeInfo.GetAppTheme">
             <summary>
-            Alignment of pivot
+            Gets the color theme for applications.
             </summary>
+            <returns>Color theme</returns>
         </member>
-        <member name="M:ScreenFrame.Movers.BasicWindowMover.HandleWindowPosChanging(System.IntPtr,System.Int32,System.IntPtr,System.IntPtr,System.Boolean@)">
+        <member name="T:ScreenFrame.Painter.ColorTheme">
             <summary>
-            Handles window position changing event.
-            </summary>
-        </member>
-        <member name="M:ScreenFrame.Movers.BasicWindowMover.HandleWindowPosChanged(System.IntPtr,System.Int32,System.IntPtr,System.IntPtr,System.Boolean@)">
-            <summary>
-            Handles window position changed event.
+            Color theme
             </summary>
         </member>
-        <member name="M:ScreenFrame.Movers.BasicWindowMover.HandleDisplayChange(System.IntPtr,System.Int32,System.IntPtr,System.IntPtr,System.Boolean@)">
+        <member name="F:ScreenFrame.Painter.ColorTheme.Unknown">
             <summary>
-            Handles Display change event.
+            Unknown
             </summary>
         </member>
-        <member name="M:ScreenFrame.Movers.BasicWindowMover.TryGetAdjacentLocation(System.Double,System.Double,System.Windows.Rect@)">
+        <member name="F:ScreenFrame.Painter.ColorTheme.Dark">
             <summary>
-            Attempts to get the adjacent location using specified window width and height.
+            Dark mode
             </summary>
-            <param name="windowWidth">Window width</param>
-            <param name="windowHeight">Window height</param>
-            <param name="location">Location of window</param>
-            <returns>True if successfully gets</returns>
         </member>
-        <member name="M:ScreenFrame.Movers.BasicWindowMover.TryConfirmLocation(System.Windows.Rect@)">
+        <member name="F:ScreenFrame.Painter.ColorTheme.Light">
             <summary>
-            Attempts to confirm that a specified location is not completely outside of monitors.
+            Light mode
             </summary>
-            <param name="location">Location of window</param>
-            <returns>True if successfully confirms</returns>
+        </member>
+        <member name="M:ScreenFrame.Painter.WindowEffect.SetWindowCompositionAttribute(System.IntPtr,ScreenFrame.Painter.WindowEffect.WindowCompositionAttributeData@)">
+            <summary>
+            Sets window composition attribute (Undocumented API).
+            </summary>
+            <param name="hwnd">Window handle</param>
+            <param name="data">Attribute data</param>
+            <returns>True if successfully sets</returns>
             <remarks>
-            The specified location and the current location are not necessarily in the same monitor.
+            This API and relevant parameters are derived from:
+            https://github.com/riverar/sample-win10-aeroglass 
             </remarks>
         </member>
-        <member name="T:ScreenFrame.Movers.FloatWindowMover">
+        <member name="T:ScreenFrame.Painter.CornerPreference">
             <summary>
-            Mover of <see cref="T:System.Windows.Window"/> which implements functions for float window
+            Corner preferences of window
             </summary>
         </member>
-        <member name="M:ScreenFrame.Movers.FloatWindowMover.#ctor(System.Windows.Window,System.Windows.Point)">
+        <member name="F:ScreenFrame.Painter.CornerPreference.None">
+            <summary>
+            None
+            </summary>
+        </member>
+        <member name="F:ScreenFrame.Painter.CornerPreference.NotRound">
+            <summary>
+            Not round
+            </summary>
+        </member>
+        <member name="F:ScreenFrame.Painter.CornerPreference.Round">
+            <summary>
+            Round
+            </summary>
+        </member>
+        <member name="T:ScreenFrame.Painter.WindowPainter">
+            <summary>
+            Painter of <see cref="T:System.Windows.Window"/>
+            </summary>
+        </member>
+        <member name="M:ScreenFrame.Painter.WindowPainter.#ctor(System.Collections.Generic.IReadOnlyList{System.String})">
             <summary>
             Constructor
             </summary>
-            <param name="window">Window to be moved</param>
-            <param name="pivot">Pivot point to be referred</param>
+            <param name="args">Arguments</param>
         </member>
-        <member name="P:ScreenFrame.Movers.FloatWindowMover.PivotAlignment">
+        <member name="P:ScreenFrame.Painter.WindowPainter.Options">
             <summary>
-            Alignment of pivot
+            Options
             </summary>
         </member>
-        <member name="M:ScreenFrame.Movers.FloatWindowMover.TryGetAdjacentLocation(System.Double,System.Double,System.Windows.Rect@)">
+        <member name="P:ScreenFrame.Painter.WindowPainter.RespondsThemeChanged">
             <summary>
-            Attempts to get the adjacent location using specified window width and height.
-            </summary>
-            <param name="windowWidth">Window width</param>
-            <param name="windowHeight">Window height</param>
-            <param name="location">Location of window</param>
-            <returns>True if successfully gets</returns>
-        </member>
-        <member name="M:ScreenFrame.Movers.FloatWindowMover.TryGetAdjacentLocationToPivot(System.Double,System.Double,System.Windows.Rect@)">
-            <summary>
-            Attempts to get the adjacent location to pivot point using specified window width and height.
-            </summary>
-            <param name="windowWidth">Window width</param>
-            <param name="windowHeight">Window height</param>
-            <param name="location">Location of window</param>
-            <returns>True if successfully gets</returns>
-        </member>
-        <member name="T:ScreenFrame.Movers.StickWindowMover">
-            <summary>
-            Mover of <see cref="T:System.Windows.Window"/> which implements functions for stick window
+            Whether to respond when the color theme of Windows is changed
             </summary>
         </member>
-        <member name="M:ScreenFrame.Movers.StickWindowMover.#ctor(System.Windows.Window,System.Windows.Forms.NotifyIcon)">
+        <member name="T:ScreenFrame.Painter.WindowPainter.BackgroundTexture">
             <summary>
-            Constructor
-            </summary>
-            <param name="window">Window to be moved</param>
-            <param name="notifyIcon">NotifyIcon to be referred</param>
-        </member>
-        <member name="P:ScreenFrame.Movers.StickWindowMover.PivotAlignment">
-            <summary>
-            Alignment of pivot
+            Background texture of window
             </summary>
         </member>
-        <member name="M:ScreenFrame.Movers.StickWindowMover.TryGetAdjacentLocation(System.Double,System.Double,System.Windows.Rect@)">
+        <member name="F:ScreenFrame.Painter.WindowPainter.BackgroundTexture.None">
             <summary>
-            Attempts to get the adjacent location using specified window width and height.
-            </summary>
-            <param name="windowWidth">Window width</param>
-            <param name="windowHeight">Window height</param>
-            <param name="location">Location of window</param>
-            <returns>True if successfully gets</returns>
-        </member>
-        <member name="F:ScreenFrame.Movers.StickWindowMover.IconPlacement.Unknown">
-            <summary>
-            The location of NotifyIcon is unknown.
+            None
             </summary>
         </member>
-        <member name="F:ScreenFrame.Movers.StickWindowMover.IconPlacement.InTaskbar">
+        <member name="F:ScreenFrame.Painter.WindowPainter.BackgroundTexture.Thin">
             <summary>
-            NotifyIcon locates in the taskbar.
+            Thin blur texture
             </summary>
         </member>
-        <member name="F:ScreenFrame.Movers.StickWindowMover.IconPlacement.InOverflowArea">
+        <member name="F:ScreenFrame.Painter.WindowPainter.BackgroundTexture.Thick">
             <summary>
-            NotifyIcon locates in the notification overflow area.
+            Thick blur (Acrylic) texture
             </summary>
         </member>
-        <member name="M:ScreenFrame.Movers.StickWindowMover.TryGetAdjacentLocationToTaskbar(System.Double,System.Double,System.Windows.Rect@)">
+        <member name="M:ScreenFrame.Painter.WindowPainter.CheckArguments(System.Collections.Generic.IReadOnlyList{System.String})">
             <summary>
-            Attempts to get the adjacent location to NotifyIcon using specified window width and height.
+            Checks command-line arguments
             </summary>
-            <param name="windowWidth">Window width</param>
-            <param name="windowHeight">Window height</param>
-            <param name="location">Location of window</param>
-            <returns>True if successfully gets</returns>
+            <param name="arguments">Arguments</param>
         </member>
-        <member name="T:ScreenFrame.Movers.SwitchWindowMover">
+        <member name="M:ScreenFrame.Painter.WindowPainter.Add(System.Windows.Window)">
             <summary>
-            Mover of <see cref="T:System.Windows.Window"/> which implements functions for switch window
+            Adds a window to be painted.
             </summary>
+            <param name="window">Window to be painted</param>
         </member>
-        <member name="P:ScreenFrame.Movers.SwitchWindowMover.IsDeparted">
+        <member name="M:ScreenFrame.Painter.WindowPainter.Remove(System.Windows.Window)">
             <summary>
-            Whether the window is departed from taskbar
+            Removes a window to be painted.
             </summary>
+            <param name="window">Window to be painted</param>
         </member>
-        <member name="E:ScreenFrame.Movers.SwitchWindowMover.IsDepartedChanged">
+        <member name="E:ScreenFrame.Painter.WindowPainter.ThemeChanged">
             <summary>
-            Occurs when IsDeparted is changed.
-            </summary>
-        </member>
-        <member name="P:ScreenFrame.Movers.SwitchWindowMover.DepartureInterval">
-            <summary>
-            Time interval before departure
+            Occurs when the color theme for Windows is changed.
             </summary>
         </member>
-        <member name="M:ScreenFrame.Movers.SwitchWindowMover.#ctor(System.Windows.Window,System.Windows.Forms.NotifyIcon)">
+        <member name="M:ScreenFrame.Painter.WindowPainter.PaintBackground(System.Windows.Window)">
             <summary>
-            Constructor
+            Paints background of window.
             </summary>
-            <param name="window">Window to be moved</param>
-            <param name="notifyIcon">NotifyIcon to be referred</param>
+            <param name="window">Window to be painted</param>
         </member>
-        <member name="P:ScreenFrame.Movers.SwitchWindowMover.PivotAlignment">
+        <member name="P:ScreenFrame.Painter.WindowPainter.TranslucentBrushKey">
             <summary>
-            Alignment of pivot
-            </summary>
-        </member>
-        <member name="M:ScreenFrame.Movers.SwitchWindowMover.WndProc(System.IntPtr,System.Int32,System.IntPtr,System.IntPtr,System.Boolean@)">
-            <summary>
-            Handles window messages.
+            Background translucent SolidColorBrush key
             </summary>
         </member>
-        <member name="M:ScreenFrame.Movers.SwitchWindowMover.TryGetAdjacentLocation(System.Double,System.Double,System.Windows.Rect@)">
+        <member name="M:ScreenFrame.Painter.WindowPainter.ChangeThemes(ScreenFrame.Painter.ColorTheme,ScreenFrame.Painter.ColorTheme)">
             <summary>
-            Attempts to get the adjacent location using specified window width and height.
+            Changes color themes.
             </summary>
-            <param name="windowWidth">Window width</param>
-            <param name="windowHeight">Window height</param>
-            <param name="location">Location of window</param>
-            <returns>True if successfully gets</returns>
+            <param name="oldTheme">Old color theme</param>
+            <param name="newTheme">New color theme</param>
+        </member>
+        <member name="M:ScreenFrame.Painter.WindowPainter.ChangeResources(System.String,System.String)">
+            <summary>
+            Changes resources.
+            </summary>
+            <param name="oldUriString">Old resources' URI string</param>
+            <param name="newUriString">New resources' URI string</param>
+        </member>
+        <member name="M:ScreenFrame.Painter.WindowPainter.Dispose">
+            <summary>
+            Public implementation of Dispose pattern
+            </summary>
+        </member>
+        <member name="M:ScreenFrame.Painter.WindowPainter.Dispose(System.Boolean)">
+            <summary>
+            Protected implementation of Dispose pattern
+            </summary>
+        </member>
+        <member name="T:ScreenFrame.CursorHelper">
+            <summary>
+            Utility methods for cursor
+            </summary>
+        </member>
+        <member name="M:ScreenFrame.CursorHelper.GetCursorPoint">
+            <summary>
+            Gets the current point of cursor.
+            </summary>
+            <returns>The point of cursor</returns>
+        </member>
+        <member name="T:ScreenFrame.LogicalTreeHelperAddition">
+            <summary>
+            Additional methods for <see cref="T:System.Windows.LogicalTreeHelper"/>
+            </summary>
+        </member>
+        <member name="M:ScreenFrame.LogicalTreeHelperAddition.EnumerateDescendants``1(System.Windows.DependencyObject)">
+            <summary>
+            Enumerates descendant objects of a specified object.
+            </summary>
+            <typeparam name="T">Type of descendant object</typeparam>
+            <param name="reference">Ancestor object</param>
+            <returns>Enumerable collection of descendant objects</returns>
         </member>
         <member name="T:ScreenFrame.NotifyIconContainer">
             <summary>
@@ -516,6 +770,13 @@
             System DPI
             </summary>
         </member>
+        <member name="M:ScreenFrame.VisualTreeHelperAddition.GetDpi(System.Windows.Point)">
+            <summary>
+            Gets Per-Monitor DPI of the monitor to which a specified point belongs.
+            </summary>
+            <param name="point">Point</param>
+            <returns>DPI information</returns>
+        </member>
         <member name="M:ScreenFrame.VisualTreeHelperAddition.GetDpi(System.Windows.Media.Visual)">
             <summary>
             Gets Per-Monitor DPI of the monitor to which a specified Visual belongs.
@@ -561,6 +822,11 @@
             <param name="descendant">Descendant visual</param>
             <returns>True if successfully gets</returns>
         </member>
+        <member name="T:ScreenFrame.WindowHelper">
+            <summary>
+            Utility methods for <see cref="T:System.Windows.Window"/>
+            </summary>
+        </member>
         <member name="F:ScreenFrame.WindowHelper.MONITOR_DEFAULTTO.MONITOR_DEFAULTTONULL">
             <summary>
             If no display monitor intersects, returns null.
@@ -575,6 +841,66 @@
             <summary>
             If no display monitor intersects, returns a handle to the display monitor that is nearest to the rectangle.
             </summary>
+        </member>
+        <member name="M:ScreenFrame.WindowHelper.TryGetMonitorRect(System.Windows.Point,System.Windows.Rect@,System.Windows.Rect@)">
+            <summary>
+            Attempts to get monitor rectangle which includes a specified point.
+            </summary>
+            <param name="point">Point to be checked</param>
+            <param name="monitorRect">Monitor rectangle</param>
+            <param name="workRect">Working area rectangle</param>
+            <returns>True if successfully gets</returns>
+        </member>
+        <member name="M:ScreenFrame.WindowHelper.TryGetMonitorRect(System.Windows.Rect,System.Windows.Rect@,System.Windows.Rect@)">
+            <summary>
+            Attempts to get monitor rectangle which includes a specified rectangle.
+            </summary>
+            <param name="rect">Rectangle to be checked</param>
+            <param name="monitorRect">Monitor rectangle</param>
+            <param name="workRect">Working area rectangle</param>
+            <returns>True if successfully gets</returns>
+        </member>
+        <member name="M:ScreenFrame.WindowHelper.IsForegroundWindow(System.Windows.Window)">
+            <summary>
+            Determines if a specified window is foreground.
+            </summary>
+            <param name="window">Window to be determined</param>
+            <returns>True if foreground</returns>
+        </member>
+        <member name="M:ScreenFrame.WindowHelper.EnsureForegroundWindow(System.Windows.Window)">
+            <summary>
+            Ensures a specified window is foreground.
+            </summary>
+            <param name="window">Window to be ensured</param>
+            <returns>True if foreground</returns>
+        </member>
+        <member name="M:ScreenFrame.WindowHelper.TryGetTaskbar(System.Windows.Rect@,ScreenFrame.TaskbarAlignment@,System.Boolean@)">
+            <summary>
+            Attempts to get the information on primary taskbar.
+            </summary>
+            <param name="taskbarRect">Primary taskbar rectange</param>
+            <param name="taskbarAlignment">Primary taskbar alignment</param>
+            <param name="isShown">Whether primary taskbar is shown or hidden</param>
+            <returns>True if successfully gets</returns>
+        </member>
+        <member name="M:ScreenFrame.WindowHelper.TryGetPrimaryTaskbar(System.Windows.Rect@,ScreenFrame.TaskbarAlignment@)">
+            <summary>
+            Attempts to get the information on primary taskbar.
+            </summary>
+            <param name="taskbarRect">Primary taskbar rectangle</param>
+            <param name="taskbarAlignment">Primary taskbar alignment</param>
+            <returns>True if successfully gets</returns>
+            <remarks>If primary taskbar is hidden, this method will fail.</remarks>
+        </member>
+        <member name="M:ScreenFrame.WindowHelper.TryGetSecondaryTaskbar(System.Windows.Rect,System.Windows.Rect@,ScreenFrame.TaskbarAlignment@)">
+            <summary>
+            Attempts to get the information on secondary taskbar inside a specified monitor rectangle.
+            </summary>
+            <param name="monitorRect">Monitor rectangle</param>
+            <param name="taskbarRect">Secondary taskbar rectangle</param>
+            <param name="taskbarAlignment">Secondary taskbar alignment</param>
+            <returns>True if successfully gets</returns>
+            <remarks>If secondary taskbar is hidden, this method will fail.</remarks>
         </member>
     </members>
 </doc>

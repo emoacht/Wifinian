@@ -33,6 +33,7 @@ namespace Wifinian
 		private readonly object _profilesLock = new object();
 
 		public NotifyIconContainer NotifyIconContainer { get; }
+		public WindowPainter WindowPainter { get; }
 
 		private readonly IWlanWorker _worker;
 		public bool IsWorkable => _worker.IsWorkable;
@@ -64,6 +65,7 @@ namespace Wifinian
 			NotifyIconContainer = new NotifyIconContainer();
 			NotifyIconContainer.MouseLeftButtonClick += OnMainWindowShowRequested;
 			NotifyIconContainer.MouseRightButtonClick += OnMenuWindowShowRequested;
+			WindowPainter = new WindowPainter();
 
 			this._worker = worker;
 
@@ -189,6 +191,7 @@ namespace Wifinian
 			{
 				_worker?.Dispose();
 				NotifyIconContainer.Dispose();
+				WindowPainter.Dispose();
 				Settings.Current.Dispose();
 			}
 
@@ -218,7 +221,7 @@ namespace Wifinian
 		private void ShowMainWindow()
 		{
 			var window = (MainWindow)_current.MainWindow;
-			if (window is { CanBeShown: false } or { Visibility: Visibility.Visible, IsForeground: true })
+			if (window is null or { CanBeShown: false } or { Visibility: Visibility.Visible, IsForeground: true })
 				return;
 
 			window.Show();

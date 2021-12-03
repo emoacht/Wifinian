@@ -12,8 +12,6 @@ namespace Wifinian.Views
 {
 	public class ThemeService
 	{
-		private const string NormalKey = "Profile.Background.NormalColor";
-		private const string NormalSelectedKey = "Profile.Background.NormalSelectedColor";
 		private const string AvailableKey = "Profile.Background.AvailableColor";
 		private const string AvailableSelectedKey = "Profile.Background.AvailableSelectedColor";
 		private const string ConnectedKey = "Profile.Background.ConnectedColor";
@@ -23,7 +21,6 @@ namespace Wifinian.Views
 		{
 			const float factor = 1.08F;
 
-			AdjustResourceColor(NormalKey, NormalSelectedKey);
 			AdjustResourceColor(AvailableKey, AvailableSelectedKey);
 			AdjustResourceColor(ConnectedKey, ConnectedSelectedKey);
 
