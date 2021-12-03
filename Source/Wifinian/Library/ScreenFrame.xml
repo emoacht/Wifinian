@@ -49,89 +49,6 @@
             Whether OS is Windows 11 (10.0.22000) or greater
             </summary>
         </member>
-        <member name="T:ScreenFrame.Movers.WindowMover">
-            <summary>
-            Mover of <see cref="T:System.Windows.Window"/>
-            </summary>
-        </member>
-        <member name="F:ScreenFrame.Movers.WindowMover._window">
-            <summary>
-            Window to be moved
-            </summary>
-        </member>
-        <member name="P:ScreenFrame.Movers.WindowMover.Dpi">
-            <summary>
-            Per-Monitor DPI of window
-            </summary>
-        </member>
-        <member name="M:ScreenFrame.Movers.WindowMover.#ctor(System.Windows.Window)">
-            <summary>
-            Constructor
-            </summary>
-            <param name="window">Window to be moved</param>
-        </member>
-        <member name="M:ScreenFrame.Movers.WindowMover.AdjustWindow(System.Windows.DpiScale)">
-            <summary>
-            Adjusts DPI of window.
-            </summary>
-            <param name="dpi">DPI information</param>
-        </member>
-        <member name="M:ScreenFrame.Movers.WindowMover.WndProc(System.IntPtr,System.Int32,System.IntPtr,System.IntPtr,System.Boolean@)">
-            <summary>
-            Handles window messages.
-            </summary>
-        </member>
-        <member name="M:ScreenFrame.Movers.WindowMover.HandleWindowPosChanging(System.IntPtr,System.Int32,System.IntPtr,System.IntPtr,System.Boolean@)">
-            <summary>
-            Handles window position changing event.
-            </summary>
-        </member>
-        <member name="M:ScreenFrame.Movers.WindowMover.HandleWindowPosChanged(System.IntPtr,System.Int32,System.IntPtr,System.IntPtr,System.Boolean@)">
-            <summary>
-            Handles window position changed event.
-            </summary>
-        </member>
-        <member name="M:ScreenFrame.Movers.WindowMover.HandleDpiChanged(System.IntPtr,System.Int32,System.IntPtr,System.IntPtr,System.Boolean@)">
-            <summary>
-            Handles DPI changed event.
-            </summary>
-        </member>
-        <member name="M:ScreenFrame.Movers.WindowMover.HandleDisplayChange(System.IntPtr,System.Int32,System.IntPtr,System.IntPtr,System.Boolean@)">
-            <summary>
-            Handles display change event.
-            </summary>
-        </member>
-        <member name="E:ScreenFrame.Movers.WindowMover.AppActivated">
-            <summary>
-            Occurs when the application to which the window belongs is activated.
-            </summary>
-        </member>
-        <member name="E:ScreenFrame.Movers.WindowMover.AppDeactivated">
-            <summary>
-            Occurs when the application to which the window belongs is deactivated. 
-            </summary>
-        </member>
-        <member name="M:ScreenFrame.Movers.WindowMover.HandleActivateApp(System.IntPtr,System.Int32,System.IntPtr,System.IntPtr,System.Boolean@)">
-            <summary>
-            Handles application activated/deactivated event.
-            </summary>
-        </member>
-        <member name="E:ScreenFrame.Movers.WindowMover.EscapeKeyDown">
-            <summary>
-            Occurs when the escape key is pressed.
-            </summary>
-        </member>
-        <member name="M:ScreenFrame.Movers.WindowMover.HandleKeyDown(System.IntPtr,System.Int32,System.IntPtr,System.IntPtr,System.Boolean@)">
-            <summary>
-            Handles key pressed event.
-            </summary>
-        </member>
-        <member name="M:ScreenFrame.Movers.WindowMover.IsForeground">
-            <summary>
-            Determines whether the window is foreground window.
-            </summary>
-            <returns>True if foreground</returns>
-        </member>
         <member name="T:ScreenFrame.Movers.BasicWindowMover">
             <summary>
             Mover of <see cref="T:System.Windows.Window"/> which implements basic functions
@@ -162,6 +79,12 @@
             <summary>
             Handles Display change event.
             </summary>
+        </member>
+        <member name="M:ScreenFrame.Movers.BasicWindowMover.GetDpi">
+            <summary>
+            Gets Per-Monitor DPI of the monitor.
+            </summary>
+            <returns>DPI information</returns>
         </member>
         <member name="M:ScreenFrame.Movers.BasicWindowMover.TryGetAdjacentLocation(System.Double,System.Double,System.Windows.Rect@)">
             <summary>
@@ -199,6 +122,12 @@
             Alignment of pivot
             </summary>
         </member>
+        <member name="M:ScreenFrame.Movers.FloatWindowMover.GetDpi">
+            <summary>
+            Gets Per-Monitor DPI of the monitor.
+            </summary>
+            <returns>DPI information</returns>
+        </member>
         <member name="M:ScreenFrame.Movers.FloatWindowMover.TryGetAdjacentLocation(System.Double,System.Double,System.Windows.Rect@)">
             <summary>
             Attempts to get the adjacent location using specified window width and height.
@@ -209,6 +138,52 @@
             <returns>True if successfully gets</returns>
         </member>
         <member name="M:ScreenFrame.Movers.FloatWindowMover.TryGetAdjacentLocationToPivot(System.Double,System.Double,System.Windows.Rect@)">
+            <summary>
+            Attempts to get the adjacent location to pivot point using specified window width and height.
+            </summary>
+            <param name="windowWidth">Window width</param>
+            <param name="windowHeight">Window height</param>
+            <param name="location">Location of window</param>
+            <returns>True if successfully gets</returns>
+        </member>
+        <member name="T:ScreenFrame.Movers.PopupWindowMover">
+            <summary>
+            Mover of <see cref="T:System.Windows.Window"/> which implements functions for popup window
+            </summary>
+        </member>
+        <member name="M:ScreenFrame.Movers.PopupWindowMover.#ctor(System.Windows.Window,System.Windows.Point)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="window">Window to be moved</param>
+            <param name="pivot">Pivot point to be referred</param>
+        </member>
+        <member name="P:ScreenFrame.Movers.PopupWindowMover.PivotAlignment">
+            <summary>
+            Alignment of pivot
+            </summary>
+        </member>
+        <member name="P:ScreenFrame.Movers.PopupWindowMover.IsCentered">
+            <summary>
+            Whether to make window centered at pivot
+            </summary>
+        </member>
+        <member name="M:ScreenFrame.Movers.PopupWindowMover.GetDpi">
+            <summary>
+            Gets Per-Monitor DPI of the monitor.
+            </summary>
+            <returns>DPI information</returns>
+        </member>
+        <member name="M:ScreenFrame.Movers.PopupWindowMover.TryGetAdjacentLocation(System.Double,System.Double,System.Windows.Rect@)">
+            <summary>
+            Attempts to get the adjacent location using specified window width and height.
+            </summary>
+            <param name="windowWidth">Window width</param>
+            <param name="windowHeight">Window height</param>
+            <param name="location">Location of window</param>
+            <returns>True if successfully gets</returns>
+        </member>
+        <member name="M:ScreenFrame.Movers.PopupWindowMover.TryGetAdjacentLocationToPivot(System.Double,System.Double,System.Windows.Rect@)">
             <summary>
             Attempts to get the adjacent location to pivot point using specified window width and height.
             </summary>
@@ -322,6 +297,89 @@
             <param name="windowHeight">Window height</param>
             <param name="location">Location of window</param>
             <returns>True if successfully gets</returns>
+        </member>
+        <member name="T:ScreenFrame.Movers.WindowMover">
+            <summary>
+            Mover of <see cref="T:System.Windows.Window"/>
+            </summary>
+        </member>
+        <member name="F:ScreenFrame.Movers.WindowMover._window">
+            <summary>
+            Window to be moved
+            </summary>
+        </member>
+        <member name="P:ScreenFrame.Movers.WindowMover.Dpi">
+            <summary>
+            Per-Monitor DPI of window
+            </summary>
+        </member>
+        <member name="M:ScreenFrame.Movers.WindowMover.#ctor(System.Windows.Window)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="window">Window to be moved</param>
+        </member>
+        <member name="M:ScreenFrame.Movers.WindowMover.AdjustWindow(System.Windows.DpiScale)">
+            <summary>
+            Adjusts DPI of window.
+            </summary>
+            <param name="dpi">DPI information</param>
+        </member>
+        <member name="M:ScreenFrame.Movers.WindowMover.WndProc(System.IntPtr,System.Int32,System.IntPtr,System.IntPtr,System.Boolean@)">
+            <summary>
+            Handles window messages.
+            </summary>
+        </member>
+        <member name="M:ScreenFrame.Movers.WindowMover.HandleWindowPosChanging(System.IntPtr,System.Int32,System.IntPtr,System.IntPtr,System.Boolean@)">
+            <summary>
+            Handles window position changing event.
+            </summary>
+        </member>
+        <member name="M:ScreenFrame.Movers.WindowMover.HandleWindowPosChanged(System.IntPtr,System.Int32,System.IntPtr,System.IntPtr,System.Boolean@)">
+            <summary>
+            Handles window position changed event.
+            </summary>
+        </member>
+        <member name="M:ScreenFrame.Movers.WindowMover.HandleDpiChanged(System.IntPtr,System.Int32,System.IntPtr,System.IntPtr,System.Boolean@)">
+            <summary>
+            Handles DPI changed event.
+            </summary>
+        </member>
+        <member name="M:ScreenFrame.Movers.WindowMover.HandleDisplayChange(System.IntPtr,System.Int32,System.IntPtr,System.IntPtr,System.Boolean@)">
+            <summary>
+            Handles display change event.
+            </summary>
+        </member>
+        <member name="E:ScreenFrame.Movers.WindowMover.AppActivated">
+            <summary>
+            Occurs when the application to which the window belongs is activated.
+            </summary>
+        </member>
+        <member name="E:ScreenFrame.Movers.WindowMover.AppDeactivated">
+            <summary>
+            Occurs when the application to which the window belongs is deactivated. 
+            </summary>
+        </member>
+        <member name="M:ScreenFrame.Movers.WindowMover.HandleActivateApp(System.IntPtr,System.Int32,System.IntPtr,System.IntPtr,System.Boolean@)">
+            <summary>
+            Handles application activated/deactivated event.
+            </summary>
+        </member>
+        <member name="E:ScreenFrame.Movers.WindowMover.EscapeKeyDown">
+            <summary>
+            Occurs when the escape key is pressed.
+            </summary>
+        </member>
+        <member name="M:ScreenFrame.Movers.WindowMover.HandleKeyDown(System.IntPtr,System.Int32,System.IntPtr,System.IntPtr,System.Boolean@)">
+            <summary>
+            Handles key pressed event.
+            </summary>
+        </member>
+        <member name="M:ScreenFrame.Movers.WindowMover.IsForeground">
+            <summary>
+            Determines whether the window is foreground window.
+            </summary>
+            <returns>True if foreground</returns>
         </member>
         <member name="T:ScreenFrame.Painter.ThemeInfo">
             <summary>
@@ -490,6 +548,17 @@
             <summary>
             Protected implementation of Dispose pattern
             </summary>
+        </member>
+        <member name="T:ScreenFrame.CursorHelper">
+            <summary>
+            Utility methods for cursor
+            </summary>
+        </member>
+        <member name="M:ScreenFrame.CursorHelper.GetCursorPoint">
+            <summary>
+            Gets the current point of cursor.
+            </summary>
+            <returns>The point of cursor</returns>
         </member>
         <member name="T:ScreenFrame.LogicalTreeHelperAddition">
             <summary>
@@ -701,6 +770,13 @@
             System DPI
             </summary>
         </member>
+        <member name="M:ScreenFrame.VisualTreeHelperAddition.GetDpi(System.Windows.Point)">
+            <summary>
+            Gets Per-Monitor DPI of the monitor to which a specified point belongs.
+            </summary>
+            <param name="point">Point</param>
+            <returns>DPI information</returns>
+        </member>
         <member name="M:ScreenFrame.VisualTreeHelperAddition.GetDpi(System.Windows.Media.Visual)">
             <summary>
             Gets Per-Monitor DPI of the monitor to which a specified Visual belongs.
@@ -746,6 +822,11 @@
             <param name="descendant">Descendant visual</param>
             <returns>True if successfully gets</returns>
         </member>
+        <member name="T:ScreenFrame.WindowHelper">
+            <summary>
+            Utility methods for <see cref="T:System.Windows.Window"/>
+            </summary>
+        </member>
         <member name="F:ScreenFrame.WindowHelper.MONITOR_DEFAULTTO.MONITOR_DEFAULTTONULL">
             <summary>
             If no display monitor intersects, returns null.
@@ -760,6 +841,38 @@
             <summary>
             If no display monitor intersects, returns a handle to the display monitor that is nearest to the rectangle.
             </summary>
+        </member>
+        <member name="M:ScreenFrame.WindowHelper.TryGetMonitorRect(System.Windows.Point,System.Windows.Rect@,System.Windows.Rect@)">
+            <summary>
+            Attempts to get monitor rectangle which includes a specified point.
+            </summary>
+            <param name="point">Point to be checked</param>
+            <param name="monitorRect">Monitor rectangle</param>
+            <param name="workRect">Working area rectangle</param>
+            <returns>True if successfully gets</returns>
+        </member>
+        <member name="M:ScreenFrame.WindowHelper.TryGetMonitorRect(System.Windows.Rect,System.Windows.Rect@,System.Windows.Rect@)">
+            <summary>
+            Attempts to get monitor rectangle which includes a specified rectangle.
+            </summary>
+            <param name="rect">Rectangle to be checked</param>
+            <param name="monitorRect">Monitor rectangle</param>
+            <param name="workRect">Working area rectangle</param>
+            <returns>True if successfully gets</returns>
+        </member>
+        <member name="M:ScreenFrame.WindowHelper.IsForegroundWindow(System.Windows.Window)">
+            <summary>
+            Determines if a specified window is foreground.
+            </summary>
+            <param name="window">Window to be determined</param>
+            <returns>True if foreground</returns>
+        </member>
+        <member name="M:ScreenFrame.WindowHelper.EnsureForegroundWindow(System.Windows.Window)">
+            <summary>
+            Ensures a specified window is foreground.
+            </summary>
+            <param name="window">Window to be ensured</param>
+            <returns>True if foreground</returns>
         </member>
         <member name="M:ScreenFrame.WindowHelper.TryGetTaskbar(System.Windows.Rect@,ScreenFrame.TaskbarAlignment@,System.Boolean@)">
             <summary>

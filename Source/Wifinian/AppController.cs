@@ -221,7 +221,7 @@ namespace Wifinian
 		private void ShowMainWindow()
 		{
 			var window = (MainWindow)_current.MainWindow;
-			if (window is { CanBeShown: false } or { Visibility: Visibility.Visible, IsForeground: true })
+			if (window is null or { CanBeShown: false } or { Visibility: Visibility.Visible, IsForeground: true })
 				return;
 
 			window.Show();
