@@ -38,7 +38,7 @@ WifinianはWi-Fi接続をユーザーが積極的にコントロールできるW
    ```
 
  * その他:<br>
-:floppy_disk: [インストーラー](https://github.com/emoacht/Wifinian/releases/download/3.0.1-Installer/WifinianInstaller301.zip)
+:floppy_disk: [インストーラー](https://github.com/emoacht/Wifinian/releases/download/3.1.0-Installer/WifinianInstaller310.zip)
 
 ## インストール/アンインストール
 
