@@ -157,6 +157,8 @@ namespace Wifinian
 
 		public async Task InitiateAsync()
 		{
+			await LanguageService.InitializeAsync();
+
 			Settings.Current.Initiate();
 
 			NotifyIconContainer.ShowIcon("pack://application:,,,/Resources/Icons/TrayIcon.ico", ProductInfo.Title);

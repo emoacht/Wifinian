@@ -64,9 +64,11 @@ namespace Wifinian.Properties {
         ///   Looks up a localized string similar to ProjectSite=https://github.com/emoacht/Wifinian/blob/master/README.md
         ///License=https://github.com/emoacht/Wifinian/blob/master/LICENSE.txt
         ///StartSignIn=Start on sign in
+        ///ShowAvailable=Show available networks only
         ///Close=Close
         ///NotWorkable=Can not obtain information on Wi-Fi connections.
-        ///RecordException=An unexpected problem occurred. Save exception log on Desktop?.
+        ///RecordException=An unexpected problem happened. Save exception log on Desktop?
+        ///.
         /// </summary>
         public static string language_en {
             get {
@@ -78,13 +80,15 @@ namespace Wifinian.Properties {
         ///   Looks up a localized string similar to ProjectSite=https://github.com/emoacht/Wifinian/blob/master/README_ja.md
         ///License=https://github.com/emoacht/Wifinian/blob/master/LICENSE.txt
         ///StartSignIn=サインイン時に起動する
+        ///ShowAvailable=利用可能なネットワークのみ表示する
         ///Close=閉じる
         ///NotWorkable=Wi-Fi接続の情報を取得できません。
-        ///RecordException=予想外の問題が起きました。例外のログをデスクトップに残しますか？.
+        ///RecordException=予想外の問題が起きました。例外のログをデスクトップに残しますか？
+        ///.
         /// </summary>
-        public static string language_ja {
+        public static string language_ja_JP {
             get {
-                return ResourceManager.GetString("language_ja", resourceCulture);
+                return ResourceManager.GetString("language_ja_JP", resourceCulture);
             }
         }
         
