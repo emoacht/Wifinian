@@ -124,7 +124,10 @@
   <data name="language_ja_JP" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\language.ja-JP.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
+  <data name="License" xml:space="preserve">
+    <value>https://github.com/emoacht/Wifinian/blob/master/LICENSE.txt</value>
+  </data>
   <data name="ProjectSite" xml:space="preserve">
-    <value>http://github.com/emoacht/Wifinian</value>
+    <value>https://github.com/emoacht/Wifinian</value>
   </data>
 </root>

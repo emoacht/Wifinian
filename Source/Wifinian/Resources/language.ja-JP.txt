@@ -1,7 +1,11 @@
-﻿ProjectSite=https://github.com/emoacht/Wifinian/blob/master/README_ja.md
-License=https://github.com/emoacht/Wifinian/blob/master/LICENSE.txt
+﻿[Link]
+ProjectSite=https://github.com/emoacht/Wifinian/blob/master/README_ja.md
+
+[Menu]
 StartSignIn=サインイン時に起動する
 ShowAvailable=利用可能なネットワークのみ表示する
 Close=閉じる
+
+[Message]
 NotWorkable=Wi-Fi接続の情報を取得できません。
-RecordException=予想外の問題が起きました。例外のログをデスクトップに残しますか？
+RecordException=予期しない問題が発生しました。例外ログをデスクトップに保存しますか?

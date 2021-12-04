@@ -14,13 +14,34 @@ namespace Wifinian.Models
 {
 	internal static class LanguageService
 	{
+		#region Content
+
+		// Button
+		public static string Rush => GetContentValue();
+		public static string Engage => GetContentValue();
+		public static string Organize => GetContentValue();
+		public static string Up => GetContentValue();
+		public static string Down => GetContentValue();
+		public static string Delete => GetContentValue();
+		public static string AutoConnect => GetContentValue();
+		public static string AutoSwitch => GetContentValue();
+		public static string OK => GetContentValue();
+		public static string Cancel => GetContentValue();
+
+		// Link
 		public static string ProjectSite => GetContentValue(fallback: Properties.Resources.ProjectSite);
-		public static string License => GetContentValue();
+		public static string License => Properties.Resources.License;
+
+		// Menu
 		public static string StartSignIn => GetContentValue();
 		public static string ShowAvailable => GetContentValue();
 		public static string Close => GetContentValue();
+
+		// Message
 		public static string NotWorkable => GetContentValue();
 		public static string RecordException => GetContentValue();
+
+		#endregion
 
 		private static Dictionary<string, string> _languageContent;
 
