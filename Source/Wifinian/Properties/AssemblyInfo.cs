@@ -55,3 +55,6 @@ using System.Windows;
 [assembly: AssemblyFileVersion("3.2.0.0")]
 [assembly: Guid("056ef371-bf6b-42c3-82b7-a113cafa5718")]
 [assembly: NeutralResourcesLanguage("en-US")]
+
+// For unit test
+[assembly: InternalsVisibleTo("Wifinian.Test")]

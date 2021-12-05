@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2020
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31911.196
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wifinian", "Wifinian\Wifinian.csproj", "{056EF371-BF6B-42C3-82B7-A113CAFA5718}"
 EndProject
@@ -12,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IconImage", "IconImage\IconImage.csproj", "{566D20ED-A863-43BA-BC28-D21E46FEC661}"
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Installer", "Installer\Installer.wixproj", "{053F50A8-E2C9-4F92-BA1B-B8F71603585F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wifinian.Test", "Wifinian.Test\Wifinian.Test.csproj", "{98C08E30-5716-4BCA-99F6-80413D56867B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,6 +61,14 @@ Global
 		{053F50A8-E2C9-4F92-BA1B-B8F71603585F}.Release|Any CPU.ActiveCfg = Release|x86
 		{053F50A8-E2C9-4F92-BA1B-B8F71603585F}.Release|x86.ActiveCfg = Release|x86
 		{053F50A8-E2C9-4F92-BA1B-B8F71603585F}.Release|x86.Build.0 = Release|x86
+		{98C08E30-5716-4BCA-99F6-80413D56867B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98C08E30-5716-4BCA-99F6-80413D56867B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98C08E30-5716-4BCA-99F6-80413D56867B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{98C08E30-5716-4BCA-99F6-80413D56867B}.Debug|x86.Build.0 = Debug|Any CPU
+		{98C08E30-5716-4BCA-99F6-80413D56867B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98C08E30-5716-4BCA-99F6-80413D56867B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98C08E30-5716-4BCA-99F6-80413D56867B}.Release|x86.ActiveCfg = Release|Any CPU
+		{98C08E30-5716-4BCA-99F6-80413D56867B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
