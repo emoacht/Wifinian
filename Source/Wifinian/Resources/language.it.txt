@@ -1,0 +1,23 @@
+[Button]
+Rush=Scansione
+Engage=Connessione
+Organize=Organizza
+Up=Su
+Down=Giù
+Delete=Elimina
+AutoConnect=Connessione automatica
+AutoSwitch=Switch automatico
+OK=OK
+Cancel=Annulla
+
+[Link]
+ProjectSite=https://github.com/emoacht/Wifinian/blob/master/README.md
+
+[Menu]
+StartSignIn=Avvia dopo l'accesso
+ShowAvailable=Visualizza solo reti disponibili
+Close=Close
+
+[Message]
+NotWorkable=Impossibile ottenere informazioni sulle connessioni Wi-Fi.
+RecordException=Si è verificato un problema imprevisto. Vuoi salvare il registro eccezioni sul desktop?
