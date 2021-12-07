@@ -29,13 +29,13 @@
 			<Grid Margin="2,8">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="44"/>
-					<ColumnDefinition Width="60"/>
+					<ColumnDefinition Width="Auto" MinWidth="60"/>
 					<ColumnDefinition Width="30"/>
 					<ColumnDefinition Width="12"/>
-					<ColumnDefinition Width="60"/>
+					<ColumnDefinition Width="Auto" MinWidth="60"/>
 					<ColumnDefinition Width="30"/>
 					<ColumnDefinition Width="12"/>
-					<ColumnDefinition Width="70"/>
+					<ColumnDefinition Width="Auto" MinWidth="70"/>
 					<ColumnDefinition Width="*"/>
 				</Grid.ColumnDefinitions>
 
@@ -247,14 +247,14 @@
 									</Grid>
 
 									<Grid Visibility="{Binding IsSelected.Value, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverterKey}}">
-										<Grid Width="260" Height="30" Margin="8,4,0,10"
+										<Grid MinWidth="260" Height="30" Margin="8,4,0,10"
 											  HorizontalAlignment="Left"
 											  Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.OrganizesPriority.Value, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverterKey}}">
 											<Grid.ColumnDefinitions>
-												<ColumnDefinition Width="76"/>
-												<ColumnDefinition Width="76"/>
+												<ColumnDefinition Width="Auto" MinWidth="76"/>
+												<ColumnDefinition Width="Auto" MinWidth="76"/>
 												<ColumnDefinition Width="30"/>
-												<ColumnDefinition Width="78"/>
+												<ColumnDefinition Width="Auto" MinWidth="78"/>
 											</Grid.ColumnDefinitions>
 
 											<!-- Up -->
@@ -349,23 +349,23 @@
 				</i:Interaction.Triggers>
 			</Grid>
 
-			<Border Height="100"
+			<Border VerticalAlignment="Center"
 					Background="{StaticResource App.Background.Attention}">
-				<StackPanel VerticalAlignment="Center">
-					<TextBlock Height="30"
-							   HorizontalAlignment="Center"
+				<StackPanel Margin="0,12">
+					<TextBlock HorizontalAlignment="Center"
 							   Foreground="{StaticResource App.Foreground}"
 							   FontSize="14">
 						<Run x:Name="ConfirmationHeader"/>
+						<LineBreak/>
 						<Run x:Name="ConfirmationBody"/>
 					</TextBlock>
 
-					<Grid Height="30"
+					<Grid Height="30" Margin="0,12,0,0"
 						  HorizontalAlignment="Center">
 						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="100"/>
+							<ColumnDefinition Width="Auto" MinWidth="100"/>
 							<ColumnDefinition Width="20"/>
-							<ColumnDefinition Width="100"/>
+							<ColumnDefinition Width="Auto" MinWidth="100"/>
 						</Grid.ColumnDefinitions>
 
 						<!-- OK -->

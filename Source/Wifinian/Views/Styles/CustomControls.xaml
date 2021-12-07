@@ -416,6 +416,7 @@
 	<Style x:Key="MenuToggleButtonStyle" TargetType="{x:Type controls:SimpleToggleButton}">
 		<Setter Property="Background" Value="{StaticResource ToggleButton.Background.Normal}"/>
 		<Setter Property="BorderThickness" Value="0"/>
+		<Setter Property="Padding" Value="8,0"/>
 		<Setter Property="Foreground" Value="{StaticResource ToggleButton.Foreground.Normal}"/>
 		<Setter Property="FontSize" Value="12"/>
 		<Setter Property="FontWeight" Value="SemiBold"/>
@@ -497,6 +498,7 @@
 		<Setter Property="Background" Value="Transparent"/>
 		<Setter Property="BorderBrush" Value="{StaticResource Button.Foreground}"/>
 		<Setter Property="BorderThickness" Value="2"/>
+		<Setter Property="Padding" Value="0,0,8,0"/>
 		<Setter Property="Foreground" Value="{StaticResource Button.Foreground}"/>
 		<Setter Property="FontSize" Value="13"/>
 		<Setter Property="FontWeight" Value="SemiBold"/>
@@ -515,6 +517,7 @@
 									  Data="{TemplateBinding IconData}" Stretch="Uniform"
 									  Stroke="{TemplateBinding Foreground}" StrokeThickness="1.6"/>
 								<ContentPresenter x:Name="content"
+												  Margin="{TemplateBinding Padding}"
 												  VerticalAlignment="Center"
 												  TextBlock.Foreground="{TemplateBinding Foreground}"
 												  Content="{TemplateBinding Content}"/>
