@@ -157,6 +157,8 @@ namespace Wifinian
 
 		public async Task InitiateAsync()
 		{
+			await LanguageService.InitializeAsync();
+
 			Settings.Current.Initiate();
 
 			NotifyIconContainer.ShowIcon("pack://application:,,,/Resources/Icons/TrayIcon.ico", ProductInfo.Title);
@@ -244,6 +246,7 @@ namespace Wifinian
 		#region Update
 
 		private static readonly TimeSpan _scanTimeout = TimeSpan.FromSeconds(5);
+		private static readonly TimeSpan _failureInterval = TimeSpan.FromMinutes(3);
 
 		private Task ScanNetworkAsync()
 		{
@@ -316,17 +319,35 @@ namespace Wifinian
 			{
 				var targetProfiles = Profiles
 					.GroupBy(x => x.InterfaceId)
-					.Where(subProfiles => subProfiles.All(x => !x.IsConnected || x.IsAutoSwitchEnabled))
-					.Select(subProfiles => subProfiles
-						.Where(x => x.IsAutoSwitchEnabled && (Settings.Current.SignalThreshold <= x.Signal))
-						.OrderBy(x => x.Position)
+					.Select(subProfiles =>
+						(subProfiles.FirstOrDefault(x => x.IsConnected) switch
+						{
+							// If no profile is connected, select profiles that are automatic connection enabled.
+							null => subProfiles.Where(x => x.IsAutoConnectEnabled),
+
+							// If a profile is connected and it is automatic switch enabled, select profiles
+							// that are automatic switch enabled including connected one.
+							{ IsAutoSwitchEnabled: true } => subProfiles.Where(x => x.IsAutoSwitchEnabled),
+
+							// If a profile is connected but it is not automatic switch enabled, leave as it is.
+							_ => Enumerable.Empty<ProfileItem>()
+						})
+						.Where(x => Settings.Current.SignalThreshold <= x.Signal)
+						// This interval is for the case where disconnection from wireless LAN is not immediately
+						// reflected and take 2 to 3 minutes.
+						.OrderBy(x => (x.LastFailureTime.Add(_failureInterval) > DateTime.Now))
+						.ThenBy(x => x.Position)
 						.FirstOrDefault())
-					.Where(x => (x is not null) && !x.IsConnected)
+					.Where(x => x is { IsConnected: false })
 					.ToArray();
 
 				if (targetProfiles.Length > 0)
 				{
-					await Task.WhenAll(targetProfiles.Select(x => ConnectNetworkAsync(x, false)));
+					await Task.WhenAll(targetProfiles.Select(async x =>
+					{
+						var result = await ConnectNetworkAsync(x, false);
+						x.LastFailureTime = result ? default : DateTime.Now;
+					}));
 				}
 			}
 		}

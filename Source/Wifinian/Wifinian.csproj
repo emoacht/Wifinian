@@ -174,13 +174,14 @@
     </None>
     <Resource Include="Resources\Icons\AppIcon.ico" />
     <Resource Include="Resources\Icons\TrayIcon.ico" />
-    <Resource Include="Resources\language_ja.txt" />
-    <Resource Include="Resources\language_en.txt" />
+    <Resource Include="Resources\language.ja-JP.txt" />
+    <Resource Include="Resources\language.en.txt" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

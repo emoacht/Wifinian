@@ -153,6 +153,11 @@ namespace Wifinian.Models.Wlan
 		/// </summary>
 		public bool IsTarget { get; set; }
 
+		/// <summary>
+		/// Last time when fails to connect to wireless LAN
+		/// </summary>
+		public DateTime LastFailureTime { get; set; }
+
 		#region Constructor
 
 		public ProfileItem(
@@ -200,6 +205,12 @@ namespace Wifinian.Models.Wlan
 		/// <param name="other">Other instance</param>
 		public virtual void Copy(ProfileItem other)
 		{
+			if ((this.IsConnected != other.IsConnected) ||
+				(this.Signal != other.Signal))
+			{
+				LastFailureTime = default;
+			}
+
 			this.IsAutoConnectEnabled = other.IsAutoConnectEnabled;
 			this.IsAutoSwitchEnabled = other.IsAutoSwitchEnabled;
 			this.Position = other.Position;
