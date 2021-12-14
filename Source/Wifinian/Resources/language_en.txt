@@ -1,7 +1,0 @@
-﻿ProjectSite=https://github.com/emoacht/Wifinian/blob/master/README.md
-License=https://github.com/emoacht/Wifinian/blob/master/LICENSE.txt
-StartSignIn=Start on sign in
-ShowAvailable=Show available networks only
-Close=Close
-NotWorkable=Can not obtain information on Wi-Fi connections.
-RecordException=An unexpected problem happened. Save exception log on Desktop?

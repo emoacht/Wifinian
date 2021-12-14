@@ -29,13 +29,13 @@
 			<Grid Margin="2,8">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="44"/>
-					<ColumnDefinition Width="60"/>
+					<ColumnDefinition Width="Auto" MinWidth="60"/>
 					<ColumnDefinition Width="30"/>
 					<ColumnDefinition Width="12"/>
-					<ColumnDefinition Width="60"/>
+					<ColumnDefinition Width="Auto" MinWidth="60"/>
 					<ColumnDefinition Width="30"/>
 					<ColumnDefinition Width="12"/>
-					<ColumnDefinition Width="70"/>
+					<ColumnDefinition Width="Auto" MinWidth="70"/>
 					<ColumnDefinition Width="*"/>
 				</Grid.ColumnDefinitions>
 
@@ -53,7 +53,7 @@
 					Grid.Column="1"
 					x:Name="RushButton"
 					Style="{StaticResource MenuToggleButtonStyle}"
-					Content="Rush"
+					Content="{x:Static models:LanguageService.Rush}"
 					IsChecked="{Binding RushesRescan.Value, Mode=TwoWay}"/>
 
 				<Button Grid.Column="2"
@@ -79,7 +79,7 @@
 					Grid.Column="4"
 					x:Name="EngageButton"
 					Style="{StaticResource MenuToggleButtonStyle}"
-					Content="Engage"
+					Content="{x:Static models:LanguageService.Engage}"
 					IsChecked="{Binding EngagesPriority.Value, Mode=TwoWay}"/>
 
 				<Button Grid.Column="5"
@@ -104,7 +104,7 @@
 				<controls:SimpleToggleButton
 					Grid.Column="7"
 					Style="{StaticResource MenuToggleButtonStyle}"
-					Content="Organize"
+					Content="{x:Static models:LanguageService.Organize}"
 					IsChecked="{Binding OrganizesPriority.Value, Mode=TwoWay}"/>
 			</Grid>
 
@@ -234,27 +234,27 @@
 											<CheckBox x:Name="AutoConnectCheckBox"
 													  Height="22"
 													  Style="{StaticResource ItemCheckBoxStyle}"
-													  Content="Auto Connect"
+													  Content="{x:Static models:LanguageService.AutoConnect}"
 													  IsChecked="{Binding IsAutoConnectEnabled.Value, Mode=TwoWay}"/>
 
 											<!-- Auto Switch -->
 											<CheckBox Height="22"
 													  Style="{StaticResource ItemCheckBoxStyle}"
-													  Content="Auto Switch"
+													  Content="{x:Static models:LanguageService.AutoSwitch}"
 													  Visibility="{Binding ElementName=AutoConnectCheckBox, Path=IsChecked, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverterKey}}"
 													  IsChecked="{Binding IsAutoSwitchEnabled.Value, Mode=TwoWay}"/>
 										</StackPanel>
 									</Grid>
 
 									<Grid Visibility="{Binding IsSelected.Value, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverterKey}}">
-										<Grid Width="260" Height="30" Margin="8,4,0,10"
+										<Grid MinWidth="260" Height="30" Margin="8,4,0,10"
 											  HorizontalAlignment="Left"
 											  Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.OrganizesPriority.Value, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverterKey}}">
 											<Grid.ColumnDefinitions>
-												<ColumnDefinition Width="76"/>
-												<ColumnDefinition Width="76"/>
+												<ColumnDefinition Width="Auto" MinWidth="76"/>
+												<ColumnDefinition Width="Auto" MinWidth="76"/>
 												<ColumnDefinition Width="30"/>
-												<ColumnDefinition Width="78"/>
+												<ColumnDefinition Width="Auto" MinWidth="78"/>
 											</Grid.ColumnDefinitions>
 
 											<!-- Up -->
@@ -262,7 +262,7 @@
 												Grid.Column="0"
 												Style="{StaticResource IconButtonStyle}"
 												IconData="{StaticResource UpForm}"
-												Content="Up"
+												Content="{x:Static models:LanguageService.Up}"
 												Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.MoveUpCommand, Mode=OneTime}"/>
 
 											<!-- Down -->
@@ -270,7 +270,7 @@
 												Grid.Column="1"
 												Style="{StaticResource IconButtonStyle}"
 												IconData="{StaticResource DownForm}"
-												Content="Down"
+												Content="{x:Static models:LanguageService.Down}"
 												Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.MoveDownCommand, Mode=OneTime}"/>
 
 											<!-- Delete -->
@@ -278,7 +278,7 @@
 												Grid.Column="3"
 												Style="{StaticResource IconButtonStyle}"
 												IconData="{StaticResource DeleteForm}"
-												Content="Delete"
+												Content="{x:Static models:LanguageService.Delete}"
 												IsEnabled="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.CanDelete.Value, Mode=OneWay}">
 												<i:Interaction.Triggers>
 													<i:EventTrigger EventName="Click">
@@ -287,7 +287,7 @@
 																				Value="Visible"/>
 														<i:ChangePropertyAction TargetObject="{Binding ElementName=ConfirmationHeader, Mode=OneWay}"
 																				PropertyName="Text"
-																				Value="Delete: "/>
+																				Value="{x:Static models:LanguageService.Delete}"/>
 														<i:ChangePropertyAction TargetObject="{Binding ElementName=ConfirmationBody, Mode=OneWay}"
 																				PropertyName="Text"
 																				Value="{Binding Name, Mode=OneWay}"/>
@@ -349,30 +349,30 @@
 				</i:Interaction.Triggers>
 			</Grid>
 
-			<Border Height="100"
+			<Border VerticalAlignment="Center"
 					Background="{StaticResource App.Background.Attention}">
-				<StackPanel VerticalAlignment="Center">
-					<TextBlock Height="30"
-							   HorizontalAlignment="Center"
+				<StackPanel Margin="0,12">
+					<TextBlock HorizontalAlignment="Center"
 							   Foreground="{StaticResource App.Foreground}"
 							   FontSize="14">
 						<Run x:Name="ConfirmationHeader"/>
+						<LineBreak/>
 						<Run x:Name="ConfirmationBody"/>
 					</TextBlock>
 
-					<Grid Height="30"
+					<Grid Height="30" Margin="0,12,0,0"
 						  HorizontalAlignment="Center">
 						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="100"/>
+							<ColumnDefinition Width="Auto" MinWidth="100"/>
 							<ColumnDefinition Width="20"/>
-							<ColumnDefinition Width="100"/>
+							<ColumnDefinition Width="Auto" MinWidth="100"/>
 						</Grid.ColumnDefinitions>
 
 						<!-- OK -->
 						<Button Grid.Column="0"
 								x:Name="ConfirmationButton"
 								Style="{StaticResource NormalButtonStyle}"
-								Content="OK">
+								Content="{x:Static models:LanguageService.OK}">
 							<i:Interaction.Triggers>
 								<i:EventTrigger EventName="Click">
 									<i:ChangePropertyAction TargetName="ConfirmationBox"
@@ -385,7 +385,7 @@
 						<!-- Cancel -->
 						<Button Grid.Column="2"
 								Style="{StaticResource NormalButtonStyle}"
-								Content="Cancel">
+								Content="{x:Static models:LanguageService.Cancel}">
 							<i:Interaction.Triggers>
 								<i:EventTrigger EventName="Click">
 									<i:ChangePropertyAction TargetName="ConfirmationBox"
