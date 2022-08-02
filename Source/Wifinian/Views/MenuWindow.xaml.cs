@@ -30,7 +30,6 @@ namespace Wifinian.Views
 
 			_mover = new FloatWindowMover(this, pivot);
 			_mover.AppDeactivated += OnCloseTriggered;
-			_mover.EscapeKeyDown += OnCloseTriggered;
 
 			controller.WindowPainter.Add(this);
 		}
