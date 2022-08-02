@@ -83,6 +83,7 @@ namespace Wifinian.Models.Wlan
 					   position: profilePack.Position,
 					   isRadioOn: interfacePack.IsRadioOn,
 					   isConnected: (interfacePack.IsConnected && profilePack.Name.Equals(interfacePack.ProfileName, StringComparison.Ordinal)),
+					   protocol: networkPack?.Protocol,
 					   signal: (networkPack?.Signal ?? 0),
 					   band: (networkPack?.Band ?? 0),
 					   channel: (networkPack?.Channel ?? 0));

@@ -71,6 +71,7 @@ namespace Wifinian.Models.Wlan
 			int position,
 			bool isRadioOn,
 			bool isConnected,
+			string protocol,
 			int signal,
 			float band,
 			int channel) : base(
@@ -85,6 +86,7 @@ namespace Wifinian.Models.Wlan
 				position: position,
 				isRadioOn: isRadioOn,
 				isConnected: isConnected,
+				protocol: protocol,
 				signal: signal,
 				band: band,
 				channel: channel)

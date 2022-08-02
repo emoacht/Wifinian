@@ -119,6 +119,16 @@ namespace Wifinian.Models.Wlan
 		private bool _isConnected;
 
 		/// <summary>
+		/// Protocol of associated wireless LAN
+		/// </summary>
+		public string Protocol
+		{
+			get => _protocol;
+			set => SetPropertyValue(ref _protocol, value);
+		}
+		private string _protocol;
+
+		/// <summary>
 		/// Signal quality (0-100) of associated wireless LAN
 		/// </summary>
 		public int Signal
@@ -172,6 +182,7 @@ namespace Wifinian.Models.Wlan
 			int position,
 			bool isRadioOn,
 			bool isConnected,
+			string protocol,
 			int signal,
 			float band,
 			int channel)
@@ -192,6 +203,7 @@ namespace Wifinian.Models.Wlan
 			this.Position = position;
 			this.IsRadioOn = isRadioOn;
 			this.IsConnected = isConnected;
+			this.Protocol = protocol;
 			this.Signal = signal;
 			this.Band = band;
 			this.Channel = channel;
@@ -216,6 +228,7 @@ namespace Wifinian.Models.Wlan
 			this.Position = other.Position;
 			this.IsRadioOn = other.IsRadioOn;
 			this.IsConnected = other.IsConnected;
+			this.Protocol = other.Protocol;
 			this.Signal = other.Signal;
 			this.Band = other.Band;
 			this.Channel = other.Channel;
