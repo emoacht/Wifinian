@@ -64,7 +64,7 @@ namespace Wifinian.Models.Wlan
 		public virtual bool IsAutoConnectEnabled
 		{
 			get => _isAutoConnectEnabled;
-			set => SetPropertyValue(ref _isAutoConnectEnabled, value);
+			set => SetProperty(ref _isAutoConnectEnabled, value);
 		}
 		private bool _isAutoConnectEnabled;
 
@@ -74,7 +74,7 @@ namespace Wifinian.Models.Wlan
 		public virtual bool IsAutoSwitchEnabled
 		{
 			get => _isAutoSwitchEnabled;
-			set => SetPropertyValue(ref _isAutoSwitchEnabled, value);
+			set => SetProperty(ref _isAutoSwitchEnabled, value);
 		}
 		private bool _isAutoSwitchEnabled;
 
@@ -84,7 +84,7 @@ namespace Wifinian.Models.Wlan
 		public int Position
 		{
 			get => _position;
-			set => SetPropertyValue(ref _position, value, normalize: v => Max(v, 0));
+			set => SetProperty(ref _position, value, normalize: v => Max(v, 0));
 		}
 		private int _position;
 
@@ -94,7 +94,7 @@ namespace Wifinian.Models.Wlan
 		public int PositionCount
 		{
 			get => _positionCount;
-			set => SetPropertyValue(ref _positionCount, value);
+			set => SetProperty(ref _positionCount, value);
 		}
 		private int _positionCount;
 
@@ -104,7 +104,7 @@ namespace Wifinian.Models.Wlan
 		public bool IsRadioOn
 		{
 			get => _isRadioOn;
-			set => SetPropertyValue(ref _isRadioOn, value);
+			set => SetProperty(ref _isRadioOn, value);
 		}
 		private bool _isRadioOn;
 
@@ -114,7 +114,7 @@ namespace Wifinian.Models.Wlan
 		public bool IsConnected
 		{
 			get => _isConnected;
-			set => SetPropertyValue(ref _isConnected, value);
+			set => SetProperty(ref _isConnected, value);
 		}
 		private bool _isConnected;
 
@@ -124,7 +124,7 @@ namespace Wifinian.Models.Wlan
 		public string Protocol
 		{
 			get => _protocol;
-			set => SetPropertyValue(ref _protocol, value);
+			set => SetProperty(ref _protocol, value);
 		}
 		private string _protocol;
 
@@ -134,7 +134,7 @@ namespace Wifinian.Models.Wlan
 		public int Signal
 		{
 			get => _signal;
-			set => SetPropertyValue(ref _signal, value, 0, 100);
+			set => SetProperty(ref _signal, value, 0, 100);
 		}
 		private int _signal;
 
@@ -144,7 +144,7 @@ namespace Wifinian.Models.Wlan
 		public float Band
 		{
 			get => _band;
-			set => SetPropertyValue(ref _band, value);
+			set => SetProperty(ref _band, value);
 		}
 		private float _band;
 
@@ -154,7 +154,7 @@ namespace Wifinian.Models.Wlan
 		public int Channel
 		{
 			get => _channel;
-			set => SetPropertyValue(ref _channel, value);
+			set => SetProperty(ref _channel, value);
 		}
 		private int _channel;
 

@@ -24,7 +24,7 @@ namespace Wifinian.ViewModels
 				if ((_name is not null) && !_controller.IsUsableProfileName(InterfaceId, value))
 					return;
 
-				SetPropertyValue(ref _name, value);
+				SetProperty(ref _name, value);
 			}
 		}
 		private string _name;
