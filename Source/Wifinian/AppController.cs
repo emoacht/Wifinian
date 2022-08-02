@@ -318,7 +318,7 @@ namespace Wifinian
 			Debug.WriteLine(Profiles.Any()
 				? Profiles
 					.Select(x => $"Profile {x.Name} -> AutoConnect: {x.IsAutoConnectEnabled}, AutoSwitch: {x.IsAutoSwitchEnabled}, Position: {x.Position}, IsRadioOn: {x.IsRadioOn}, Signal: {x.Signal}, IsConnected {x.IsConnected}")
-					.Aggregate((work, next) => work + Environment.NewLine + next)
+					.Aggregate((w, n) => $"{w}{Environment.NewLine}{n}")
 				: "No Profile");
 
 			if (EngagesPriority.Value)
