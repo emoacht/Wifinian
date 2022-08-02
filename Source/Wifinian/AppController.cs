@@ -163,6 +163,12 @@ namespace Wifinian
 
 			NotifyIconContainer.ShowIcon("pack://application:,,,/Resources/Icons/TrayIcon.ico", ProductInfo.Title);
 
+			Profiles
+				.ObserveElementProperty(x => x.IsConnected)
+				.Throttle(TimeSpan.FromMilliseconds(100))
+				.Subscribe(_ => NotifyIconContainer.Text = Profiles.Where(x => x.IsConnected).Aggregate(ProductInfo.Title, (w, n) => $"{w}{Environment.NewLine}{n.Name}"))
+				.AddTo(this.Subscription);
+
 			await LoadProfilesAsync();
 
 			_current.MainWindow = new MainWindow(this);
