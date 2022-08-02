@@ -8,15 +8,21 @@
 		ShowInTaskbar="False" Topmost="True"
 		AllowsTransparency="True" WindowStyle="None"
 		Background="{StaticResource App.Background.Plain}">
-	<Grid>
-		<StackPanel Margin="0,4,0,4">
-			<TextBlock HorizontalAlignment="Left"
-					   Padding="8,2,8,2"
-					   Foreground="{StaticResource App.Foreground}"
-					   Text="{Binding Source={x:Static models:ProductInfo.Title}, Mode=OneTime}"/>
-			<TextBlock Width="140" HorizontalAlignment="Left"
-					   Padding="8,0,8,6"
-					   Foreground="{StaticResource App.Foreground}">
+	<Window.InputBindings>
+		<KeyBinding Command="ApplicationCommands.Close" Key="Esc"/>
+	</Window.InputBindings>
+	<Window.CommandBindings>
+		<CommandBinding Command="ApplicationCommands.Close" Executed="OnCloseTriggered"/>
+	</Window.CommandBindings>
+
+	<StackPanel Margin="0,4">
+		<TextBlock HorizontalAlignment="Left"
+				   Padding="8,2,8,2"
+				   Foreground="{StaticResource App.Foreground}"
+				   Text="{Binding Source={x:Static models:ProductInfo.Title}, Mode=OneTime}"/>
+		<TextBlock Width="140" HorizontalAlignment="Left"
+				   Padding="8,0,8,6"
+				   Foreground="{StaticResource App.Foreground}">
 			<Run Text="{Binding Source={x:Static models:ProductInfo.Version}, Mode=OneTime}"/>
 			<Run Text="|"/>
 			<Run Foreground="{StaticResource App.Foreground.Shadow}"
@@ -38,37 +44,36 @@
 					</i:EventTrigger>
 				</i:Interaction.Triggers>
 			</Run>
-			</TextBlock>
+		</TextBlock>
 
-			<Separator Style="{StaticResource MenuSeparatorStyle}"/>
+		<Separator Style="{StaticResource MenuSeparatorStyle}"/>
 
-			<ContentControl Style="{StaticResource MenuItemStyle}">
-				<ToggleButton Padding="8,4"
-							  Style="{StaticResource CheckButtonItemStyle}"
-							  FontSize="13"
-							  Content="{x:Static models:LanguageService.StartSignIn}"
-							  IsChecked="{Binding IsRegistered, Mode=TwoWay}"
-							  Visibility="{Binding CanRegister, Mode=OneTime, Converter={StaticResource BooleanToVisibilityConverterKey}}"/>
-			</ContentControl>
+		<ContentControl Style="{StaticResource MenuItemStyle}">
+			<ToggleButton Padding="8,4"
+						  Style="{StaticResource CheckButtonItemStyle}"
+						  FontSize="13"
+						  Content="{x:Static models:LanguageService.StartSignIn}"
+						  IsChecked="{Binding IsRegistered, Mode=TwoWay}"
+						  Visibility="{Binding CanRegister, Mode=OneTime, Converter={StaticResource BooleanToVisibilityConverterKey}}"/>
+		</ContentControl>
 
-			<ContentControl Style="{StaticResource MenuItemStyle}">
-				<ToggleButton Padding="8,4"
-							  Style="{StaticResource CheckButtonItemStyle}"
-							  FontSize="13"
-							  Content="{x:Static models:LanguageService.ShowAvailable}"
-							  IsChecked="{Binding Source={x:Static models:Settings.Current}, Path=ShowsAvailable, Mode=TwoWay}"/>
-			</ContentControl>
-			
-			<Separator Style="{StaticResource MenuSeparatorStyle}"/>
+		<ContentControl Style="{StaticResource MenuItemStyle}">
+			<ToggleButton Padding="8,4"
+						  Style="{StaticResource CheckButtonItemStyle}"
+						  FontSize="13"
+						  Content="{x:Static models:LanguageService.ShowAvailable}"
+						  IsChecked="{Binding Source={x:Static models:Settings.Current}, Path=ShowsAvailable, Mode=TwoWay}"/>
+		</ContentControl>
 
-			<!-- Close -->
-			<ContentControl Style="{StaticResource MenuItemStyle}">
-				<Button Padding="8,4"
-						Style="{StaticResource CloseButtonItemStyle}"
-						FontSize="14"
-						Content="{x:Static models:LanguageService.Close}"
-						Command="{Binding CloseCommand, Mode=OneTime}"/>
-			</ContentControl>
-		</StackPanel>
-	</Grid>
+		<Separator Style="{StaticResource MenuSeparatorStyle}"/>
+
+		<!-- Close -->
+		<ContentControl Style="{StaticResource MenuItemStyle}">
+			<Button Padding="8,4"
+					Style="{StaticResource CloseButtonItemStyle}"
+					FontSize="14"
+					Content="{x:Static models:LanguageService.Close}"
+					Command="{Binding CloseCommand, Mode=OneTime}"/>
+		</ContentControl>
+	</StackPanel>
 </Window>

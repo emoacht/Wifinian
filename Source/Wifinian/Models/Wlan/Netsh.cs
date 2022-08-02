@@ -113,6 +113,7 @@ namespace Wifinian.Models.Wlan
 			public NetworkType NetworkType { get; }
 			public string Authenticaion { get; }
 			public string Encryption { get; }
+			public string Protocol { get; }
 			public int Signal { get; }
 			public float Band { get; }
 			public int Channel { get; }
@@ -123,6 +124,7 @@ namespace Wifinian.Models.Wlan
 				NetworkType networkType,
 				string authentication,
 				string encryption,
+				string protocol,
 				int signal,
 				float band,
 				int channel)
@@ -132,6 +134,7 @@ namespace Wifinian.Models.Wlan
 				this.NetworkType = networkType;
 				this.Authenticaion = authentication;
 				this.Encryption = encryption;
+				this.Protocol = protocol;
 				this.Signal = signal;
 				this.Band = band;
 				this.Channel = channel;
@@ -254,6 +257,7 @@ namespace Wifinian.Models.Wlan
 		{
 			var ssidPattern = new Regex(@"\bSSID (?<index>[1-9](?:\d|)(?:\d|)) *: *(?<value>\S.*)");
 			var signalPattern = new Regex(@"\bSignal *: *(?<value>(?:100|[1-9](?:\d|)|0))%");
+			var protocolPattern = new Regex(@"\bRadio type *: *802.11(?<value>[a-z]{1,2})");
 			var channelPattern = new Regex(@"\bChannel *: *(?<value>[1-9]\d{0,2})");
 
 			string interfaceName = null;
@@ -262,6 +266,7 @@ namespace Wifinian.Models.Wlan
 			string authentication = null;
 			string encryption = null;
 			int? signal = null;
+			string protocol = null;
 			int? channel = null;
 
 			foreach (var outputLine in outputLines)
@@ -308,6 +313,16 @@ namespace Wifinian.Models.Wlan
 						}
 						continue;
 					}
+					if (protocol is null)
+					{
+						if (!string.IsNullOrWhiteSpace(outputLine))
+						{
+							var match = protocolPattern.Match(outputLine);
+							if (match.Success)
+								protocol = match.Groups["value"].Value;
+						}
+						continue;
+					}
 					if (!channel.HasValue)
 					{
 						if (!string.IsNullOrWhiteSpace(outputLine))
@@ -326,21 +341,13 @@ namespace Wifinian.Models.Wlan
 					throw;
 				}
 
-				//Debug.WriteLine("Interface: {0}, SSID: {1}, BSS type: {2}, Authentication: {3}, Encryption: {4}, Signal: {5}, Channel: {6}",
-				//	interfaceName,
-				//	ssid,
-				//	networkType,
-				//	authentication,
-				//	encryption,
-				//	signal.Value,
-				//	channel.Value);
-
 				yield return new NetworkPack(
 					interfaceName: interfaceName,
 					ssid: ssid,
 					networkType: networkType,
 					authentication: authentication,
 					encryption: encryption,
+					protocol: protocol,
 					signal: signal.Value,
 					band: (channel.Value <= 14) ? 2.4F : 5F,
 					channel: channel.Value);
@@ -350,6 +357,7 @@ namespace Wifinian.Models.Wlan
 				authentication = null;
 				encryption = null;
 				signal = null;
+				protocol = null;
 				channel = null;
 			}
 		}

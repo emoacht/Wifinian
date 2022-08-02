@@ -42,7 +42,7 @@ namespace Wifinian.Models.Wlan
 				if (_document is null) // The base class's constructor may access before _document is filled.
 					return;
 
-				SetPropertyValue((get: () => _document.IsAutoConnectEnabled, set: v => _document.IsAutoConnectEnabled = v), value);
+				SetProperty((get: () => _document.IsAutoConnectEnabled, set: v => _document.IsAutoConnectEnabled = v), value);
 			}
 		}
 
@@ -54,7 +54,7 @@ namespace Wifinian.Models.Wlan
 				if (_document is null) // The base class's constructor may access before _document is filled.
 					return;
 
-				SetPropertyValue((get: () => _document.IsAutoSwitchEnabled, set: v => _document.IsAutoSwitchEnabled = v), value);
+				SetProperty((get: () => _document.IsAutoSwitchEnabled, set: v => _document.IsAutoSwitchEnabled = v), value);
 			}
 		}
 
@@ -71,6 +71,7 @@ namespace Wifinian.Models.Wlan
 			int position,
 			bool isRadioOn,
 			bool isConnected,
+			string protocol,
 			int signal,
 			float band,
 			int channel) : base(
@@ -85,6 +86,7 @@ namespace Wifinian.Models.Wlan
 				position: position,
 				isRadioOn: isRadioOn,
 				isConnected: isConnected,
+				protocol: protocol,
 				signal: signal,
 				band: band,
 				channel: channel)

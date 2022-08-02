@@ -12,17 +12,17 @@ namespace ReactivePropertyTest
 	{
 		public event PropertyChangedEventHandler PropertyChanged;
 
-		protected bool SetPropertyValue<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
+		protected bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
 		{
 			if (EqualityComparer<T>.Default.Equals(storage, value))
 				return false;
 
 			storage = value;
-			RaisePropertyChanged(propertyName);
+			OnPropertyChanged(propertyName);
 			return true;
 		}
 
-		protected void RaisePropertyChanged([CallerMemberName] string propertyName = null) =>
+		protected void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 	}
 }

@@ -1,5 +1,9 @@
 ﻿## History
 
+Ver 3.3 2022-8-2
+
+ - Modify to show Wi-Fi protocol
+
 Ver 3.2 2021-12-9
 
  - Modify Engage function

@@ -49,6 +49,11 @@
             Whether OS is Windows 11 (10.0.22000) or greater
             </summary>
         </member>
+        <member name="T:ScreenFrame.Helper.Throttle">
+            <summary>
+            Rx Throttle like operator
+            </summary>
+        </member>
         <member name="T:ScreenFrame.Movers.BasicWindowMover">
             <summary>
             Mover of <see cref="T:System.Windows.Window"/> which implements basic functions
@@ -365,16 +370,6 @@
             Handles application activated/deactivated event.
             </summary>
         </member>
-        <member name="E:ScreenFrame.Movers.WindowMover.EscapeKeyDown">
-            <summary>
-            Occurs when the escape key is pressed.
-            </summary>
-        </member>
-        <member name="M:ScreenFrame.Movers.WindowMover.HandleKeyDown(System.IntPtr,System.Int32,System.IntPtr,System.IntPtr,System.Boolean@)">
-            <summary>
-            Handles key pressed event.
-            </summary>
-        </member>
         <member name="M:ScreenFrame.Movers.WindowMover.IsForeground">
             <summary>
             Determines whether the window is foreground window.
@@ -466,11 +461,6 @@
             Options
             </summary>
         </member>
-        <member name="P:ScreenFrame.Painter.WindowPainter.RespondsThemeChanged">
-            <summary>
-            Whether to respond when the color theme of Windows is changed
-            </summary>
-        </member>
         <member name="T:ScreenFrame.Painter.WindowPainter.BackgroundTexture">
             <summary>
             Background texture of window
@@ -509,6 +499,11 @@
             </summary>
             <param name="window">Window to be painted</param>
         </member>
+        <member name="P:ScreenFrame.Painter.WindowPainter.RespondsThemeChanged">
+            <summary>
+            Whether to respond when the color theme for Windows is changed
+            </summary>
+        </member>
         <member name="E:ScreenFrame.Painter.WindowPainter.ThemeChanged">
             <summary>
             Occurs when the color theme for Windows is changed.
@@ -538,6 +533,32 @@
             </summary>
             <param name="oldUriString">Old resources' URI string</param>
             <param name="newUriString">New resources' URI string</param>
+        </member>
+        <member name="P:ScreenFrame.Painter.WindowPainter.RespondsAccentColorChanged">
+            <summary>
+            Whether to respond when the accent color for Windows is changed
+            </summary>
+        </member>
+        <member name="E:ScreenFrame.Painter.WindowPainter.AccentColorChanged">
+            <summary>
+            Occurs when the accent color for Windows is changed.
+            </summary>
+        </member>
+        <member name="P:ScreenFrame.Painter.WindowPainter.AccentColor">
+            <summary>
+            The accent color for Windows
+            </summary>
+            <remarks>
+            This color is obtained by DwmGetColorizationColor function and then replaced with the color
+            provided along with WM_DWMCOLORIZATIONCOLORCHANGED message.
+            This color should not be used as is on Windows 10 because it will not match the actual color
+            obtainable by Windows.UI.ViewManagement.UISettings.
+            </remarks>
+        </member>
+        <member name="M:ScreenFrame.Painter.WindowPainter.ChangeAccentColors">
+            <summary>
+            Changes accent colors.
+            </summary>
         </member>
         <member name="M:ScreenFrame.Painter.WindowPainter.Dispose">
             <summary>
