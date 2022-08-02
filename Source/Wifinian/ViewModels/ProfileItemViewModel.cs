@@ -24,7 +24,7 @@ namespace Wifinian.ViewModels
 				if ((_name is not null) && !_controller.IsUsableProfileName(InterfaceId, value))
 					return;
 
-				SetPropertyValue(ref _name, value);
+				SetProperty(ref _name, value);
 			}
 		}
 		private string _name;
@@ -44,6 +44,7 @@ namespace Wifinian.ViewModels
 		public ReadOnlyReactivePropertySlim<bool> IsRadioOn { get; }
 		public ReadOnlyReactivePropertySlim<bool> IsConnected { get; }
 
+		public ReadOnlyReactivePropertySlim<string> Protocol { get; }
 		public ReadOnlyReactivePropertySlim<int> Signal { get; }
 		public ReadOnlyReactivePropertySlim<float> Band { get; }
 		public ReadOnlyReactivePropertySlim<int> Channel { get; }
@@ -102,6 +103,11 @@ namespace Wifinian.ViewModels
 
 			IsConnected = profileItem
 				.ObserveProperty(x => x.IsConnected)
+				.ToReadOnlyReactivePropertySlim()
+				.AddTo(this.Subscription);
+
+			Protocol = profileItem
+				.ObserveProperty(x => x.Protocol)
 				.ToReadOnlyReactivePropertySlim()
 				.AddTo(this.Subscription);
 

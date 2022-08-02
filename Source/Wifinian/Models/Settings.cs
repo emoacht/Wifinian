@@ -31,7 +31,7 @@ namespace Wifinian.Models
 		public int RescanInterval
 		{
 			get => _rescanInterval;
-			set => SetPropertyValue(ref _rescanInterval, value, MinInterval, MaxInterval);
+			set => SetProperty(ref _rescanInterval, value, MinInterval, MaxInterval);
 		}
 		private int _rescanInterval = 30; // Default
 
@@ -44,7 +44,7 @@ namespace Wifinian.Models
 		public int SignalThreshold
 		{
 			get => _signalThreshold;
-			set => SetPropertyValue(ref _signalThreshold, value, MinThreshold, MaxThreshold);
+			set => SetProperty(ref _signalThreshold, value, MinThreshold, MaxThreshold);
 		}
 		private int _signalThreshold = 50; // Default
 
@@ -60,21 +60,21 @@ namespace Wifinian.Models
 		public bool EngagesPriority
 		{
 			get => _engagesPriority;
-			set => SetPropertyValue(ref _engagesPriority, value);
+			set => SetProperty(ref _engagesPriority, value);
 		}
 		private bool _engagesPriority;
 
 		public bool ShowsAvailable
 		{
 			get => _showsAvailable;
-			set => SetPropertyValue(ref _showsAvailable, value);
+			set => SetProperty(ref _showsAvailable, value);
 		}
 		private bool _showsAvailable;
 
 		public Size MainWindowSize
 		{
 			get => _mainWindowSize;
-			set => SetPropertyValue(ref _mainWindowSize, value);
+			set => SetProperty(ref _mainWindowSize, value);
 		}
 		private Size _mainWindowSize;
 

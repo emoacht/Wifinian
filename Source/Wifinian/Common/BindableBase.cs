@@ -12,7 +12,7 @@ namespace Wifinian.Common
 	{
 		public event PropertyChangedEventHandler PropertyChanged;
 
-		protected virtual bool SetPropertyValue<T>(ref T storage, T value, T min, T max, [CallerMemberName] string propertyName = null)
+		protected virtual bool SetProperty<T>(ref T storage, T value, T min, T max, [CallerMemberName] string propertyName = null)
 			where T : struct, IComparable<T>
 		{
 			if (0 <= min.CompareTo(max))
@@ -24,38 +24,38 @@ namespace Wifinian.Common
 					? max
 					: x;
 
-			return SetPropertyValue(ref storage, value, normalize, propertyName);
+			return SetProperty(ref storage, value, normalize, propertyName);
 		}
 
-		protected virtual bool SetPropertyValue<T>(ref T storage, T value, Func<T, T> normalize, [CallerMemberName] string propertyName = null)
+		protected virtual bool SetProperty<T>(ref T storage, T value, Func<T, T> normalize, [CallerMemberName] string propertyName = null)
 		{
 			if (normalize is null)
 				throw new ArgumentNullException(nameof(normalize));
 
-			return SetPropertyValue(ref storage, normalize.Invoke(value), propertyName);
+			return SetProperty(ref storage, normalize.Invoke(value), propertyName);
 		}
 
-		protected virtual bool SetPropertyValue<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
+		protected virtual bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
 		{
 			if (EqualityComparer<T>.Default.Equals(storage, value))
 				return false;
 
 			storage = value;
-			RaisePropertyChanged(propertyName);
+			OnPropertyChanged(propertyName);
 			return true;
 		}
 
-		protected virtual bool SetPropertyValue<T>((Func<T> get, Action<T> set) accessor, T value, [CallerMemberName] string propertyName = null)
+		protected virtual bool SetProperty<T>((Func<T> get, Action<T> set) accessor, T value, [CallerMemberName] string propertyName = null)
 		{
 			if (EqualityComparer<T>.Default.Equals(accessor.get.Invoke(), value))
 				return false;
 
 			accessor.set.Invoke(value);
-			RaisePropertyChanged(propertyName);
+			OnPropertyChanged(propertyName);
 			return true;
 		}
 
-		protected virtual void RaisePropertyChanged([CallerMemberName] string propertyName = null) =>
+		protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 	}
 }

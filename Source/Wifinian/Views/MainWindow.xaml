@@ -217,10 +217,12 @@
 												</TextBlock>
 
 												<!-- Band, Channel -->
-												<TextBlock Foreground="{StaticResource App.Foreground.Shadow}"
+												<TextBlock Margin="4,0,0,0"
+														   Foreground="{StaticResource App.Foreground.Shadow}"
 														   FontSize="12"
 														   Visibility="{Binding IsAvailable.Value, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverterKey}}">
-														<Run Text="{Binding Band.Value, Mode=OneWay, StringFormat={} {0}GHz}"/>
+														<Run Text="{Binding Protocol.Value, Mode=OneWay}"/>
+														<Run Text="{Binding Band.Value, Mode=OneWay, StringFormat={}{0}GHz}"/>
 														<Run Text="{Binding Channel.Value, Mode=OneWay}"/>
 												</TextBlock>
 											</StackPanel>

@@ -139,14 +139,14 @@ namespace ReactivePropertyTest
 						case NotifyCollectionChangedAction.Add:
 						case NotifyCollectionChangedAction.Remove:
 						case NotifyCollectionChangedAction.Replace:
-							if (x.OldItems is not null)
+							if (x.OldItems is { Count: > 0 })
 							{
 								foreach (var instance in x.OldItems.Cast<MemberViewModel>())
 								{
 									membersSelected.Remove(instance);
 								}
 							}
-							if (x.NewItems is not null)
+							if (x.NewItems is { Count: > 0 })
 							{
 								foreach (var instance in x.NewItems.Cast<MemberViewModel>())
 								{
