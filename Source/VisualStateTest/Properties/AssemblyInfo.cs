@@ -12,7 +12,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("VisualState Test")]
-[assembly: AssemblyCopyright("Copyright © 2015-2017 emoacht")]
+[assembly: AssemblyCopyright("Copyright © 2015 emoacht")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
