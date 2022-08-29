@@ -7,7 +7,7 @@ More control over Wi-Fi connections!
 
 Wifinian is a Windows desktop tool to enable user to actively control Wi-Fi connections.
 
-![Screenshot](Images/Screenshot_main.png)<br>
+<img src="Images/Screenshot_main.png" alt="Screenshot" width="512.5"><br>
 (DPI: 200%)
 
 Functions:

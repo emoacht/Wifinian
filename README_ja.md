@@ -7,7 +7,7 @@ Wi-Fi接続にもっとコントロールを!
 
 WifinianはWi-Fi接続をユーザーが積極的にコントロールできるWindowsデスクトップツールです。
 
-![Screenshot](Images/Screenshot_main.png)<br>
+<img src="Images/Screenshot_main.png" alt="Screenshot" width="512.5"><br>
 (DPI: 200%)
 
 機能:
