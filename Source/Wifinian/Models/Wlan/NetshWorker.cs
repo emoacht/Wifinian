@@ -33,10 +33,10 @@ namespace Wifinian.Models.Wlan
 		#endregion
 
 		public event EventHandler NetworkRefreshed;
-		public event EventHandler AvailabilityChanged;
-		public event EventHandler InterfaceChanged;
-		public event EventHandler ConnectionChanged;
-		public event EventHandler ProfileChanged;
+		public event EventHandler<AvailabilityChangedEventArgs> AvailabilityChanged;
+		public event EventHandler<InterfaceChangedEventArgs> InterfaceChanged;
+		public event EventHandler<ConnectionChangedEventArgs> ConnectionChanged;
+		public event EventHandler<ProfileChangedEventArgs> ProfileChanged;
 
 		#region Scan networks
 
@@ -46,8 +46,8 @@ namespace Wifinian.Models.Wlan
 			await DeferAsync(() =>
 			{
 				NetworkRefreshed?.Invoke(this, EventArgs.Empty);
-				AvailabilityChanged?.Invoke(this, EventArgs.Empty);
-				InterfaceChanged?.Invoke(this, EventArgs.Empty);
+				AvailabilityChanged?.Invoke(this, new AvailabilityChangedEventArgs(Guid.Empty, default));
+				InterfaceChanged?.Invoke(this, new InterfaceChangedEventArgs(Guid.Empty, default));
 			});
 		}
 
@@ -127,7 +127,7 @@ namespace Wifinian.Models.Wlan
 			if (!await Netsh.SetProfileParameterAsync(item.InterfaceName, item.Name, item.IsAutoConnectEnabled, item.IsAutoSwitchEnabled))
 				return false;
 
-			await DeferAsync(() => ProfileChanged?.Invoke(this, EventArgs.Empty));
+			await DeferAsync(() => ProfileChanged?.Invoke(this, new ProfileChangedEventArgs(Guid.Empty, default)));
 			return true;
 		}
 
@@ -141,7 +141,7 @@ namespace Wifinian.Models.Wlan
 			if (!await Netsh.SetProfilePositionAsync(item.InterfaceName, item.Name, position))
 				return false;
 
-			await DeferAsync(() => ProfileChanged?.Invoke(this, EventArgs.Empty));
+			await DeferAsync(() => ProfileChanged?.Invoke(this, new ProfileChangedEventArgs(Guid.Empty, default)));
 			return true;
 		}
 
@@ -158,7 +158,7 @@ namespace Wifinian.Models.Wlan
 			if (!await Netsh.DeleteProfileAsync(item.InterfaceName, item.Name))
 				return false;
 
-			await DeferAsync(() => ProfileChanged?.Invoke(this, EventArgs.Empty));
+			await DeferAsync(() => ProfileChanged?.Invoke(this, new ProfileChangedEventArgs(Guid.Empty, default)));
 			return true;
 		}
 
@@ -173,7 +173,7 @@ namespace Wifinian.Models.Wlan
 			if (!await Netsh.ConnectNetworkAsync(item.InterfaceName, item.Name))
 				return false;
 
-			await DeferAsync(() => ConnectionChanged?.Invoke(this, EventArgs.Empty));
+			await DeferAsync(() => ConnectionChanged?.Invoke(this, new ConnectionChangedEventArgs(Guid.Empty, default, null)));
 			return true;
 		}
 
@@ -184,7 +184,7 @@ namespace Wifinian.Models.Wlan
 			if (!await Netsh.DisconnectNetworkAsync(item.InterfaceName))
 				return false;
 
-			await DeferAsync(() => ConnectionChanged?.Invoke(this, EventArgs.Empty));
+			await DeferAsync(() => ConnectionChanged?.Invoke(this, new ConnectionChangedEventArgs(Guid.Empty, default, null)));
 			return true;
 		}
 

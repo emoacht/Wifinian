@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Linq;
 using System.Text;
 using System.Threading;
@@ -12,6 +13,8 @@ using System.Windows.Data;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using Reactive.Bindings.Notifiers;
+
+using ManagedNativeWifi;
 
 using ScreenFrame;
 using StartupAgency;
@@ -119,19 +122,19 @@ namespace Wifinian
 			var networkRefreshed = Observable.FromEventPattern(
 				h => _worker.NetworkRefreshed += h,
 				h => _worker.NetworkRefreshed -= h);
-			var availabilityChanged = Observable.FromEventPattern(
+			var availabilityChanged = Observable.FromEventPattern<AvailabilityChangedEventArgs>(
 				h => _worker.AvailabilityChanged += h,
 				h => _worker.AvailabilityChanged -= h);
-			var interfaceChanged = Observable.FromEventPattern(
+			var interfaceChanged = Observable.FromEventPattern<InterfaceChangedEventArgs>(
 				h => _worker.InterfaceChanged += h,
 				h => _worker.InterfaceChanged -= h);
-			var connectionChanged = Observable.FromEventPattern(
+			var connectionChanged = Observable.FromEventPattern<ConnectionChangedEventArgs>(
 				h => _worker.ConnectionChanged += h,
 				h => _worker.ConnectionChanged -= h);
-			var profileChanged = Observable.FromEventPattern(
+			var profileChanged = Observable.FromEventPattern<ProfileChangedEventArgs>(
 				h => _worker.ProfileChanged += h,
 				h => _worker.ProfileChanged -= h);
-			Observable.Merge(networkRefreshed, availabilityChanged, interfaceChanged, connectionChanged, profileChanged)
+			Observable.Merge<object>(networkRefreshed, availabilityChanged, interfaceChanged, connectionChanged, profileChanged)
 				.Throttle(TimeSpan.FromMilliseconds(100))
 				.Subscribe(async _ =>
 				{

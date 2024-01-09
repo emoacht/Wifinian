@@ -60,25 +60,25 @@ namespace Wifinian.Models.Wlan
 			remove { if (IsWorkable) { _player.NetworkRefreshed -= value; } }
 		}
 
-		public event EventHandler AvailabilityChanged
+		public event EventHandler<AvailabilityChangedEventArgs> AvailabilityChanged
 		{
 			add { if (IsWorkable) { _player.AvailabilityChanged += value; } }
 			remove { if (IsWorkable) { _player.AvailabilityChanged -= value; } }
 		}
 
-		public event EventHandler InterfaceChanged
+		public event EventHandler<InterfaceChangedEventArgs> InterfaceChanged
 		{
 			add { if (IsWorkable) { _player.InterfaceChanged += value; } }
 			remove { if (IsWorkable) { _player.InterfaceChanged -= value; } }
 		}
 
-		public event EventHandler ConnectionChanged
+		public event EventHandler<ConnectionChangedEventArgs> ConnectionChanged
 		{
 			add { if (IsWorkable) { _player.ConnectionChanged += value; } }
 			remove { if (IsWorkable) { _player.ConnectionChanged -= value; } }
 		}
 
-		public event EventHandler ProfileChanged
+		public event EventHandler<ProfileChangedEventArgs> ProfileChanged
 		{
 			add { if (IsWorkable) { _player.ProfileChanged += value; } }
 			remove { if (IsWorkable) { _player.ProfileChanged -= value; } }

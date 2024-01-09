@@ -34,10 +34,10 @@ namespace Wifinian.Models.Wlan
 		#endregion
 
 		public event EventHandler NetworkRefreshed;
-		public event EventHandler AvailabilityChanged;
-		public event EventHandler InterfaceChanged;
-		public event EventHandler ConnectionChanged;
-		public event EventHandler ProfileChanged;
+		public event EventHandler<AvailabilityChangedEventArgs> AvailabilityChanged;
+		public event EventHandler<InterfaceChangedEventArgs> InterfaceChanged;
+		public event EventHandler<ConnectionChangedEventArgs> ConnectionChanged;
+		public event EventHandler<ProfileChangedEventArgs> ProfileChanged;
 
 		private List<ProfileItem> _sourceProfiles;
 		private static readonly Lazy<Random> _random = new Lazy<Random>(() => new Random());
@@ -49,8 +49,8 @@ namespace Wifinian.Models.Wlan
 			deferTask = DeferAsync(() =>
 			{
 				NetworkRefreshed?.Invoke(this, EventArgs.Empty);
-				AvailabilityChanged?.Invoke(this, EventArgs.Empty);
-				InterfaceChanged?.Invoke(this, EventArgs.Empty);
+				AvailabilityChanged?.Invoke(this, new AvailabilityChangedEventArgs(Guid.Empty, default));
+				InterfaceChanged?.Invoke(this, new InterfaceChangedEventArgs(Guid.Empty, default));
 			});
 		}
 
@@ -78,7 +78,7 @@ namespace Wifinian.Models.Wlan
 			targetProfile.IsAutoConnectEnabled = profileItem.IsAutoConnectEnabled;
 			targetProfile.IsAutoSwitchEnabled = profileItem.IsAutoSwitchEnabled;
 
-			deferTask = DeferAsync(() => ProfileChanged?.Invoke(this, EventArgs.Empty));
+			deferTask = DeferAsync(() => ProfileChanged?.Invoke(this, new ProfileChangedEventArgs(Guid.Empty, default)));
 			return Task.FromResult(true);
 		}
 
@@ -105,7 +105,7 @@ namespace Wifinian.Models.Wlan
 			int index = 0;
 			targetProfiles.ForEach(x => x.Position = index++);
 
-			deferTask = DeferAsync(() => ProfileChanged?.Invoke(this, EventArgs.Empty));
+			deferTask = DeferAsync(() => ProfileChanged?.Invoke(this, new ProfileChangedEventArgs(Guid.Empty, default)));
 			return Task.FromResult(true);
 		}
 
@@ -135,7 +135,7 @@ namespace Wifinian.Models.Wlan
 			_sourceProfiles.Remove(targetProfile);
 			_sourceProfiles.Add(renamedProfile);
 
-			deferTask = DeferAsync(() => ProfileChanged?.Invoke(this, EventArgs.Empty));
+			deferTask = DeferAsync(() => ProfileChanged?.Invoke(this, new ProfileChangedEventArgs(Guid.Empty, default)));
 			return Task.FromResult(true);
 		}
 
@@ -144,7 +144,7 @@ namespace Wifinian.Models.Wlan
 			if (!_sourceProfiles.Remove(profileItem))
 				return Task.FromResult(false);
 
-			deferTask = DeferAsync(() => ProfileChanged?.Invoke(this, EventArgs.Empty));
+			deferTask = DeferAsync(() => ProfileChanged?.Invoke(this, new ProfileChangedEventArgs(Guid.Empty, default)));
 			return Task.FromResult(true);
 		}
 
@@ -163,7 +163,7 @@ namespace Wifinian.Models.Wlan
 
 			targetProfiles.ForEach(x => x.IsConnected = false);
 
-			deferTask = DeferAsync(() => ConnectionChanged?.Invoke(this, EventArgs.Empty));
+			deferTask = DeferAsync(() => ConnectionChanged?.Invoke(this, new ConnectionChangedEventArgs(Guid.Empty, default, null)));
 			return Task.FromResult(true);
 		}
 
@@ -175,7 +175,7 @@ namespace Wifinian.Models.Wlan
 
 			targetProfile.IsConnected = false;
 
-			deferTask = DeferAsync(() => ConnectionChanged?.Invoke(this, EventArgs.Empty));
+			deferTask = DeferAsync(() => ConnectionChanged?.Invoke(this, new ConnectionChangedEventArgs(Guid.Empty, default, null)));
 			return Task.FromResult(true);
 		}
 
