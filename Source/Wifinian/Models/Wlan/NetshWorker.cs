@@ -1,208 +1,205 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-
 using ManagedNativeWifi;
 
-namespace Wifinian.Models.Wlan
+namespace Wifinian.Models.Wlan;
+
+internal class NetshWorker : IWlanWorker
 {
-	internal class NetshWorker : IWlanWorker
+	public bool IsWorkable => true;
+
+	#region Dispose
+
+	private bool _disposed = false;
+
+	public void Dispose()
 	{
-		public bool IsWorkable => true;
-
-		#region Dispose
-
-		private bool _disposed = false;
-
-		public void Dispose()
-		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
-		}
-
-		protected virtual void Dispose(bool disposing)
-		{
-			if (_disposed)
-				return;
-
-			_disposed = true;
-		}
-
-		#endregion
-
-		public event EventHandler NetworkRefreshed;
-		public event EventHandler<AvailabilityChangedEventArgs> AvailabilityChanged;
-		public event EventHandler<InterfaceChangedEventArgs> InterfaceChanged;
-		public event EventHandler<ConnectionChangedEventArgs> ConnectionChanged;
-		public event EventHandler<ProfileChangedEventArgs> ProfileChanged;
-
-		#region Scan networks
-
-		public async Task ScanNetworkAsync(TimeSpan timeout)
-		{
-			// Netsh has no function to directly prompt to scan wireless LANs.
-			await DeferAsync(() =>
-			{
-				NetworkRefreshed?.Invoke(this, EventArgs.Empty);
-				AvailabilityChanged?.Invoke(this, new AvailabilityChangedEventArgs(Guid.Empty, default));
-				InterfaceChanged?.Invoke(this, new InterfaceChangedEventArgs(Guid.Empty, default));
-			});
-		}
-
-		#endregion
-
-		#region Get profiles
-
-		public async Task<IEnumerable<ProfileItem>> GetProfilesAsync()
-		{
-			var interfacePacks = (await Netsh.GetInterfacesAsync().ConfigureAwait(false))
-				.ToArray(); // ToArray method is necessary.
-
-			var networkPacks = (await Netsh.GetNetworksAsync().ConfigureAwait(false))
-				.ToArray(); // ToArray method is necessary.
-
-			var profilePacks = await Netsh.GetProfilesAsync().ConfigureAwait(false);
-
-			return from profilePack in profilePacks
-				   let networkPack = networkPacks.FirstOrDefault(x =>
-					   x.InterfaceName.Equals(profilePack.InterfaceName, StringComparison.Ordinal) &&
-					   x.Ssid.Equals(profilePack.Ssid, StringComparison.Ordinal))
-				   from interfacePack in interfacePacks
-				   where profilePack.InterfaceName.Equals(interfacePack.Name, StringComparison.Ordinal)
-				   select new ProfileItem(
-					   name: profilePack.Name,
-					   interfaceId: interfacePack.Id,
-					   interfaceName: profilePack.InterfaceName,
-					   interfaceDescription: interfacePack.Description,
-					   authentication: ConvertToAuthenticationMethod(profilePack.Authentication),
-					   encryption: ConvertToEncryptionType(profilePack.Encryption),
-					   isAutoConnectEnabled: profilePack.IsAutoConnectEnabled,
-					   isAutoSwitchEnabled: profilePack.IsAutoSwitchEnabled,
-					   position: profilePack.Position,
-					   isRadioOn: interfacePack.IsRadioOn,
-					   isConnected: (interfacePack.IsConnected && profilePack.Name.Equals(interfacePack.ProfileName, StringComparison.Ordinal)),
-					   protocol: networkPack?.Protocol,
-					   signal: (networkPack?.Signal ?? 0),
-					   band: (networkPack?.Band ?? 0),
-					   channel: (networkPack?.Channel ?? 0));
-		}
-
-		private static AuthenticationMethod ConvertToAuthenticationMethod(string authenticationString)
-		{
-			return authenticationString switch
-			{
-				"Open" => AuthenticationMethod.Open,
-				"Shared" => AuthenticationMethod.Shared,
-				"WPA-Enterprise" => AuthenticationMethod.WPA_Enterprise,
-				"WPA-Personal" => AuthenticationMethod.WPA_Personal,
-				"WPA2-Enterprise" => AuthenticationMethod.WPA2_Enterprise,
-				"WPA2-Personal" => AuthenticationMethod.WPA2_Personal,
-				"WPA3-Enterprise" => AuthenticationMethod.WPA3_Enterprise,
-				"WPA3-Personal" => AuthenticationMethod.WPA3_Personal,
-				_ => default,
-			};
-		}
-
-		private static EncryptionType ConvertToEncryptionType(string encryptionString)
-		{
-			return encryptionString switch
-			{
-				"WEP" => EncryptionType.WEP,
-				"TKIP" => EncryptionType.TKIP,
-				"CCMP" => EncryptionType.AES,
-				_ => default,
-			};
-		}
-
-		#endregion
-
-		#region Set/Rename/Delete profile
-
-		public async Task<bool> SetProfileOptionAsync(ProfileItem profileItem)
-		{
-			var item = profileItem ?? throw new ArgumentNullException(nameof(profileItem));
-
-			if (!await Netsh.SetProfileParameterAsync(item.InterfaceName, item.Name, item.IsAutoConnectEnabled, item.IsAutoSwitchEnabled))
-				return false;
-
-			await DeferAsync(() => ProfileChanged?.Invoke(this, new ProfileChangedEventArgs(Guid.Empty, default)));
-			return true;
-		}
-
-		public async Task<bool> SetProfilePositionAsync(ProfileItem profileItem, int position)
-		{
-			var item = profileItem ?? throw new ArgumentNullException(nameof(profileItem));
-
-			if (position < 0)
-				throw new ArgumentOutOfRangeException(nameof(position), position, "The position must not be negative.");
-
-			if (!await Netsh.SetProfilePositionAsync(item.InterfaceName, item.Name, position))
-				return false;
-
-			await DeferAsync(() => ProfileChanged?.Invoke(this, new ProfileChangedEventArgs(Guid.Empty, default)));
-			return true;
-		}
-
-		public Task<bool> RenameProfileAsync(ProfileItem profileItem, string profileName)
-		{
-			// Netsh has no function to directly rename a wireless profile.
-			return Task.FromResult(false);
-		}
-
-		public async Task<bool> DeleteProfileAsync(ProfileItem profileItem)
-		{
-			var item = profileItem ?? throw new ArgumentNullException(nameof(profileItem));
-
-			if (!await Netsh.DeleteProfileAsync(item.InterfaceName, item.Name))
-				return false;
-
-			await DeferAsync(() => ProfileChanged?.Invoke(this, new ProfileChangedEventArgs(Guid.Empty, default)));
-			return true;
-		}
-
-		#endregion
-
-		#region Connect/Disconnect
-
-		public async Task<bool> ConnectNetworkAsync(ProfileItem profileItem, TimeSpan timeout)
-		{
-			var item = profileItem ?? throw new ArgumentNullException(nameof(profileItem));
-
-			if (!await Netsh.ConnectNetworkAsync(item.InterfaceName, item.Name))
-				return false;
-
-			await DeferAsync(() => ConnectionChanged?.Invoke(this, new ConnectionChangedEventArgs(Guid.Empty, default, null)));
-			return true;
-		}
-
-		public async Task<bool> DisconnectNetworkAsync(ProfileItem profileItem, TimeSpan timeout)
-		{
-			var item = profileItem ?? throw new ArgumentNullException(nameof(profileItem));
-
-			if (!await Netsh.DisconnectNetworkAsync(item.InterfaceName))
-				return false;
-
-			await DeferAsync(() => ConnectionChanged?.Invoke(this, new ConnectionChangedEventArgs(Guid.Empty, default, null)));
-			return true;
-		}
-
-		#endregion
-
-		#region Base
-
-		private Task DeferAsync(Action action)
-		{
-			return DeferAsync(action, TimeSpan.FromSeconds(1));
-		}
-
-		private async Task DeferAsync(Action action, TimeSpan deferDuration)
-		{
-			await Task.Delay(deferDuration).ConfigureAwait(false);
-			action?.Invoke();
-		}
-
-		#endregion
+		Dispose(true);
+		GC.SuppressFinalize(this);
 	}
+
+	protected virtual void Dispose(bool disposing)
+	{
+		if (_disposed)
+			return;
+
+		_disposed = true;
+	}
+
+	#endregion
+
+	public event EventHandler NetworkRefreshed;
+	public event EventHandler<AvailabilityChangedEventArgs> AvailabilityChanged;
+	public event EventHandler<InterfaceChangedEventArgs> InterfaceChanged;
+	public event EventHandler<ConnectionChangedEventArgs> ConnectionChanged;
+	public event EventHandler<ProfileChangedEventArgs> ProfileChanged;
+
+	#region Scan networks
+
+	public async Task ScanNetworkAsync(TimeSpan timeout)
+	{
+		// Netsh has no function to directly prompt to scan wireless LANs.
+		await DeferAsync(() =>
+		{
+			NetworkRefreshed?.Invoke(this, EventArgs.Empty);
+			AvailabilityChanged?.Invoke(this, new AvailabilityChangedEventArgs(Guid.Empty, default));
+			InterfaceChanged?.Invoke(this, new InterfaceChangedEventArgs(Guid.Empty, default));
+		});
+	}
+
+	#endregion
+
+	#region Get profiles
+
+	public async Task<IEnumerable<ProfileItem>> GetProfilesAsync()
+	{
+		var interfacePacks = (await Netsh.GetInterfacesAsync().ConfigureAwait(false))
+			.ToArray(); // ToArray method is necessary.
+
+		var networkPacks = (await Netsh.GetNetworksAsync().ConfigureAwait(false))
+			.ToArray(); // ToArray method is necessary.
+
+		var profilePacks = await Netsh.GetProfilesAsync().ConfigureAwait(false);
+
+		return from profilePack in profilePacks
+			   let networkPack = networkPacks.FirstOrDefault(x =>
+				   x.InterfaceName.Equals(profilePack.InterfaceName, StringComparison.Ordinal) &&
+				   x.Ssid.Equals(profilePack.Ssid, StringComparison.Ordinal))
+			   from interfacePack in interfacePacks
+			   where profilePack.InterfaceName.Equals(interfacePack.Name, StringComparison.Ordinal)
+			   select new ProfileItem(
+				   name: profilePack.Name,
+				   interfaceId: interfacePack.Id,
+				   interfaceName: profilePack.InterfaceName,
+				   interfaceDescription: interfacePack.Description,
+				   authentication: ConvertToAuthenticationMethod(profilePack.Authentication),
+				   encryption: ConvertToEncryptionType(profilePack.Encryption),
+				   isAutoConnectEnabled: profilePack.IsAutoConnectEnabled,
+				   isAutoSwitchEnabled: profilePack.IsAutoSwitchEnabled,
+				   position: profilePack.Position,
+				   isRadioOn: interfacePack.IsRadioOn,
+				   isConnected: (interfacePack.IsConnected && profilePack.Name.Equals(interfacePack.ProfileName, StringComparison.Ordinal)),
+				   protocol: networkPack?.Protocol,
+				   signal: (networkPack?.Signal ?? 0),
+				   band: (networkPack?.Band ?? 0),
+				   channel: (networkPack?.Channel ?? 0));
+	}
+
+	private static AuthenticationMethod ConvertToAuthenticationMethod(string authenticationString)
+	{
+		return authenticationString switch
+		{
+			"Open" => AuthenticationMethod.Open,
+			"Shared" => AuthenticationMethod.Shared,
+			"WPA-Enterprise" => AuthenticationMethod.WPA_Enterprise,
+			"WPA-Personal" => AuthenticationMethod.WPA_Personal,
+			"WPA2-Enterprise" => AuthenticationMethod.WPA2_Enterprise,
+			"WPA2-Personal" => AuthenticationMethod.WPA2_Personal,
+			"WPA3-Enterprise" => AuthenticationMethod.WPA3_Enterprise,
+			"WPA3-Personal" => AuthenticationMethod.WPA3_Personal,
+			_ => default,
+		};
+	}
+
+	private static EncryptionType ConvertToEncryptionType(string encryptionString)
+	{
+		return encryptionString switch
+		{
+			"WEP" => EncryptionType.WEP,
+			"TKIP" => EncryptionType.TKIP,
+			"CCMP" => EncryptionType.AES,
+			_ => default,
+		};
+	}
+
+	#endregion
+
+	#region Set/Rename/Delete profile
+
+	public async Task<bool> SetProfileOptionAsync(ProfileItem profileItem)
+	{
+		var item = profileItem ?? throw new ArgumentNullException(nameof(profileItem));
+
+		if (!await Netsh.SetProfileParameterAsync(item.InterfaceName, item.Name, item.IsAutoConnectEnabled, item.IsAutoSwitchEnabled))
+			return false;
+
+		await DeferAsync(() => ProfileChanged?.Invoke(this, new ProfileChangedEventArgs(Guid.Empty, default)));
+		return true;
+	}
+
+	public async Task<bool> SetProfilePositionAsync(ProfileItem profileItem, int position)
+	{
+		var item = profileItem ?? throw new ArgumentNullException(nameof(profileItem));
+
+		if (position < 0)
+			throw new ArgumentOutOfRangeException(nameof(position), position, "The position must not be negative.");
+
+		if (!await Netsh.SetProfilePositionAsync(item.InterfaceName, item.Name, position))
+			return false;
+
+		await DeferAsync(() => ProfileChanged?.Invoke(this, new ProfileChangedEventArgs(Guid.Empty, default)));
+		return true;
+	}
+
+	public Task<bool> RenameProfileAsync(ProfileItem profileItem, string profileName)
+	{
+		// Netsh has no function to directly rename a wireless profile.
+		return Task.FromResult(false);
+	}
+
+	public async Task<bool> DeleteProfileAsync(ProfileItem profileItem)
+	{
+		var item = profileItem ?? throw new ArgumentNullException(nameof(profileItem));
+
+		if (!await Netsh.DeleteProfileAsync(item.InterfaceName, item.Name))
+			return false;
+
+		await DeferAsync(() => ProfileChanged?.Invoke(this, new ProfileChangedEventArgs(Guid.Empty, default)));
+		return true;
+	}
+
+	#endregion
+
+	#region Connect/Disconnect
+
+	public async Task<bool> ConnectNetworkAsync(ProfileItem profileItem, TimeSpan timeout)
+	{
+		var item = profileItem ?? throw new ArgumentNullException(nameof(profileItem));
+
+		if (!await Netsh.ConnectNetworkAsync(item.InterfaceName, item.Name))
+			return false;
+
+		await DeferAsync(() => ConnectionChanged?.Invoke(this, new ConnectionChangedEventArgs(Guid.Empty, default, null)));
+		return true;
+	}
+
+	public async Task<bool> DisconnectNetworkAsync(ProfileItem profileItem, TimeSpan timeout)
+	{
+		var item = profileItem ?? throw new ArgumentNullException(nameof(profileItem));
+
+		if (!await Netsh.DisconnectNetworkAsync(item.InterfaceName))
+			return false;
+
+		await DeferAsync(() => ConnectionChanged?.Invoke(this, new ConnectionChangedEventArgs(Guid.Empty, default, null)));
+		return true;
+	}
+
+	#endregion
+
+	#region Base
+
+	private Task DeferAsync(Action action)
+	{
+		return DeferAsync(action, TimeSpan.FromSeconds(1));
+	}
+
+	private async Task DeferAsync(Action action, TimeSpan deferDuration)
+	{
+		await Task.Delay(deferDuration).ConfigureAwait(false);
+		action?.Invoke();
+	}
+
+	#endregion
 }

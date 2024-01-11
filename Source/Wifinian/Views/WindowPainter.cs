@@ -1,28 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 using ScreenFrame.Painter;
 
-namespace Wifinian.Views
+namespace Wifinian.Views;
+
+public class WindowPainter : ScreenFrame.Painter.WindowPainter
 {
-	public class WindowPainter : ScreenFrame.Painter.WindowPainter
+	public WindowPainter() : base(Environment.GetCommandLineArgs())
 	{
-		public WindowPainter() : base(Environment.GetCommandLineArgs())
-		{
-			ThemeService.AdjustResourceColors(Application.Current.Resources);
+		ThemeService.AdjustResourceColors(Application.Current.Resources);
 
-			RespondsThemeChanged = false;
-		}
+		RespondsThemeChanged = false;
+	}
 
-		protected override string TranslucentBrushKey { get; } = "App.Background.Translucent";
+	protected override string TranslucentBrushKey { get; } = "App.Background.Translucent";
 
-		protected override void ChangeThemes(ColorTheme oldTheme, ColorTheme newTheme)
-		{
-			// Changing color themes is not implemented.
-		}
+	protected override void ChangeThemes(ColorTheme oldTheme, ColorTheme newTheme)
+	{
+		// Changing color themes is not implemented.
 	}
 }

@@ -1,42 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 
-namespace Wifinian
+namespace Wifinian;
+
+public partial class App : Application
 {
-	public partial class App : Application
+	private AppKeeper _keeper;
+	private AppController _controller;
+
+	protected override async void OnStartup(StartupEventArgs e)
 	{
-		private AppKeeper _keeper;
-		private AppController _controller;
+		base.OnStartup(e);
 
-		protected override async void OnStartup(StartupEventArgs e)
+		_keeper = new AppKeeper(e);
+		if (!_keeper.Start())
 		{
-			base.OnStartup(e);
-
-			_keeper = new AppKeeper(e);
-			if (!_keeper.Start())
-			{
-				this.Shutdown(0); // This shutdown is expected behavior.
-				return;
-			}
-
-			_controller = new AppController(_keeper);
-			await _controller.InitiateAsync();
-
-			//this.MainWindow = new MainWindow();
-			//this.MainWindow.Show();
+			this.Shutdown(0); // This shutdown is expected behavior.
+			return;
 		}
 
-		protected override void OnExit(ExitEventArgs e)
-		{
-			_controller?.Dispose();
-			_keeper?.Dispose();
+		_controller = new AppController(_keeper);
+		await _controller.InitiateAsync();
 
-			base.OnExit(e);
-		}
+		//this.MainWindow = new MainWindow();
+		//this.MainWindow.Show();
+	}
+
+	protected override void OnExit(ExitEventArgs e)
+	{
+		_controller?.Dispose();
+		_keeper?.Dispose();
+
+		base.OnExit(e);
 	}
 }
