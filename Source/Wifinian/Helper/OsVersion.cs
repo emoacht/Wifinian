@@ -36,7 +36,7 @@ internal static class OsVersion
 
 	#region Cache
 
-	private static readonly Dictionary<string, bool> _cache = new();
+	private static readonly Dictionary<string, bool> _cache = [];
 	private static readonly object _lock = new();
 
 	private static bool IsEqualToOrGreaterThan(int major, int minor = 0, int build = 0, [CallerMemberName] string propertyName = null)

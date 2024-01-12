@@ -21,7 +21,7 @@ public class FrameworkElementCenterBehavior : Behavior<FrameworkElement>
 			"Target",
 			typeof(FrameworkElement),
 			typeof(FrameworkElementCenterBehavior),
-			new PropertyMetadata(null));
+			new PropertyMetadata(defaultValue: null));
 
 	#endregion
 

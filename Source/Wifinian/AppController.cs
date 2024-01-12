@@ -31,7 +31,7 @@ internal class AppController : DisposableBase
 	internal StartupAgent StartupAgent => _keeper.StartupAgent;
 
 	public ObservableCollection<ProfileItem> Profiles { get; }
-	private readonly object _profilesLock = new object();
+	private readonly object _profilesLock = new();
 
 	public NotifyIconContainer NotifyIconContainer { get; }
 	public WindowPainter WindowPainter { get; }
@@ -359,7 +359,7 @@ internal class AppController : DisposableBase
 		}
 	}
 
-	private readonly SemaphoreSlim _updateSemaphore = new SemaphoreSlim(1);
+	private readonly SemaphoreSlim _updateSemaphore = new(1);
 
 	private async Task UpdateAsync(Func<Task> perform)
 	{

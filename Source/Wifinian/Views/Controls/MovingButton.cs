@@ -22,12 +22,9 @@ public class MovingButton : Button
 			"IsRunning",
 			typeof(bool),
 			typeof(MovingButton),
-			new FrameworkPropertyMetadata(
+			new PropertyMetadata(
 				false,
-				async (d, e) =>
-				{
-					await ((MovingButton)d).ManageStateAsync();
-				}));
+				async (d, e) => await ((MovingButton)d).ManageStateAsync()));
 
 	#endregion
 
@@ -42,7 +39,7 @@ public class MovingButton : Button
 			_duration = buffer.TimeSpan;
 	}
 
-	private object _blocker = new object();
+	private object _blocker = new();
 	private bool _isRunning = false;
 
 	private async Task ManageStateAsync()

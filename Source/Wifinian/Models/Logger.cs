@@ -64,11 +64,8 @@ internal class Logger
 	{
 		try
 		{
-			AppDataService.AssureFolder();
-
-			var appDataFilePath = Path.Combine(
-				AppDataService.FolderPath,
-				fileName);
+			var appDataFolderPath = AppDataService.EnsureFolderPath();
+			var appDataFilePath = Path.Combine(appDataFolderPath, fileName);
 
 			UpdateText(appDataFilePath, content, capacity);
 		}
@@ -98,8 +95,8 @@ internal class Logger
 
 	private static void SaveText(string filePath, string content)
 	{
-		using (var sw = new StreamWriter(filePath, false, Encoding.UTF8)) // BOM will be emitted.
-			sw.Write(content);
+		using var sw = new StreamWriter(filePath, false, Encoding.UTF8); // BOM will be emitted.
+		sw.Write(content);
 	}
 
 	private static void UpdateText(string filePath, string newContent, int capacity)

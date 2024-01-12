@@ -39,7 +39,7 @@ public class MovingControl : Control
 			_duration = buffer.TimeSpan;
 	}
 
-	private object _blocker = new object();
+	private object _blocker = new();
 	private CancellationTokenSource _source;
 
 	private async Task ManageStateAsync()

@@ -38,7 +38,7 @@ internal class MockWorker : IWlanWorker
 	public event EventHandler<ProfileChangedEventArgs> ProfileChanged;
 
 	private List<ProfileItem> _sourceProfiles;
-	private static readonly Lazy<Random> _random = new Lazy<Random>(() => new Random());
+	private static readonly Lazy<Random> _random = new(() => new Random());
 
 	public async Task ScanNetworkAsync(TimeSpan timeout)
 	{
@@ -54,8 +54,7 @@ internal class MockWorker : IWlanWorker
 
 	public Task<IEnumerable<ProfileItem>> GetProfilesAsync()
 	{
-		if (_sourceProfiles is null)
-			_sourceProfiles = PopulateProfiles().ToList();
+		_sourceProfiles ??= PopulateProfiles().ToList();
 
 		_sourceProfiles
 			.ForEach(x =>
@@ -179,20 +178,12 @@ internal class MockWorker : IWlanWorker
 
 	#region Base
 
-	private class InterfacePack
+	private class InterfacePack(string name, string description, bool isRadioOn)
 	{
-		public Guid Id { get; }
-		public string Name { get; }
-		public string Description { get; }
-		public bool IsRadioOn { get; }
-
-		public InterfacePack(string name, string description, bool isRadioOn)
-		{
-			Id = Guid.NewGuid();
-			this.Name = name;
-			this.Description = description;
-			this.IsRadioOn = isRadioOn;
-		}
+		public Guid Id { get; } = Guid.NewGuid();
+		public string Name { get; } = name;
+		public string Description { get; } = description;
+		public bool IsRadioOn { get; } = isRadioOn;
 	}
 
 	private ProfileItem[] PopulateProfiles()
@@ -204,8 +195,8 @@ internal class MockWorker : IWlanWorker
 			new InterfacePack("Wi-Fi 3", "Marvel AVASTAR Wireless-AC Network Controller", false)
 		};
 
-		return new[]
-		{
+		return
+		[
 			new ProfileItem(
 				name: "Cloud7",
 				interfaceId: interfacePacks[0].Id,
@@ -324,7 +315,7 @@ internal class MockWorker : IWlanWorker
 				signal: 0,
 				band: 0,
 				channel: 0),
-		};
+		];
 	}
 
 	private Task deferTask;

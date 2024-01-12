@@ -53,7 +53,7 @@ public class MainWindowViewModel : BindableBase
 
 	#endregion
 
-	public ObservableCollection<MemberViewModel> Members { get; } = new ObservableCollection<MemberViewModel>();
+	public ObservableCollection<MemberViewModel> Members { get; } = [];
 
 	public ReactiveProperty<bool> IsAllLong { get; }
 	public ReactiveProperty<bool> IsAnySelected { get; }
@@ -102,7 +102,7 @@ public class MainWindowViewModel : BindableBase
 
 		IsAllLong = membersNotLong
 			.CollectionChangedAsObservable()
-			.Select(_ => Members.Any() && (0 == membersNotLong.Count))
+			.Select(_ => Members.Any() && (membersNotLong.Count == 0))
 			.ToReactiveProperty();
 
 		// IsAnySelected: Original
@@ -112,7 +112,7 @@ public class MainWindowViewModel : BindableBase
 			.ToReactiveProperty();
 
 		// IsAnySelected: Alternative 1
-		List<MemberViewModel> membersSelected = new List<MemberViewModel>();
+		List<MemberViewModel> membersSelected = [];
 
 		IObservable<bool> elementPropertyChanged = Members
 			.ObserveElementObservableProperty(x => x.IsSelected)
@@ -189,7 +189,7 @@ public class MainWindowViewModel : BindableBase
 		Members.Add(new MemberViewModel("Sakawa") { IsLong = false });
 	}
 
-	private void ShowName(MemberViewModel member)
+	private static void ShowName(MemberViewModel member)
 	{
 		Debug.WriteLine($"{member.Name} is changed.");
 	}

@@ -14,7 +14,7 @@ namespace Wifinian.Models;
 public class Settings : DisposableBase
 {
 	public static Settings Current => _current.Value;
-	private static readonly Lazy<Settings> _current = new Lazy<Settings>(() => new Settings());
+	private static readonly Lazy<Settings> _current = new(() => new Settings());
 
 	private Settings()
 	{ }

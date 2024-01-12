@@ -48,7 +48,7 @@ public class ListBoxSelectedItemBehavior : Behavior<ListBox>
 		var listBox = (ListBox)sender;
 
 		// Keep selected item always single while SelectionMode is Multiple.
-		if (listBox.SelectedItems.Count > 1)
+		if (listBox is { SelectedItems.Count: > 1 })
 		{
 			var lastSelectedItem = e.AddedItems.Cast<object>().LastOrDefault() ??
 				listBox.SelectedItems[0]; // Fallback
@@ -59,7 +59,7 @@ public class ListBoxSelectedItemBehavior : Behavior<ListBox>
 				.ForEach(x => listBox.SelectedItems.Remove(x));
 		}
 
-		if ((listBox.SelectedIndex == -1) || (listBox.SelectedItem is null))
+		if (listBox is { SelectedIndex: -1 } or { SelectedItem: null })
 			return;
 
 		var item = listBox.ItemContainerGenerator.ContainerFromItem(listBox.SelectedItem) as FrameworkElement;

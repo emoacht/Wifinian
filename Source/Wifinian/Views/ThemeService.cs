@@ -5,7 +5,7 @@ using Wifinian.Helper;
 
 namespace Wifinian.Views;
 
-public class ThemeService
+public static class ThemeService
 {
 	private const string AvailableKey = "Profile.Background.AvailableColor";
 	private const string AvailableSelectedKey = "Profile.Background.AvailableSelectedColor";

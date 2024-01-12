@@ -27,117 +27,76 @@ internal class Netsh
 		Any
 	}
 
-	private class ShortProfilePack
+	private class ShortProfilePack(
+		string name,
+		string interfaceName,
+		int position)
 	{
-		public string Name { get; }
-		public string InterfaceName { get; }
-		public int Position { get; }
-
-		public ShortProfilePack(string name, string interfaceName, int position)
-		{
-			this.Name = name;
-			this.InterfaceName = interfaceName;
-			this.Position = position;
-		}
+		public string Name { get; } = name;
+		public string InterfaceName { get; } = interfaceName;
+		public int Position { get; } = position;
 	}
 
-	public class ProfilePack
+	public class ProfilePack(
+		string name,
+		string interfaceName,
+		string ssid,
+		NetworkType networkType,
+		string authentication,
+		string encryption,
+		bool isAutoConnectEnabled,
+		bool isAutoSwitchEnabled,
+		int position)
 	{
-		public string Name { get; }
-		public string InterfaceName { get; }
-		public string Ssid { get; }
-		public NetworkType NetworkType { get; }
-		public string Authentication { get; }
-		public string Encryption { get; }
-		public bool IsAutoConnectEnabled { get; }
-		public bool IsAutoSwitchEnabled { get; }
-		public int Position { get; }
-
-		public ProfilePack(
-			string name,
-			string interfaceName,
-			string ssid,
-			NetworkType networkType,
-			string authentication,
-			string encryption,
-			bool isAutoConnectEnabled,
-			bool isAutoSwitchEnabled,
-			int position)
-		{
-			this.Name = name;
-			this.InterfaceName = interfaceName;
-			this.Ssid = ssid;
-			this.NetworkType = networkType;
-			this.Authentication = authentication;
-			this.Encryption = encryption;
-			this.IsAutoConnectEnabled = isAutoConnectEnabled;
-			this.IsAutoSwitchEnabled = isAutoSwitchEnabled;
-			this.Position = position;
-		}
+		public string Name { get; } = name;
+		public string InterfaceName { get; } = interfaceName;
+		public string Ssid { get; } = ssid;
+		public NetworkType NetworkType { get; } = networkType;
+		public string Authentication { get; } = authentication;
+		public string Encryption { get; } = encryption;
+		public bool IsAutoConnectEnabled { get; } = isAutoConnectEnabled;
+		public bool IsAutoSwitchEnabled { get; } = isAutoSwitchEnabled;
+		public int Position { get; } = position;
 	}
 
-	public class InterfacePack
+	public class InterfacePack(
+		string name,
+		string description,
+		Guid id,
+		string physicalAddress,
+		bool isRadioOn,
+		bool isConnected,
+		string profileName)
 	{
-		public string Name { get; }
-		public string Description { get; }
-		public Guid Id { get; }
-		public string PhysicalAddress { get; }
-		public bool IsRadioOn { get; }
-		public bool IsConnected { get; }
-		public string ProfileName { get; }
-
-		public InterfacePack(
-			string name,
-			string description,
-			Guid id,
-			string physicalAddress,
-			bool isRadioOn,
-			bool isConnected,
-			string profileName)
-		{
-			this.Name = name;
-			this.Description = description;
-			this.Id = id;
-			this.PhysicalAddress = physicalAddress;
-			this.IsRadioOn = isRadioOn;
-			this.IsConnected = isConnected;
-			this.ProfileName = profileName;
-		}
+		public string Name { get; } = name;
+		public string Description { get; } = description;
+		public Guid Id { get; } = id;
+		public string PhysicalAddress { get; } = physicalAddress;
+		public bool IsRadioOn { get; } = isRadioOn;
+		public bool IsConnected { get; } = isConnected;
+		public string ProfileName { get; } = profileName;
 	}
 
-	public class NetworkPack
+	public class NetworkPack(
+		string interfaceName,
+		string ssid,
+		NetworkType networkType,
+		string authentication,
+		string encryption,
+		string protocol,
+		int signal,
+		float band,
+		int channel)
 	{
-		public string InterfaceName { get; }
-		public string Ssid { get; }
-		public NetworkType NetworkType { get; }
-		public string Authenticaion { get; }
-		public string Encryption { get; }
-		public string Protocol { get; }
-		public int Signal { get; }
-		public float Band { get; }
-		public int Channel { get; }
-
-		public NetworkPack(
-			string interfaceName,
-			string ssid,
-			NetworkType networkType,
-			string authentication,
-			string encryption,
-			string protocol,
-			int signal,
-			float band,
-			int channel)
-		{
-			this.InterfaceName = interfaceName;
-			this.Ssid = ssid;
-			this.NetworkType = networkType;
-			this.Authenticaion = authentication;
-			this.Encryption = encryption;
-			this.Protocol = protocol;
-			this.Signal = signal;
-			this.Band = band;
-			this.Channel = channel;
-		}
+		public string InterfaceName { get; } = interfaceName;
+		public string Ssid { get; } = ssid;
+		public NetworkType NetworkType { get; } = networkType;
+		public string Authenticaion { get; } = authentication;
+		public string Encryption { get; } = encryption;
+		public string Protocol { get; } = protocol;
+		public int Signal { get; } = signal;
+		public float Band { get; } = band;
+		public int Channel { get; } = channel;
 	}
 
 	#endregion

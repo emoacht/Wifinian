@@ -25,10 +25,12 @@ internal static class AppDataService
 	}
 	private static string _folderPath;
 
-	public static void AssureFolder()
+	public static string EnsureFolderPath()
 	{
 		if (!Directory.Exists(FolderPath))
 			Directory.CreateDirectory(FolderPath);
+
+		return FolderPath;
 	}
 
 	public static void Load<T>(T instance, string fileName) where T : class
@@ -52,8 +54,7 @@ internal static class AppDataService
 
 	public static void Save<T>(T instance, string fileName) where T : class
 	{
-		AssureFolder();
-
+		EnsureFolderPath();
 		var filePath = Path.Combine(FolderPath, fileName);
 
 		using var fs = new FileStream(filePath, FileMode.Create, FileAccess.Write);

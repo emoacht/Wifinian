@@ -20,7 +20,7 @@ public class MemberViewModel : BindableBase
 
 	public MemberViewModel(string name, bool isSelected = false)
 	{
-		this.Name = name;
+		this.Name = name ?? throw new ArgumentNullException(nameof(name));
 
 		IsSelected = new ReactivePropertySlim<bool>(isSelected);
 		IsSelected.Subscribe(x => Debug.WriteLine($"IsSelected: {x}"));

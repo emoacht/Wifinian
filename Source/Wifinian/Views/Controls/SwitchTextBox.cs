@@ -8,39 +8,60 @@ namespace Wifinian.Views.Controls;
 
 public class SwitchTextBox : TextBox
 {
-	private readonly DispatcherTimer _timer;
-
-	public TimeSpan HoldingDuration { get; set; } = TimeSpan.FromSeconds(1.2);
-
 	public SwitchTextBox() : base()
 	{
-		_timer = new DispatcherTimer();
-		_timer.Tick += OnTick;
+		this.PreviewMouseLeftButtonDown += (_, e) => OnDeviceDown(e.MouseDevice, true);
+		this.PreviewMouseRightButtonDown += (_, e) => OnDeviceDown(e.MouseDevice, false);
+		this.PreviewStylusDown += (_, e) => OnDeviceDown(e.StylusDevice, false);
+		this.PreviewTouchDown += (_, e) => OnDeviceDown(e.TouchDevice, false);
 
-		this.PreviewMouseLeftButtonDown += (sender, e) => OnDeviceDown(e.MouseDevice, true);
-		this.PreviewMouseRightButtonDown += (sender, e) => OnDeviceDown(e.MouseDevice, false);
-		this.PreviewStylusDown += (sender, e) => OnDeviceDown(e.StylusDevice, false);
-		this.PreviewTouchDown += (sender, e) => OnDeviceDown(e.TouchDevice, false);
-
-		this.PreviewMouseUp += (sender, e) => OnDeviceUp();
-		this.PreviewStylusUp += (sender, e) => OnDeviceUp();
-		this.PreviewTouchUp += (sender, e) => OnDeviceUp();
-		this.MouseLeave += (sender, e) => OnDeviceUp();
-		this.StylusLeave += (sender, e) => OnDeviceUp();
-		this.TouchLeave += (sender, e) => OnDeviceUp();
-	}
-
-	protected override void OnInitialized(EventArgs e)
-	{
-		base.OnInitialized(e);
+		this.PreviewMouseUp += (_, _) => OnDeviceUp();
+		this.PreviewStylusUp += (_, _) => OnDeviceUp();
+		this.PreviewTouchUp += (_, _) => OnDeviceUp();
+		this.MouseLeave += (_, _) => OnDeviceUp();
+		this.StylusLeave += (_, _) => OnDeviceUp();
+		this.TouchLeave += (_, _) => OnDeviceUp();
 
 		this.IsReadOnly = true;
 	}
+
+	public TimeSpan HoldingDuration { get; set; } = TimeSpan.FromSeconds(1.2);
 
 	private const double Tolerance = 10D;
 	private InputDevice _device;
 	private Point _startPosition;
 	private bool _isContextMenuOpenable = true;
+	private DispatcherTimer _timer;
+	private Window _window;
+
+	protected override void OnInitialized(EventArgs e)
+	{
+		base.OnInitialized(e);
+
+		this.Unloaded += OnUnloaded;
+
+		_window = Window.GetWindow(this);
+		if (_window is not null)
+			_window.Closed += OnClosed;
+	}
+
+	private void OnUnloaded(object sender, RoutedEventArgs e)
+	{
+		if (_window is not null)
+			OnClosed(_window, e);
+	}
+
+	private void OnClosed(object sender, EventArgs e)
+	{
+		((Window)sender).Closed -= OnClosed;
+		_window = null;
+
+		if (_timer is not null)
+		{
+			_timer.Stop();
+			_timer.Tick -= OnTick;
+		}
+	}
 
 	private void OnDeviceDown(InputDevice device, bool isContextMenuOpenable)
 	{
@@ -53,13 +74,13 @@ public class SwitchTextBox : TextBox
 
 		this._isContextMenuOpenable = isContextMenuOpenable;
 
-		_timer.Interval = HoldingDuration;
+		_timer ??= new DispatcherTimer(HoldingDuration, DispatcherPriority.Background, OnTick, Dispatcher.CurrentDispatcher);
 		_timer.Start();
 	}
 
 	private void OnDeviceUp()
 	{
-		_timer.Stop();
+		_timer?.Stop();
 
 		_device = null;
 	}
@@ -77,8 +98,8 @@ public class SwitchTextBox : TextBox
 		this.IsReadOnly = false;
 
 		// Get focus.
-		var window = Window.GetWindow(this);
-		FocusManager.SetFocusedElement(window, this);
+		var scope = FocusManager.GetFocusScope(this);
+		FocusManager.SetFocusedElement(scope, this);
 		Keyboard.Focus(this);
 		this.SelectionStart = 0;
 	}
@@ -107,7 +128,8 @@ public class SwitchTextBox : TextBox
 
 	protected override void OnLostFocus(RoutedEventArgs e)
 	{
-		_timer.Stop();
+		if (_window is { IsActive: false })
+			_timer?.Stop();
 
 		this.IsReadOnly = true;
 

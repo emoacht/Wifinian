@@ -16,5 +16,5 @@ public class IconButton : Button
 			"IconData",
 			typeof(Geometry),
 			typeof(IconButton),
-			new PropertyMetadata(null));
+			new PropertyMetadata(defaultValue: null));
 }

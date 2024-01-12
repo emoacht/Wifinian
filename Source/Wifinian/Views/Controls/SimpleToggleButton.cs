@@ -22,7 +22,7 @@ public class SimpleToggleButton : Button
 			"IsChecked",
 			typeof(bool),
 			typeof(SimpleToggleButton),
-			new FrameworkPropertyMetadata(false));
+			new PropertyMetadata(false));
 
 	#endregion
 

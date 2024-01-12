@@ -115,8 +115,8 @@ internal static class LanguageService
 
 	private static Dictionary<string, string> ParseLanguageContent(string source)
 	{
-		return source.Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries)
-			.Select(x => x.Split(new[] { Delimiter }, 2))
+		return source.Split(["\r\n", "\n"], StringSplitOptions.RemoveEmptyEntries)
+			.Select(x => x.Split([Delimiter], 2))
 			.Select(x => x.Select(y => y.Trim()).Where(y => !string.IsNullOrEmpty(y)).ToArray())
 			.Where(x => x.Length == 2) // Both key and value are not empty.
 			.Select(x => (key: x[0], value: x[1]))
