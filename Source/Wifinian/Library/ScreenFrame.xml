@@ -49,6 +49,11 @@
             Whether OS is Windows 11 (10.0.22000) or greater
             </summary>
         </member>
+        <member name="P:ScreenFrame.Helper.OsVersion.Is11Build22621OrGreater">
+            <summary>
+            Whether OS is Windows 11 (10.0.22621) or greater
+            </summary>
+        </member>
         <member name="T:ScreenFrame.Helper.Throttle">
             <summary>
             Rx Throttle like operator
@@ -225,7 +230,7 @@
         </member>
         <member name="F:ScreenFrame.Movers.StickWindowMover.IconPlacement.Unknown">
             <summary>
-            The location of NotifyIcon is unknown.
+            The location of NotifyIcon is unknown. Or the taskbar is hidden.
             </summary>
         </member>
         <member name="F:ScreenFrame.Movers.StickWindowMover.IconPlacement.InTaskbar">
@@ -242,11 +247,13 @@
             <summary>
             Whether to keep distance from the taskbar or the notification overflow area
             </summary>
+            <remarks>This is valid only on Windows 11.</remarks>
         </member>
         <member name="P:ScreenFrame.Movers.StickWindowMover.Distance">
             <summary>
             Distance from the taskbar or the notification overflow area
             </summary>
+            <remarks>This is valid only on Windows 11.</remarks>
         </member>
         <member name="M:ScreenFrame.Movers.StickWindowMover.TryGetAdjacentLocationToTaskbar(System.Double,System.Double,System.Windows.Rect@)">
             <summary>
@@ -283,6 +290,11 @@
             </summary>
             <param name="window">Window to be moved</param>
             <param name="notifyIcon">NotifyIcon to be referred</param>
+        </member>
+        <member name="M:ScreenFrame.Movers.SwitchWindowMover.OnClosed(System.Object,System.EventArgs)">
+            <summary>
+            Called when Closed event of window is raised.
+            </summary>
         </member>
         <member name="P:ScreenFrame.Movers.SwitchWindowMover.PivotAlignment">
             <summary>
@@ -324,6 +336,16 @@
             </summary>
             <param name="window">Window to be moved</param>
         </member>
+        <member name="M:ScreenFrame.Movers.WindowMover.OnSourceInitialized(System.Object,System.EventArgs)">
+            <summary>
+            Called when SourceInitialized event of window is raised. 
+            </summary>
+        </member>
+        <member name="M:ScreenFrame.Movers.WindowMover.OnClosed(System.Object,System.EventArgs)">
+            <summary>
+            Called when Closed event of window is raised.
+            </summary>
+        </member>
         <member name="M:ScreenFrame.Movers.WindowMover.AdjustWindow(System.Windows.DpiScale)">
             <summary>
             Adjusts DPI of window.
@@ -337,37 +359,47 @@
         </member>
         <member name="M:ScreenFrame.Movers.WindowMover.HandleWindowPosChanging(System.IntPtr,System.Int32,System.IntPtr,System.IntPtr,System.Boolean@)">
             <summary>
-            Handles window position changing event.
+            Handles event when window position is about to change.
             </summary>
         </member>
         <member name="M:ScreenFrame.Movers.WindowMover.HandleWindowPosChanged(System.IntPtr,System.Int32,System.IntPtr,System.IntPtr,System.Boolean@)">
             <summary>
-            Handles window position changed event.
+            Handles event when window position has changed.
             </summary>
         </member>
         <member name="M:ScreenFrame.Movers.WindowMover.HandleDpiChanged(System.IntPtr,System.Int32,System.IntPtr,System.IntPtr,System.Boolean@)">
             <summary>
-            Handles DPI changed event.
+            Handles event when DPI for the window has changed.
             </summary>
         </member>
         <member name="M:ScreenFrame.Movers.WindowMover.HandleDisplayChange(System.IntPtr,System.Int32,System.IntPtr,System.IntPtr,System.Boolean@)">
             <summary>
-            Handles display change event.
+            Handles event when the display resolution has changed.
+            </summary>
+        </member>
+        <member name="E:ScreenFrame.Movers.WindowMover.ForegroundWindowChanged">
+            <summary>
+            Occurs when foreground window of other processes has changed during the window is shown.
+            </summary>
+        </member>
+        <member name="M:ScreenFrame.Movers.WindowMover.HandleShowWindow(System.IntPtr,System.Int32,System.IntPtr,System.IntPtr,System.Boolean@)">
+            <summary>
+            Handles event when the window is about to be shown/hidden.
             </summary>
         </member>
         <member name="E:ScreenFrame.Movers.WindowMover.AppActivated">
             <summary>
-            Occurs when the application to which the window belongs is activated.
+            Occurs when the application to which the window belongs is about to be activated.
             </summary>
         </member>
         <member name="E:ScreenFrame.Movers.WindowMover.AppDeactivated">
             <summary>
-            Occurs when the application to which the window belongs is deactivated. 
+            Occurs when the application to which the window belongs is about to be deactivated.
             </summary>
         </member>
         <member name="M:ScreenFrame.Movers.WindowMover.HandleActivateApp(System.IntPtr,System.Int32,System.IntPtr,System.IntPtr,System.Boolean@)">
             <summary>
-            Handles application activated/deactivated event.
+            Handles event when the application is about to be activated/deactivated.
             </summary>
         </member>
         <member name="M:ScreenFrame.Movers.WindowMover.IsForeground">
@@ -459,6 +491,11 @@
         <member name="P:ScreenFrame.Painter.WindowPainter.Options">
             <summary>
             Options
+            </summary>
+        </member>
+        <member name="P:ScreenFrame.Painter.WindowPainter.Theme">
+            <summary>
+            Current theme
             </summary>
         </member>
         <member name="T:ScreenFrame.Painter.WindowPainter.BackgroundTexture">
@@ -590,8 +627,8 @@
             <summary>
             Enumerates descendant objects of a specified object.
             </summary>
-            <typeparam name="T">Type of descendant object</typeparam>
-            <param name="reference">Ancestor object</param>
+            <typeparam name="T">Type of descendant dependency object</typeparam>
+            <param name="reference">Ancestor dependency object</param>
             <returns>Enumerable collection of descendant objects</returns>
         </member>
         <member name="T:ScreenFrame.NotifyIconContainer">
@@ -635,6 +672,12 @@
             NotifyIcon text
             </summary>
         </member>
+        <member name="M:ScreenFrame.NotifyIconContainer.ShowIcon(System.String)">
+            <summary>
+            Shows NotifyIcon.
+            </summary>
+            <param name="iconPath">Path to icon for NotifyIcon</param>
+        </member>
         <member name="M:ScreenFrame.NotifyIconContainer.ShowIcon(System.String,System.String)">
             <summary>
             Shows NotifyIcon.
@@ -657,7 +700,7 @@
         </member>
         <member name="M:ScreenFrame.NotifyIconContainer.WndProc(System.Windows.Forms.Message@)">
             <summary>
-            Processes windows message sent to NotifyIcon.
+            Processes windows messages sent to NotifyIcon.
             </summary>
             <param name="m">Windows message</param>
         </member>
@@ -751,21 +794,6 @@
             Additional methods for <see cref="T:System.Windows.Media.VisualTreeHelper"/>
             </summary>
         </member>
-        <member name="F:ScreenFrame.VisualTreeHelperAddition.MONITOR_DEFAULTTO.MONITOR_DEFAULTTONULL">
-            <summary>
-            If no display monitor intersects, returns null.
-            </summary>
-        </member>
-        <member name="F:ScreenFrame.VisualTreeHelperAddition.MONITOR_DEFAULTTO.MONITOR_DEFAULTTOPRIMARY">
-            <summary>
-            If no display monitor intersects, returns a handle to the primary display monitor.
-            </summary>
-        </member>
-        <member name="F:ScreenFrame.VisualTreeHelperAddition.MONITOR_DEFAULTTO.MONITOR_DEFAULTTONEAREST">
-            <summary>
-            If no display monitor intersects, returns a handle to the display monitor that is nearest to the rectangle.
-            </summary>
-        </member>
         <member name="F:ScreenFrame.VisualTreeHelperAddition.MONITOR_DPI_TYPE.MDT_Effective_DPI">
             <summary>
             Effective DPI that incorporates accessibility overrides and matches what Desktop Window Manage (DWM) uses to scale desktop applications
@@ -827,20 +855,20 @@
         </member>
         <member name="M:ScreenFrame.VisualTreeHelperAddition.TryGetAncestor``1(System.Windows.DependencyObject,``0@)">
             <summary>
-            Attempts to get the first ancestor visual of a specified visual.
+            Attempts to get the first ancestor object of a specified object.
             </summary>
-            <typeparam name="T">Type of ancestor visual</typeparam>
-            <param name="reference">Descendant visual</param>
-            <param name="ancestor">Ancestor visual</param>
+            <typeparam name="T">Type of ancestor dependency object</typeparam>
+            <param name="reference">Descendant dependency object</param>
+            <param name="ancestor">Ancestor dependency object</param>
             <returns>True if successfully gets</returns>
         </member>
         <member name="M:ScreenFrame.VisualTreeHelperAddition.TryGetDescendant``1(System.Windows.DependencyObject,``0@)">
             <summary>
-            Attempts to get the first descendant visual of a specified visual.
+            Attempts to get the first descendant object of a specified object.
             </summary>
-            <typeparam name="T">Type of descendant visual</typeparam>
-            <param name="reference">Ancestor visual</param>
-            <param name="descendant">Descendant visual</param>
+            <typeparam name="T">Type of descendant dependency object</typeparam>
+            <param name="reference">Ancestor dependency object</param>
+            <param name="descendant">Descendant dependency object</param>
             <returns>True if successfully gets</returns>
         </member>
         <member name="T:ScreenFrame.WindowHelper">
@@ -895,6 +923,18 @@
             <param name="window">Window to be ensured</param>
             <returns>True if foreground</returns>
         </member>
+        <member name="M:ScreenFrame.WindowHelper.GetAllWindows">
+            <summary>
+            Gets all windows.
+            </summary>
+            <returns>
+            <para>parent: Parent window's identifier</para>
+            <para>child: Child window's identifier</para>
+            <para>name: Child window's class name</para>
+            <para>rect: Child window's rectangle</para>
+            </returns>
+            <remarks>This method is for research.</remarks>
+        </member>
         <member name="M:ScreenFrame.WindowHelper.TryGetTaskbar(System.Windows.Rect@,ScreenFrame.TaskbarAlignment@,System.Boolean@)">
             <summary>
             Attempts to get the information on primary taskbar.
@@ -922,6 +962,38 @@
             <param name="taskbarAlignment">Secondary taskbar alignment</param>
             <returns>True if successfully gets</returns>
             <remarks>If secondary taskbar is hidden, this method will fail.</remarks>
+        </member>
+        <member name="M:ScreenFrame.WindowHelper.TryGetStartButtonRect(System.Windows.Rect@)">
+            <summary>
+            Attempts to get the rectangle of Start button or ToolBar.
+            </summary>
+            <param name="buttonRect">Rectangle of Start button or ToolBar</param>
+            <returns>True if successfully gets</returns>
+        </member>
+        <member name="M:ScreenFrame.WindowHelper.TryGetOverflowAreaRect(System.Windows.Rect@,System.Boolean@)">
+            <summary>
+            Attempts to get the rectangle of overflow area.
+            </summary>
+            <param name="overflowAreaRect">Rectangle of overflow area</param>
+            <param name="isMarginIncluded">Whether rectangle of overflow area includes margin</param>
+            <returns>True if successfully gets</returns>
+            <remarks>
+            This method will not produce current location of overflow area until it is shown
+            in the monitor where primary taskbar currently locates. Thus, the location must be
+            verified by other means.
+            </remarks>
+        </member>
+        <member name="M:ScreenFrame.WindowHelper.TryGetSystemPrimaryTaskbar(System.Windows.Rect@,ScreenFrame.TaskbarAlignment@)">
+            <summary>
+            Attempts to get the information on primary taskbar from <see cref="T:System.Windows.SystemParameters"/>.
+            </summary>
+            <param name="taskbarRect">Primary taskbar rectange</param>
+            <param name="taskbarAlignment">Primary taskbar alignment</param>
+            <returns>True if successfully gets</returns>
+            <remarks>
+            If primary taskbar is set to auto hide, this method will fail even when primary taskbar
+            is shown temporarily.
+            </remarks>
         </member>
     </members>
 </doc>
