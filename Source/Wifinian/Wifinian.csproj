@@ -173,7 +173,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Resource Include="Resources\Icons\AppIcon.ico" />
-    <Resource Include="Resources\Icons\TrayIcon.ico" />
+    <Resource Include="Resources\Icons\DarkTrayIcon.ico" />
+    <Resource Include="Resources\Icons\LightTrayIcon.ico" />
     <Resource Include="Resources\language.ja-JP.txt" />
     <Resource Include="Resources\language.en.txt" />
   </ItemGroup>

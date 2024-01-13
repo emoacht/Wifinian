@@ -162,7 +162,11 @@ internal class AppController : DisposableBase
 
 		Settings.Current.Initiate();
 
-		NotifyIconContainer.ShowIcon("pack://application:,,,/Resources/Icons/TrayIcon.ico", ProductInfo.Title);
+		NotifyIconContainer.ShowIcon(WindowPainter.GetIconPath(), ProductInfo.Title);
+		WindowPainter.ThemeChanged += (_, _) =>
+		{
+			NotifyIconContainer.ShowIcon(WindowPainter.GetIconPath());
+		};
 
 		Profiles
 			.ObserveElementProperty(x => x.IsConnected)
