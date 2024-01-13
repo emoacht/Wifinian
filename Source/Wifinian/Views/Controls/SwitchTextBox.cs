@@ -1,130 +1,147 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
 
-namespace Wifinian.Views.Controls
+namespace Wifinian.Views.Controls;
+
+public class SwitchTextBox : TextBox
 {
-	public class SwitchTextBox : TextBox
+	public SwitchTextBox() : base()
 	{
-		private readonly DispatcherTimer _timer;
+		this.PreviewMouseLeftButtonDown += (_, e) => OnDeviceDown(e.MouseDevice, true);
+		this.PreviewMouseRightButtonDown += (_, e) => OnDeviceDown(e.MouseDevice, false);
+		this.PreviewStylusDown += (_, e) => OnDeviceDown(e.StylusDevice, false);
+		this.PreviewTouchDown += (_, e) => OnDeviceDown(e.TouchDevice, false);
 
-		public TimeSpan HoldingDuration { get; set; } = TimeSpan.FromSeconds(1.2);
+		this.PreviewMouseUp += (_, _) => OnDeviceUp();
+		this.PreviewStylusUp += (_, _) => OnDeviceUp();
+		this.PreviewTouchUp += (_, _) => OnDeviceUp();
+		this.MouseLeave += (_, _) => OnDeviceUp();
+		this.StylusLeave += (_, _) => OnDeviceUp();
+		this.TouchLeave += (_, _) => OnDeviceUp();
 
-		public SwitchTextBox() : base()
-		{
-			_timer = new DispatcherTimer();
-			_timer.Tick += OnTick;
+		this.IsReadOnly = true;
+	}
 
-			this.PreviewMouseLeftButtonDown += (sender, e) => OnDeviceDown(e.MouseDevice, true);
-			this.PreviewMouseRightButtonDown += (sender, e) => OnDeviceDown(e.MouseDevice, false);
-			this.PreviewStylusDown += (sender, e) => OnDeviceDown(e.StylusDevice, false);
-			this.PreviewTouchDown += (sender, e) => OnDeviceDown(e.TouchDevice, false);
+	public TimeSpan HoldingDuration { get; set; } = TimeSpan.FromSeconds(1.2);
 
-			this.PreviewMouseUp += (sender, e) => OnDeviceUp();
-			this.PreviewStylusUp += (sender, e) => OnDeviceUp();
-			this.PreviewTouchUp += (sender, e) => OnDeviceUp();
-			this.MouseLeave += (sender, e) => OnDeviceUp();
-			this.StylusLeave += (sender, e) => OnDeviceUp();
-			this.TouchLeave += (sender, e) => OnDeviceUp();
-		}
+	private const double Tolerance = 10D;
+	private InputDevice _device;
+	private Point _startPosition;
+	private bool _isContextMenuOpenable = true;
+	private DispatcherTimer _timer;
+	private Window _window;
 
-		protected override void OnInitialized(EventArgs e)
-		{
-			base.OnInitialized(e);
+	protected override void OnInitialized(EventArgs e)
+	{
+		base.OnInitialized(e);
 
-			this.IsReadOnly = true;
-		}
+		this.Unloaded += OnUnloaded;
 
-		private const double Tolerance = 10D;
-		private InputDevice _device;
-		private Point _startPosition;
-		private bool _isContextMenuOpenable = true;
+		_window = Window.GetWindow(this);
+		if (_window is not null)
+			_window.Closed += OnClosed;
+	}
 
-		private void OnDeviceDown(InputDevice device, bool isContextMenuOpenable)
-		{
-			if (!this.IsReadOnly)
-				return;
+	private void OnUnloaded(object sender, RoutedEventArgs e)
+	{
+		if (_window is not null)
+			OnClosed(_window, e);
+	}
 
-			this._device = device;
-			if (!TryGetDevicePosition(this._device, out _startPosition))
-				return;
+	private void OnClosed(object sender, EventArgs e)
+	{
+		((Window)sender).Closed -= OnClosed;
+		_window = null;
 
-			this._isContextMenuOpenable = isContextMenuOpenable;
-
-			_timer.Interval = HoldingDuration;
-			_timer.Start();
-		}
-
-		private void OnDeviceUp()
+		if (_timer is not null)
 		{
 			_timer.Stop();
-
-			_device = null;
+			_timer.Tick -= OnTick;
 		}
+	}
 
-		private void OnTick(object sender, EventArgs e)
+	private void OnDeviceDown(InputDevice device, bool isContextMenuOpenable)
+	{
+		if (!this.IsReadOnly)
+			return;
+
+		this._device = device;
+		if (!TryGetDevicePosition(this._device, out _startPosition))
+			return;
+
+		this._isContextMenuOpenable = isContextMenuOpenable;
+
+		_timer ??= new DispatcherTimer(HoldingDuration, DispatcherPriority.Background, OnTick, Dispatcher.CurrentDispatcher);
+		_timer.Start();
+	}
+
+	private void OnDeviceUp()
+	{
+		_timer?.Stop();
+
+		_device = null;
+	}
+
+	private void OnTick(object sender, EventArgs e)
+	{
+		_timer.Stop();
+
+		if (!TryGetDevicePosition(_device, out Point endPosition))
+			return;
+
+		if (new Vector(endPosition.X - _startPosition.X, endPosition.Y - _startPosition.Y).Length > Tolerance)
+			return;
+
+		this.IsReadOnly = false;
+
+		// Get focus.
+		var scope = FocusManager.GetFocusScope(this);
+		FocusManager.SetFocusedElement(scope, this);
+		Keyboard.Focus(this);
+		this.SelectionStart = 0;
+	}
+
+	private bool TryGetDevicePosition(InputDevice device, out Point position)
+	{
+		switch (device)
 		{
-			_timer.Stop();
+			case MouseDevice mouse:
+				position = mouse.GetPosition(this);
+				return true;
 
-			if (!TryGetDevicePosition(_device, out Point endPosition))
-				return;
+			case StylusDevice stylus:
+				position = stylus.GetPosition(this);
+				return true;
 
-			if (new Vector(endPosition.X - _startPosition.X, endPosition.Y - _startPosition.Y).Length > Tolerance)
-				return;
+			case TouchDevice touch:
+				position = touch.GetTouchPoint(this).Position;
+				return true;
 
-			this.IsReadOnly = false;
-
-			// Get focus.
-			var window = Window.GetWindow(this);
-			FocusManager.SetFocusedElement(window, this);
-			Keyboard.Focus(this);
-			this.SelectionStart = 0;
+			default:
+				position = default;
+				return false;
 		}
+	}
 
-		private bool TryGetDevicePosition(InputDevice device, out Point position)
+	protected override void OnLostFocus(RoutedEventArgs e)
+	{
+		if (_window is { IsActive: false })
+			_timer?.Stop();
+
+		this.IsReadOnly = true;
+
+		base.OnLostFocus(e);
+	}
+
+	protected override void OnContextMenuOpening(ContextMenuEventArgs e)
+	{
+		if (_isContextMenuOpenable)
 		{
-			switch (device)
-			{
-				case MouseDevice mouse:
-					position = mouse.GetPosition(this);
-					return true;
-
-				case StylusDevice stylus:
-					position = stylus.GetPosition(this);
-					return true;
-
-				case TouchDevice touch:
-					position = touch.GetTouchPoint(this).Position;
-					return true;
-
-				default:
-					position = default;
-					return false;
-			}
+			base.OnContextMenuOpening(e);
 		}
-
-		protected override void OnLostFocus(RoutedEventArgs e)
-		{
-			_timer.Stop();
-
-			this.IsReadOnly = true;
-
-			base.OnLostFocus(e);
-		}
-
-		protected override void OnContextMenuOpening(ContextMenuEventArgs e)
-		{
-			if (_isContextMenuOpenable)
-			{
-				base.OnContextMenuOpening(e);
-			}
-			_isContextMenuOpenable = true;
-		}
+		_isContextMenuOpenable = true;
 	}
 }

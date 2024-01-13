@@ -1,85 +1,81 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Wifinian.Views.Controls
+namespace Wifinian.Views.Controls;
+
+[TemplateVisualState(Name = "MovingOff", GroupName = "MovingStates")]
+[TemplateVisualState(Name = "MovingOn", GroupName = "MovingStates")]
+public class MovingControl : Control
 {
-	[TemplateVisualState(Name = "MovingOff", GroupName = "MovingStates")]
-	[TemplateVisualState(Name = "MovingOn", GroupName = "MovingStates")]
-	public class MovingControl : Control
+	public MovingControl()
+	{ }
+
+	static MovingControl()
 	{
-		public MovingControl()
-		{ }
+		UIElement.IsEnabledProperty.OverrideMetadata(
+			typeof(MovingControl),
+			new UIPropertyMetadata(
+				false,
+				async (d, e) =>
+				{
+					if (!(bool)e.NewValue)
+						return;
 
-		static MovingControl()
+					await ((MovingControl)d).ManageStateAsync();
+				}));
+	}
+
+	private TimeSpan _duration = TimeSpan.FromSeconds(1D);
+
+	public override void OnApplyTemplate()
+	{
+		base.OnApplyTemplate();
+
+		var movingDuration = this.TryFindResource("MovingDuration");
+		if (movingDuration is Duration buffer)
+			_duration = buffer.TimeSpan;
+	}
+
+	private object _blocker = new();
+	private CancellationTokenSource _source;
+
+	private async Task ManageStateAsync()
+	{
+		while (Interlocked.Exchange(ref _blocker, null) is null)
 		{
-			UIElement.IsEnabledProperty.OverrideMetadata(
-				typeof(MovingControl),
-				new UIPropertyMetadata(
-					false,
-					async (d, e) =>
-					{
-						if (!(bool)e.NewValue)
-							return;
+			if (_source?.IsCancellationRequested == false)
+				_source.Cancel();
 
-						await ((MovingControl)d).ManageStateAsync();
-					}));
+			await Task.Delay(TimeSpan.FromMilliseconds(10));
 		}
 
-		private TimeSpan _duration = TimeSpan.FromSeconds(1D);
+		if (_source?.IsCancellationRequested != false)
+			_source = new CancellationTokenSource();
 
-		public override void OnApplyTemplate()
+		UpdateState(true, true);
+
+		try
 		{
-			base.OnApplyTemplate();
-
-			var movingDuration = this.TryFindResource("MovingDuration");
-			if (movingDuration is Duration buffer)
-				_duration = buffer.TimeSpan;
+			await Task.Delay(_duration, _source.Token);
 		}
-
-		private object _blocker = new object();
-		private CancellationTokenSource _source;
-
-		private async Task ManageStateAsync()
+		catch (TaskCanceledException)
 		{
-			while (Interlocked.Exchange(ref _blocker, null) is null)
-			{
-				if (_source?.IsCancellationRequested == false)
-					_source.Cancel();
-
-				await Task.Delay(TimeSpan.FromMilliseconds(10));
-			}
-
-			if (_source?.IsCancellationRequested != false)
-				_source = new CancellationTokenSource();
-
-			UpdateState(true, true);
-
-			try
-			{
-				await Task.Delay(_duration, _source.Token);
-			}
-			catch (TaskCanceledException)
-			{
-			}
-			finally
-			{
-				UpdateState(true, false);
-
-				Interlocked.Exchange(ref _blocker, new object());
-			}
 		}
-
-		private void UpdateState(bool useTransitions, bool isRunning)
+		finally
 		{
-			var state = isRunning ? "MovingOn" : "MovingOff";
+			UpdateState(true, false);
 
-			VisualStateManager.GoToState(this, state, useTransitions);
+			Interlocked.Exchange(ref _blocker, new object());
 		}
+	}
+
+	private void UpdateState(bool useTransitions, bool isRunning)
+	{
+		var state = isRunning ? "MovingOn" : "MovingOff";
+
+		VisualStateManager.GoToState(this, state, useTransitions);
 	}
 }

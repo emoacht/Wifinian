@@ -1,87 +1,81 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace Wifinian.Views.Controls
+namespace Wifinian.Views.Controls;
+
+[TemplateVisualState(Name = "Normal", GroupName = "CommonStates")]
+[TemplateVisualState(Name = "MouseOver", GroupName = "CommonStates")]
+[TemplateVisualState(Name = "Pressed", GroupName = "CommonStates")]
+[TemplateVisualState(Name = "Disabled", GroupName = "CommonStates")]
+[TemplateVisualState(Name = "Checked", GroupName = "CommonStates")]
+public class SimpleToggleButton : Button
 {
-	[TemplateVisualState(Name = "Normal", GroupName = "CommonStates")]
-	[TemplateVisualState(Name = "MouseOver", GroupName = "CommonStates")]
-	[TemplateVisualState(Name = "Pressed", GroupName = "CommonStates")]
-	[TemplateVisualState(Name = "Disabled", GroupName = "CommonStates")]
-	[TemplateVisualState(Name = "Checked", GroupName = "CommonStates")]
-	public class SimpleToggleButton : Button
+	#region Property
+
+	public bool IsChecked
 	{
-		#region Property
+		get { return (bool)GetValue(IsCheckedProperty); }
+		set { SetValue(IsCheckedProperty, value); }
+	}
+	public static readonly DependencyProperty IsCheckedProperty =
+		DependencyProperty.Register(
+			"IsChecked",
+			typeof(bool),
+			typeof(SimpleToggleButton),
+			new PropertyMetadata(false));
 
-		public bool IsChecked
-		{
-			get { return (bool)GetValue(IsCheckedProperty); }
-			set { SetValue(IsCheckedProperty, value); }
-		}
-		public static readonly DependencyProperty IsCheckedProperty =
-			DependencyProperty.Register(
-				"IsChecked",
-				typeof(bool),
-				typeof(SimpleToggleButton),
-				new FrameworkPropertyMetadata(false));
+	#endregion
 
-		#endregion
+	public override void OnApplyTemplate()
+	{
+		base.OnApplyTemplate();
 
-		public override void OnApplyTemplate()
-		{
-			base.OnApplyTemplate();
+		//this.LayoutUpdated += (sender, e) => UpdateState(false);
+	}
 
-			//this.LayoutUpdated += (sender, e) => UpdateState(false);
-		}
+	protected override void OnClick()
+	{
+		OnToggle();
 
-		protected override void OnClick()
-		{
-			OnToggle();
+		base.OnClick();
+	}
 
-			base.OnClick();
-		}
+	protected virtual void OnToggle()
+	{
+		IsChecked = !IsChecked;
+	}
 
-		protected virtual void OnToggle()
-		{
-			IsChecked = !IsChecked;
-		}
+	protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+	{
+		base.OnPropertyChanged(e);
 
-		protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
-		{
-			base.OnPropertyChanged(e);
+		if ((e.Property == IsMouseOverProperty) ||
+			(e.Property == IsKeyboardFocusedProperty) ||
+			(e.Property == IsPressedProperty) ||
+			(e.Property == IsEnabledProperty) ||
+			(e.Property == IsCheckedProperty))
+			UpdateState(true);
+	}
 
-			if ((e.Property == IsMouseOverProperty) ||
-				(e.Property == IsKeyboardFocusedProperty) ||
-				(e.Property == IsPressedProperty) ||
-				(e.Property == IsEnabledProperty) ||
-				(e.Property == IsCheckedProperty))
-				UpdateState(true);
-		}
+	protected virtual void UpdateState(bool useTransitions)
+	{
+		VisualStateManager.GoToState(this, GetVisualStateName(), useTransitions);
+	}
 
-		protected virtual void UpdateState(bool useTransitions)
-		{
-			VisualStateManager.GoToState(this, GetVisualStateName(), useTransitions);
-		}
+	private string GetVisualStateName()
+	{
+		if (!IsEnabled)
+			return "Disabled";
 
-		private string GetVisualStateName()
-		{
-			if (!IsEnabled)
-				return "Disabled";
+		if (IsChecked)
+			return "Checked";
 
-			if (IsChecked)
-				return "Checked";
+		if (IsPressed)
+			return "Pressed";
 
-			if (IsPressed)
-				return "Pressed";
+		if (IsMouseOver)
+			return "MouseOver";
 
-			if (IsMouseOver)
-				return "MouseOver";
-
-			return "Normal";
-		}
+		return "Normal";
 	}
 }
