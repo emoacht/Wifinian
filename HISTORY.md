@@ -1,5 +1,13 @@
 ﻿## History
 
+Ver 3.5 2024-7-6
+
+ - Add support of 6GHz band
+
+Ver 3.4 2024-1-14
+
+ - Modify icons
+
 Ver 3.3 2022-8-2
 
  - Modify to show Wi-Fi protocol
