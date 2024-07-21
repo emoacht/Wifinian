@@ -59,6 +59,11 @@
             Rx Throttle like operator
             </summary>
         </member>
+        <member name="T:ScreenFrame.Helper.Sample">
+            <summary>
+            Rx Sample like operator
+            </summary>
+        </member>
         <member name="T:ScreenFrame.Movers.BasicWindowMover">
             <summary>
             Mover of <see cref="T:System.Windows.Window"/> which implements basic functions
@@ -271,7 +276,7 @@
         </member>
         <member name="P:ScreenFrame.Movers.SwitchWindowMover.IsDeparted">
             <summary>
-            Whether the window is departed from taskbar
+            Whether the window is departed from the taskbar
             </summary>
         </member>
         <member name="E:ScreenFrame.Movers.SwitchWindowMover.IsDepartedChanged">
@@ -327,7 +332,7 @@
         </member>
         <member name="P:ScreenFrame.Movers.WindowMover.Dpi">
             <summary>
-            Per-Monitor DPI of window
+            Per-Monitor DPI of the window
             </summary>
         </member>
         <member name="M:ScreenFrame.Movers.WindowMover.#ctor(System.Windows.Window)">
@@ -348,7 +353,7 @@
         </member>
         <member name="M:ScreenFrame.Movers.WindowMover.AdjustWindow(System.Windows.DpiScale)">
             <summary>
-            Adjusts DPI of window.
+            Adjusts DPI of the window.
             </summary>
             <param name="dpi">DPI information</param>
         </member>
@@ -369,7 +374,7 @@
         </member>
         <member name="M:ScreenFrame.Movers.WindowMover.HandleDpiChanged(System.IntPtr,System.Int32,System.IntPtr,System.IntPtr,System.Boolean@)">
             <summary>
-            Handles event when DPI for the window has changed.
+            Handles event when DPI of the window has changed.
             </summary>
         </member>
         <member name="M:ScreenFrame.Movers.WindowMover.HandleDisplayChange(System.IntPtr,System.Int32,System.IntPtr,System.IntPtr,System.Boolean@)">
@@ -612,11 +617,11 @@
             Utility methods for cursor
             </summary>
         </member>
-        <member name="M:ScreenFrame.CursorHelper.GetCursorPoint">
+        <member name="M:ScreenFrame.CursorHelper.GetCursorLocation">
             <summary>
-            Gets the current point of cursor.
+            Gets the current location of cursor.
             </summary>
-            <returns>The point of cursor</returns>
+            <returns>Location of cursor</returns>
         </member>
         <member name="T:ScreenFrame.LogicalTreeHelperAddition">
             <summary>
@@ -721,6 +726,16 @@
             Occurs when mouse right button is clicked while mouse pointer is over NotifyIcon.
             </summary>
         </member>
+        <member name="E:ScreenFrame.NotifyIconContainer.MouseHover">
+            <summary>
+            Occurs when mouse pointer entered the rectangle of NotifyIcon.
+            </summary>
+        </member>
+        <member name="E:ScreenFrame.NotifyIconContainer.MouseUnhover">
+            <summary>
+            Occurs when mouse pointer left the rectangle of NotifyIcon.
+            </summary>
+        </member>
         <member name="M:ScreenFrame.NotifyIconContainer.Dispose">
             <summary>
             Public implementation of Dispose pattern
@@ -738,12 +753,13 @@
             <param name="notifyIcon">NotifyIcon</param>
             <returns>True if successfully sets</returns>
         </member>
-        <member name="M:ScreenFrame.NotifyIconHelper.TryGetNotifyIconClickedPoint(System.Windows.Forms.NotifyIcon,System.Windows.Point@)">
+        <member name="M:ScreenFrame.NotifyIconHelper.TryGetNotifyIconCursorLocation(System.Windows.Forms.NotifyIcon,System.Windows.Point@,System.Boolean)">
             <summary>
-            Attempts to get the point where a specified NotifyIcon is clicked.
+            Attempts to get the location of cursor when cursor is over a specified NotifyIcon.
             </summary>
             <param name="notifyIcon">NotifyIcon</param>
-            <param name="point">Clicked point</param>
+            <param name="location">Location of cursor</param>
+            <param name="isSubstitutable">Whether to substitute the NotifyIcon for cursor when cursor is not over the NotifyIcon</param>
             <returns>True if successfully gets</returns>
             <remarks>MouseEventArgs.Location property of MouseClick event does not contain data.</remarks>
         </member>
@@ -928,18 +944,25 @@
             Gets all windows.
             </summary>
             <returns>
-            <para>parent: Parent window's identifier</para>
-            <para>child: Child window's identifier</para>
-            <para>name: Child window's class name</para>
-            <para>rect: Child window's rectangle</para>
+            <para>generation: Window's generation</para>
+            <para>name: Window's class name</para>
+            <para>rect: Window's rectangle</para>
             </returns>
-            <remarks>This method is for research.</remarks>
+            <remarks>This method is for research purposes.</remarks>
+        </member>
+        <member name="M:ScreenFrame.WindowHelper.TryGetTaskbar(System.Windows.Rect@,ScreenFrame.TaskbarAlignment@)">
+            <summary>
+            Attempts to get the information on primary taskbar.
+            </summary>
+            <param name="taskbarRect">Primary taskbar rectangle</param>
+            <param name="taskbarAlignment">Primary taskbar alignment</param>
+            <returns>True if successfully gets</returns>
         </member>
         <member name="M:ScreenFrame.WindowHelper.TryGetTaskbar(System.Windows.Rect@,ScreenFrame.TaskbarAlignment@,System.Boolean@)">
             <summary>
             Attempts to get the information on primary taskbar.
             </summary>
-            <param name="taskbarRect">Primary taskbar rectange</param>
+            <param name="taskbarRect">Primary taskbar rectangle</param>
             <param name="taskbarAlignment">Primary taskbar alignment</param>
             <param name="isShown">Whether primary taskbar is shown or hidden</param>
             <returns>True if successfully gets</returns>
@@ -963,13 +986,6 @@
             <returns>True if successfully gets</returns>
             <remarks>If secondary taskbar is hidden, this method will fail.</remarks>
         </member>
-        <member name="M:ScreenFrame.WindowHelper.TryGetStartButtonRect(System.Windows.Rect@)">
-            <summary>
-            Attempts to get the rectangle of Start button or ToolBar.
-            </summary>
-            <param name="buttonRect">Rectangle of Start button or ToolBar</param>
-            <returns>True if successfully gets</returns>
-        </member>
         <member name="M:ScreenFrame.WindowHelper.TryGetOverflowAreaRect(System.Windows.Rect@,System.Boolean@)">
             <summary>
             Attempts to get the rectangle of overflow area.
@@ -987,7 +1003,7 @@
             <summary>
             Attempts to get the information on primary taskbar from <see cref="T:System.Windows.SystemParameters"/>.
             </summary>
-            <param name="taskbarRect">Primary taskbar rectange</param>
+            <param name="taskbarRect">Primary taskbar rectangle</param>
             <param name="taskbarAlignment">Primary taskbar alignment</param>
             <returns>True if successfully gets</returns>
             <remarks>
