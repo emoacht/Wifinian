@@ -25,6 +25,8 @@ WifinianはWi-Fi接続をユーザーが積極的にコントロールできるW
 
  * Windows 7以降
  * .NET Framework 4.8
+ * Windows 11 (24H2) 以降では、プライバシーとセキュリティ > 位置情報の設定で位置情報へのアクセスがオンになっていることが必要。
+ <img src="Images/Privacy_location_jp.png" alt="Location" width="600">
 
 ## ダウンロード
 
