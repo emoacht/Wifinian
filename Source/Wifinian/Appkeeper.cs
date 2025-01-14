@@ -38,7 +38,14 @@ public class AppKeeper : DisposableBase
 			h => AppDomain.CurrentDomain.UnhandledException -= h)
 			.Select(x => (Exception)x.EventArgs.ExceptionObject);
 		Observable.Merge(dispatcherUnhandled, taskUnobserved, appDomainUnhandled)
-			.Subscribe(x => Logger.RecordException(x))
+			.Take(1)
+			.Subscribe(x =>
+			{
+				if (LocationInfo.PromptOpenLocation(x))
+					return;
+
+				Logger.RecordException(x);
+			})
 			.AddTo(this.Subscription);
 
 		#endregion

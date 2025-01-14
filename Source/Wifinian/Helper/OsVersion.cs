@@ -34,6 +34,11 @@ internal static class OsVersion
 	/// </summary>
 	public static bool Is11OrGreater => IsEqualToOrGreaterThan(10, 0, 22000);
 
+	/// <summary>
+	/// Whether OS is Windows 11 (10.0.26100) or greater
+	/// </summary>
+	public static bool Is11Build26100OrGreater => IsEqualToOrGreaterThan(10, 0, 26100);
+
 	#region Cache
 
 	private static readonly Dictionary<string, bool> _cache = [];

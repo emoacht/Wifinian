@@ -99,6 +99,7 @@
     <Compile Include="Models\Wlan\ProfileItem.cs" />
     <Compile Include="Models\AppDataService.cs" />
     <Compile Include="Models\LanguageService.cs" />
+    <Compile Include="Models\LocationInfo.cs" />
     <Compile Include="Models\Logger.cs" />
     <Compile Include="Models\ProductInfo.cs" />
     <Compile Include="Models\Settings.cs" />

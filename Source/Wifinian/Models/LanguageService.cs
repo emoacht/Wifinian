@@ -39,6 +39,7 @@ internal static class LanguageService
 	// Message
 	public static string NotWorkable => GetContentValue();
 	public static string RecordException => GetContentValue();
+	public static string OpenLocation => GetContentValue();
 
 	#endregion
 

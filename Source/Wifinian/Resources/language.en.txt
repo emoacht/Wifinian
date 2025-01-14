@@ -21,3 +21,4 @@ Close=Close
 [Message]
 NotWorkable=Can not obtain information on Wi-Fi connections.
 RecordException=An unexpected problem occurred. Save exception log on Desktop?
+OpenLocation=On Windows 11 24H2 or newer, to use Wi-Fi functionality, the permission for this app to access location information is required. Open Privacy & security > Location settings?
