@@ -1,5 +1,9 @@
 ﻿## History
 
+Ver 3.6 2025-1-14
+
+ - Add notification for Windows 11 24H2
+
 Ver 3.5 2024-7-6
 
  - Add support of 6GHz band
