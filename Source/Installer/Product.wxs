@@ -1,10 +1,8 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-  <Product Id="*" Name="Wifinian" Manufacturer="emoacht" Version="3.6.0"
+﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
+     xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
+  <Package Name="Wifinian" Manufacturer="emoacht" Version="3.6.0"
            Language="1033" Codepage="1252" UpgradeCode="{A8357D71-600C-462A-AEEE-BF1B988DD2E4}">
-    <Package Id="*" InstallerVersion="500" Compressed="yes"
-             InstallScope="perMachine"  InstallPrivileges="elevated"
-             Description="Installer for Wifinian"/>
+    <SummaryInformation Description="Installer for Wifinian"/>
 
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed."/>
 
@@ -14,31 +12,31 @@
 
     <!-- UI -->
     <Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR"/>
+
     <UI>
-      <UIRef Id="WixUI_InstallDir"/>
+      <ui:WixUI Id="WixUI_InstallDir"/>
       <UIRef Id="WixUI_ErrorProgressText"/>
 
       <!-- Skip License Agreement Dialog -->
-      <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="InstallDirDlg" Order="2">1</Publish>
-      <Publish Dialog="InstallDirDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg" Order="2">1</Publish>
+      <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="InstallDirDlg" Order="2"/>
+      <Publish Dialog="InstallDirDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg" Order="2"/>
     </UI>
+
     <WixVariable Id="WixUIBannerBmp" Value="Resources\banner.png"/>
     <WixVariable Id="WixUIDialogBmp" Value="Resources\dialog.png"/>
 
-    <Directory Id="TARGETDIR" Name="SourceDir">
-      <!-- Program Files -->
-      <Directory Id="ProgramFilesFolder">
-        <Directory Id="INSTALLDIR" Name="$(var.Wifinian.ProjectName)"/>
-      </Directory>
+    <!-- Program Files -->
+    <StandardDirectory Id="ProgramFilesFolder">
+      <Directory Id="INSTALLDIR" Name="$(var.Wifinian.ProjectName)"/>
+    </StandardDirectory>
 
-      <!-- Program Menu -->
-      <Directory Id="ProgramMenuFolder"/>
+    <!-- Program Menu -->
+    <StandardDirectory Id="ProgramMenuFolder"/>
 
-      <!-- Local AppData -->
-      <Directory Id="LocalAppDataFolder">
-        <Directory Id="ApplicationLocalAppDataFolder" Name="$(var.Wifinian.ProjectName)"/>
-      </Directory>
-    </Directory>
+    <!-- Local AppData -->
+    <StandardDirectory Id="LocalAppDataFolder">
+      <Directory Id="ApplicationLocalAppDataFolder" Name="$(var.Wifinian.ProjectName)"/>
+    </StandardDirectory>    
 
     <DirectoryRef Id="INSTALLDIR">
       <Component Id="MainExecutable" Guid="{55649EB0-5DB2-4466-A042-969BF97139B0}">
@@ -122,15 +120,15 @@
               Source="$(var.Wifinian.TargetDir)" Name="StartupAgency.dll" KeyPath="yes"/>
       </Component>
 
-      <Component Id="VisualManifest" Guid="{4DD773D0-D642-40DC-9576-D535D0AF89EB}">
-        <Condition><![CDATA[VEM = "yes"]]></Condition>
+      <Component Id="VisualManifest" Guid="{4DD773D0-D642-40DC-9576-D535D0AF89EB}"
+                 Condition="VEM = &quot;yes&quot;">        
         <File Id="VisualManifest"
               Source="$(var.Wifinian.TargetDir)" Name="$(var.Wifinian.TargetName).VisualElementsManifest.xml" KeyPath="yes"/>
       </Component>
     </DirectoryRef>
 
     <!-- Shortcut in Program Menu -->
-    <DirectoryRef Id="ProgramMenuFolder">
+    <StandardDirectory Id="ProgramMenuFolder">
       <Component Id="ApplicationShortcut" Guid="{CA94F3D2-1BB8-4581-9B37-BA3C31049DC4}">
         <Shortcut Id="ApplicationProgramMenuShortcut" Name="$(var.Wifinian.ProjectName)"
                   Target="[#MainExecutable]" WorkingDirectory="INSTALLDIR"
@@ -140,7 +138,7 @@
         <RegistryValue Root="HKCU" Key="Software\[ProductName]"
                        Name="ApplicationShortcut" Type="integer" Value="1" KeyPath="yes"/>
       </Component>
-    </DirectoryRef>
+    </StandardDirectory>
 
     <!-- Working Folder in Local AppData -->
     <DirectoryRef Id="ApplicationLocalAppDataFolder">
@@ -183,7 +181,8 @@
     <CustomAction Id="CleanCurrentUserRun" Directory="TARGETDIR" Execute="immediate" Return="ignore"
                   ExeCommand="[SystemFolder]reg.exe delete HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v [ProductName] /f"/>
     <InstallExecuteSequence>
-      <Custom Action="CleanCurrentUserRun" After="InstallFinalize">(NOT UPGRADINGPRODUCTCODE) AND (REMOVE="ALL")</Custom>
+      <Custom Action="CleanCurrentUserRun" After="InstallFinalize"
+              Condition="(NOT UPGRADINGPRODUCTCODE) AND (REMOVE=&quot;ALL&quot;)"/>
     </InstallExecuteSequence>
-  </Product>
+  </Package>
 </Wix>
