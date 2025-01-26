@@ -40,7 +40,7 @@ Functions:
    ```
 
  * Other:<br>
-:floppy_disk: [Installer](https://github.com/emoacht/Wifinian/releases/download/3.6.0-Installer/WifinianInstaller360.zip)
+:floppy_disk: [Installer](https://github.com/emoacht/Wifinian/releases/download/3.7.0-Installer/WifinianInstaller370.zip)
 
 ## Install/Uninstall
 
