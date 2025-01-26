@@ -1,5 +1,9 @@
 ﻿## History
 
+Ver 3.7 2025-1-25
+
+ - Update WPA3 authentications
+
 Ver 3.6 2025-1-14
 
  - Add notification for Windows 11 24H2
