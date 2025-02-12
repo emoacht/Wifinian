@@ -1,6 +1,6 @@
 ﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
      xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
-  <Package Name="Wifinian" Manufacturer="emoacht" Version="3.7.0"
+  <Package Name="Wifinian" Manufacturer="emoacht" Version="3.7.1"
            Language="1033" Codepage="1252" UpgradeCode="{A8357D71-600C-462A-AEEE-BF1B988DD2E4}">
     <SummaryInformation Description="Installer for Wifinian"/>
 
