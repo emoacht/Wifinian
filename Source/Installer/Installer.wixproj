@@ -30,4 +30,6 @@
     <Content Include="Resources\banner.png" />
     <Content Include="Resources\dialog.png" />
   </ItemGroup>
+
+  <Target Name="CollectSuggestedVisualStudioComponentIds" />
 </Project>
