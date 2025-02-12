@@ -25,8 +25,8 @@ Functions:
 
  * Windows 7 or newer
  * .NET Framework 4.8
- * On Windows 11 (24H2) or newer, access to the location information in Privacy & security > Location settings need to be turned on.
- <img src="Images/Privacy_location_en.png" alt="Location" width="600">
+ * On Windows 11 (24H2) or newer, in Privacy & security > Location settings, access to location information needs to be turned on.
+  <img src="Images/Privacy_location_en.png" alt="Location" width="600">
  
 ## Download
 
