@@ -1,0 +1,67 @@
+﻿<Window x:Class="WiFiAdapterTest.MainWindow"
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:vm="clr-namespace:WiFiAdapterTest.ViewModels"
+		xmlns:cv="clr-namespace:WiFiAdapterTest.Converters"
+		Title="WiFiAdapter Test"
+		Width="900" Height="400">
+	<Window.DataContext>
+		<vm:MainWindowViewModel/>
+	</Window.DataContext>
+	<Window.Resources>
+		<cv:PhyKindConverter x:Key="PhyKindConverter"/>
+	</Window.Resources>
+
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="Auto"/>
+		</Grid.ColumnDefinitions>
+
+		<DataGrid Grid.Column="0"
+				  ItemsSource="{Binding Networks}"
+				  SelectedItem="{Binding SelectedNetwork, Mode=TwoWay}"
+				  AutoGenerateColumns="False">
+			<DataGrid.Columns>
+				<DataGridCheckBoxColumn Header="Connected" Binding="{Binding IsConnected, Mode=OneWay}" IsReadOnly="True"/>
+				<DataGridTextColumn Header="SSID" Binding="{Binding Ssid, Mode=OneWay}"/>
+				<DataGridTextColumn Header="BSSID" Binding="{Binding Bssid, Mode=OneWay}"/>
+				<DataGridTextColumn Header="BSS Type" Binding="{Binding NetworkKind, Mode=OneWay}"/>
+				<DataGridTextColumn Header="PHY Type" Binding="{Binding PhyKind, Mode=OneWay, StringFormat=11{0}, Converter={StaticResource PhyKindConverter}}"/>
+				<DataGridTextColumn Header="Frequency" Binding="{Binding Frequency, Mode=OneWay}"/>
+				<DataGridTextColumn Header="Authentication" Binding="{Binding Authentication, Mode=OneWay}"/>
+				<DataGridTextColumn Header="Encryption" Binding="{Binding Encryption, Mode=OneWay}"/>
+				<DataGridTextColumn Header="RSSI" Binding="{Binding Rssi, Mode=OneWay}"/>
+				<DataGridTemplateColumn Header="Signal Bars">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="Auto"/>
+									<ColumnDefinition Width="*"/>
+								</Grid.ColumnDefinitions>
+								<TextBlock Grid.Column="0" Margin="2,0" Text="{Binding SignalBars, Mode=OneWay}"/>
+								<ProgressBar Grid.Column="1" Maximum="5" Minimum="0" Value="{Binding SignalBars, Mode=OneWay}"/>
+							</Grid>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+				</DataGridTemplateColumn>
+			</DataGrid.Columns>
+		</DataGrid>
+
+		<Grid Grid.Column="1"
+			  Width="120">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="40"/>
+				<RowDefinition Height="20"/>
+				<RowDefinition Height="40"/>
+				<RowDefinition Height="40"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+
+			<Button Grid.Row="0" Content="Update" Click="Update_Click"/>
+			<Button Grid.Row="2" Content="Connect" Click="Connect_Click"/>
+			<Button Grid.Row="3" Content="Disconnect" Click="Disconnect_Click"/>
+		</Grid>
+	</Grid>
+</Window>
