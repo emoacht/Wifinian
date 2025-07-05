@@ -35,6 +35,7 @@ internal class NetshWorker : IWlanWorker
 	public event EventHandler<InterfaceChangedEventArgs> InterfaceChanged;
 	public event EventHandler<ConnectionChangedEventArgs> ConnectionChanged;
 	public event EventHandler<ProfileChangedEventArgs> ProfileChanged;
+	public event EventHandler<SignalQualityChangedEventArgs> SignalQualityChanged;
 
 	#region Scan networks
 
@@ -44,8 +45,7 @@ internal class NetshWorker : IWlanWorker
 		await DeferAsync(() =>
 		{
 			NetworkRefreshed?.Invoke(this, EventArgs.Empty);
-			AvailabilityChanged?.Invoke(this, new AvailabilityChangedEventArgs(Guid.Empty, default));
-			InterfaceChanged?.Invoke(this, new InterfaceChangedEventArgs(Guid.Empty, default));
+			AvailabilityChanged?.Invoke(this, MockHelper.GetAvailabilityChangedEventArgs(Guid.Empty));
 		});
 	}
 
@@ -125,7 +125,7 @@ internal class NetshWorker : IWlanWorker
 		if (!await Netsh.SetProfileParameterAsync(item.InterfaceName, item.Name, item.IsAutoConnectEnabled, item.IsAutoSwitchEnabled))
 			return false;
 
-		await DeferAsync(() => ProfileChanged?.Invoke(this, new ProfileChangedEventArgs(Guid.Empty, default)));
+		await DeferAsync(() => ProfileChanged?.Invoke(this, MockHelper.GetProfileChangedEventArgs(item.InterfaceId)));
 		return true;
 	}
 
@@ -139,7 +139,7 @@ internal class NetshWorker : IWlanWorker
 		if (!await Netsh.SetProfilePositionAsync(item.InterfaceName, item.Name, position))
 			return false;
 
-		await DeferAsync(() => ProfileChanged?.Invoke(this, new ProfileChangedEventArgs(Guid.Empty, default)));
+		await DeferAsync(() => ProfileChanged?.Invoke(this, MockHelper.GetProfileChangedEventArgs(item.InterfaceId)));
 		return true;
 	}
 
@@ -156,7 +156,7 @@ internal class NetshWorker : IWlanWorker
 		if (!await Netsh.DeleteProfileAsync(item.InterfaceName, item.Name))
 			return false;
 
-		await DeferAsync(() => ProfileChanged?.Invoke(this, new ProfileChangedEventArgs(Guid.Empty, default)));
+		await DeferAsync(() => ProfileChanged?.Invoke(this, MockHelper.GetProfileChangedEventArgs(item.InterfaceId)));
 		return true;
 	}
 
@@ -171,7 +171,7 @@ internal class NetshWorker : IWlanWorker
 		if (!await Netsh.ConnectNetworkAsync(item.InterfaceName, item.Name))
 			return false;
 
-		await DeferAsync(() => ConnectionChanged?.Invoke(this, new ConnectionChangedEventArgs(Guid.Empty, default, null)));
+		await DeferAsync(() => ConnectionChanged?.Invoke(this, MockHelper.GetConnectionChangedEventArgs(item.InterfaceId)));
 		return true;
 	}
 
@@ -182,7 +182,7 @@ internal class NetshWorker : IWlanWorker
 		if (!await Netsh.DisconnectNetworkAsync(item.InterfaceName))
 			return false;
 
-		await DeferAsync(() => ConnectionChanged?.Invoke(this, new ConnectionChangedEventArgs(Guid.Empty, default, null)));
+		await DeferAsync(() => ConnectionChanged?.Invoke(this, MockHelper.GetConnectionChangedEventArgs(item.InterfaceId)));
 		return true;
 	}
 
