@@ -82,6 +82,12 @@ internal class NativeWifiWorker : IWlanWorker
 		remove { if (IsWorkable) { _player.ProfileChanged -= value; } }
 	}
 
+	public event EventHandler<SignalQualityChangedEventArgs> SignalQualityChanged
+	{
+		add { if (IsWorkable) { _player.SignalQualityChanged += value; } }
+		remove { if (IsWorkable) { _player.SignalQualityChanged -= value; } }
+	}
+
 	#region Scan networks
 
 	public Task ScanNetworkAsync(TimeSpan timeout)
@@ -105,8 +111,8 @@ internal class NativeWifiWorker : IWlanWorker
 
 		return profilePacks.Select(x => new NativeWifiProfileItem(
 			name: x.Name,
-			interfaceId: x.Interface.Id,
-			interfaceDescription: x.Interface.Description,
+			interfaceId: x.InterfaceInfo.Id,
+			interfaceDescription: x.InterfaceInfo.Description,
 			profileType: x.ProfileType,
 			document: x.Document,
 			position: x.Position,

@@ -36,6 +36,7 @@ internal class MockWorker : IWlanWorker
 	public event EventHandler<InterfaceChangedEventArgs> InterfaceChanged;
 	public event EventHandler<ConnectionChangedEventArgs> ConnectionChanged;
 	public event EventHandler<ProfileChangedEventArgs> ProfileChanged;
+	public event EventHandler<SignalQualityChangedEventArgs> SignalQualityChanged;
 
 	private List<ProfileItem> _sourceProfiles;
 	private static readonly Lazy<Random> _random = new(() => new Random());
@@ -47,8 +48,7 @@ internal class MockWorker : IWlanWorker
 		deferTask = DeferAsync(() =>
 		{
 			NetworkRefreshed?.Invoke(this, EventArgs.Empty);
-			AvailabilityChanged?.Invoke(this, new AvailabilityChangedEventArgs(Guid.Empty, default));
-			InterfaceChanged?.Invoke(this, new InterfaceChangedEventArgs(Guid.Empty, default));
+			AvailabilityChanged?.Invoke(this, MockHelper.GetAvailabilityChangedEventArgs(Guid.Empty));
 		});
 	}
 
@@ -75,7 +75,7 @@ internal class MockWorker : IWlanWorker
 		targetProfile.IsAutoConnectEnabled = profileItem.IsAutoConnectEnabled;
 		targetProfile.IsAutoSwitchEnabled = profileItem.IsAutoSwitchEnabled;
 
-		deferTask = DeferAsync(() => ProfileChanged?.Invoke(this, new ProfileChangedEventArgs(Guid.Empty, default)));
+		deferTask = DeferAsync(() => ProfileChanged?.Invoke(this, MockHelper.GetProfileChangedEventArgs(targetProfile.InterfaceId)));
 		return Task.FromResult(true);
 	}
 
@@ -102,7 +102,7 @@ internal class MockWorker : IWlanWorker
 		int index = 0;
 		targetProfiles.ForEach(x => x.Position = index++);
 
-		deferTask = DeferAsync(() => ProfileChanged?.Invoke(this, new ProfileChangedEventArgs(Guid.Empty, default)));
+		deferTask = DeferAsync(() => ProfileChanged?.Invoke(this, MockHelper.GetProfileChangedEventArgs(targetProfile.InterfaceId)));
 		return Task.FromResult(true);
 	}
 
@@ -132,7 +132,7 @@ internal class MockWorker : IWlanWorker
 		_sourceProfiles.Remove(targetProfile);
 		_sourceProfiles.Add(renamedProfile);
 
-		deferTask = DeferAsync(() => ProfileChanged?.Invoke(this, new ProfileChangedEventArgs(Guid.Empty, default)));
+		deferTask = DeferAsync(() => ProfileChanged?.Invoke(this, MockHelper.GetProfileChangedEventArgs(targetProfile.InterfaceId)));
 		return Task.FromResult(true);
 	}
 
@@ -141,7 +141,7 @@ internal class MockWorker : IWlanWorker
 		if (!_sourceProfiles.Remove(profileItem))
 			return Task.FromResult(false);
 
-		deferTask = DeferAsync(() => ProfileChanged?.Invoke(this, new ProfileChangedEventArgs(Guid.Empty, default)));
+		deferTask = DeferAsync(() => ProfileChanged?.Invoke(this, MockHelper.GetProfileChangedEventArgs(profileItem.InterfaceId)));
 		return Task.FromResult(true);
 	}
 
@@ -160,7 +160,7 @@ internal class MockWorker : IWlanWorker
 
 		targetProfiles.ForEach(x => x.IsConnected = false);
 
-		deferTask = DeferAsync(() => ConnectionChanged?.Invoke(this, new ConnectionChangedEventArgs(Guid.Empty, default, null)));
+		deferTask = DeferAsync(() => ConnectionChanged?.Invoke(this, MockHelper.GetConnectionChangedEventArgs(targetProfile.InterfaceId)));
 		return Task.FromResult(true);
 	}
 
@@ -172,7 +172,7 @@ internal class MockWorker : IWlanWorker
 
 		targetProfile.IsConnected = false;
 
-		deferTask = DeferAsync(() => ConnectionChanged?.Invoke(this, new ConnectionChangedEventArgs(Guid.Empty, default, null)));
+		deferTask = DeferAsync(() => ConnectionChanged?.Invoke(this, MockHelper.GetConnectionChangedEventArgs(targetProfile.InterfaceId)));
 		return Task.FromResult(true);
 	}
 
@@ -327,4 +327,42 @@ internal class MockWorker : IWlanWorker
 	}
 
 	#endregion
+}
+
+internal static class MockHelper
+{
+	public static AvailabilityChangedEventArgs GetAvailabilityChangedEventArgs(Guid interfaceId)
+	{
+		Type type = typeof(AvailabilityChangedEventArgs);
+		var constructor = type.GetConstructor([typeof(Guid), typeof(AvailabilityChangedState)]);
+		return (AvailabilityChangedEventArgs)constructor.Invoke([interfaceId, default(AvailabilityChangedState)]);
+	}
+
+	public static InterfaceChangedEventArgs GetInterfaceChangedEventArgs(Guid interfaceId)
+	{
+		Type type = typeof(InterfaceChangedEventArgs);
+		var constructor = type.GetConstructor([typeof(Guid), typeof(InterfaceChangedState)]);
+		return (InterfaceChangedEventArgs)constructor.Invoke([interfaceId, default(InterfaceChangedState)]);
+	}
+
+	public static ProfileChangedEventArgs GetProfileChangedEventArgs(Guid interfaceId)
+	{
+		Type type = typeof(ProfileChangedEventArgs);
+		var constructor = type.GetConstructor([typeof(Guid), typeof(ProfileChangedState)]);
+		return (ProfileChangedEventArgs)constructor.Invoke([interfaceId, default(ProfileChangedState)]);
+	}
+
+	public static ConnectionChangedEventArgs GetConnectionChangedEventArgs(Guid interfaceId)
+	{
+		Type type = typeof(ConnectionChangedEventArgs);
+		var constructor = type.GetConstructor([typeof(Guid), typeof(ConnectionChangedState), typeof(ConnectionNotificationData)]);
+		return (ConnectionChangedEventArgs)constructor.Invoke([interfaceId, default(ConnectionChangedState), null]);
+	}
+
+	public static SignalQualityChangedEventArgs GetSignalQualityChangedEventArgs(Guid interfaceId)
+	{
+		Type type = typeof(SignalQualityChangedEventArgs);
+		var constructor = type.GetConstructor([typeof(Guid), typeof(int)]);
+		return (SignalQualityChangedEventArgs)constructor.Invoke([interfaceId, 0]);
+	}
 }

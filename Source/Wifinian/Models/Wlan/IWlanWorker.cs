@@ -14,6 +14,7 @@ internal interface IWlanWorker : IDisposable
 	event EventHandler<InterfaceChangedEventArgs> InterfaceChanged;
 	event EventHandler<ConnectionChangedEventArgs> ConnectionChanged;
 	event EventHandler<ProfileChangedEventArgs> ProfileChanged;
+	event EventHandler<SignalQualityChangedEventArgs> SignalQualityChanged;
 
 	Task ScanNetworkAsync(TimeSpan timeout);
 
