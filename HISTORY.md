@@ -1,5 +1,9 @@
 ﻿## History
 
+Ver 3.8 2025-7-6
+
+ - Modify to update signal of connected network in real time
+
 Ver 3.7 2025-1-25
 
  - Update WPA3 authentications

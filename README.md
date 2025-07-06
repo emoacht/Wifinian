@@ -40,7 +40,7 @@ Functions:
    ```
 
  * Other:<br>
-:floppy_disk: [Installer](https://github.com/emoacht/Wifinian/releases/download/3.7.1-Installer/WifinianInstaller371.zip)
+:floppy_disk: [Installer](https://github.com/emoacht/Wifinian/releases/download/3.8.0-Installer/WifinianInstaller380.zip)
 
 ## Install/Uninstall
 
@@ -89,19 +89,3 @@ In such case, please note the following:
 ## Developer
 
  - emoacht (emotom[atmark]pobox.com)
-
-_____
-
-### How to delete wireless profiles from OS's GUI
-
-The GUI to delete wireless profiles has come back in Windows 8.1 Update. To reach this GUI, see the following.
-
-#### Windows 10
-
-[Network settings] from notification area (or [Settings] from Start menu) &rarr; [Network & Internet] &rarr; [Wi-Fi] &rarr; [Manage WiFi Settings] &rarr; [Manage known networks]
-
-Note: If multiple profiles of the same name exist (it will happen if you connected to the same wireless network using multiple wireless adapters because SSID of wireless network is used for a profile name), such profiles will not be differentiated and will be deleted in bulk.
-
-#### Windows 8.1 Update
-
-[Settings] in Charm &rarr; [Change PC settings] &rarr; [Network] &rarr; [Connections] &rarr; [Manage known networks] in [Wi-Fi]
