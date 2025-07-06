@@ -143,6 +143,12 @@ internal class AppController : DisposableBase
 			})
 			.AddTo(this.Subscription);
 
+		Observable.FromEventPattern<SignalQualityChangedEventArgs>(
+			h => _worker.SignalQualityChanged += h,
+			h => _worker.SignalQualityChanged -= h)
+			.Subscribe(x => UpdateSignalQuality(x.EventArgs))
+			.AddTo(this.Subscription);
+
 		#endregion
 
 		#region Close
@@ -385,6 +391,13 @@ internal class AppController : DisposableBase
 				IsUpdating.TurnOff();
 			}
 		}
+	}
+
+	private void UpdateSignalQuality(SignalQualityChangedEventArgs args)
+	{
+		var targetProfile = Profiles.FirstOrDefault(x => x.IsConnected && (args.InterfaceId == x.InterfaceId));
+		if (targetProfile is not null)
+			targetProfile.Signal = args.SignalQuality;
 	}
 
 	[Conditional("DEBUG")]
