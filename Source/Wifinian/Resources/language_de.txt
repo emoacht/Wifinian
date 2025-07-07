@@ -1,0 +1,23 @@
+﻿[Button]
+Rush=Scannen
+Engage=Verbinden
+Organize=Ordnen
+Up=Hoch
+Down=Runter
+Delete=Löschen
+AutoConnect=Automatisch verbinden
+AutoSwitch=Automatisch wechseln
+OK=OK
+Cancel=Abbrechen
+
+[Link]
+ProjectSite=https://github.com/emoacht/Wifinian/blob/master/README.md
+
+[Menu]
+StartSignIn=Beim Anmelden starten
+ShowAvailable=Nur verfügbare Netzwerke anzeigen
+Close=Schließen
+
+[Message]
+NotWorkable=Konnte keine Informationen zu den WiFi-Verbindungen abrufen.
+RecordException=Es ist ein unerwartetes Problem aufgetreten. Soll das Fehlerprotokoll auf dem Desktop gespeichert werden?
